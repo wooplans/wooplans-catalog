@@ -690,11 +690,11 @@ function renderGrid(list){
   const g=document.getElementById('plans-grid');
   if(!list.length){g.innerHTML='<p style="color:var(--gris);grid-column:1/-1;text-align:center;padding:40px 0">Aucun plan dans cette categorie.</p>';return}
   g.innerHTML=list.map(p=>`
-    <div class="plan-card" onclick="openDetail(${p.id})">
+    <div class="plan-card" onclick="openDetail('${p.id}')">
       <div class="card-img-wrap">
         <img class="card-img" src="${p.images[0]}" alt="${p.title}" loading="lazy">
         <span class="card-badge ${p.type==='villa'?'badge-villa':'badge-duplex'}">${p.type}</span>
-        <button class="card-save ${saved.includes(p.id)?'saved':''}" onclick="event.stopPropagation();toggleSave(${p.id},this)" title="Sauvegarder">
+        <button class="card-save ${saved.includes(p.id)?'saved':''}" onclick="event.stopPropagation();toggleSave('${p.id}',this)" title="Sauvegarder">
           <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </button>
       </div>
