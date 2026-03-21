@@ -899,8 +899,11 @@ async function submitCheckout(e){
   const rawPhone = document.getElementById('co-ph').value.trim();
   const countryCode = document.getElementById('co-cc') ? document.getElementById('co-cc').value : 'CM';
 
-  // Chariow product IDs
-  const PRODUCT_ID = p.type === 'villa' ? 'prd_30klpr' : 'prd_ol6auw';
+  // Chariow product IDs (type: downloadable)
+  const PRODUCT_ID = p.type === 'villa' ? 'prd_p82tf6' : 'prd_stb3yx';
+  const FALLBACK_URL = p.type === 'villa'
+    ? 'https://wooplans.mychariow.shop/prd_p82tf6'
+    : 'https://wooplans.mychariow.shop/prd_stb3yx';
 
   // Netlify domain
   const NETLIFY_DOMAIN = 'wooplanscatalog.netlify.app';
@@ -910,7 +913,7 @@ async function submitCheckout(e){
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer CHARIOW_API_KEY'
+        'Authorization': 'Bearer sk_wnhjfg79_e72dd025cb885446a0cd4e9e753513a1'
       },
       body: JSON.stringify({
         product_id: PRODUCT_ID,
@@ -946,10 +949,9 @@ async function submitCheckout(e){
       throw new Error('api_unsupported');
     }
   } catch(err) {
-    // Fallback fiable : redirection vers la boutique Chariow
-    const storeUrl = 'https://wooplans.mychariow.shop';
+    // Fallback fiable : redirection directe vers la page produit Chariow
     showToast('Redirection vers le paiement...');
-    setTimeout(()=>{ window.location.href = storeUrl; }, 800);
+    setTimeout(()=>{ window.location.href = FALLBACK_URL; }, 800);
   }
 }
 
