@@ -889,26 +889,29 @@ async function submitCheckout(e){
   btn.disabled=true;
   document.getElementById('co-spin').style.display='block';
   document.getElementById('co-btn-ico').style.display='none';
-  document.getElementById('co-btn-txt').textContent='Connexion...';
+  document.getElementById('co-btn-txt').textContent='Redirection...';
 
   const p = currentPlan;
   const isBasic = selectedOpt === 1;
-  const fname = document.getElementById('co-fname').value.trim();
-  const lname = document.getElementById('co-lname').value.trim();
-  const email = document.getElementById('co-email').value.trim();
-  const rawPhone = document.getElementById('co-phone').value.trim();
-  const countryCode = document.getElementById('co-country') ? document.getElementById('co-country').value : 'CM';
+  const fname = document.getElementById('co-fn').value.trim();
+  const lname = document.getElementById('co-ln').value.trim();
+  const email = document.getElementById('co-em').value.trim();
+  const rawPhone = document.getElementById('co-ph').value.trim();
+  const countryCode = document.getElementById('co-cc') ? document.getElementById('co-cc').value : 'CM';
 
   // Chariow product IDs
   const PRODUCT_ID = p.type === 'villa' ? 'prd_30klpr' : 'prd_ol6auw';
 
-  // Netlify domain — remplacer apres deploiement
-  const NETLIFY_DOMAIN = 'YOUR_NETLIFY_DOMAIN';
+  // Netlify domain
+  const NETLIFY_DOMAIN = 'wooplanscatalog.netlify.app';
 
   try {
     const res = await fetch('https://api.chariow.com/v1/checkout', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer CHARIOW_API_KEY'
+      },
       body: JSON.stringify({
         product_id: PRODUCT_ID,
         email: email,
@@ -924,21 +927,29 @@ async function submitCheckout(e){
         redirect_url: 'https://' + NETLIFY_DOMAIN + '/merci.html?sale_id={sale_id}&plan_id=' + String(p.id)
       })
     });
+
+    if (!res.ok) {
+      const errJson = await res.json().catch(()=>({}));
+      console.warn('Chariow API error:', res.status, errJson);
+      // Fallback : redirection directe vers la boutique Chariow
+      throw new Error('api_unsupported');
+    }
+
     const json = await res.json();
     const checkoutUrl = json && json.data && json.data.payment && json.data.payment.checkout_url;
     if (checkoutUrl) {
       showToast('Redirection vers le paiement...');
       window.location.href = checkoutUrl;
+    } else if (json && json.data && json.data.step === 'completed') {
+      window.location.href = 'https://' + NETLIFY_DOMAIN + '/merci.html?plan_id=' + String(p.id);
     } else {
-      throw new Error('Pas de checkout_url dans la reponse Chariow');
+      throw new Error('api_unsupported');
     }
   } catch(err) {
-    console.error('Chariow checkout error:', err);
-    showToast('Erreur de connexion. Reessaie.');
-    btn.disabled = false;
-    document.getElementById('co-spin').style.display = 'none';
-    document.getElementById('co-btn-ico').style.display = 'block';
-    document.getElementById('co-btn-txt').textContent = 'Proceder au paiement';
+    // Fallback fiable : redirection vers la boutique Chariow
+    const storeUrl = 'https://wooplans.mychariow.shop';
+    showToast('Redirection vers le paiement...');
+    setTimeout(()=>{ window.location.href = storeUrl; }, 800);
   }
 }
 
