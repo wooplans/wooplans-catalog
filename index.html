@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WooPlans — Plans de Maison Premium</title>
+<meta name="description" content="Téléchargez instantanément votre plan de maison. Villas et duplex conçus pour l'Afrique.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root {
+  --brun:        #1a1208;
+  --brun-moyen:  #3d2b14;
+  --terre:       #8B5E3C;
+  --terre-clair: #C4894F;
+  --or:          #D4A853;
+  --or-pale:     #F0D49A;
+  --creme:       #FAF7F2;
+  --creme-2:     #F3EDE3;
+  --creme-3:     #E8DFD0;
+  --gris-fonce:  #4A4540;
+  --gris:        #7A736C;
+  --gris-clair:  #C5BDB4;
+  --blanc:       #FFFFFF;
+  --vert:        #2D6A4F;
+  --vert-bg:     #EAF4EE;
+  --orange-bg:   #FEF6E8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--creme);
+  color:var(--brun);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  font-size:16px;
+  line-height:1.6;
+}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;background:var(--brun);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s,visibility .5s}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--or);letter-spacing:.2em;animation:blink 1.4s ease infinite}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:68px;padding:0 5vw;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(250,247,242,.95);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s,box-shadow .3s;
+}
+nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--brun);display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.nav-dot{width:9px;height:9px;border-radius:50%;background:var(--or)}
+.nav-link{font-size:.85rem;color:var(--gris);cursor:pointer;text-decoration:none;transition:color .2s}
+.nav-link:hover{color:var(--terre)}
+.nav-cta{background:var(--brun);color:var(--or);font-size:.85rem;font-weight:600;letter-spacing:.05em;padding:11px 24px;border:none;cursor:pointer;transition:background .25s,transform .2s}
+.nav-cta:hover{background:var(--terre);transform:translateY(-1px)}
+
+/* ── HERO ── */
+#hero{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;padding-top:68px;overflow:hidden}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:7vw 5vw 7vw 6vw}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terre);margin-bottom:24px;font-weight:500}
+.hero-eyebrow::before{content:'';width:28px;height:1.5px;background:var(--terre)}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5.2vw,4.4rem);font-weight:500;line-height:1.1;color:var(--brun);margin-bottom:22px}
+.hero-h1 em{font-style:italic;color:var(--terre)}
+.hero-desc{font-size:1.05rem;line-height:1.75;color:var(--gris-fonce);max-width:420px;margin-bottom:40px}
+.hero-btns{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--brun);color:var(--or);font-size:.9rem;font-weight:600;letter-spacing:.06em;padding:16px 34px;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .25s,transform .2s,box-shadow .25s}
+.btn-primary:hover{background:var(--terre);transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,94,60,.28)}
+.btn-outline{background:transparent;color:var(--brun);font-size:.9rem;font-weight:400;padding:16px 0;border:none;border-bottom:1.5px solid var(--gris-clair);cursor:pointer;transition:color .25s,border-color .25s}
+.btn-outline:hover{color:var(--terre);border-color:var(--terre)}
+.hero-stats{display:flex;gap:36px;margin-top:48px;padding-top:28px;border-top:1px solid var(--gris-clair)}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:600;color:var(--brun)}
+.stat-l{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-top:3px}
+.hero-right{position:relative;overflow:hidden;background:var(--brun-moyen)}
+.hero-img{width:100%;height:100%;object-fit:cover;opacity:.8;transition:transform 8s ease;transform:scale(1.04)}
+.hero-right:hover .hero-img{transform:scale(1)}
+.hero-badge{position:absolute;bottom:32px;left:-1px;background:var(--or);color:var(--brun);padding:16px 22px}
+.badge-main{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600}
+.badge-sub{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin-top:2px}
+
+/* ── CONCEPT ── */
+#concept{background:var(--brun);padding:72px 6vw}
+.concept-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0}
+.concept-div{background:rgba(255,255,255,.1)}
+.concept-step{padding:0 48px;display:flex;flex-direction:column;gap:14px}
+.concept-step:first-child{padding-left:0}
+.concept-step:last-child{padding-right:0}
+.c-num{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:400;color:rgba(212,168,83,.18);line-height:1}
+.c-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:500;color:var(--blanc)}
+.c-desc{font-size:.9rem;line-height:1.7;color:rgba(255,255,255,.5)}
+.c-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;width:fit-content}
+.tag-instant{background:rgba(45,106,79,.25);color:#7DD3A8}
+.tag-order{background:rgba(212,168,83,.18);color:var(--or)}
+
+/* ── CATALOGUE ── */
+#catalogue{padding:88px 5vw;max-width:1400px;margin:0 auto}
+.sec-eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terre);margin-bottom:10px;font-weight:500}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,3.2vw,2.8rem);font-weight:500;color:var(--brun);line-height:1.2;margin-bottom:40px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px}
+.f-btn{padding:10px 22px;font-size:.85rem;font-weight:500;border:1.5px solid var(--gris-clair);background:transparent;color:var(--gris);cursor:pointer;transition:all .25s;border-radius:100px}
+.f-btn:hover{border-color:var(--brun);color:var(--brun)}
+.f-btn.active{background:var(--brun);color:var(--or);border-color:var(--brun)}
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px}
+
+/* ── CARD ── */
+.plan-card{background:var(--blanc);cursor:pointer;transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s;border:1px solid var(--creme-3)}
+.plan-card:hover{transform:translateY(-5px);box-shadow:0 14px 40px rgba(26,18,8,.11)}
+.card-img-wrap{position:relative;overflow:hidden;aspect-ratio:4/3;background:var(--creme-2)}
+.card-img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.plan-card:hover .card-img{transform:scale(1.05)}
+.card-badge{position:absolute;top:14px;left:14px;padding:5px 12px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.badge-villa{background:var(--brun);color:var(--or-pale)}
+.badge-duplex{background:var(--terre);color:var(--blanc)}
+.card-save{position:absolute;top:14px;right:14px;width:38px;height:38px;background:rgba(250,247,242,.92);backdrop-filter:blur(8px);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;border-radius:50%}
+.card-save:hover{background:var(--creme);transform:scale(1.1)}
+.card-save svg{width:17px;height:17px;fill:none;stroke:var(--brun);stroke-width:1.8}
+.card-save.saved svg{fill:#E05252;stroke:#E05252}
+.card-body{padding:22px 24px 24px}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:500;color:var(--brun);margin-bottom:6px;line-height:1.3;transition:color .2s}
+.plan-card:hover .card-title{color:var(--terre)}
+.card-sub{font-size:.88rem;color:var(--gris);margin-bottom:16px;line-height:1.5}
+.card-specs{display:flex;gap:18px;padding:14px 0;border-top:1px solid var(--creme-2);border-bottom:1px solid var(--creme-2);margin-bottom:18px}
+.spec{display:flex;align-items:center;gap:7px;font-size:.85rem;color:var(--gris-fonce)}
+.spec svg{width:15px;height:15px;stroke:var(--terre-clair);stroke-width:1.8;fill:none;flex-shrink:0}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.price-lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:3px}
+.card-price{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:600;color:var(--brun);line-height:1}
+.card-price small{font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:400;color:var(--gris)}
+.card-btn{background:var(--brun);color:var(--or);font-size:.78rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:11px 20px;border:none;cursor:pointer;transition:background .25s,transform .2s;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.card-btn:hover{background:var(--terre);transform:translateY(-1px)}
+.card-btn svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none}
+
+/* ── DETAIL OVERLAY ── */
+#detail-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:stretch}
+#detail-overlay.open{display:flex}
+.det-backdrop{position:absolute;inset:0;background:rgba(10,8,5,.6);backdrop-filter:blur(5px);animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.det-panel{position:relative;z-index:1;width:min(880px,100vw);margin-left:auto;background:var(--creme);overflow-y:auto;animation:slideR .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;
+  /* espace pour sticky bar mobile */
+  padding-bottom:80px;
+}
+@keyframes slideR{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+.det-header{position:sticky;top:0;z-index:10;background:var(--creme);border-bottom:1px solid var(--creme-3);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
+.det-crumb{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.det-close{width:38px;height:38px;border:1.5px solid var(--gris-clair);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px}
+.det-close:hover{background:var(--brun);border-color:var(--brun)}
+.det-close:hover svg{stroke:var(--or)}
+.det-close svg{width:16px;height:16px;stroke:var(--brun);stroke-width:2;fill:none}
+
+/* Galerie */
+.det-gallery{background:var(--brun);position:relative}
+.gal-main{position:relative;aspect-ratio:16/10;overflow:hidden;cursor:pointer}
+.gal-img{width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
+.gal-counter{position:absolute;bottom:14px;right:14px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.9);font-size:.78rem;padding:5px 11px;letter-spacing:.06em}
+.gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none}
+.gal-btn{width:42px;height:42px;background:rgba(250,247,242,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);cursor:pointer;pointer-events:all;display:flex;align-items:center;justify-content:center;transition:background .2s;border-radius:4px}
+.gal-btn:hover{background:rgba(250,247,242,.3)}
+.gal-btn svg{width:18px;height:18px;stroke:white;stroke-width:2;fill:none}
+.gal-thumbs{display:flex;gap:3px;padding:3px;overflow-x:auto;scrollbar-width:none}
+.gal-thumbs::-webkit-scrollbar{display:none}
+.gal-thumb{flex-shrink:0;width:78px;height:58px;overflow:hidden;cursor:pointer;opacity:.45;transition:opacity .2s;border:2px solid transparent}
+.gal-thumb:hover{opacity:.75}
+.gal-thumb.active{opacity:1;border-color:var(--or)}
+.gal-thumb img{width:100%;height:100%;object-fit:cover}
+
+/* Contenu détail */
+.det-content{padding:28px;display:grid;grid-template-columns:1fr 300px;gap:28px}
+.det-main{}
+.det-type-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.det-type-pill{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;font-weight:600}
+.det-stars{display:flex;align-items:center;gap:4px;font-size:.85rem;color:var(--gris)}
+.det-stars svg{width:14px;height:14px;fill:var(--or);stroke:none}
+.det-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--brun);margin-bottom:8px;line-height:1.2}
+.det-subtitle{font-size:.95rem;color:var(--gris-fonce);margin-bottom:24px;line-height:1.6}
+.det-specs-row{display:flex;gap:20px;flex-wrap:wrap;padding:18px 0;border-top:1px solid var(--creme-2);border-bottom:1px solid var(--creme-2);margin-bottom:22px}
+.det-spec-lbl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:3px}
+.det-spec-val{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:var(--brun)}
+.det-desc{font-size:.93rem;line-height:1.8;color:var(--gris-fonce);margin-bottom:22px}
+.det-features{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.det-features li{display:flex;align-items:flex-start;gap:8px;font-size:.88rem;color:var(--gris-fonce);line-height:1.5}
+.det-features li svg{width:15px;height:15px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0;margin-top:2px}
+
+/* ── SIDEBAR ACHAT ── */
+.det-sidebar{}
+.purchase-box{position:sticky;top:74px;display:flex;flex-direction:column;gap:12px}
+.pbox-title{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:4px;font-weight:500}
+
+/* CARTES VERTICALES */
+.opt-card{border:2px solid var(--creme-3);background:var(--blanc);padding:20px;cursor:pointer;transition:border-color .25s,box-shadow .25s;position:relative}
+.opt-card:hover{border-color:var(--gris-clair)}
+.opt-card.selected{border-color:var(--brun);box-shadow:0 4px 20px rgba(26,18,8,.1)}
+.opt-card.featured{border-color:var(--or)}
+.opt-card.featured.selected{border-color:var(--brun)}
+
+/* Badge "Recommande" */
+.opt-featured-badge{
+  position:absolute;top:-1px;right:16px;
+  background:var(--or);color:var(--brun);
+  font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 10px;
+}
+
+/* Header de la carte */
+.opt-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:10px}
+.opt-card-left{}
+.opt-card-name{font-size:.95rem;font-weight:600;color:var(--brun);margin-bottom:5px}
+.opt-card-tag{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px}
+.tag-inst{background:var(--vert-bg);color:var(--vert)}
+.tag-ord{background:var(--orange-bg);color:var(--terre)}
+.opt-card-price{text-align:right;flex-shrink:0}
+.opt-price-val{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;color:var(--brun);line-height:1}
+.opt-price-cur{font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:400;color:var(--gris)}
+
+/* Items inclus */
+.opt-card-items{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:12px;padding-top:12px;border-top:1px solid var(--creme-2)}
+.opt-card-items li{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--gris-fonce)}
+.opt-card-items li svg{width:14px;height:14px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0}
+
+/* Dropdown voir plus */
+.opt-dropdown-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:9px 0 0;background:transparent;border:none;border-top:1px solid var(--creme-2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--terre);font-weight:500;margin-top:10px}
+.opt-dropdown-btn svg{width:14px;height:14px;stroke:var(--terre);stroke-width:2;fill:none;transition:transform .3s;flex-shrink:0}
+.opt-dropdown-btn.open svg{transform:rotate(180deg)}
+.opt-dropdown-body{overflow:hidden;max-height:0;transition:max-height .35s ease}
+.opt-dropdown-body.open{max-height:200px}
+.opt-extras{list-style:none;padding:10px 0 2px;display:flex;flex-direction:column;gap:7px}
+.opt-extras li{display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--gris-fonce)}
+.opt-extras li svg{width:13px;height:13px;stroke:var(--gris);stroke-width:2;fill:none;flex-shrink:0}
+
+/* CTA principal (Plan Basique) */
+.cta-main{width:100%;background:var(--brun);color:var(--or);font-size:.9rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:17px;border:none;cursor:pointer;transition:background .25s,transform .2s;display:flex;align-items:center;justify-content:center;gap:10px}
+.cta-main:hover{background:var(--terre);transform:translateY(-1px)}
+.cta-main svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none}
+
+/* CTA secondaire (Plans Complets) */
+.cta-secondary{width:100%;background:transparent;color:var(--brun);font-size:.88rem;font-weight:500;letter-spacing:.06em;padding:14px;border:1.5px solid var(--brun);cursor:pointer;transition:background .25s,color .25s;display:flex;align-items:center;justify-content:center;gap:10px}
+.cta-secondary:hover{background:var(--brun);color:var(--or)}
+.cta-secondary svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+
+.opt-card-sub{font-size:.8rem;color:var(--gris);margin-top:3px;line-height:1.4}
+.voir-exemple-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--creme-2);font-size:.84rem;color:var(--terre);font-weight:500;text-decoration:none;transition:color .2s}
+.voir-exemple-link:hover{color:var(--brun)}
+.voir-exemple-link svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.8;fill:none;flex-shrink:0}
+.trust-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.74rem;color:var(--gris)}
+.trust-note svg{width:12px;height:12px;stroke:var(--vert);fill:none;stroke-width:2}
+.whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:13px;background:#25D366;color:#fff;font-size:.86rem;font-weight:600;text-decoration:none;border-radius:4px;transition:background .2s,transform .2s;margin-top:0}
+.whatsapp-btn:hover{background:#1da851;transform:translateY(-1px)}
+.whatsapp-btn svg{width:20px;height:20px;flex-shrink:0}
+
+/* ── STICKY BAR MOBILE ── */
+.sticky-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:250;
+  background:var(--brun);
+  display:none;align-items:center;justify-content:space-between;
+  padding:14px 20px;
+  border-top:1px solid rgba(255,255,255,.1);
+  box-shadow:0 -4px 20px rgba(0,0,0,.25);
+  animation:slideUp .3s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sb-info{}
+.sb-name{font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:2px}
+.sb-price{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--or);font-weight:600;line-height:1}
+.sb-btn{background:var(--or);color:var(--brun);font-size:.82rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:13px 22px;border:none;cursor:pointer;flex-shrink:0}
+
+/* ── CHECKOUT POPUP ── */
+#checkout-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
+#checkout-overlay.open{display:flex}
+.co-backdrop{position:absolute;inset:0;background:rgba(10,8,5,.72);backdrop-filter:blur(6px)}
+.co-modal{position:relative;z-index:1;background:var(--creme);width:min(480px,100%);animation:popIn .3s cubic-bezier(.34,1.4,.64,1);max-height:96svh;overflow-y:auto}
+@keyframes popIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.co-head{background:var(--brun);padding:22px 26px;display:flex;align-items:flex-start;justify-content:space-between}
+.co-plan{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--blanc);margin-bottom:3px}
+.co-pkg{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--or)}
+.co-x{background:transparent;border:1px solid rgba(255,255,255,.2);width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0;margin-left:16px;border-radius:4px}
+.co-x:hover{background:rgba(255,255,255,.1)}
+.co-x svg{width:14px;height:14px;stroke:white;stroke-width:2;fill:none}
+.co-body{padding:24px 26px}
+.co-summary{background:var(--creme-2);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;border:1px solid var(--creme-3)}
+.co-sum-lbl{font-size:.82rem;color:var(--gris-fonce)}
+.co-sum-price{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--brun)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{margin-bottom:13px}
+.form-lbl{display:block;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris-fonce);margin-bottom:7px;font-weight:500}
+.form-input{width:100%;padding:13px 14px;border:1.5px solid var(--creme-3);background:var(--blanc);font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--brun);outline:none;transition:border-color .2s;border-radius:2px}
+.form-input:focus{border-color:var(--brun)}
+.form-input::placeholder{color:var(--gris-clair)}
+.tel-wrap{display:flex;gap:8px}
+.tel-select{padding:13px 10px;border:1.5px solid var(--creme-3);background:var(--creme-2);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--gris-fonce);outline:none;cursor:pointer;flex-shrink:0;width:118px;border-radius:2px}
+.co-submit{width:100%;margin-top:6px;background:var(--brun);color:var(--or);font-size:.88rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:16px;border:none;cursor:pointer;transition:background .25s;display:flex;align-items:center;justify-content:center;gap:10px}
+.co-submit:hover{background:var(--terre)}
+.co-submit:disabled{opacity:.6;cursor:not-allowed}
+.co-note{text-align:center;font-size:.76rem;color:var(--gris);margin-top:12px;display:flex;align-items:center;justify-content:center;gap:5px;line-height:1.5}
+.co-note svg{width:12px;height:12px;stroke:var(--vert);fill:none;stroke-width:2;flex-shrink:0}
+.spinner{width:16px;height:16px;border:2px solid rgba(212,168,83,.3);border-top-color:var(--or);border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--brun);color:var(--blanc);padding:13px 24px;font-size:.88rem;display:flex;align-items:center;gap:10px;z-index:500;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.22);border-radius:4px}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast svg{width:16px;height:16px;stroke:var(--or);stroke-width:2;fill:none;flex-shrink:0}
+
+/* ── FOOTER ── */
+footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
+.ft-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:44px;margin-bottom:44px}
+.ft-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--or);margin-bottom:12px}
+.ft-desc{font-size:.88rem;color:rgba(255,255,255,.4);line-height:1.7;max-width:280px}
+.ft-col-title{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px}
+.ft-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.ft-links a{font-size:.88rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s}
+.ft-links a:hover{color:var(--or)}
+.ft-bottom{max-width:1100px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;font-size:.78rem;color:rgba(255,255,255,.25);flex-wrap:wrap;gap:10px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  #hero{grid-template-columns:1fr;min-height:auto}
+  .hero-right{height:55vw}
+  .hero-left{padding:36px 20px 28px}
+  .hero-stats{gap:22px}
+  .hero-h1{font-size:2.4rem}
+  .concept-grid{grid-template-columns:1fr;gap:0}
+  .concept-div{display:none}
+  .concept-step{padding:28px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+  .concept-step:last-child{border-bottom:none}
+  .plans-grid{grid-template-columns:1fr}
+  .det-panel{width:100vw}
+  .det-content{grid-template-columns:1fr;gap:20px}
+  .det-features{grid-template-columns:1fr}
+  .purchase-box{position:static}
+  .sticky-bar{display:flex}
+  .ft-inner{grid-template-columns:1fr;gap:28px}
+  nav{padding:0 18px}
+  .nav-link{display:none}
+  #catalogue{padding:60px 18px}
+  .det-title{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-logo">WooPlans</div></div>
+
+<nav id="nav">
+  <div class="nav-logo" onclick="scrollToTop()"><span class="nav-dot"></span>WooPlans</div>
+  <span class="nav-link" onclick="scrollToConcept()">Comment ca marche</span>
+  <button class="nav-cta" onclick="scrollToCatalogue()">Voir les plans</button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Plans de maison premium</div>
+    <h1 class="hero-h1">Votre maison,<br><em>disponible</em><br>maintenant.</h1>
+    <p class="hero-desc">Choisissez parmi 50+ plans concus pour l'Afrique. Telechargez le plan basique instantanement, commandez les plans complets a votre rythme.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="scrollToCatalogue()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Telecharger un plan
+      </button>
+      <button class="btn-outline" onclick="scrollToConcept()">Comprendre le concept &rarr;</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-n">50+</div><div class="stat-l">Plans</div></div>
+      <div><div class="stat-n">2</div><div class="stat-l">Formules</div></div>
+      <div><div class="stat-n">100%</div><div class="stat-l">Afrique</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=75&auto=format" alt="Villa moderne" loading="eager">
+    <div class="hero-badge">
+      <div class="badge-main">Telechargement instantane</div>
+      <div class="badge-sub">Paiement Mobile Money</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONCEPT ═══ -->
+<section id="concept">
+  <div class="concept-grid">
+    <div class="concept-step">
+      <div class="c-num">01</div>
+      <div class="c-title">Choisissez votre plan</div>
+      <p class="c-desc">Parcourez le catalogue. Filtrez par type et surface. Visualisez les rendus en galerie.</p>
+    </div>
+    <div class="concept-div"></div>
+    <div class="concept-step">
+      <div class="c-num">02</div>
+      <span class="c-tag tag-instant">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Instantane
+      </span>
+      <div class="c-title">Plan Basique + Devis</div>
+      <p class="c-desc">Payez par Mobile Money et recevez immediatement le plan 2D + devis estimatif. Parfait pour demarrer.</p>
+    </div>
+    <div class="concept-div"></div>
+    <div class="concept-step">
+      <div class="c-num">03</div>
+      <span class="c-tag tag-order">Sur commande</span>
+      <div class="c-title">Plans Complets + Personnalisation</div>
+      <p class="c-desc">Avec votre plan basique, commandez les plans complets avec possibilite d'adaptation a votre terrain.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CATALOGUE ═══ -->
+<section id="catalogue">
+  <div class="sec-eyebrow">Notre catalogue</div>
+  <h2 class="sec-title">Plans disponibles<br>au telechargement</h2>
+  <div class="filters">
+    <button class="f-btn active" onclick="filterPlans('all',this)">Tous les plans</button>
+    <button class="f-btn" onclick="filterPlans('villa',this)">Villas</button>
+    <button class="f-btn" onclick="filterPlans('duplex',this)">Duplex</button>
+  </div>
+  <div class="plans-grid" id="plans-grid"></div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="ft-inner">
+    <div>
+      <div class="ft-logo">WooPlans</div>
+      <p class="ft-desc">Plans de maison premium concus pour l'Afrique. Telechargement instantane, qualite architecturale garantie.</p>
+    </div>
+    <div>
+      <div class="ft-col-title">Catalogue</div>
+      <ul class="ft-links">
+        <li><a href="#">Villas</a></li>
+        <li><a href="#">Duplex</a></li>
+        <li><a href="#">Nouveautes</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ft-col-title">Support</div>
+      <ul class="ft-links">
+        <li><a href="#">Comment ca marche</a></li>
+        <li><a href="#">WhatsApp</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>&copy; 2026 WooPlans. Tous droits reserves.</span>
+    <span>Concu pour l'Afrique francophone</span>
+  </div>
+</footer>
+
+<!-- ═══ DETAIL OVERLAY ═══ -->
+<div id="detail-overlay">
+  <div class="det-backdrop" onclick="closeDetail()"></div>
+  <div class="det-panel">
+    <div class="det-header">
+      <span class="det-crumb">Catalogue &rsaquo; Detail du plan</span>
+      <button class="det-close" onclick="closeDetail()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="det-gallery">
+      <div class="gal-main" id="gal-main">
+        <img class="gal-img" id="gal-img" src="" alt="">
+        <div class="gal-counter" id="gal-counter">1 / 4</div>
+        <div class="gal-nav">
+          <button class="gal-btn" onclick="galNav(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button class="gal-btn" onclick="galNav(1)"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+      <div class="gal-thumbs" id="gal-thumbs"></div>
+    </div>
+
+    <div class="det-content">
+      <div class="det-main">
+        <div class="det-type-row">
+          <span class="det-type-pill" id="det-pill">Villa</span>
+          <div class="det-stars">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span id="det-rating">4.8</span>&nbsp;<span style="color:var(--gris-clair)">·</span>&nbsp;<span id="det-reviews">18 avis</span>
+          </div>
+        </div>
+        <h2 class="det-title" id="det-title">—</h2>
+        <p class="det-subtitle" id="det-subtitle">—</p>
+        <div class="det-specs-row">
+          <div><div class="det-spec-lbl">Surface</div><div class="det-spec-val" id="det-area">—</div></div>
+          <div><div class="det-spec-lbl">Chambres</div><div class="det-spec-val" id="det-beds">—</div></div>
+          <div><div class="det-spec-lbl">Salles de bain</div><div class="det-spec-val" id="det-baths">—</div></div>
+          <div><div class="det-spec-lbl">Niveaux</div><div class="det-spec-val" id="det-floors">—</div></div>
+          <div><div class="det-spec-lbl">Cout estime</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
+        </div>
+        <p class="det-desc" id="det-desc">—</p>
+        <ul class="det-features" id="det-features"></ul>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="det-sidebar">
+        <div class="purchase-box">
+          <div class="pbox-title">Choisir une formule</div>
+
+          <!-- CARTE 1 : PLAN BASIQUE -->
+          <div class="opt-card featured selected" id="opt-card-1">
+            <div class="opt-featured-badge">Recommande</div>
+            <div class="opt-card-head">
+              <div class="opt-card-left">
+                <div class="opt-card-name">Plan Basique + Devis</div>
+                <div class="opt-card-sub">Pour demarrer et personnaliser votre projet</div>
+              </div>
+              <div class="opt-card-price">
+                <div class="opt-price-val" id="price-basic">—</div>
+                <div class="opt-price-cur">FCFA</div>
+              </div>
+            </div>
+            <span class="opt-card-tag tag-inst" style="margin-bottom:12px;display:inline-flex">&#9889; INSTANTANE</span>
+            <ul class="opt-card-items">
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution et dimensions</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendu 3D exterieurs</li>
+            </ul>
+            <a class="voir-exemple-link" href="https://drive.google.com/file/d/EXEMPLE_PDF_ID/view" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              Voir un exemple
+            </a>
+          </div>
+
+          <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Telecharger maintenant
+          </button>
+          <div class="trust-note" style="margin-bottom:18px">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Paiement securise &middot; Mobile Money
+          </div>
+          <a class="whatsapp-btn" href="https://wa.me/237694327885?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20plan%20" id="whatsapp-link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+            Des questions ? Ecrivez-nous sur WhatsApp
+          </a>
+
+          <!-- SEPARATEUR -->
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+            <div style="flex:1;height:1px;background:var(--creme-3)"></div>
+            <span style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)">Ou</span>
+            <div style="flex:1;height:1px;background:var(--creme-3)"></div>
+          </div>
+
+          <!-- CARTE 2 : PLANS COMPLETS -->
+          <div class="opt-card" id="opt-card-2">
+            <div class="opt-card-head">
+              <div class="opt-card-left">
+                <div class="opt-card-name">Plans Complets</div>
+                <div class="opt-card-sub">Pour la construction</div>
+              </div>
+              <div class="opt-card-price">
+                <div class="opt-price-val" id="price-complete">—</div>
+                <div class="opt-price-cur">FCFA</div>
+              </div>
+            </div>
+            <span class="opt-card-tag tag-ord" style="margin-bottom:12px;display:inline-flex">Sur commande &middot; 3-5 jours</span>
+            <ul class="opt-card-items">
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tous les plans architecturaux</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis du projet</li>
+            </ul>
+            <button class="opt-dropdown-btn" id="dd2-btn" onclick="toggleDd(2)">
+              <span id="dd2-label">Voir tous les details</span>
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="opt-dropdown-body" id="dd2-body">
+              <ul class="opt-extras" id="dd2-extras"></ul>
+            </div>
+          </div>
+
+          <button class="cta-secondary" onclick="selectOpt(2);openCheckout()">
+            Commander les plans complets
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STICKY BAR MOBILE -->
+<div class="sticky-bar" id="sticky-bar">
+  <div class="sb-info">
+    <div class="sb-name" id="sb-name">Plan Basique + Devis</div>
+    <div class="sb-price" id="sb-price">—</div>
+  </div>
+  <button class="sb-btn" onclick="selectOpt(1);openCheckout()">&#8595; Telecharger</button>
+</div>
+
+<!-- CHECKOUT POPUP -->
+<div id="checkout-overlay">
+  <div class="co-backdrop" onclick="closeCheckout()"></div>
+  <div class="co-modal">
+    <div class="co-head">
+      <div>
+        <div class="co-plan" id="co-plan">—</div>
+        <div class="co-pkg" id="co-pkg">Plan Basique + Devis &middot; Telechargement instantane</div>
+      </div>
+      <button class="co-x" onclick="closeCheckout()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="co-body">
+      <div class="co-summary">
+        <span class="co-sum-lbl" id="co-sum-lbl">Plan Basique + Devis</span>
+        <span class="co-sum-price" id="co-sum-price">—</span>
+      </div>
+      <form onsubmit="submitCheckout(event)">
+        <div class="form-row">
+          <div class="form-group"><label class="form-lbl">Prenom</label><input class="form-input" type="text" id="co-fn" placeholder="Kouame" required></div>
+          <div class="form-group"><label class="form-lbl">Nom</label><input class="form-input" type="text" id="co-ln" placeholder="Diallo" required></div>
+        </div>
+        <div class="form-group"><label class="form-lbl">Email</label><input class="form-input" type="email" id="co-em" placeholder="votre@email.com" required></div>
+        <div class="form-group">
+          <label class="form-lbl">Telephone (WhatsApp)</label>
+          <div class="tel-wrap">
+            <select class="tel-select" id="co-cc">
+              <option value="CM">&#127) CM +237</option>
+              <option value="CI">CI +225</option>
+              <option value="SN">SN +221</option>
+              <option value="ML">ML +223</option>
+              <option value="BF">BF +226</option>
+              <option value="BJ">BJ +229</option>
+              <option value="TG">TG +228</option>
+              <option value="GN">GN +224</option>
+              <option value="CD">CD +243</option>
+            </select>
+            <input class="form-input" type="tel" id="co-ph" placeholder="6 XX XX XX XX" required style="flex:1">
+          </div>
+        </div>
+        <button type="submit" class="co-submit" id="co-btn">
+          <span id="co-btn-txt">Proceder au paiement</span>
+          <div class="spinner" id="co-spin"></div>
+          <svg id="co-btn-ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+      <p class="co-note"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Vous serez redirige vers la page de paiement Mobile Money securisee</p>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">OK</span>
+</div>
+
+<script>
+// ── SUPABASE ──────────────────────────────────────────────────
+const SUPABASE_URL = 'https://xlmwzvkqjnoijdldzrol.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbXd6dmtxam5vaWpkbGR6cm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTAzMjAsImV4cCI6MjA4OTY4NjMyMH0.cQcRRHaaMiht2Tq9CB9l4_XN8-SOjixxhHFJDjytze4';
+const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let plans = [];
+
+async function fetchPlans() {
+  const { data, error } = await _supabase.from('plans').select('*').order('created_at');
+  if (error) { console.error('Supabase error:', error); return; }
+  plans = data || [];
+  renderGrid(plans);
+}
+
+// ── STATE ────────────────────────────────────────────────────
+let saved = JSON.parse(localStorage.getItem('wp_saved')||'[]');
+let currentPlan = null;
+let selectedOpt = 1;
+let imgIdx = 0;
+let ddOpen = false;
+
+// ── INIT ─────────────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  document.getElementById('loader').classList.add('hidden');
+  fetchPlans();
+  window.addEventListener('scroll',()=>{
+    document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20);
+  },{passive:true});
+});
+
+// ── NAVIGATION ───────────────────────────────────────────────
+function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'})}
+function scrollToConcept(){document.getElementById('concept').scrollIntoView({behavior:'smooth'})}
+function scrollToCatalogue(){document.getElementById('catalogue').scrollIntoView({behavior:'smooth'})}
+
+// ── GRILLE ───────────────────────────────────────────────────
+function renderGrid(list){
+  const g=document.getElementById('plans-grid');
+  if(!list.length){g.innerHTML='<p style="color:var(--gris);grid-column:1/-1;text-align:center;padding:40px 0">Aucun plan dans cette categorie.</p>';return}
+  g.innerHTML=list.map(p=>`
+    <div class="plan-card" onclick="openDetail(${p.id})">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${p.images[0]}" alt="${p.title}" loading="lazy">
+        <span class="card-badge ${p.type==='villa'?'badge-villa':'badge-duplex'}">${p.type}</span>
+        <button class="card-save ${saved.includes(p.id)?'saved':''}" onclick="event.stopPropagation();toggleSave(${p.id},this)" title="Sauvegarder">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">${p.title}</h3>
+        <p class="card-sub">${p.subtitle}</p>
+        <div class="card-specs">
+          <span class="spec"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>${p.area}</span>
+          <span class="spec"><svg viewBox="0 0 24 24"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>${p.beds} ch.</span>
+          <span class="spec"><svg viewBox="0 0 24 24"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" y1="5" x2="8" y2="7"/></svg>${p.baths} sdb</span>
+        </div>
+        <div class="card-footer">
+          <div>
+            <div class="price-lbl">A partir de</div>
+            <div class="card-price">${p.priceBasic} <small>FCFA</small></div>
+          </div>
+          <button class="card-btn">Voir<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterPlans(type,btn){
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderGrid(type==='all'?plans:plans.filter(p=>p.type===type));
+}
+
+// ── SAVE ─────────────────────────────────────────────────────
+function toggleSave(id,btn){
+  const i=saved.indexOf(id);
+  if(i>-1){saved.splice(i,1);btn.classList.remove('saved');showToast('Retire des favoris')}
+  else{saved.push(id);btn.classList.add('saved');showToast('Ajoute aux favoris')}
+  localStorage.setItem('wp_saved',JSON.stringify(saved));
+}
+
+// ── DETAIL ───────────────────────────────────────────────────
+function openDetail(id){
+  currentPlan=plans.find(p=>p.id===id);
+  if(!currentPlan)return;
+  imgIdx=0; selectedOpt=1; ddOpen=false;
+
+  document.getElementById('det-title').textContent=currentPlan.title;
+  document.getElementById('det-subtitle').textContent=currentPlan.subtitle;
+  document.getElementById('det-area').textContent=currentPlan.area;
+  document.getElementById('det-beds').textContent=currentPlan.beds;
+  document.getElementById('det-baths').textContent=currentPlan.baths;
+  document.getElementById('det-floors').textContent=currentPlan.floors+(currentPlan.floors>1?' niveaux':' niveau');
+  document.getElementById('det-cost').textContent=currentPlan.cost;
+  document.getElementById('det-rating').textContent=currentPlan.rating;
+  document.getElementById('det-reviews').textContent=currentPlan.reviews+' avis';
+  document.getElementById('det-desc').textContent=currentPlan.desc;
+
+  const pill=document.getElementById('det-pill');
+  pill.textContent=currentPlan.type.charAt(0).toUpperCase()+currentPlan.type.slice(1);
+  pill.className='det-type-pill '+(currentPlan.type==='villa'?'badge-villa':'badge-duplex');
+
+  document.getElementById('det-features').innerHTML=currentPlan.features.map(f=>`
+    <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${f}</li>
+  `).join('');
+
+  document.getElementById('price-basic').textContent=currentPlan.priceBasic;
+  document.getElementById('price-complete').textContent=currentPlan.priceComplete;
+
+  // Reset dropdowns
+  ['dd1','dd2'].forEach(function(id){
+    var b=document.getElementById(id+'-body');
+    var btn=document.getElementById(id+'-btn');
+    if(b)b.classList.remove('open');
+    if(btn)btn.classList.remove('open');
+    var lbl=document.getElementById(id+'-label');
+    if(lbl)lbl.textContent='Voir tous les details';
+  });
+
+  // Remplir les extras
+  if(currentPlan.extrasBasic){
+    document.getElementById('dd1-extras').innerHTML=currentPlan.extrasBasic.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
+  }
+  if(currentPlan.extrasComplete){
+    document.getElementById('dd2-extras').innerHTML=currentPlan.extrasComplete.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
+  }
+
+  updateOptUI();
+  renderGallery();
+  document.getElementById('detail-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  // Afficher sticky bar mobile
+  var sb=document.getElementById('sticky-bar');
+  if(sb) sb.style.display='flex';
+  // Mettre a jour le lien WhatsApp avec le nom du plan
+  var waLink=document.getElementById('whatsapp-link');
+  if(waLink){
+    var msg=encodeURIComponent('Bonjour, question sur le plan : '+currentPlan.title);
+    waLink.href='https://wa.me/237694327885?text='+msg;
+  }
+}
+
+function closeDetail(){
+  document.getElementById('detail-overlay').classList.remove('open');
+  document.body.style.overflow='';
+  // Masquer sticky bar mobile
+  var sb=document.getElementById('sticky-bar');
+  if(sb) sb.style.display='none';
+}
+
+// ── GALERIE ──────────────────────────────────────────────────
+function renderGallery(){
+  setImg(0);
+  document.getElementById('gal-thumbs').innerHTML=currentPlan.images.map((s,i)=>`
+    <div class="gal-thumb ${i===0?'active':''}" onclick="setImg(${i})">
+      <img src="${s}" alt="" loading="lazy">
+    </div>
+  `).join('');
+}
+
+function setImg(i){
+  const imgs=currentPlan.images;
+  imgIdx=(i+imgs.length)%imgs.length;
+  const el=document.getElementById('gal-img');
+  el.style.opacity='0';
+  setTimeout(()=>{el.src=imgs[imgIdx];el.style.opacity='1';},200);
+  document.getElementById('gal-counter').textContent=(imgIdx+1)+' / '+imgs.length;
+  document.querySelectorAll('.gal-thumb').forEach((t,j)=>t.classList.toggle('active',j===imgIdx));
+}
+
+function galNav(d){setImg(imgIdx+d)}
+
+// Swipe
+let tx=0;
+document.addEventListener('touchstart',e=>{if(e.target.closest('.gal-main'))tx=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(!e.target.closest('.gal-main'))return;
+  const d=tx-e.changedTouches[0].clientX;
+  if(Math.abs(d)>40)galNav(d>0?1:-1);
+},{passive:true});
+
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('detail-overlay').classList.contains('open'))return;
+  if(e.key==='ArrowLeft')galNav(-1);
+  if(e.key==='ArrowRight')galNav(1);
+  if(e.key==='Escape')closeDetail();
+});
+
+// ── OPTIONS ──────────────────────────────────────────────────
+function selectOpt(n){
+  selectedOpt=n;
+  // Highlight visuel des cartes
+  var c1=document.getElementById('opt-card-1');
+  var c2=document.getElementById('opt-card-2');
+  if(c1)c1.classList.toggle('selected',n===1);
+  if(c2)c2.classList.toggle('selected',n===2);
+  updateOptUI();
+}
+
+function updateOptUI(){
+  if(!currentPlan)return;
+  var isB=selectedOpt===1;
+  var price=isB?currentPlan.priceBasic:currentPlan.priceComplete;
+  document.getElementById('sb-name').textContent=isB?'Plan Basique + Devis':'Plans Complets';
+  document.getElementById('sb-price').textContent=price;
+}
+
+function toggleDd(n){
+  var body=document.getElementById('dd'+n+'-body');
+  var btn=document.getElementById('dd'+n+'-btn');
+  var lbl=document.getElementById('dd'+n+'-label');
+  var isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  btn.classList.toggle('open',!isOpen);
+  lbl.textContent=isOpen?'Voir tous les details':'Masquer les details';
+}
+
+// ── CHECKOUT ─────────────────────────────────────────────────
+function openCheckout(){
+  if(!currentPlan)return;
+  const isB=selectedOpt===1;
+  document.getElementById('co-plan').textContent=currentPlan.title;
+  document.getElementById('co-pkg').textContent=isB?'Plan Basique + Devis \u00b7 Telechargement instantane':'Plans Complets \u00b7 Livraison 3-5 jours';
+  document.getElementById('co-sum-lbl').textContent=isB?'Plan Basique + Devis':'Plans Complets';
+  document.getElementById('co-sum-price').textContent=(isB?currentPlan.priceBasic:currentPlan.priceComplete)+' FCFA';
+  document.getElementById('checkout-overlay').classList.add('open');
+}
+
+function closeCheckout(){document.getElementById('checkout-overlay').classList.remove('open')}
+
+async function submitCheckout(e){
+  e.preventDefault();
+  const btn=document.getElementById('co-btn');
+  btn.disabled=true;
+  document.getElementById('co-spin').style.display='block';
+  document.getElementById('co-btn-ico').style.display='none';
+  document.getElementById('co-btn-txt').textContent='Connexion...';
+
+  const p = currentPlan;
+  const isBasic = selectedOpt === 1;
+  const fname = document.getElementById('co-fname').value.trim();
+  const lname = document.getElementById('co-lname').value.trim();
+  const email = document.getElementById('co-email').value.trim();
+  const rawPhone = document.getElementById('co-phone').value.trim();
+  const countryCode = document.getElementById('co-country') ? document.getElementById('co-country').value : 'CM';
+
+  // Chariow product IDs
+  const PRODUCT_ID = p.type === 'villa' ? 'prd_30klpr' : 'prd_ol6auw';
+
+  // Netlify domain — remplacer apres deploiement
+  const NETLIFY_DOMAIN = 'YOUR_NETLIFY_DOMAIN';
+
+  try {
+    const res = await fetch('https://api.chariow.com/v1/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        product_id: PRODUCT_ID,
+        email: email,
+        first_name: fname,
+        last_name: lname,
+        phone: { number: rawPhone, country_code: countryCode },
+        custom_metadata: {
+          plan_id: String(p.id),
+          plan_title: p.title,
+          plan_type: p.type,
+          option: isBasic ? 'basic' : 'complete'
+        },
+        redirect_url: 'https://' + NETLIFY_DOMAIN + '/merci.html?sale_id={sale_id}&plan_id=' + String(p.id)
+      })
+    });
+    const json = await res.json();
+    const checkoutUrl = json && json.data && json.data.payment && json.data.payment.checkout_url;
+    if (checkoutUrl) {
+      showToast('Redirection vers le paiement...');
+      window.location.href = checkoutUrl;
+    } else {
+      throw new Error('Pas de checkout_url dans la reponse Chariow');
+    }
+  } catch(err) {
+    console.error('Chariow checkout error:', err);
+    showToast('Erreur de connexion. Reessaie.');
+    btn.disabled = false;
+    document.getElementById('co-spin').style.display = 'none';
+    document.getElementById('co-btn-ico').style.display = 'block';
+    document.getElementById('co-btn-txt').textContent = 'Proceder au paiement';
+  }
+}
+
+// ── TOAST ────────────────────────────────────────────────────
+let tTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.classList.add('show');
+  clearTimeout(tTimer);
+  tTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>
