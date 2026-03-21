@@ -772,10 +772,12 @@ function openDetail(id){
 
   // Remplir les extras
   if(currentPlan.extrasBasic){
-    document.getElementById('dd1-extras').innerHTML=currentPlan.extrasBasic.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
+    var el1=document.getElementById('dd1-extras');
+    if(el1) el1.innerHTML=currentPlan.extrasBasic.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
   }
   if(currentPlan.extrasComplete){
-    document.getElementById('dd2-extras').innerHTML=currentPlan.extrasComplete.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
+    var el2=document.getElementById('dd2-extras');
+    if(el2) el2.innerHTML=currentPlan.extrasComplete.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
   }
 
   updateOptUI();
