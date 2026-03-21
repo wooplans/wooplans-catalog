@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merci pour votre achat — WooPlans</title>
+<meta name="description" content="Votre plan de maison WooPlans est disponible.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root {
+  --brun:        #1a1208;
+  --brun-moyen:  #3d2b14;
+  --terre:       #8B5E3C;
+  --terre-clair: #C4894F;
+  --or:          #D4A853;
+  --or-pale:     #F0D49A;
+  --creme:       #FAF7F2;
+  --creme-2:     #F3EDE3;
+  --creme-3:     #E8DFD0;
+  --gris-fonce:  #4A4540;
+  --gris:        #7A736C;
+  --gris-clair:  #C5BDB4;
+  --blanc:       #FFFFFF;
+  --vert:        #2D6A4F;
+  --vert-bg:     #EAF4EE;
+  --orange-bg:   #FEF6E8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--creme);
+  color:var(--brun);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  font-size:16px;
+  line-height:1.6;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--brun);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s,visibility .5s}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{color:var(--or);font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:500;letter-spacing:.05em}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  padding:16px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:transparent;
+  transition:background .3s,box-shadow .3s;
+  z-index:100;
+}
+nav.scrolled{background:var(--brun);box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--or);text-decoration:none;letter-spacing:.03em}
+.nav-back{
+  display:flex;align-items:center;gap:8px;
+  color:var(--or-pale);font-size:.85rem;font-weight:500;
+  text-decoration:none;padding:8px 18px;
+  border:1px solid rgba(212,168,83,.35);border-radius:8px;
+  transition:all .2s;
+}
+.nav-back:hover{background:rgba(212,168,83,.1);border-color:var(--or)}
+.nav-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* MAIN */
+main{
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+  padding:120px 24px 60px;
+}
+
+.merci-card{
+  background:var(--blanc);
+  border-radius:20px;
+  box-shadow:0 4px 40px rgba(26,18,8,.1);
+  max-width:600px;width:100%;
+  padding:48px 40px;
+  text-align:center;
+}
+
+/* ICONE SUCCES */
+.success-icon{
+  width:80px;height:80px;
+  background:var(--vert-bg);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 28px;
+}
+.success-icon svg{width:40px;height:40px;stroke:var(--vert);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+.merci-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem;font-weight:600;
+  color:var(--brun);
+  margin-bottom:10px;
+  line-height:1.2;
+}
+.merci-subtitle{
+  font-size:.95rem;color:var(--gris);
+  margin-bottom:32px;
+}
+
+/* PLAN INFO */
+.plan-info{
+  background:var(--creme-2);
+  border-radius:12px;
+  padding:20px 24px;
+  text-align:left;
+  margin-bottom:28px;
+}
+.plan-info-title{
+  font-size:.75rem;font-weight:600;
+  color:var(--terre);
+  text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:8px;
+}
+.plan-info-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:600;color:var(--brun);
+  margin-bottom:6px;
+}
+.plan-info-specs{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.plan-spec{
+  display:flex;align-items:center;gap:5px;
+  font-size:.82rem;color:var(--gris-fonce);
+}
+.plan-spec svg{width:14px;height:14px;stroke:var(--terre);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* LIVRAISON TAG */
+.livraison-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px;border-radius:8px;
+  font-size:.82rem;font-weight:600;
+  margin-bottom:28px;
+}
+.livraison-tag.instantane{background:var(--vert-bg);color:var(--vert)}
+.livraison-tag.commande{background:var(--orange-bg);color:#B45309}
+.livraison-tag svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* BOUTON TELECHARGER */
+.btn-download{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:16px 24px;
+  background:var(--brun);color:var(--or);
+  border:none;border-radius:12px;
+  font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;
+  cursor:pointer;text-decoration:none;
+  transition:background .2s,transform .1s;
+  margin-bottom:16px;
+}
+.btn-download:hover{background:var(--brun-moyen);transform:translateY(-1px)}
+.btn-download svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* MESSAGE ATTENTE */
+.attente-box{
+  background:var(--orange-bg);
+  border:1px solid rgba(180,93,9,.15);
+  border-radius:12px;padding:20px 24px;
+  text-align:left;margin-bottom:28px;
+}
+.attente-box p{font-size:.9rem;color:var(--brun-moyen);line-height:1.6}
+.attente-box strong{color:var(--brun)}
+
+/* CONTACT */
+.contact-line{
+  font-size:.85rem;color:var(--gris);
+  margin-top:8px;
+}
+.contact-line a{color:var(--terre);text-decoration:none;font-weight:500}
+.contact-line a:hover{color:var(--brun)}
+
+/* CHARGEMENT */
+.loading-state{padding:40px 0;color:var(--gris);font-size:.95rem}
+.loading-spinner{
+  width:36px;height:36px;
+  border:3px solid var(--creme-3);
+  border-top-color:var(--or);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 16px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ERREUR */
+.error-state{padding:20px 0}
+.error-state p{color:var(--gris);font-size:.95rem;margin-bottom:16px}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:24px;
+  font-size:.8rem;
+  color:var(--gris);
+  border-top:1px solid var(--creme-3);
+}
+
+@media(max-width:600px){
+  .merci-card{padding:32px 20px}
+  .merci-title{font-size:1.6rem}
+  nav{padding:12px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">WooPlans</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="wooplans-catalogue.html" class="nav-logo">WooPlans</a>
+  <a href="wooplans-catalogue.html" class="nav-back">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Retour au catalogue
+  </a>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="merci-card" id="merci-card">
+    <!-- Etat chargement -->
+    <div class="loading-state" id="state-loading">
+      <div class="loading-spinner"></div>
+      <p>Chargement de votre commande...</p>
+    </div>
+
+    <!-- Etat succes avec PDF -->
+    <div id="state-basic" style="display:none">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h1 class="merci-title">Paiement confirme !</h1>
+      <p class="merci-subtitle">Merci pour votre confiance. Votre plan est pret a telecharger.</p>
+
+      <div class="plan-info" id="plan-info-basic">
+        <div class="plan-info-title">Votre plan</div>
+        <div class="plan-info-name" id="plan-name-basic">—</div>
+        <div class="plan-info-specs" id="plan-specs-basic"></div>
+      </div>
+
+      <div class="livraison-tag instantane">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Telechargement instantane
+      </div>
+
+      <a id="download-btn" href="#" class="btn-download" download>
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Telecharger mon plan
+      </a>
+      <div class="contact-line">Un probleme ? Contactez-nous sur <a href="https://wa.me/237694327885">WhatsApp</a></div>
+    </div>
+
+    <!-- Etat succes Plans Complets (sans PDF immediat) -->
+    <div id="state-complete" style="display:none">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h1 class="merci-title">Commande confirmee !</h1>
+      <p class="merci-subtitle">Votre commande Plans Complets a bien ete enregistree.</p>
+
+      <div class="plan-info" id="plan-info-complete">
+        <div class="plan-info-title">Votre plan</div>
+        <div class="plan-info-name" id="plan-name-complete">—</div>
+        <div class="plan-info-specs" id="plan-specs-complete"></div>
+      </div>
+
+      <div class="livraison-tag commande">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Livraison sous 3 a 5 jours
+      </div>
+
+      <div class="attente-box">
+        <p>Vous recevrez <strong>tous vos plans architecturaux complets</strong> par email dans les <strong>3 a 5 jours ouvrables</strong>. Notre equipe va analyser votre projet et vous contacter si necessaire.</p>
+      </div>
+
+      <div class="contact-line">Questions ? Ecrivez-nous sur <a href="https://wa.me/237694327885">WhatsApp +237 694 327 885</a></div>
+    </div>
+
+    <!-- Etat erreur -->
+    <div id="state-error" style="display:none">
+      <div class="error-state">
+        <p>Impossible de charger les details de votre commande.</p>
+        <a href="wooplans-catalogue.html" class="btn-download" style="text-decoration:none">
+          Retourner au catalogue
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 WooPlans — Plans de maison premium pour l'Afrique &nbsp;|&nbsp;
+  <a href="https://wa.me/237694327885" style="color:var(--terre);text-decoration:none">WhatsApp</a>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://xlmwzvkqjnoijdldzrol.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbXd6dmtxam5vaWpkbGR6cm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTAzMjAsImV4cCI6MjA4OTY4NjMyMH0.cQcRRHaaMiht2Tq9CB9l4_XN8-SOjixxhHFJDjytze4';
+const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function showState(id) {
+  ['state-loading','state-basic','state-complete','state-error'].forEach(function(s){
+    document.getElementById(s).style.display = s === id ? 'block' : 'none';
+  });
+}
+
+function buildSpecs(plan) {
+  var html = '';
+  if (plan.area) html += '<span class="plan-spec"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>' + plan.area + '</span>';
+  if (plan.beds) html += '<span class="plan-spec"><svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>' + plan.beds + ' ch.</span>';
+  if (plan.floors) html += '<span class="plan-spec"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>' + plan.floors + ' niv.</span>';
+  if (plan.cost) html += '<span class="plan-spec"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>' + plan.cost + '</span>';
+  return html;
+}
+
+window.addEventListener('load', function() {
+  document.getElementById('loader').classList.add('hidden');
+
+  var planId = getParam('plan_id');
+  var saleId = getParam('sale_id');
+
+  if (!planId) {
+    showState('state-error');
+    return;
+  }
+
+  _supabase.from('plans').select('*').eq('id', planId).single().then(function(result) {
+    var plan = result.data;
+    var error = result.error;
+
+    if (error || !plan) {
+      showState('state-error');
+      return;
+    }
+
+    var hasPdf = !!plan.pdf_basic_url;
+
+    if (hasPdf) {
+      document.getElementById('plan-name-basic').textContent = plan.title || 'Votre plan';
+      document.getElementById('plan-specs-basic').innerHTML = buildSpecs(plan);
+      var btn = document.getElementById('download-btn');
+      btn.href = plan.pdf_basic_url;
+      btn.setAttribute('download', '');
+      showState('state-basic');
+      // Declenchement auto apres 2 secondes
+      setTimeout(function() { btn.click(); }, 2000);
+    } else {
+      document.getElementById('plan-name-complete').textContent = plan.title || 'Votre plan';
+      document.getElementById('plan-specs-complete').innerHTML = buildSpecs(plan);
+      showState('state-complete');
+    }
+  }).catch(function() {
+    showState('state-error');
+  });
+
+  window.addEventListener('scroll', function() {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+  }, {passive: true});
+});
+</script>
+</body>
+</html>
