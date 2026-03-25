@@ -1026,7 +1026,7 @@ async function submitCheckout(e){
   const FALLBACK_URL = 'https://wooplans.mychariow.shop/' + PRODUCT_ID;
 
   // Netlify domain
-  const NETLIFY_DOMAIN = 'wooplanscatalog.netlify.app';
+  const SITE_DOMAIN = 'wooplans-catalog.pages.dev';
 
   try {
     const res = await fetch(SUPABASE_URL + '/functions/v1/chariow-checkout', {
@@ -1048,7 +1048,7 @@ async function submitCheckout(e){
         },
         // redirect_url SANS {sale_id} — les accolades sont invalides en URL (RFC 3986) et causent un 400 chez Chariow
         // On récupère le sale_id depuis json.data.purchase.id après la réponse
-        redirect_url: 'https://' + NETLIFY_DOMAIN + '/merci.html?plan_id=' + encodeURIComponent(String(p.id))
+        redirect_url: 'https://' + SITE_DOMAIN + '/merci.html?plan_id=' + encodeURIComponent(String(p.id))
       })
     });
 
@@ -1061,7 +1061,7 @@ async function submitCheckout(e){
     }
 
     const saleId = json?.data?.purchase?.id || '';
-    const merciUrl = 'https://' + NETLIFY_DOMAIN + '/merci.html?plan_id=' + encodeURIComponent(String(p.id)) + (saleId ? '&sale_id=' + encodeURIComponent(saleId) : '');
+    const merciUrl = 'https://' + SITE_DOMAIN + '/merci.html?plan_id=' + encodeURIComponent(String(p.id)) + (saleId ? '&sale_id=' + encodeURIComponent(saleId) : '');
 
     const checkoutUrl = json?.data?.payment?.checkout_url;
     if (checkoutUrl) {
