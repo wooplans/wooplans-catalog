@@ -166,8 +166,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .preview-item img{width:100%;height:100%;object-fit:cover;border:2px solid var(--creme-2)}
 .preview-item .remove-img{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:var(--rouge);color:var(--blanc);border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;border-radius:50%}
 
+/* ── UPLOAD PROGRESS ── */
+.upload-progress{padding:16px 28px;display:none;border-top:1px solid var(--creme-2)}
+.upload-progress.show{display:block}
+.upload-progress-label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--gris-fonce);margin-bottom:8px}
+.upload-progress-label strong{color:var(--brun);font-weight:600}
+.upload-progress-track{background:var(--creme-2);height:6px;border-radius:3px;overflow:hidden}
+.upload-progress-bar{height:100%;background:var(--or);width:0%;transition:width .15s ease;border-radius:3px}
+.upload-progress-files{font-size:.72rem;color:var(--gris);margin-top:6px}
+
 /* ── SUBMIT ── */
-.modal-foot{padding:0 28px 28px;display:flex;gap:12px;justify-content:flex-end}
+.modal-foot{padding:16px 28px 28px;display:flex;gap:12px;justify-content:flex-end}
 .btn-save{background:var(--or);color:var(--brun);font-weight:700;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;padding:13px 32px;border:none;cursor:pointer}
 .btn-save:hover{background:var(--or-pale)}
 .btn-save:disabled{opacity:.5;cursor:not-allowed}
@@ -393,8 +402,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
         </div>
       </form>
     </div>
+    <div class="upload-progress" id="upload-progress">
+      <div class="upload-progress-label">
+        <strong id="up-label">Upload en cours...</strong>
+        <span id="up-pct">0%</span>
+      </div>
+      <div class="upload-progress-track">
+        <div class="upload-progress-bar" id="up-bar"></div>
+      </div>
+      <div class="upload-progress-files" id="up-files"></div>
+    </div>
     <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-cancel" id="btn-cancel" onclick="closeModal()">Annuler</button>
       <button class="btn-save" id="btn-save" onclick="document.getElementById('plan-form').requestSubmit()">
         <span id="save-txt">Enregistrer</span>
         <div class="spinner" id="save-spin"></div>
@@ -430,15 +449,6 @@ const BUNNY_API_KEY='59ce304f-8b15-4549-a924-1a552a3b5f5f2b1cc6ba-aba2-4fc7-a1c2
 const BUNNY_STORAGE_URL='https://storage.bunnycdn.com/'+BUNNY_STORAGE_ZONE;
 const BUNNY_CDN_URL='https://wooplans.b-cdn.net';
 
-async function uploadToBunny(file,path){
-  const res=await fetch(BUNNY_STORAGE_URL+'/'+path,{
-    method:'PUT',
-    headers:{'AccessKey':BUNNY_API_KEY,'Content-Type':file.type||'application/octet-stream'},
-    body:file
-  });
-  if(!res.ok) throw new Error('Bunny upload failed: '+res.status);
-  return BUNNY_CDN_URL+'/'+path;
-}
 
 const DEFAULTS={villa:{basic:'14 900',complete:'149 000'},duplex:{basic:'24 900',complete:'249 000'}};
 
@@ -722,6 +732,8 @@ function openModal(plan){
 function closeModal(){
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow='';
+  hideProgress();
+  document.getElementById('btn-cancel').disabled=false;
 }
 function editPlan(id){
   const p=plans.find(x=>x.id===id);
@@ -761,38 +773,88 @@ function renderImagePreviews(){
 }
 function removeExistingImg(idx){existingImageUrls.splice(idx,1);renderImagePreviews()}
 
-// ── UPLOAD (Bunny CDN) ──
-async function uploadImages(planId){
+// ── UPLOAD PROGRESS UI ──
+function setProgress(label, files, pct){
+  const el=document.getElementById('upload-progress');
+  el.classList.add('show');
+  document.getElementById('up-label').textContent=label;
+  document.getElementById('up-pct').textContent=Math.round(pct)+'%';
+  document.getElementById('up-bar').style.width=pct+'%';
+  if(files) document.getElementById('up-files').textContent=files;
+}
+function hideProgress(){
+  document.getElementById('upload-progress').classList.remove('show');
+  document.getElementById('up-bar').style.width='0%';
+}
+
+// ── UPLOAD VIA EDGE FUNCTION ──
+function uploadToBunnyXHR(file, path, onProgress){
+  return new Promise((resolve, reject)=>{
+    const xhr=new XMLHttpRequest();
+    xhr.open('PUT', SUPABASE_URL+'/functions/v1/bunny-upload?path='+encodeURIComponent(path));
+    xhr.setRequestHeader('x-content-type', file.type||'application/octet-stream');
+    xhr.upload.onprogress=e=>{
+      if(e.lengthComputable && onProgress) onProgress(e.loaded/e.total);
+    };
+    xhr.onload=()=>{
+      if(xhr.status>=200&&xhr.status<300){
+        try{resolve(JSON.parse(xhr.responseText).url);}
+        catch(e){reject(new Error('Réponse invalide'));}
+      } else {
+        let detail='';
+        try{detail=JSON.parse(xhr.responseText).detail||'';}catch(e){}
+        reject(new Error('Erreur '+xhr.status+(detail?' — '+detail:'')));
+      }
+    };
+    xhr.onerror=()=>reject(new Error('Erreur réseau'));
+    xhr.send(file);
+  });
+}
+
+// ── UPLOAD (Bunny CDN via proxy) ──
+async function uploadImages(planId, stepOffset, totalSteps){
   const urls=[...existingImageUrls];
-  for(let i=0;i<imageFiles.length;i++){
+  const n=imageFiles.length;
+  for(let i=0;i<n;i++){
     const file=imageFiles[i];
     const ext=file.name.split('.').pop().toLowerCase();
     const path=`images/${planId}/img-${Date.now()}-${i}.${ext}`;
+    const fileLabel=`Image ${i+1} / ${n} — ${file.name}`;
+    setProgress('Upload des images...', fileLabel, ((stepOffset+i)/totalSteps)*100);
     try{
-      const url=await uploadToBunny(file,path);
+      const url=await uploadToBunnyXHR(file, path, pct=>{
+        const overall=((stepOffset+i+pct)/totalSteps)*100;
+        setProgress('Upload des images...', fileLabel+' — '+Math.round(pct*100)+'%', overall);
+      });
       urls.push(url);
-    }catch(err){console.error(err);showToast('Erreur upload image '+(i+1));}
+    }catch(err){console.error(err);showToast('Erreur image '+(i+1)+' : '+err.message);}
   }
   return urls;
 }
-async function uploadPdf(planId){
+async function uploadPdf(planId, stepOffset, totalSteps){
   const fi=document.getElementById('f-pdf');
   if(!fi.files.length)return null;
   const file=fi.files[0];
   const path=`pdfs/${planId}/plan-${Date.now()}.pdf`;
+  setProgress('Upload du PDF...', file.name, (stepOffset/totalSteps)*100);
   try{
-    return await uploadToBunny(file,path);
-  }catch(err){console.error(err);showToast('Erreur upload PDF');return null}
+    return await uploadToBunnyXHR(file, path, pct=>{
+      setProgress('Upload du PDF...', file.name+' — '+Math.round(pct*100)+'%', ((stepOffset+pct)/totalSteps)*100);
+    });
+  }catch(err){console.error(err);showToast('Erreur PDF : '+err.message);return null;}
 }
-async function uploadVideo(planId){
+async function uploadVideo(planId, stepOffset, totalSteps){
   const fi=document.getElementById('f-video');
   if(!fi.files.length)return null;
   const file=fi.files[0];
   const ext=file.name.split('.').pop().toLowerCase();
   const path=`videos/${planId}/video-${Date.now()}.${ext}`;
+  setProgress('Upload de la vidéo...', file.name, (stepOffset/totalSteps)*100);
   try{
-    return await uploadToBunny(file,path);
-  }catch(err){console.error(err);showToast('Erreur upload video');return null}
+    return await uploadToBunnyXHR(file, path, pct=>{
+      setProgress('Upload de la vidéo...', file.name+' — '+Math.round(pct*100)+'%', ((stepOffset+pct)/totalSteps)*100);
+    });
+  }catch(err){console.error(err);showToast('Erreur vidéo : '+err.message);return null;}
 }
 
 // ── SAVE ──
@@ -801,15 +863,29 @@ async function savePlan(e){
   const btn=document.getElementById('btn-save');
   const spin=document.getElementById('save-spin');
   const txt=document.getElementById('save-txt');
-  btn.disabled=true;spin.style.display='inline-block';txt.textContent='Enregistrement...';
+  btn.disabled=true;
+  document.getElementById('btn-cancel').disabled=true;
+  spin.style.display='inline-block';txt.textContent='Enregistrement...';
 
   try{
     const id=document.getElementById('f-id').value;
     const isEdit=!!id;
     const planId=isEdit?id:crypto.randomUUID();
-    const imageUrls=await uploadImages(planId);
-    const pdfUrl=await uploadPdf(planId);
-    const videoUrl=await uploadVideo(planId);
+
+    // Calculer le nombre total de steps pour la progression
+    const nImg=imageFiles.length;
+    const hasPdf=!!document.getElementById('f-pdf').files.length;
+    const hasVideo=!!document.getElementById('f-video').files.length;
+    const totalSteps=nImg+(hasPdf?1:0)+(hasVideo?1:0)+1; // +1 pour save Supabase
+    let offset=0;
+
+    const imageUrls=await uploadImages(planId, offset, totalSteps);
+    offset+=nImg;
+    const pdfUrl=await uploadPdf(planId, offset, totalSteps);
+    if(hasPdf) offset+=1;
+    const videoUrl=await uploadVideo(planId, offset, totalSteps);
+    if(hasVideo) offset+=1;
+    setProgress('Enregistrement...', 'Sauvegarde dans la base de données', (offset/totalSteps)*100);
     const toLines=v=>(v||'').split('\n').map(s=>s.trim()).filter(Boolean);
 
     const planData={
@@ -845,13 +921,18 @@ async function savePlan(e){
       if(error)throw error;
       showToast('Plan cree avec succes');
     }
+    setProgress('Terminé !', '', 100);
+    await new Promise(r=>setTimeout(r,500));
     closeModal();
     await fetchPlans();
   }catch(err){
     console.error(err);
     showToast('Erreur : '+(err.message||'inconnue'));
   }finally{
-    btn.disabled=false;spin.style.display='none';txt.textContent='Enregistrer';
+    btn.disabled=false;
+    document.getElementById('btn-cancel').disabled=false;
+    spin.style.display='none';txt.textContent='Enregistrer';
+    hideProgress();
   }
 }
 
