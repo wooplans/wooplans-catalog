@@ -162,9 +162,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .drop-zone p{color:var(--gris);font-size:.85rem;margin-bottom:6px}
 .drop-zone small{color:var(--gris-clair);font-size:.75rem}
 .previews{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.preview-item{position:relative;width:80px;height:80px}
-.preview-item img{width:100%;height:100%;object-fit:cover;border:2px solid var(--creme-2)}
-.preview-item .remove-img{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:var(--rouge);color:var(--blanc);border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.preview-item{position:relative;width:80px;height:80px;cursor:grab;user-select:none}
+.preview-item img{width:100%;height:100%;object-fit:cover;border:2px solid var(--creme-2);display:block;pointer-events:none}
+.preview-item .remove-img{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:var(--rouge);color:var(--blanc);border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:2}
+.preview-item .img-badge{position:absolute;bottom:3px;left:3px;background:rgba(0,0,0,.62);color:#fff;font-size:.6rem;font-weight:700;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 3px;z-index:2;letter-spacing:.03em}
+.preview-item.dragging{opacity:.35;cursor:grabbing}
+.preview-item.drag-over-left{box-shadow:-3px 0 0 0 var(--or);border-radius:0}
+.preview-item.drag-over-right{box-shadow:3px 0 0 0 var(--or);border-radius:0}
+.previews-hint{font-size:.72rem;color:var(--gris-clair);margin-top:6px}
 
 /* ── UPLOAD PROGRESS ── */
 .upload-progress{padding:16px 28px;display:none;border-top:1px solid var(--creme-2)}
@@ -383,6 +388,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
             <input type="file" id="f-images" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
           </div>
           <div class="previews" id="img-previews"></div>
+          <div class="previews-hint" id="img-drag-hint" style="display:none">⠿ Glissez les images pour réordonner — la première sera la miniature principale</div>
         </div>
 
         <div class="form-section">
@@ -487,10 +493,11 @@ async function compressImage(file, maxWidth=1920, quality=0.82){
 }
 
 let plans=[];
-let imageFiles=[];
-let existingImageUrls=[];
+// imageItems = [{src: string (objectURL ou URL existante), file: File|null}]
+let imageItems=[];
 let existingVideoUrl=null;
 let selectedIds=new Set();
+let _dragSrcIdx=null;
 
 // ── AUTH ──
 function tryAuth(){
@@ -713,8 +720,7 @@ document.getElementById('f-type').addEventListener('change',function(){
 
 // ── MODAL ──
 function openModal(plan){
-  imageFiles=[];
-  existingImageUrls=[];
+  imageItems=[];
   existingVideoUrl=null;
   document.getElementById('plan-form').reset();
   document.getElementById('f-id').value='';
@@ -755,7 +761,7 @@ function openModal(plan){
     if(plan.pdf_basic_url){
       document.getElementById('current-pdf').innerHTML='PDF actuel : <a href="'+plan.pdf_basic_url+'" target="_blank" style="color:var(--terre)">Voir le PDF</a>';
     }
-    existingImageUrls=(plan.images||[]).slice();
+    imageItems=(plan.images||[]).map(url=>({src:url,file:null}));
     renderImagePreviews();
   } else {
     document.getElementById('modal-title').textContent='Nouveau plan';
@@ -783,29 +789,88 @@ dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remov
 function handleFiles(fileList){
   for(const f of fileList){
     if(!f.type.startsWith('image/'))continue;
-    if(f.size>5*1024*1024){showToast('Image trop volumineuse (max 5 MB)');continue}
-    imageFiles.push(f);
+    if(f.size>20*1024*1024){showToast('Image trop volumineuse (max 20 MB)');continue}
+    const src=URL.createObjectURL(f);
+    imageItems.push({src,file:f});
   }
   renderImagePreviews();
 }
+
 function renderImagePreviews(){
   const c=document.getElementById('img-previews');
+  // Libérer les objectURLs avant de vider
+  c.querySelectorAll('img[data-blob]').forEach(img=>URL.revokeObjectURL(img.src));
   c.innerHTML='';
-  existingImageUrls.forEach((url,i)=>{
-    const d=document.createElement('div');d.className='preview-item';
-    d.innerHTML=`<img src="${url}"><button class="remove-img" onclick="removeExistingImg(${i})">&times;</button>`;
+
+  if(imageItems.length===0) return;
+
+  // Hint
+  const hint=document.getElementById('img-drag-hint');
+  if(hint) hint.style.display=imageItems.length>1?'block':'none';
+
+  imageItems.forEach((item,i)=>{
+    const d=document.createElement('div');
+    d.className='preview-item';
+    d.draggable=true;
+    d.dataset.idx=i;
+
+    // Badge ordre
+    const badge=document.createElement('span');
+    badge.className='img-badge';
+    badge.textContent=i+1;
+
+    // Image
+    const img=document.createElement('img');
+    img.src=item.src;
+    if(item.file) img.dataset.blob='1';
+
+    // Bouton supprimer
+    const btn=document.createElement('button');
+    btn.className='remove-img';
+    btn.textContent='×';
+    btn.onclick=e=>{
+      e.stopPropagation();
+      if(!item.file && item.src.startsWith('blob:')) URL.revokeObjectURL(item.src);
+      imageItems.splice(i,1);
+      renderImagePreviews();
+    };
+
+    // Drag & Drop
+    d.addEventListener('dragstart',e=>{
+      _dragSrcIdx=i;
+      d.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+    });
+    d.addEventListener('dragend',()=>{
+      d.classList.remove('dragging');
+      c.querySelectorAll('.preview-item').forEach(el=>el.classList.remove('drag-over-left','drag-over-right'));
+      _dragSrcIdx=null;
+    });
+    d.addEventListener('dragover',e=>{
+      e.preventDefault();
+      if(_dragSrcIdx===null||_dragSrcIdx===i) return;
+      e.dataTransfer.dropEffect='move';
+      const rect=d.getBoundingClientRect();
+      const after=e.clientX>rect.left+rect.width/2;
+      d.classList.toggle('drag-over-left',!after);
+      d.classList.toggle('drag-over-right',after);
+    });
+    d.addEventListener('dragleave',()=>d.classList.remove('drag-over-left','drag-over-right'));
+    d.addEventListener('drop',e=>{
+      e.preventDefault();
+      if(_dragSrcIdx===null||_dragSrcIdx===i) return;
+      const rect=d.getBoundingClientRect();
+      const after=e.clientX>rect.left+rect.width/2;
+      const moved=imageItems.splice(_dragSrcIdx,1)[0];
+      const target=_dragSrcIdx<i?(after?i:i-1):(after?i+1:i);
+      imageItems.splice(target,0,moved);
+      renderImagePreviews();
+    });
+
+    d.appendChild(badge);d.appendChild(img);d.appendChild(btn);
     c.appendChild(d);
   });
-  imageFiles.forEach((file,i)=>{
-    const d=document.createElement('div');d.className='preview-item';
-    const img=document.createElement('img');
-    const r=new FileReader();r.onload=e=>{img.src=e.target.result};r.readAsDataURL(file);
-    const btn=document.createElement('button');btn.className='remove-img';btn.textContent='\u00d7';
-    btn.onclick=()=>{imageFiles.splice(i,1);renderImagePreviews()};
-    d.appendChild(img);d.appendChild(btn);c.appendChild(d);
-  });
 }
-function removeExistingImg(idx){existingImageUrls.splice(idx,1);renderImagePreviews()}
 
 // ── UPLOAD PROGRESS UI ──
 function setProgress(label, files, pct){
@@ -847,22 +912,31 @@ function uploadToBunnyXHR(file, path, onProgress){
 
 // ── UPLOAD (Bunny CDN via proxy) ──
 async function uploadImages(planSlug, stepOffset, totalSteps){
-  const urls=[...existingImageUrls];
-  const n=imageFiles.length;
-  for(let i=0;i<n;i++){
-    let file=imageFiles[i];
-    const fileLabel=`Image ${i+1} / ${n} — ${file.name}`;
-    setProgress('Compression + upload des images...', fileLabel, ((stepOffset+i)/totalSteps)*100);
-    // Compression
-    file=await compressImage(file);
-    const path=`${planSlug}/images/img-${Date.now()}-${i}.jpg`;
-    try{
-      const url=await uploadToBunnyXHR(file, path, pct=>{
-        const overall=((stepOffset+i+pct)/totalSteps)*100;
-        setProgress('Upload des images...', fileLabel+' — '+Math.round(pct*100)+'%', overall);
-      });
-      urls.push(url);
-    }catch(err){console.error(err);showToast('Erreur image '+(i+1)+' : '+err.message);}
+  const urls=[];
+  const newItems=imageItems.filter(it=>it.file!==null);
+  const n=newItems.length;
+  // Compter les items à uploader pour la progression
+  let uploadIdx=0;
+  for(let i=0;i<imageItems.length;i++){
+    const item=imageItems[i];
+    if(item.file===null){
+      // Image existante → garder l'URL telle quelle
+      urls.push(item.src);
+    } else {
+      let file=item.file;
+      const fileLabel=`Image ${uploadIdx+1} / ${n} — ${file.name}`;
+      setProgress('Compression + upload des images...', fileLabel, ((stepOffset+uploadIdx)/totalSteps)*100);
+      file=await compressImage(file);
+      const path=`${planSlug}/images/img-${Date.now()}-${uploadIdx}.jpg`;
+      try{
+        const url=await uploadToBunnyXHR(file, path, pct=>{
+          const overall=((stepOffset+uploadIdx+pct)/totalSteps)*100;
+          setProgress('Upload des images...', fileLabel+' — '+Math.round(pct*100)+'%', overall);
+        });
+        urls.push(url);
+      }catch(err){console.error(err);showToast('Erreur image '+(uploadIdx+1)+' : '+err.message);}
+      uploadIdx++;
+    }
   }
   return urls;
 }
@@ -910,10 +984,10 @@ async function savePlan(e){
     const planSlug=slugifyPlan(planTitle);
 
     // Calculer le nombre total de steps pour la progression
-    const nImg=imageFiles.length;
+    const nImg=imageItems.filter(it=>it.file!==null).length;
     const hasPdf=!!document.getElementById('f-pdf').files.length;
     const hasVideo=!!document.getElementById('f-video').files.length;
-    const totalSteps=nImg+(hasPdf?1:0)+(hasVideo?1:0)+1; // +1 pour save Supabase
+    const totalSteps=Math.max(nImg+(hasPdf?1:0)+(hasVideo?1:0)+1, 1);
     let offset=0;
 
     const imageUrls=await uploadImages(planSlug, offset, totalSteps);
