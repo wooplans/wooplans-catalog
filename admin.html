@@ -452,6 +452,40 @@ const BUNNY_CDN_URL='https://wooplans.b-cdn.net';
 
 const DEFAULTS={villa:{basic:'14 900',complete:'149 000'},duplex:{basic:'24 900',complete:'249 000'}};
 
+// ── HELPERS ──
+function slugifyPlan(title){
+  return (title||'plan')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/^-+|-+$/g,'')
+    .slice(0,60)||'plan';
+}
+
+async function compressImage(file, maxWidth=1920, quality=0.82){
+  // Ignore non-images ou fichiers trop petits (<80KB)
+  if(!file.type.startsWith('image/')||file.size<81920) return file;
+  return new Promise(resolve=>{
+    const img=new Image();
+    const url=URL.createObjectURL(file);
+    img.onload=()=>{
+      URL.revokeObjectURL(url);
+      let w=img.width, h=img.height;
+      if(w>maxWidth){h=Math.round(h*maxWidth/w);w=maxWidth;}
+      const c=document.createElement('canvas');
+      c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      c.toBlob(blob=>{
+        const compressed=new File([blob],file.name.replace(/\.[^.]+$/,'.jpg'),{type:'image/jpeg'});
+        // On garde l'original si la compression l'alourdit
+        resolve(compressed.size<file.size?compressed:file);
+      },'image/jpeg',quality);
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);resolve(file);};
+    img.src=url;
+  });
+}
+
 let plans=[];
 let imageFiles=[];
 let existingImageUrls=[];
@@ -812,15 +846,16 @@ function uploadToBunnyXHR(file, path, onProgress){
 }
 
 // ── UPLOAD (Bunny CDN via proxy) ──
-async function uploadImages(planId, stepOffset, totalSteps){
+async function uploadImages(planSlug, stepOffset, totalSteps){
   const urls=[...existingImageUrls];
   const n=imageFiles.length;
   for(let i=0;i<n;i++){
-    const file=imageFiles[i];
-    const ext=file.name.split('.').pop().toLowerCase();
-    const path=`images/${planId}/img-${Date.now()}-${i}.${ext}`;
+    let file=imageFiles[i];
     const fileLabel=`Image ${i+1} / ${n} — ${file.name}`;
-    setProgress('Upload des images...', fileLabel, ((stepOffset+i)/totalSteps)*100);
+    setProgress('Compression + upload des images...', fileLabel, ((stepOffset+i)/totalSteps)*100);
+    // Compression
+    file=await compressImage(file);
+    const path=`${planSlug}/images/img-${Date.now()}-${i}.jpg`;
     try{
       const url=await uploadToBunnyXHR(file, path, pct=>{
         const overall=((stepOffset+i+pct)/totalSteps)*100;
@@ -831,11 +866,11 @@ async function uploadImages(planId, stepOffset, totalSteps){
   }
   return urls;
 }
-async function uploadPdf(planId, stepOffset, totalSteps){
+async function uploadPdf(planSlug, stepOffset, totalSteps){
   const fi=document.getElementById('f-pdf');
   if(!fi.files.length)return null;
   const file=fi.files[0];
-  const path=`pdfs/${planId}/plan-${Date.now()}.pdf`;
+  const path=`${planSlug}/pdfs/plan-${Date.now()}.pdf`;
   setProgress('Upload du PDF...', file.name, (stepOffset/totalSteps)*100);
   try{
     return await uploadToBunnyXHR(file, path, pct=>{
@@ -843,12 +878,12 @@ async function uploadPdf(planId, stepOffset, totalSteps){
     });
   }catch(err){console.error(err);showToast('Erreur PDF : '+err.message);return null;}
 }
-async function uploadVideo(planId, stepOffset, totalSteps){
+async function uploadVideo(planSlug, stepOffset, totalSteps){
   const fi=document.getElementById('f-video');
   if(!fi.files.length)return null;
   const file=fi.files[0];
   const ext=file.name.split('.').pop().toLowerCase();
-  const path=`videos/${planId}/video-${Date.now()}.${ext}`;
+  const path=`${planSlug}/videos/video-${Date.now()}.${ext}`;
   setProgress('Upload de la vidéo...', file.name, (stepOffset/totalSteps)*100);
   try{
     return await uploadToBunnyXHR(file, path, pct=>{
@@ -871,6 +906,8 @@ async function savePlan(e){
     const id=document.getElementById('f-id').value;
     const isEdit=!!id;
     const planId=isEdit?id:crypto.randomUUID();
+    const planTitle=document.getElementById('f-title').value.trim();
+    const planSlug=slugifyPlan(planTitle);
 
     // Calculer le nombre total de steps pour la progression
     const nImg=imageFiles.length;
@@ -879,11 +916,11 @@ async function savePlan(e){
     const totalSteps=nImg+(hasPdf?1:0)+(hasVideo?1:0)+1; // +1 pour save Supabase
     let offset=0;
 
-    const imageUrls=await uploadImages(planId, offset, totalSteps);
+    const imageUrls=await uploadImages(planSlug, offset, totalSteps);
     offset+=nImg;
-    const pdfUrl=await uploadPdf(planId, offset, totalSteps);
+    const pdfUrl=await uploadPdf(planSlug, offset, totalSteps);
     if(hasPdf) offset+=1;
-    const videoUrl=await uploadVideo(planId, offset, totalSteps);
+    const videoUrl=await uploadVideo(planSlug, offset, totalSteps);
     if(hasVideo) offset+=1;
     setProgress('Enregistrement...', 'Sauvegarde dans la base de données', (offset/totalSteps)*100);
     const toLines=v=>(v||'').split('\n').map(s=>s.trim()).filter(Boolean);
