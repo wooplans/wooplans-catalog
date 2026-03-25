@@ -1045,26 +1045,29 @@ async function submitCheckout(e){
           plan_type: p.type,
           option: isBasic ? 'basic' : 'complete'
         },
-        redirect_url: 'https://' + NETLIFY_DOMAIN + '/merci.html?sale_id={sale_id}&plan_id=' + String(p.id)
+        // redirect_url SANS {sale_id} — les accolades sont invalides en URL (RFC 3986) et causent un 400 chez Chariow
+        // On récupère le sale_id depuis json.data.purchase.id après la réponse
+        redirect_url: 'https://' + NETLIFY_DOMAIN + '/merci.html?plan_id=' + encodeURIComponent(String(p.id))
       })
     });
 
     const json = await res.json();
 
     if (!res.ok) {
-      // Afficher l'erreur Chariow dans la console pour diagnostic
       console.error('Chariow API error', res.status, JSON.stringify(json));
-      // Extraire le message d'erreur lisible
       const msg = json?.message || json?.error || ('Erreur ' + res.status);
       throw new Error(msg);
     }
 
-    const checkoutUrl = json && json.data && json.data.payment && json.data.payment.checkout_url;
+    const saleId = json?.data?.purchase?.id || '';
+    const merciUrl = 'https://' + NETLIFY_DOMAIN + '/merci.html?plan_id=' + encodeURIComponent(String(p.id)) + (saleId ? '&sale_id=' + encodeURIComponent(saleId) : '');
+
+    const checkoutUrl = json?.data?.payment?.checkout_url;
     if (checkoutUrl) {
       showToast('Redirection vers le paiement...');
       window.location.href = checkoutUrl;
-    } else if (json && json.data && json.data.step === 'completed') {
-      window.location.href = 'https://' + NETLIFY_DOMAIN + '/merci.html?plan_id=' + String(p.id);
+    } else if (json?.data?.step === 'completed') {
+      window.location.href = merciUrl;
     } else {
       console.error('Réponse inattendue Chariow:', JSON.stringify(json));
       throw new Error('Réponse inattendue du serveur de paiement');
