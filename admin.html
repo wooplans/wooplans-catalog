@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WooPlans Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300..600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root{
+  --brun:#1a1208;--brun-moyen:#3d2b14;--terre:#8B5E3C;--terre-clair:#C4894F;
+  --or:#D4A853;--or-pale:#F0D49A;--creme:#FAF7F2;--creme-2:#F3EDE3;--creme-3:#E8DFD0;
+  --gris-fonce:#4A4540;--gris:#7A736C;--gris-clair:#C5BDB4;--blanc:#FFFFFF;
+  --vert:#2D6A4F;--vert-bg:#EAF4EE;--rouge:#C0392B;--rouge-bg:#FDEDEC;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);min-height:100vh}
+
+/* ── AUTH SCREEN ── */
+#auth-screen{position:fixed;inset:0;z-index:999;background:var(--brun);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px}
+#auth-screen.hidden{display:none}
+.auth-logo{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--or);letter-spacing:.12em}
+.auth-box{background:var(--brun-moyen);padding:32px;width:min(400px,90vw);text-align:center}
+.auth-box label{display:block;color:var(--or-pale);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.auth-box input{width:100%;padding:12px 16px;border:1px solid var(--terre);background:var(--brun);color:var(--blanc);font-size:1rem;text-align:center;letter-spacing:.1em}
+.auth-box input:focus{outline:none;border-color:var(--or)}
+.auth-box button{margin-top:16px;width:100%;padding:13px;background:var(--or);color:var(--brun);font-weight:700;border:none;cursor:pointer;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase}
+.auth-box button:hover{background:var(--or-pale)}
+.auth-err{color:var(--rouge);font-size:.82rem;margin-top:10px;min-height:20px}
+
+/* ── NAV ── */
+.nav{background:var(--brun);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--or);letter-spacing:.1em}
+.nav-logo small{font-family:'DM Sans',sans-serif;font-size:.7rem;color:var(--gris-clair);letter-spacing:.15em;text-transform:uppercase;margin-left:12px}
+.nav-link{color:var(--creme-3);text-decoration:none;font-size:.82rem;letter-spacing:.06em}
+.nav-link:hover{color:var(--or)}
+
+/* ── TOOLBAR ── */
+.toolbar{padding:24px 32px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.btn-add{background:var(--or);color:var(--brun);font-weight:700;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;padding:12px 24px;border:none;cursor:pointer;display:flex;align-items:center;gap:8px}
+.btn-add:hover{background:var(--or-pale)}
+.btn-add svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.5;fill:none}
+.search-wrap{flex:1;max-width:400px;position:relative}
+.search-wrap input{width:100%;padding:11px 16px 11px 40px;border:1px solid var(--creme-3);background:var(--blanc);font-size:.9rem;color:var(--brun)}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--gris);stroke-width:2;fill:none}
+.stats{margin-left:auto;font-size:.82rem;color:var(--gris)}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding:0 32px 40px}
+.card{background:var(--blanc);overflow:hidden;position:relative;transition:box-shadow .2s}
+.card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.card-img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--creme-2)}
+.card-body{padding:16px}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--brun);margin-bottom:4px}
+.card-meta{font-size:.78rem;color:var(--gris);margin-bottom:8px}
+.card-badge{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;margin-bottom:8px}
+.badge-villa{background:var(--vert-bg);color:var(--vert)}
+.badge-duplex{background:var(--rouge-bg);color:var(--terre)}
+.card-price{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--terre)}
+.card-price small{font-size:.7rem;color:var(--gris)}
+.card-actions{display:flex;gap:8px;margin-top:12px;border-top:1px solid var(--creme-2);padding-top:12px}
+.btn-edit,.btn-del{flex:1;padding:8px;font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-edit{background:var(--creme-2);color:var(--brun)}
+.btn-edit:hover{background:var(--creme-3)}
+.btn-del{background:transparent;color:var(--rouge);border:1px solid var(--rouge-bg)}
+.btn-del:hover{background:var(--rouge-bg)}
+.btn-edit svg,.btn-del svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gris);font-size:.95rem}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,8,5,.65);backdrop-filter:blur(4px)}
+.modal{position:relative;z-index:1;background:var(--blanc);width:min(720px,100%);margin:40px auto;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-head{background:var(--brun);padding:20px 28px;display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--or)}
+.modal-close{background:transparent;border:1px solid rgba(255,255,255,.2);width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--blanc)}
+.modal-close:hover{background:rgba(255,255,255,.1)}
+.modal-close svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none}
+.modal-body{padding:28px;max-height:75vh;overflow-y:auto}
+.form-section{margin-bottom:24px}
+.form-section-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--terre);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--creme-2)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-row.col-3{grid-template-columns:1fr 1fr 1fr}
+.form-row.col-1{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gris-fonce)}
+.form-group input,.form-group select,.form-group textarea{padding:10px 14px;border:1px solid var(--creme-3);background:var(--creme);font-size:.9rem;color:var(--brun);font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--or);background:var(--blanc)}
+.form-group textarea{min-height:80px;resize:vertical;line-height:1.6}
+
+/* ── DROP ZONE ── */
+.drop-zone{border:2px dashed var(--creme-3);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:var(--creme)}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--or);background:var(--or-pale);background:rgba(212,168,83,.08)}
+.drop-zone p{color:var(--gris);font-size:.85rem;margin-bottom:6px}
+.drop-zone small{color:var(--gris-clair);font-size:.75rem}
+.previews{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.preview-item{position:relative;width:80px;height:80px}
+.preview-item img{width:100%;height:100%;object-fit:cover;border:2px solid var(--creme-2)}
+.preview-item .remove-img{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:var(--rouge);color:var(--blanc);border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;border-radius:50%}
+
+/* ── SUBMIT ── */
+.modal-foot{padding:0 28px 28px;display:flex;gap:12px;justify-content:flex-end}
+.btn-save{background:var(--or);color:var(--brun);font-weight:700;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;padding:13px 32px;border:none;cursor:pointer}
+.btn-save:hover{background:var(--or-pale)}
+.btn-save:disabled{opacity:.5;cursor:not-allowed}
+.btn-cancel{background:var(--creme-2);color:var(--gris-fonce);font-weight:600;font-size:.85rem;padding:13px 24px;border:none;cursor:pointer}
+.btn-cancel:hover{background:var(--creme-3)}
+
+/* ── CONFIRM MODAL ── */
+.confirm-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.confirm-overlay.open{display:flex}
+.confirm-box{position:relative;z-index:1;background:var(--blanc);padding:32px;width:min(420px,90vw);text-align:center}
+.confirm-box h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--brun);margin-bottom:12px}
+.confirm-box p{font-size:.9rem;color:var(--gris);margin-bottom:24px}
+.confirm-btns{display:flex;gap:12px;justify-content:center}
+.btn-confirm-del{background:var(--rouge);color:var(--blanc);font-weight:700;font-size:.82rem;padding:11px 28px;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:.05em}
+.btn-confirm-cancel{background:var(--creme-2);color:var(--gris-fonce);font-weight:600;font-size:.82rem;padding:11px 28px;border:none;cursor:pointer}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--brun);color:var(--or);padding:14px 28px;font-size:.85rem;z-index:400;transition:transform .3s ease;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── SPINNER ── */
+.spinner{width:18px;height:18px;border:2px solid var(--creme-3);border-top-color:var(--or);border-radius:50%;animation:spin .6s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:600px){
+  .toolbar{padding:16px}
+  .grid{padding:0 16px 24px;grid-template-columns:1fr}
+  .form-row,.form-row.col-3{grid-template-columns:1fr}
+  .modal-body{padding:20px}
+  .nav{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-logo">WooPlans</div>
+  <div class="auth-box">
+    <label>Mot de passe admin</label>
+    <input type="password" id="auth-pw" placeholder="Entrez le mot de passe" autofocus>
+    <button onclick="tryAuth()">Connexion</button>
+    <div class="auth-err" id="auth-err"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div>
+    <span class="nav-logo">WooPlans <small>Admin Dashboard</small></span>
+  </div>
+  <a href="index.html" class="nav-link" target="_blank">Voir le catalogue &rarr;</a>
+</nav>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="btn-add" onclick="openModal()">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Nouveau plan
+  </button>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search" placeholder="Rechercher un plan..." oninput="onSearch(this.value)">
+  </div>
+  <div class="stats" id="stats"></div>
+</div>
+
+<!-- GRID -->
+<div class="grid" id="grid"></div>
+
+<!-- FORM MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title" id="modal-title">Nouveau plan</span>
+      <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <form id="plan-form" onsubmit="savePlan(event)">
+        <input type="hidden" id="f-id">
+
+        <!-- Infos de base -->
+        <div class="form-section">
+          <div class="form-section-title">Informations generales</div>
+          <div class="form-row">
+            <div class="form-group"><label>Titre *</label><input type="text" id="f-title" required placeholder="Villa V3-020"></div>
+            <div class="form-group"><label>Type *</label>
+              <select id="f-type" required><option value="villa">Villa</option><option value="duplex">Duplex</option></select>
+            </div>
+          </div>
+          <div class="form-row col-1">
+            <div class="form-group"><label>Sous-titre</label><input type="text" id="f-subtitle" placeholder="Villa plain-pied - 114 m2 - 3 chambres"></div>
+          </div>
+          <div class="form-row col-3">
+            <div class="form-group"><label>Surface</label><input type="text" id="f-area" placeholder="114 m2"></div>
+            <div class="form-group"><label>Chambres</label><input type="number" id="f-beds" min="0"></div>
+            <div class="form-group"><label>Salles de bain</label><input type="number" id="f-baths" min="0"></div>
+          </div>
+          <div class="form-row col-3">
+            <div class="form-group"><label>Niveaux</label><input type="number" id="f-floors" min="1" value="1"></div>
+            <div class="form-group"><label>Cout construction</label><input type="text" id="f-cost" placeholder="22 911 990 FCFA"></div>
+            <div class="form-group"><label>Note (0-5)</label><input type="number" id="f-rating" min="0" max="5" step="0.1" value="4.8"></div>
+          </div>
+        </div>
+
+        <!-- Prix -->
+        <div class="form-section">
+          <div class="form-section-title">Tarification</div>
+          <div class="form-row">
+            <div class="form-group"><label>Prix Basique (FCFA) *</label><input type="text" id="f-priceBasic" required placeholder="25 000"></div>
+            <div class="form-group"><label>Prix Complet (FCFA) *</label><input type="text" id="f-priceComplete" required placeholder="75 000"></div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-section">
+          <div class="form-section-title">Description et caracteristiques</div>
+          <div class="form-row col-1">
+            <div class="form-group"><label>Description</label><textarea id="f-desc" placeholder="Description du plan..."></textarea></div>
+          </div>
+          <div class="form-row col-1">
+            <div class="form-group"><label>Caracteristiques (1 par ligne)</label><textarea id="f-features" placeholder="Salon/Sejour 18,67 m2&#10;Cuisine 8,73 m2&#10;3 chambres"></textarea></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Extras Basique (1 par ligne)</label><textarea id="f-extrasBasic" placeholder="Plan de masse&#10;Devis estimatif"></textarea></div>
+            <div class="form-group"><label>Extras Complet (1 par ligne)</label><textarea id="f-extrasComplete" placeholder="Plans d'execution&#10;Details techniques"></textarea></div>
+          </div>
+        </div>
+
+        <!-- Images -->
+        <div class="form-section">
+          <div class="form-section-title">Images</div>
+          <div class="drop-zone" id="drop-zone" onclick="document.getElementById('f-images').click()">
+            <p>Glissez vos images ici ou cliquez pour parcourir</p>
+            <small>JPG, PNG, WEBP — max 5 MB par image</small>
+            <input type="file" id="f-images" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+          </div>
+          <div class="previews" id="img-previews"></div>
+        </div>
+
+        <!-- PDF + Video -->
+        <div class="form-section">
+          <div class="form-section-title">Fichiers et media</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>PDF du plan (optionnel)</label>
+              <input type="file" id="f-pdf" accept=".pdf" style="padding:8px">
+            </div>
+            <div class="form-group">
+              <label>URL video Bunny CDN (optionnel)</label>
+              <input type="text" id="f-video" placeholder="https://wooplans.b-cdn.net/v3-020.mp4">
+            </div>
+          </div>
+          <div id="current-pdf" style="font-size:.8rem;color:var(--gris);margin-top:4px"></div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-save" id="btn-save" onclick="document.getElementById('plan-form').requestSubmit()">
+        <span id="save-txt">Enregistrer</span>
+        <div class="spinner" id="save-spin"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="modal-backdrop" onclick="closeConfirm()"></div>
+  <div class="confirm-box">
+    <h3>Supprimer ce plan ?</h3>
+    <p id="confirm-msg">Cette action est irreversible.</p>
+    <div class="confirm-btns">
+      <button class="btn-confirm-cancel" onclick="closeConfirm()">Annuler</button>
+      <button class="btn-confirm-del" id="btn-confirm-del">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ──
+const SUPABASE_URL='https://xlmwzvkqjnoijdldzrol.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbXd6dmtxam5vaWpkbGR6cm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTAzMjAsImV4cCI6MjA4OTY4NjMyMH0.cQcRRHaaMiht2Tq9CB9l4_XN8-SOjixxhHFJDjytze4';
+const ADMIN_PW='wooplans2024';
+const _supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+let plans=[];
+let imageFiles=[]; // fichiers a uploader
+let existingImageUrls=[]; // URLs d'images existantes (edition)
+
+// ── AUTH ──
+function tryAuth(){
+  const pw=document.getElementById('auth-pw').value;
+  if(pw===ADMIN_PW){
+    document.getElementById('auth-screen').classList.add('hidden');
+    fetchPlans();
+  } else {
+    document.getElementById('auth-err').textContent='Mot de passe incorrect';
+  }
+}
+document.getElementById('auth-pw').addEventListener('keydown',e=>{if(e.key==='Enter')tryAuth()});
+
+// ── FETCH ──
+async function fetchPlans(){
+  const{data,error}=await _supabase.from('plans').select('*').order('created_at',{ascending:false});
+  if(error){console.error(error);showToast('Erreur chargement');return}
+  plans=data||[];
+  renderGrid(plans);
+  document.getElementById('stats').textContent=plans.length+' plan'+(plans.length>1?'s':'');
+}
+
+// ── RENDER ──
+function renderGrid(list){
+  const g=document.getElementById('grid');
+  if(!list.length){g.innerHTML='<div class="empty">Aucun plan. Cliquez "+ Nouveau plan" pour commencer.</div>';return}
+  g.innerHTML=list.map(p=>{
+    const img=(p.images&&p.images.length)?p.images[0]:'';
+    const badge=p.type==='villa'?'badge-villa':'badge-duplex';
+    const date=p.created_at?new Date(p.created_at).toLocaleDateString('fr-FR'):'';
+    return `<div class="card">
+      ${img?`<img class="card-img" src="${img}" alt="${p.title}" loading="lazy">`:`<div class="card-img" style="background:var(--creme-2);display:flex;align-items:center;justify-content:center;color:var(--gris-clair);font-size:.8rem">Pas d'image</div>`}
+      <div class="card-body">
+        <span class="card-badge ${badge}">${p.type}</span>
+        <h3 class="card-title">${p.title}</h3>
+        <div class="card-meta">${p.area||''} &middot; ${p.beds||0} ch. &middot; ${p.baths||0} sdb &middot; ${date}</div>
+        <div class="card-price">${p.priceBasic||'—'} <small>FCFA</small></div>
+        <div class="card-actions">
+          <button class="btn-edit" onclick="editPlan('${p.id}')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Modifier</button>
+          <button class="btn-del" onclick="confirmDelete('${p.id}','${p.title.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Supprimer</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── SEARCH ──
+function onSearch(q){
+  const s=q.toLowerCase().trim();
+  if(!s){renderGrid(plans);return}
+  renderGrid(plans.filter(p=>(p.title+' '+p.subtitle+' '+p.type).toLowerCase().includes(s)));
+}
+
+// ── MODAL ──
+function openModal(plan){
+  imageFiles=[];
+  existingImageUrls=[];
+  document.getElementById('plan-form').reset();
+  document.getElementById('f-id').value='';
+  document.getElementById('f-rating').value='4.8';
+  document.getElementById('f-floors').value='1';
+  document.getElementById('img-previews').innerHTML='';
+  document.getElementById('current-pdf').textContent='';
+
+  if(plan){
+    document.getElementById('modal-title').textContent='Modifier : '+plan.title;
+    document.getElementById('f-id').value=plan.id;
+    document.getElementById('f-title').value=plan.title||'';
+    document.getElementById('f-type').value=plan.type||'villa';
+    document.getElementById('f-subtitle').value=plan.subtitle||'';
+    document.getElementById('f-area').value=plan.area||'';
+    document.getElementById('f-beds').value=plan.beds||'';
+    document.getElementById('f-baths').value=plan.baths||'';
+    document.getElementById('f-floors').value=plan.floors||1;
+    document.getElementById('f-cost').value=plan.cost||'';
+    document.getElementById('f-rating').value=plan.rating||4.8;
+    document.getElementById('f-priceBasic').value=plan.priceBasic||'';
+    document.getElementById('f-priceComplete').value=plan.priceComplete||'';
+    document.getElementById('f-desc').value=plan.desc||'';
+    document.getElementById('f-features').value=(plan.features||[]).join('\n');
+    document.getElementById('f-extrasBasic').value=(plan.extrasBasic||[]).join('\n');
+    document.getElementById('f-extrasComplete').value=(plan.extrasComplete||[]).join('\n');
+    document.getElementById('f-video').value=plan.video_url||'';
+    if(plan.pdf_basic_url){
+      document.getElementById('current-pdf').innerHTML='PDF actuel : <a href="'+plan.pdf_basic_url+'" target="_blank">Voir le PDF</a>';
+    }
+    // Afficher les images existantes
+    existingImageUrls=(plan.images||[]).slice();
+    renderImagePreviews();
+  } else {
+    document.getElementById('modal-title').textContent='Nouveau plan';
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function editPlan(id){
+  const p=plans.find(x=>x.id===id);
+  if(p)openModal(p);
+}
+
+// ── IMAGES DRAG & DROP ──
+const dropZone=document.getElementById('drop-zone');
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('dragover')});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('dragover');handleFiles(e.dataTransfer.files)});
+
+function handleFiles(fileList){
+  for(const f of fileList){
+    if(!f.type.startsWith('image/'))continue;
+    if(f.size>5*1024*1024){showToast('Image trop volumineuse (max 5 MB)');continue}
+    imageFiles.push(f);
+  }
+  renderImagePreviews();
+}
+
+function renderImagePreviews(){
+  const container=document.getElementById('img-previews');
+  container.innerHTML='';
+  // Existing URLs
+  existingImageUrls.forEach((url,i)=>{
+    const div=document.createElement('div');
+    div.className='preview-item';
+    div.innerHTML=`<img src="${url}"><button class="remove-img" onclick="removeExistingImg(${i})">&times;</button>`;
+    container.appendChild(div);
+  });
+  // New files
+  imageFiles.forEach((file,i)=>{
+    const div=document.createElement('div');
+    div.className='preview-item';
+    const img=document.createElement('img');
+    const reader=new FileReader();
+    reader.onload=e=>{img.src=e.target.result};
+    reader.readAsDataURL(file);
+    const btn=document.createElement('button');
+    btn.className='remove-img';
+    btn.textContent='\u00d7';
+    btn.onclick=()=>{imageFiles.splice(i,1);renderImagePreviews()};
+    div.appendChild(img);
+    div.appendChild(btn);
+    container.appendChild(div);
+  });
+}
+
+function removeExistingImg(idx){
+  existingImageUrls.splice(idx,1);
+  renderImagePreviews();
+}
+
+// ── UPLOAD IMAGES TO SUPABASE STORAGE ──
+async function uploadImages(planId){
+  const urls=[...existingImageUrls];
+  for(let i=0;i<imageFiles.length;i++){
+    const file=imageFiles[i];
+    const ext=file.name.split('.').pop().toLowerCase();
+    const path=`${planId}/img-${Date.now()}-${i}.${ext}`;
+    const{error}=await _supabase.storage.from('plan-images').upload(path,file,{upsert:true,contentType:file.type});
+    if(error){console.error('Upload error:',error);showToast('Erreur upload image');continue}
+    const{data}=_supabase.storage.from('plan-images').getPublicUrl(path);
+    urls.push(data.publicUrl);
+  }
+  return urls;
+}
+
+// ── UPLOAD PDF TO SUPABASE STORAGE ──
+async function uploadPdf(planId){
+  const fileInput=document.getElementById('f-pdf');
+  if(!fileInput.files.length)return null;
+  const file=fileInput.files[0];
+  const path=`${planId}/plan-${Date.now()}.pdf`;
+  const{error}=await _supabase.storage.from('plan-pdfs').upload(path,file,{upsert:true,contentType:'application/pdf'});
+  if(error){console.error('PDF upload error:',error);showToast('Erreur upload PDF');return null}
+  const{data}=_supabase.storage.from('plan-pdfs').getPublicUrl(path);
+  return data.publicUrl;
+}
+
+// ── SAVE PLAN ──
+async function savePlan(e){
+  e.preventDefault();
+  const btn=document.getElementById('btn-save');
+  const spin=document.getElementById('save-spin');
+  const txt=document.getElementById('save-txt');
+  btn.disabled=true;
+  spin.style.display='inline-block';
+  txt.textContent='Enregistrement...';
+
+  try{
+    const id=document.getElementById('f-id').value;
+    const isEdit=!!id;
+
+    // Generer un ID pour les uploads si creation
+    const planId=isEdit?id:crypto.randomUUID();
+
+    // Upload images
+    const imageUrls=await uploadImages(planId);
+
+    // Upload PDF
+    const pdfUrl=await uploadPdf(planId);
+
+    // Construire l'objet plan
+    const toLines=v=>(v||'').split('\n').map(s=>s.trim()).filter(Boolean);
+    const planData={
+      type:document.getElementById('f-type').value,
+      title:document.getElementById('f-title').value.trim(),
+      subtitle:document.getElementById('f-subtitle').value.trim(),
+      area:document.getElementById('f-area').value.trim(),
+      beds:parseInt(document.getElementById('f-beds').value)||0,
+      baths:parseInt(document.getElementById('f-baths').value)||0,
+      floors:parseInt(document.getElementById('f-floors').value)||1,
+      cost:document.getElementById('f-cost').value.trim(),
+      priceBasic:document.getElementById('f-priceBasic').value.trim(),
+      priceComplete:document.getElementById('f-priceComplete').value.trim(),
+      rating:parseFloat(document.getElementById('f-rating').value)||4.8,
+      desc:document.getElementById('f-desc').value.trim(),
+      features:toLines(document.getElementById('f-features').value),
+      extrasBasic:toLines(document.getElementById('f-extrasBasic').value),
+      extrasComplete:toLines(document.getElementById('f-extrasComplete').value),
+      images:imageUrls,
+      video_url:document.getElementById('f-video').value.trim()||null,
+    };
+
+    // PDF : garder l'ancien si pas de nouveau
+    if(pdfUrl){
+      planData.pdf_basic_url=pdfUrl;
+    }
+
+    if(isEdit){
+      const{error}=await _supabase.from('plans').update(planData).eq('id',id);
+      if(error)throw error;
+      showToast('Plan mis a jour');
+    } else {
+      planData.id=planId;
+      const{error}=await _supabase.from('plans').insert(planData);
+      if(error)throw error;
+      showToast('Plan cree avec succes');
+    }
+
+    closeModal();
+    await fetchPlans();
+  }catch(err){
+    console.error(err);
+    showToast('Erreur : '+(err.message||'inconnue'));
+  }finally{
+    btn.disabled=false;
+    spin.style.display='none';
+    txt.textContent='Enregistrer';
+  }
+}
+
+// ── DELETE ──
+let deleteId=null;
+function confirmDelete(id,title){
+  deleteId=id;
+  document.getElementById('confirm-msg').textContent='Supprimer "'+title+'" ? Cette action est irreversible.';
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+function closeConfirm(){
+  document.getElementById('confirm-overlay').classList.remove('open');
+  deleteId=null;
+}
+document.getElementById('btn-confirm-del').addEventListener('click',async()=>{
+  if(!deleteId)return;
+  const btn=document.getElementById('btn-confirm-del');
+  btn.textContent='Suppression...';
+  btn.disabled=true;
+  try{
+    // Supprimer les fichiers storage
+    const{data:imgFiles}=await _supabase.storage.from('plan-images').list(deleteId);
+    if(imgFiles&&imgFiles.length){
+      await _supabase.storage.from('plan-images').remove(imgFiles.map(f=>deleteId+'/'+f.name));
+    }
+    const{data:pdfFiles}=await _supabase.storage.from('plan-pdfs').list(deleteId);
+    if(pdfFiles&&pdfFiles.length){
+      await _supabase.storage.from('plan-pdfs').remove(pdfFiles.map(f=>deleteId+'/'+f.name));
+    }
+    // Supprimer le plan
+    const{error}=await _supabase.from('plans').delete().eq('id',deleteId);
+    if(error)throw error;
+    showToast('Plan supprime');
+    closeConfirm();
+    await fetchPlans();
+  }catch(err){
+    console.error(err);
+    showToast('Erreur suppression');
+  }finally{
+    btn.textContent='Supprimer';
+    btn.disabled=false;
+  }
+});
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>

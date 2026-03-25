@@ -662,6 +662,11 @@ async function fetchPlans() {
   if (error) { console.error('Supabase error:', error); return; }
   plans = data || [];
   renderGrid(plans);
+  const hash = location.hash.slice(1);
+  if(hash){
+    const match = plans.find(p=>slugify(p.title)===hash);
+    if(match) openDetail(match.id);
+  }
 }
 
 // ── STATE ────────────────────────────────────────────────────
@@ -678,7 +683,28 @@ window.addEventListener('load',()=>{
   window.addEventListener('scroll',()=>{
     document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20);
   },{passive:true});
+  window.addEventListener('popstate',()=>{
+    const overlay=document.getElementById('detail-overlay');
+    if(!location.hash && overlay.classList.contains('open')){
+      overlay.classList.remove('open');
+      document.body.style.overflow='';
+      var sb=document.getElementById('sticky-bar');
+      if(sb) sb.style.display='none';
+    } else if(location.hash){
+      const hash=location.hash.slice(1);
+      const match=plans.find(p=>slugify(p.title)===hash);
+      if(match) openDetail(match.id);
+    }
+  });
 });
+
+// ── SLUG (URL routing) ────────────────────────────────────────
+function slugify(str){
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/^-|-$/g,'');
+}
 
 // ── NAVIGATION ───────────────────────────────────────────────
 function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'})}
@@ -753,7 +779,7 @@ function openDetail(id){
   pill.textContent=currentPlan.type.charAt(0).toUpperCase()+currentPlan.type.slice(1);
   pill.className='det-type-pill '+(currentPlan.type==='villa'?'badge-villa':'badge-duplex');
 
-  document.getElementById('det-features').innerHTML=currentPlan.features.map(f=>`
+  document.getElementById('det-features').innerHTML=(currentPlan.features||[]).map(f=>`
     <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${f}</li>
   `).join('');
 
@@ -784,6 +810,7 @@ function openDetail(id){
   renderGallery();
   document.getElementById('detail-overlay').classList.add('open');
   document.body.style.overflow='hidden';
+  history.pushState({planId:id},'','#'+slugify(currentPlan.title));
   // Afficher sticky bar mobile
   var sb=document.getElementById('sticky-bar');
   if(sb) sb.style.display='flex';
@@ -798,15 +825,16 @@ function openDetail(id){
 function closeDetail(){
   document.getElementById('detail-overlay').classList.remove('open');
   document.body.style.overflow='';
-  // Masquer sticky bar mobile
   var sb=document.getElementById('sticky-bar');
   if(sb) sb.style.display='none';
+  history.pushState({},'',location.pathname+location.search);
 }
 
 // ── GALERIE ──────────────────────────────────────────────────
 function renderGallery(){
+  const imgs=currentPlan.images||[];
   setImg(0);
-  document.getElementById('gal-thumbs').innerHTML=currentPlan.images.map((s,i)=>`
+  document.getElementById('gal-thumbs').innerHTML=imgs.map((s,i)=>`
     <div class="gal-thumb ${i===0?'active':''}" onclick="setImg(${i})">
       <img src="${s}" alt="" loading="lazy">
     </div>
@@ -814,7 +842,7 @@ function renderGallery(){
 }
 
 function setImg(i){
-  const imgs=currentPlan.images;
+  const imgs=currentPlan.images||[];
   imgIdx=(i+imgs.length)%imgs.length;
   const el=document.getElementById('gal-img');
   el.style.opacity='0';
