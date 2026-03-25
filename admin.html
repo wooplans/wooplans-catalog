@@ -13,11 +13,12 @@
   --or:#D4A853;--or-pale:#F0D49A;--creme:#FAF7F2;--creme-2:#F3EDE3;--creme-3:#E8DFD0;
   --gris-fonce:#4A4540;--gris:#7A736C;--gris-clair:#C5BDB4;--blanc:#FFFFFF;
   --vert:#2D6A4F;--vert-bg:#EAF4EE;--rouge:#C0392B;--rouge-bg:#FDEDEC;
+  --orange:#E67E22;--orange-bg:#FEF6E8;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);min-height:100vh}
 
-/* ── AUTH SCREEN ── */
+/* ── AUTH ── */
 #auth-screen{position:fixed;inset:0;z-index:999;background:var(--brun);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px}
 #auth-screen.hidden{display:none}
 .auth-logo{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--or);letter-spacing:.12em}
@@ -36,6 +37,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .nav-link{color:var(--creme-3);text-decoration:none;font-size:.82rem;letter-spacing:.06em}
 .nav-link:hover{color:var(--or)}
 
+/* ── ANALYTICS ── */
+.analytics{padding:24px 32px;display:none}
+.analytics.show{display:block}
+.analytics-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--terre);margin-bottom:16px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--blanc);padding:16px;text-align:center}
+.kpi-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:var(--brun)}
+.kpi-label{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-top:4px}
+.kpi-sub{font-size:.7rem;color:var(--gris-clair);margin-top:2px}
+.kpi.alert .kpi-val{color:var(--orange)}
+.price-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.price-box{background:var(--blanc);padding:16px}
+.price-box-title{font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gris-fonce);margin-bottom:10px}
+.price-line{display:flex;justify-content:space-between;font-size:.85rem;padding:4px 0;color:var(--brun)}
+.price-line span:last-child{font-weight:600;color:var(--terre)}
+
 /* ── TOOLBAR ── */
 .toolbar{padding:24px 32px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .btn-add{background:var(--or);color:var(--brun);font-weight:700;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;padding:12px 24px;border:none;cursor:pointer;display:flex;align-items:center;gap:8px}
@@ -46,27 +63,54 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--gris);stroke-width:2;fill:none}
 .stats{margin-left:auto;font-size:.82rem;color:var(--gris)}
 
+/* ── FILTERS ── */
+.filters{padding:0 32px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.filters select,.filters input[type=number]{padding:9px 14px;border:1px solid var(--creme-3);background:var(--blanc);font-size:.82rem;color:var(--brun);font-family:inherit;min-width:130px}
+.filters select:focus,.filters input:focus{outline:none;border-color:var(--or)}
+.btn-reset{background:var(--creme-2);color:var(--gris-fonce);font-size:.78rem;font-weight:600;padding:9px 16px;border:none;cursor:pointer;letter-spacing:.04em}
+.btn-reset:hover{background:var(--creme-3)}
+
 /* ── GRID ── */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding:0 32px 40px}
 .card{background:var(--blanc);overflow:hidden;position:relative;transition:box-shadow .2s}
 .card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.card.selected{outline:3px solid var(--or);outline-offset:-3px}
+.card-select{position:absolute;top:10px;left:10px;z-index:2;width:22px;height:22px;accent-color:var(--or);cursor:pointer}
 .card-img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--creme-2)}
 .card-body{padding:16px}
 .card-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--brun);margin-bottom:4px}
 .card-meta{font-size:.78rem;color:var(--gris);margin-bottom:8px}
-.card-badge{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;margin-bottom:8px}
+.card-badges{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.card-badge{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px}
 .badge-villa{background:var(--vert-bg);color:var(--vert)}
 .badge-duplex{background:var(--rouge-bg);color:var(--terre)}
+.badge-online{background:var(--vert-bg);color:var(--vert)}
+.badge-offline{background:var(--rouge-bg);color:var(--rouge)}
 .card-price{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--terre)}
 .card-price small{font-size:.7rem;color:var(--gris)}
 .card-actions{display:flex;gap:8px;margin-top:12px;border-top:1px solid var(--creme-2);padding-top:12px}
-.btn-edit,.btn-del{flex:1;padding:8px;font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-edit,.btn-del,.btn-toggle{flex:1;padding:8px;font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
 .btn-edit{background:var(--creme-2);color:var(--brun)}
 .btn-edit:hover{background:var(--creme-3)}
 .btn-del{background:transparent;color:var(--rouge);border:1px solid var(--rouge-bg)}
 .btn-del:hover{background:var(--rouge-bg)}
-.btn-edit svg,.btn-del svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+.btn-toggle{background:transparent;color:var(--gris);border:1px solid var(--creme-3)}
+.btn-toggle:hover{background:var(--creme-2)}
+.btn-edit svg,.btn-del svg,.btn-toggle svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none}
 .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gris);font-size:.95rem}
+
+/* ── BULK BAR ── */
+.bulk-bar{position:fixed;bottom:0;left:0;right:0;background:var(--brun);padding:16px 32px;display:none;align-items:center;gap:16px;z-index:150;flex-wrap:wrap}
+.bulk-bar.show{display:flex}
+.bulk-count{color:var(--or);font-size:.85rem;font-weight:600;white-space:nowrap}
+.bulk-sep{width:1px;height:28px;background:var(--brun-moyen)}
+.bulk-group{display:flex;align-items:center;gap:8px}
+.bulk-group label{color:var(--gris-clair);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.bulk-group select,.bulk-group input{padding:8px 12px;border:1px solid var(--terre);background:var(--brun-moyen);color:var(--blanc);font-size:.85rem;font-family:inherit}
+.bulk-group input{width:100px;text-align:center}
+.btn-bulk-apply{background:var(--or);color:var(--brun);font-weight:700;font-size:.8rem;padding:10px 20px;border:none;cursor:pointer;letter-spacing:.04em;text-transform:uppercase}
+.btn-bulk-apply:hover{background:var(--or-pale)}
+.btn-bulk-cancel{background:transparent;color:var(--gris-clair);font-size:.8rem;padding:10px 16px;border:1px solid var(--gris);cursor:pointer}
 
 /* ── MODAL ── */
 .modal-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
@@ -91,9 +135,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--or);background:var(--blanc)}
 .form-group textarea{min-height:80px;resize:vertical;line-height:1.6}
 
+/* ── STEPPER ── */
+.stepper{display:flex;align-items:stretch}
+.stepper input{flex:1;text-align:center;border-left:none;border-right:none;font-weight:600;font-size:.95rem}
+.step-btn{width:42px;background:var(--creme-2);border:1px solid var(--creme-3);cursor:pointer;font-size:1.1rem;font-weight:700;color:var(--brun);display:flex;align-items:center;justify-content:center;transition:background .15s}
+.step-btn:hover{background:var(--or-pale)}
+.step-btn:first-child{border-right:none}
+.step-btn:last-child{border-left:none}
+
+/* ── TOGGLE ── */
+.toggle-wrap{position:relative}
+.toggle-wrap input{display:none}
+.toggle-label{display:flex;width:140px;height:36px;background:var(--rouge-bg);border:1px solid var(--creme-3);cursor:pointer;position:relative;overflow:hidden;transition:background .2s}
+.toggle-label::after{content:'';position:absolute;width:50%;height:100%;background:var(--rouge);top:0;left:0;transition:left .2s;z-index:1}
+.toggle-wrap input:checked+.toggle-label{background:var(--vert-bg)}
+.toggle-wrap input:checked+.toggle-label::after{left:50%;background:var(--vert)}
+.toggle-on,.toggle-off{flex:1;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;position:relative;z-index:2;transition:color .2s}
+.toggle-off{color:var(--blanc)}
+.toggle-on{color:var(--gris)}
+.toggle-wrap input:checked+.toggle-label .toggle-on{color:var(--blanc)}
+.toggle-wrap input:checked+.toggle-label .toggle-off{color:var(--gris)}
+
 /* ── DROP ZONE ── */
 .drop-zone{border:2px dashed var(--creme-3);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:var(--creme)}
-.drop-zone:hover,.drop-zone.dragover{border-color:var(--or);background:var(--or-pale);background:rgba(212,168,83,.08)}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--or);background:rgba(212,168,83,.08)}
 .drop-zone p{color:var(--gris);font-size:.85rem;margin-bottom:6px}
 .drop-zone small{color:var(--gris-clair);font-size:.75rem}
 .previews{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
@@ -109,7 +174,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .btn-cancel{background:var(--creme-2);color:var(--gris-fonce);font-weight:600;font-size:.85rem;padding:13px 24px;border:none;cursor:pointer}
 .btn-cancel:hover{background:var(--creme-3)}
 
-/* ── CONFIRM MODAL ── */
+/* ── CONFIRM ── */
 .confirm-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
 .confirm-overlay.open{display:flex}
 .confirm-box{position:relative;z-index:1;background:var(--blanc);padding:32px;width:min(420px,90vw);text-align:center}
@@ -122,17 +187,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--brun);color:var(--or);padding:14px 28px;font-size:.85rem;z-index:400;transition:transform .3s ease;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
-
-/* ── SPINNER ── */
 .spinner{width:18px;height:18px;border:2px solid var(--creme-3);border-top-color:var(--or);border-radius:50%;animation:spin .6s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 @media(max-width:600px){
-  .toolbar{padding:16px}
+  .toolbar,.filters,.analytics{padding-left:16px;padding-right:16px}
   .grid{padding:0 16px 24px;grid-template-columns:1fr}
   .form-row,.form-row.col-3{grid-template-columns:1fr}
   .modal-body{padding:20px}
   .nav{padding:12px 16px}
+  .kpi-row{grid-template-columns:repeat(3,1fr)}
+  .price-row{grid-template-columns:1fr}
+  .bulk-bar{flex-direction:column;align-items:stretch;gap:10px}
 }
 </style>
 </head>
@@ -151,11 +217,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 
 <!-- NAV -->
 <nav class="nav">
-  <div>
-    <span class="nav-logo">WooPlans <small>Admin Dashboard</small></span>
-  </div>
+  <div><span class="nav-logo">WooPlans <small>Admin Dashboard</small></span></div>
   <a href="index.html" class="nav-link" target="_blank">Voir le catalogue &rarr;</a>
 </nav>
+
+<!-- ANALYTICS -->
+<div class="analytics" id="analytics">
+  <div class="analytics-title">Analytiques</div>
+  <div class="kpi-row" id="kpi-row"></div>
+  <div class="price-row" id="price-row"></div>
+</div>
 
 <!-- TOOLBAR -->
 <div class="toolbar">
@@ -165,13 +236,53 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
   </button>
   <div class="search-wrap">
     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search" placeholder="Rechercher un plan..." oninput="onSearch(this.value)">
+    <input type="text" id="search" placeholder="Rechercher un plan..." oninput="applyFilters()">
   </div>
   <div class="stats" id="stats"></div>
 </div>
 
+<!-- FILTERS -->
+<div class="filters">
+  <select id="fil-type" onchange="applyFilters()">
+    <option value="">Tous les types</option>
+    <option value="villa">Villa</option>
+    <option value="duplex">Duplex</option>
+  </select>
+  <select id="fil-status" onchange="applyFilters()">
+    <option value="">Tous les statuts</option>
+    <option value="online">En ligne</option>
+    <option value="offline">Hors ligne</option>
+  </select>
+  <input type="number" id="fil-min" placeholder="Prix min (FCFA)" oninput="applyFilters()" style="width:130px">
+  <input type="number" id="fil-max" placeholder="Prix max (FCFA)" oninput="applyFilters()" style="width:130px">
+  <button class="btn-reset" onclick="resetFilters()">Reinitialiser</button>
+</div>
+
 <!-- GRID -->
 <div class="grid" id="grid"></div>
+
+<!-- BULK BAR -->
+<div class="bulk-bar" id="bulk-bar">
+  <span class="bulk-count" id="bulk-count">0 selectionnes</span>
+  <div class="bulk-sep"></div>
+  <div class="bulk-group">
+    <label>Mode</label>
+    <select id="bulk-mode">
+      <option value="set">Fixer a</option>
+      <option value="adjust">Ajuster de</option>
+    </select>
+  </div>
+  <div class="bulk-group">
+    <label>Basique</label>
+    <input type="text" id="bulk-basic" placeholder="—">
+  </div>
+  <div class="bulk-group">
+    <label>Complet</label>
+    <input type="text" id="bulk-complete" placeholder="—">
+  </div>
+  <button class="btn-bulk-apply" onclick="applyBulk()">Appliquer</button>
+  <button class="btn-bulk-cancel" onclick="clearSelection()">Annuler</button>
+</div>
 
 <!-- FORM MODAL -->
 <div class="modal-overlay" id="modal-overlay">
@@ -185,7 +296,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
       <form id="plan-form" onsubmit="savePlan(event)">
         <input type="hidden" id="f-id">
 
-        <!-- Infos de base -->
         <div class="form-section">
           <div class="form-section-title">Informations generales</div>
           <div class="form-row">
@@ -194,8 +304,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
               <select id="f-type" required><option value="villa">Villa</option><option value="duplex">Duplex</option></select>
             </div>
           </div>
-          <div class="form-row col-1">
+          <div class="form-row">
             <div class="form-group"><label>Sous-titre</label><input type="text" id="f-subtitle" placeholder="Villa plain-pied - 114 m2 - 3 chambres"></div>
+            <div class="form-group">
+              <label>Statut</label>
+              <div class="toggle-wrap">
+                <input type="checkbox" id="f-status" checked>
+                <label for="f-status" class="toggle-label">
+                  <span class="toggle-off">Hors ligne</span>
+                  <span class="toggle-on">En ligne</span>
+                </label>
+              </div>
+            </div>
           </div>
           <div class="form-row col-3">
             <div class="form-group"><label>Surface</label><input type="text" id="f-area" placeholder="114 m2"></div>
@@ -209,16 +329,29 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
           </div>
         </div>
 
-        <!-- Prix -->
+        <!-- Prix avec steppers -->
         <div class="form-section">
           <div class="form-section-title">Tarification</div>
           <div class="form-row">
-            <div class="form-group"><label>Prix Basique (FCFA) *</label><input type="text" id="f-priceBasic" required placeholder="25 000"></div>
-            <div class="form-group"><label>Prix Complet (FCFA) *</label><input type="text" id="f-priceComplete" required placeholder="75 000"></div>
+            <div class="form-group">
+              <label>Prix Basique (FCFA) * <small style="color:var(--gris-clair)">pas de 5 000</small></label>
+              <div class="stepper">
+                <button type="button" class="step-btn" onclick="stepPrice('f-priceBasic',-1)">-</button>
+                <input type="text" id="f-priceBasic" required value="14 900">
+                <button type="button" class="step-btn" onclick="stepPrice('f-priceBasic',1)">+</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Prix Complet (FCFA) * <small style="color:var(--gris-clair)">pas de 50 000</small></label>
+              <div class="stepper">
+                <button type="button" class="step-btn" onclick="stepPrice('f-priceComplete',-1)">-</button>
+                <input type="text" id="f-priceComplete" required value="149 000">
+                <button type="button" class="step-btn" onclick="stepPrice('f-priceComplete',1)">+</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Description -->
         <div class="form-section">
           <div class="form-section-title">Description et caracteristiques</div>
           <div class="form-row col-1">
@@ -228,12 +361,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
             <div class="form-group"><label>Caracteristiques (1 par ligne)</label><textarea id="f-features" placeholder="Salon/Sejour 18,67 m2&#10;Cuisine 8,73 m2&#10;3 chambres"></textarea></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>Extras Basique (1 par ligne)</label><textarea id="f-extrasBasic" placeholder="Plan de masse&#10;Devis estimatif"></textarea></div>
-            <div class="form-group"><label>Extras Complet (1 par ligne)</label><textarea id="f-extrasComplete" placeholder="Plans d'execution&#10;Details techniques"></textarea></div>
+            <div class="form-group"><label>Extras Basique (1/ligne)</label><textarea id="f-extrasBasic" placeholder="Plan de masse&#10;Devis estimatif"></textarea></div>
+            <div class="form-group"><label>Extras Complet (1/ligne)</label><textarea id="f-extrasComplete" placeholder="Plans d'execution&#10;Details techniques"></textarea></div>
           </div>
         </div>
 
-        <!-- Images -->
         <div class="form-section">
           <div class="form-section-title">Images</div>
           <div class="drop-zone" id="drop-zone" onclick="document.getElementById('f-images').click()">
@@ -244,7 +376,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
           <div class="previews" id="img-previews"></div>
         </div>
 
-        <!-- PDF + Video -->
         <div class="form-section">
           <div class="form-section-title">Fichiers et media</div>
           <div class="form-row">
@@ -284,25 +415,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ──
 const SUPABASE_URL='https://xlmwzvkqjnoijdldzrol.supabase.co';
 const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbXd6dmtxam5vaWpkbGR6cm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTAzMjAsImV4cCI6MjA4OTY4NjMyMH0.cQcRRHaaMiht2Tq9CB9l4_XN8-SOjixxhHFJDjytze4';
 const ADMIN_PW='wooplans2024';
 const _supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
+const DEFAULTS={villa:{basic:'14 900',complete:'149 000'},duplex:{basic:'24 900',complete:'249 000'}};
+
 let plans=[];
-let imageFiles=[]; // fichiers a uploader
-let existingImageUrls=[]; // URLs d'images existantes (edition)
+let imageFiles=[];
+let existingImageUrls=[];
+let selectedIds=new Set();
 
 // ── AUTH ──
 function tryAuth(){
-  const pw=document.getElementById('auth-pw').value;
-  if(pw===ADMIN_PW){
+  if(document.getElementById('auth-pw').value===ADMIN_PW){
     document.getElementById('auth-screen').classList.add('hidden');
+    document.getElementById('analytics').classList.add('show');
     fetchPlans();
   } else {
     document.getElementById('auth-err').textContent='Mot de passe incorrect';
@@ -315,40 +447,207 @@ async function fetchPlans(){
   const{data,error}=await _supabase.from('plans').select('*').order('created_at',{ascending:false});
   if(error){console.error(error);showToast('Erreur chargement');return}
   plans=data||[];
-  renderGrid(plans);
+  applyFilters();
+  renderAnalytics();
   document.getElementById('stats').textContent=plans.length+' plan'+(plans.length>1?'s':'');
 }
 
-// ── RENDER ──
+// ── ANALYTICS ──
+function renderAnalytics(){
+  const total=plans.length;
+  const villas=plans.filter(p=>p.type==='villa');
+  const duplex=plans.filter(p=>p.type==='duplex');
+  const online=plans.filter(p=>(p.status||'online')==='online');
+  const offline=plans.filter(p=>p.status==='offline');
+  const noImg=plans.filter(p=>!p.images||!p.images.length).length;
+  const noPdf=plans.filter(p=>!p.pdf_basic_url).length;
+
+  const parseP=v=>parseInt(String(v||'0').replace(/\s/g,''))||0;
+  const avg=(list,field)=>{
+    const vals=list.map(p=>parseP(p[field])).filter(v=>v>0);
+    return vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0;
+  };
+  const fmt=n=>n.toLocaleString('fr-FR');
+
+  document.getElementById('kpi-row').innerHTML=`
+    <div class="kpi"><div class="kpi-val">${total}</div><div class="kpi-label">Total plans</div></div>
+    <div class="kpi"><div class="kpi-val">${villas.length}</div><div class="kpi-label">Villas</div></div>
+    <div class="kpi"><div class="kpi-val">${duplex.length}</div><div class="kpi-label">Duplex</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--vert)">${online.length}</div><div class="kpi-label">En ligne</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--rouge)">${offline.length}</div><div class="kpi-label">Hors ligne</div></div>
+    ${noImg?`<div class="kpi alert"><div class="kpi-val">${noImg}</div><div class="kpi-label">Sans image</div></div>`:''}
+    ${noPdf?`<div class="kpi alert"><div class="kpi-val">${noPdf}</div><div class="kpi-label">Sans PDF</div></div>`:''}
+  `;
+
+  document.getElementById('price-row').innerHTML=`
+    <div class="price-box">
+      <div class="price-box-title">Prix moyen Basique</div>
+      <div class="price-line"><span>Villa</span><span>${fmt(avg(villas,'priceBasic'))} FCFA</span></div>
+      <div class="price-line"><span>Duplex</span><span>${fmt(avg(duplex,'priceBasic'))} FCFA</span></div>
+      <div class="price-line" style="border-top:1px solid var(--creme-2);margin-top:4px;padding-top:6px"><span>Global</span><span>${fmt(avg(plans,'priceBasic'))} FCFA</span></div>
+    </div>
+    <div class="price-box">
+      <div class="price-box-title">Prix moyen Complet</div>
+      <div class="price-line"><span>Villa</span><span>${fmt(avg(villas,'priceComplete'))} FCFA</span></div>
+      <div class="price-line"><span>Duplex</span><span>${fmt(avg(duplex,'priceComplete'))} FCFA</span></div>
+      <div class="price-line" style="border-top:1px solid var(--creme-2);margin-top:4px;padding-top:6px"><span>Global</span><span>${fmt(avg(plans,'priceComplete'))} FCFA</span></div>
+    </div>
+  `;
+}
+
+// ── FILTERS ──
+function applyFilters(){
+  let list=plans;
+  const type=document.getElementById('fil-type').value;
+  const status=document.getElementById('fil-status').value;
+  const min=parseInt(document.getElementById('fil-min').value)||0;
+  const max=parseInt(document.getElementById('fil-max').value)||Infinity;
+  const q=document.getElementById('search').value.toLowerCase().trim();
+
+  if(type) list=list.filter(p=>p.type===type);
+  if(status) list=list.filter(p=>(p.status||'online')===status);
+  list=list.filter(p=>{
+    const price=parseInt(String(p.priceBasic||'0').replace(/\s/g,''));
+    return price>=min&&price<=max;
+  });
+  if(q) list=list.filter(p=>(p.title+' '+(p.subtitle||'')+' '+p.type).toLowerCase().includes(q));
+  renderGrid(list);
+}
+function resetFilters(){
+  document.getElementById('fil-type').value='';
+  document.getElementById('fil-status').value='';
+  document.getElementById('fil-min').value='';
+  document.getElementById('fil-max').value='';
+  document.getElementById('search').value='';
+  applyFilters();
+}
+
+// ── RENDER GRID ──
 function renderGrid(list){
   const g=document.getElementById('grid');
-  if(!list.length){g.innerHTML='<div class="empty">Aucun plan. Cliquez "+ Nouveau plan" pour commencer.</div>';return}
+  if(!list.length){g.innerHTML='<div class="empty">Aucun plan trouve.</div>';return}
   g.innerHTML=list.map(p=>{
     const img=(p.images&&p.images.length)?p.images[0]:'';
-    const badge=p.type==='villa'?'badge-villa':'badge-duplex';
+    const typeBadge=p.type==='villa'?'badge-villa':'badge-duplex';
+    const st=p.status||'online';
+    const stBadge=st==='online'?'badge-online':'badge-offline';
+    const stLabel=st==='online'?'En ligne':'Hors ligne';
     const date=p.created_at?new Date(p.created_at).toLocaleDateString('fr-FR'):'';
-    return `<div class="card">
-      ${img?`<img class="card-img" src="${img}" alt="${p.title}" loading="lazy">`:`<div class="card-img" style="background:var(--creme-2);display:flex;align-items:center;justify-content:center;color:var(--gris-clair);font-size:.8rem">Pas d'image</div>`}
+    const sel=selectedIds.has(p.id)?'selected':'';
+    const chk=selectedIds.has(p.id)?'checked':'';
+    return `<div class="card ${sel}" id="card-${p.id}">
+      <input type="checkbox" class="card-select" ${chk} onchange="toggleSelect('${p.id}',this)">
+      ${img?`<img class="card-img" src="${img}" alt="${p.title}" loading="lazy">`:`<div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--gris-clair);font-size:.8rem">Pas d'image</div>`}
       <div class="card-body">
-        <span class="card-badge ${badge}">${p.type}</span>
+        <div class="card-badges">
+          <span class="card-badge ${typeBadge}">${p.type}</span>
+          <span class="card-badge ${stBadge}">${stLabel}</span>
+        </div>
         <h3 class="card-title">${p.title}</h3>
         <div class="card-meta">${p.area||''} &middot; ${p.beds||0} ch. &middot; ${p.baths||0} sdb &middot; ${date}</div>
         <div class="card-price">${p.priceBasic||'—'} <small>FCFA</small></div>
         <div class="card-actions">
           <button class="btn-edit" onclick="editPlan('${p.id}')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Modifier</button>
-          <button class="btn-del" onclick="confirmDelete('${p.id}','${p.title.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Supprimer</button>
+          <button class="btn-toggle" onclick="toggleStatus('${p.id}')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>${st==='online'?'Desactiver':'Activer'}</button>
+          <button class="btn-del" onclick="confirmDelete('${p.id}','${(p.title||'').replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Suppr.</button>
         </div>
       </div>
     </div>`;
   }).join('');
 }
 
-// ── SEARCH ──
-function onSearch(q){
-  const s=q.toLowerCase().trim();
-  if(!s){renderGrid(plans);return}
-  renderGrid(plans.filter(p=>(p.title+' '+p.subtitle+' '+p.type).toLowerCase().includes(s)));
+// ── TOGGLE STATUS ──
+async function toggleStatus(id){
+  const p=plans.find(x=>x.id===id);
+  if(!p)return;
+  const newSt=(p.status||'online')==='online'?'offline':'online';
+  const{error}=await _supabase.from('plans').update({status:newSt}).eq('id',id);
+  if(error){showToast('Erreur');return}
+  showToast(newSt==='online'?'Plan mis en ligne':'Plan mis hors ligne');
+  await fetchPlans();
 }
+
+// ── SELECTION & BULK ──
+function toggleSelect(id,cb){
+  if(cb.checked) selectedIds.add(id); else selectedIds.delete(id);
+  const card=document.getElementById('card-'+id);
+  if(card) card.classList.toggle('selected',cb.checked);
+  renderBulkBar();
+}
+function clearSelection(){
+  selectedIds.clear();
+  document.querySelectorAll('.card-select').forEach(cb=>{cb.checked=false});
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
+  renderBulkBar();
+}
+function renderBulkBar(){
+  const bar=document.getElementById('bulk-bar');
+  const n=selectedIds.size;
+  if(n>0){
+    bar.classList.add('show');
+    document.getElementById('bulk-count').textContent=n+' selectionne'+(n>1?'s':'');
+  } else {
+    bar.classList.remove('show');
+  }
+}
+async function applyBulk(){
+  const mode=document.getElementById('bulk-mode').value;
+  const rawB=document.getElementById('bulk-basic').value.trim();
+  const rawC=document.getElementById('bulk-complete').value.trim();
+  if(!rawB&&!rawC){showToast('Entrez au moins un prix');return}
+
+  const parseV=v=>parseInt(v.replace(/\s/g,''))||0;
+  let count=0;
+  for(const id of selectedIds){
+    const p=plans.find(x=>x.id===id);
+    if(!p)continue;
+    const upd={};
+    if(rawB){
+      const val=parseV(rawB);
+      if(mode==='set') upd.priceBasic=val.toLocaleString('fr-FR').replace(/,/g,' ');
+      else {
+        const cur=parseV(String(p.priceBasic||'0'));
+        upd.priceBasic=Math.max(0,cur+val).toLocaleString('fr-FR').replace(/,/g,' ');
+      }
+    }
+    if(rawC){
+      const val=parseV(rawC);
+      if(mode==='set') upd.priceComplete=val.toLocaleString('fr-FR').replace(/,/g,' ');
+      else {
+        const cur=parseV(String(p.priceComplete||'0'));
+        upd.priceComplete=Math.max(0,cur+val).toLocaleString('fr-FR').replace(/,/g,' ');
+      }
+    }
+    const{error}=await _supabase.from('plans').update(upd).eq('id',id);
+    if(!error) count++;
+  }
+  showToast(count+' plan'+(count>1?'s':'')+' mis a jour');
+  clearSelection();
+  document.getElementById('bulk-basic').value='';
+  document.getElementById('bulk-complete').value='';
+  await fetchPlans();
+}
+
+// ── PRICE STEPPER ──
+function stepPrice(fieldId,dir){
+  const input=document.getElementById(fieldId);
+  const current=parseInt(String(input.value).replace(/\s/g,''))||0;
+  const isBasic=fieldId.includes('Basic');
+  const step=isBasic?5000:50000;
+  const newVal=Math.max(0,current+dir*step);
+  input.value=newVal.toLocaleString('fr-FR').replace(/,/g,' ');
+}
+
+// ── TYPE CHANGE → DEFAULT PRICES ──
+document.getElementById('f-type').addEventListener('change',function(){
+  const d=DEFAULTS[this.value];
+  const bField=document.getElementById('f-priceBasic');
+  const cField=document.getElementById('f-priceComplete');
+  const allB=Object.values(DEFAULTS).map(x=>x.basic);
+  const allC=Object.values(DEFAULTS).map(x=>x.complete);
+  if(!bField.value.trim()||allB.includes(bField.value)) bField.value=d.basic;
+  if(!cField.value.trim()||allC.includes(cField.value)) cField.value=d.complete;
+});
 
 // ── MODAL ──
 function openModal(plan){
@@ -358,8 +657,13 @@ function openModal(plan){
   document.getElementById('f-id').value='';
   document.getElementById('f-rating').value='4.8';
   document.getElementById('f-floors').value='1';
+  document.getElementById('f-status').checked=true;
   document.getElementById('img-previews').innerHTML='';
   document.getElementById('current-pdf').textContent='';
+  // Set defaults
+  const d=DEFAULTS.villa;
+  document.getElementById('f-priceBasic').value=d.basic;
+  document.getElementById('f-priceComplete').value=d.complete;
 
   if(plan){
     document.getElementById('modal-title').textContent='Modifier : '+plan.title;
@@ -367,6 +671,7 @@ function openModal(plan){
     document.getElementById('f-title').value=plan.title||'';
     document.getElementById('f-type').value=plan.type||'villa';
     document.getElementById('f-subtitle').value=plan.subtitle||'';
+    document.getElementById('f-status').checked=(plan.status||'online')==='online';
     document.getElementById('f-area').value=plan.area||'';
     document.getElementById('f-beds').value=plan.beds||'';
     document.getElementById('f-baths').value=plan.baths||'';
@@ -381,9 +686,8 @@ function openModal(plan){
     document.getElementById('f-extrasComplete').value=(plan.extrasComplete||[]).join('\n');
     document.getElementById('f-video').value=plan.video_url||'';
     if(plan.pdf_basic_url){
-      document.getElementById('current-pdf').innerHTML='PDF actuel : <a href="'+plan.pdf_basic_url+'" target="_blank">Voir le PDF</a>';
+      document.getElementById('current-pdf').innerHTML='PDF actuel : <a href="'+plan.pdf_basic_url+'" target="_blank" style="color:var(--terre)">Voir le PDF</a>';
     }
-    // Afficher les images existantes
     existingImageUrls=(plan.images||[]).slice();
     renderImagePreviews();
   } else {
@@ -392,18 +696,16 @@ function openModal(plan){
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
-
 function closeModal(){
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow='';
 }
-
 function editPlan(id){
   const p=plans.find(x=>x.id===id);
   if(p)openModal(p);
 }
 
-// ── IMAGES DRAG & DROP ──
+// ── IMAGES ──
 const dropZone=document.getElementById('drop-zone');
 dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('dragover')});
 dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('dragover'));
@@ -417,41 +719,26 @@ function handleFiles(fileList){
   }
   renderImagePreviews();
 }
-
 function renderImagePreviews(){
-  const container=document.getElementById('img-previews');
-  container.innerHTML='';
-  // Existing URLs
+  const c=document.getElementById('img-previews');
+  c.innerHTML='';
   existingImageUrls.forEach((url,i)=>{
-    const div=document.createElement('div');
-    div.className='preview-item';
-    div.innerHTML=`<img src="${url}"><button class="remove-img" onclick="removeExistingImg(${i})">&times;</button>`;
-    container.appendChild(div);
+    const d=document.createElement('div');d.className='preview-item';
+    d.innerHTML=`<img src="${url}"><button class="remove-img" onclick="removeExistingImg(${i})">&times;</button>`;
+    c.appendChild(d);
   });
-  // New files
   imageFiles.forEach((file,i)=>{
-    const div=document.createElement('div');
-    div.className='preview-item';
+    const d=document.createElement('div');d.className='preview-item';
     const img=document.createElement('img');
-    const reader=new FileReader();
-    reader.onload=e=>{img.src=e.target.result};
-    reader.readAsDataURL(file);
-    const btn=document.createElement('button');
-    btn.className='remove-img';
-    btn.textContent='\u00d7';
+    const r=new FileReader();r.onload=e=>{img.src=e.target.result};r.readAsDataURL(file);
+    const btn=document.createElement('button');btn.className='remove-img';btn.textContent='\u00d7';
     btn.onclick=()=>{imageFiles.splice(i,1);renderImagePreviews()};
-    div.appendChild(img);
-    div.appendChild(btn);
-    container.appendChild(div);
+    d.appendChild(img);d.appendChild(btn);c.appendChild(d);
   });
 }
+function removeExistingImg(idx){existingImageUrls.splice(idx,1);renderImagePreviews()}
 
-function removeExistingImg(idx){
-  existingImageUrls.splice(idx,1);
-  renderImagePreviews();
-}
-
-// ── UPLOAD IMAGES TO SUPABASE STORAGE ──
+// ── UPLOAD ──
 async function uploadImages(planId){
   const urls=[...existingImageUrls];
   for(let i=0;i<imageFiles.length;i++){
@@ -459,54 +746,44 @@ async function uploadImages(planId){
     const ext=file.name.split('.').pop().toLowerCase();
     const path=`${planId}/img-${Date.now()}-${i}.${ext}`;
     const{error}=await _supabase.storage.from('plan-images').upload(path,file,{upsert:true,contentType:file.type});
-    if(error){console.error('Upload error:',error);showToast('Erreur upload image');continue}
+    if(error){console.error(error);showToast('Erreur upload image');continue}
     const{data}=_supabase.storage.from('plan-images').getPublicUrl(path);
     urls.push(data.publicUrl);
   }
   return urls;
 }
-
-// ── UPLOAD PDF TO SUPABASE STORAGE ──
 async function uploadPdf(planId){
-  const fileInput=document.getElementById('f-pdf');
-  if(!fileInput.files.length)return null;
-  const file=fileInput.files[0];
+  const fi=document.getElementById('f-pdf');
+  if(!fi.files.length)return null;
+  const file=fi.files[0];
   const path=`${planId}/plan-${Date.now()}.pdf`;
   const{error}=await _supabase.storage.from('plan-pdfs').upload(path,file,{upsert:true,contentType:'application/pdf'});
-  if(error){console.error('PDF upload error:',error);showToast('Erreur upload PDF');return null}
+  if(error){console.error(error);showToast('Erreur upload PDF');return null}
   const{data}=_supabase.storage.from('plan-pdfs').getPublicUrl(path);
   return data.publicUrl;
 }
 
-// ── SAVE PLAN ──
+// ── SAVE ──
 async function savePlan(e){
   e.preventDefault();
   const btn=document.getElementById('btn-save');
   const spin=document.getElementById('save-spin');
   const txt=document.getElementById('save-txt');
-  btn.disabled=true;
-  spin.style.display='inline-block';
-  txt.textContent='Enregistrement...';
+  btn.disabled=true;spin.style.display='inline-block';txt.textContent='Enregistrement...';
 
   try{
     const id=document.getElementById('f-id').value;
     const isEdit=!!id;
-
-    // Generer un ID pour les uploads si creation
     const planId=isEdit?id:crypto.randomUUID();
-
-    // Upload images
     const imageUrls=await uploadImages(planId);
-
-    // Upload PDF
     const pdfUrl=await uploadPdf(planId);
-
-    // Construire l'objet plan
     const toLines=v=>(v||'').split('\n').map(s=>s.trim()).filter(Boolean);
+
     const planData={
       type:document.getElementById('f-type').value,
       title:document.getElementById('f-title').value.trim(),
       subtitle:document.getElementById('f-subtitle').value.trim(),
+      status:document.getElementById('f-status').checked?'online':'offline',
       area:document.getElementById('f-area').value.trim(),
       beds:parseInt(document.getElementById('f-beds').value)||0,
       baths:parseInt(document.getElementById('f-baths').value)||0,
@@ -522,11 +799,7 @@ async function savePlan(e){
       images:imageUrls,
       video_url:document.getElementById('f-video').value.trim()||null,
     };
-
-    // PDF : garder l'ancien si pas de nouveau
-    if(pdfUrl){
-      planData.pdf_basic_url=pdfUrl;
-    }
+    if(pdfUrl) planData.pdf_basic_url=pdfUrl;
 
     if(isEdit){
       const{error}=await _supabase.from('plans').update(planData).eq('id',id);
@@ -538,16 +811,13 @@ async function savePlan(e){
       if(error)throw error;
       showToast('Plan cree avec succes');
     }
-
     closeModal();
     await fetchPlans();
   }catch(err){
     console.error(err);
     showToast('Erreur : '+(err.message||'inconnue'));
   }finally{
-    btn.disabled=false;
-    spin.style.display='none';
-    txt.textContent='Enregistrer';
+    btn.disabled=false;spin.style.display='none';txt.textContent='Enregistrer';
   }
 }
 
@@ -558,37 +828,25 @@ function confirmDelete(id,title){
   document.getElementById('confirm-msg').textContent='Supprimer "'+title+'" ? Cette action est irreversible.';
   document.getElementById('confirm-overlay').classList.add('open');
 }
-function closeConfirm(){
-  document.getElementById('confirm-overlay').classList.remove('open');
-  deleteId=null;
-}
+function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('open');deleteId=null}
 document.getElementById('btn-confirm-del').addEventListener('click',async()=>{
   if(!deleteId)return;
   const btn=document.getElementById('btn-confirm-del');
-  btn.textContent='Suppression...';
-  btn.disabled=true;
+  btn.textContent='Suppression...';btn.disabled=true;
   try{
-    // Supprimer les fichiers storage
     const{data:imgFiles}=await _supabase.storage.from('plan-images').list(deleteId);
-    if(imgFiles&&imgFiles.length){
-      await _supabase.storage.from('plan-images').remove(imgFiles.map(f=>deleteId+'/'+f.name));
-    }
+    if(imgFiles&&imgFiles.length) await _supabase.storage.from('plan-images').remove(imgFiles.map(f=>deleteId+'/'+f.name));
     const{data:pdfFiles}=await _supabase.storage.from('plan-pdfs').list(deleteId);
-    if(pdfFiles&&pdfFiles.length){
-      await _supabase.storage.from('plan-pdfs').remove(pdfFiles.map(f=>deleteId+'/'+f.name));
-    }
-    // Supprimer le plan
+    if(pdfFiles&&pdfFiles.length) await _supabase.storage.from('plan-pdfs').remove(pdfFiles.map(f=>deleteId+'/'+f.name));
     const{error}=await _supabase.from('plans').delete().eq('id',deleteId);
     if(error)throw error;
     showToast('Plan supprime');
     closeConfirm();
     await fetchPlans();
   }catch(err){
-    console.error(err);
-    showToast('Erreur suppression');
+    console.error(err);showToast('Erreur suppression');
   }finally{
-    btn.textContent='Supprimer';
-    btn.disabled=false;
+    btn.textContent='Supprimer';btn.disabled=false;
   }
 });
 
@@ -596,8 +854,7 @@ document.getElementById('btn-confirm-del').addEventListener('click',async()=>{
 let toastTimer;
 function showToast(msg){
   const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
+  t.textContent=msg;t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
 }

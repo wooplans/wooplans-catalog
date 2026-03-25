@@ -659,7 +659,7 @@ const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let plans = [];
 
 async function fetchPlans() {
-  const { data, error } = await _supabase.from('plans').select('*').order('created_at');
+  const { data, error } = await _supabase.from('plans').select('*').eq('status','online').order('created_at');
   if (error) { console.error('Supabase error:', error); return; }
   plans = data || [];
   renderGrid(plans);
