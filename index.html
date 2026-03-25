@@ -964,11 +964,10 @@ async function submitCheckout(e){
   const NETLIFY_DOMAIN = 'wooplanscatalog.netlify.app';
 
   try {
-    const res = await fetch('https://api.chariow.com/v1/checkout', {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/chariow-checkout', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer sk_wnhjfg79_e72dd025cb885446a0cd4e9e753513a1'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         product_id: PRODUCT_ID,
