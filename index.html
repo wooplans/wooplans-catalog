@@ -1049,14 +1049,16 @@ async function submitCheckout(e){
       })
     });
 
+    const json = await res.json();
+
     if (!res.ok) {
-      const errJson = await res.json().catch(()=>({}));
-      console.warn('Chariow API error:', res.status, errJson);
-      // Fallback : redirection directe vers la boutique Chariow
-      throw new Error('api_unsupported');
+      // Afficher l'erreur Chariow dans la console pour diagnostic
+      console.error('Chariow API error', res.status, JSON.stringify(json));
+      // Extraire le message d'erreur lisible
+      const msg = json?.message || json?.error || ('Erreur ' + res.status);
+      throw new Error(msg);
     }
 
-    const json = await res.json();
     const checkoutUrl = json && json.data && json.data.payment && json.data.payment.checkout_url;
     if (checkoutUrl) {
       showToast('Redirection vers le paiement...');
@@ -1064,12 +1066,23 @@ async function submitCheckout(e){
     } else if (json && json.data && json.data.step === 'completed') {
       window.location.href = 'https://' + NETLIFY_DOMAIN + '/merci.html?plan_id=' + String(p.id);
     } else {
-      throw new Error('api_unsupported');
+      console.error('Réponse inattendue Chariow:', JSON.stringify(json));
+      throw new Error('Réponse inattendue du serveur de paiement');
     }
   } catch(err) {
-    // Fallback fiable : redirection directe vers la page produit Chariow
-    showToast('Redirection vers le paiement...');
-    setTimeout(()=>{ window.location.href = FALLBACK_URL; }, 800);
+    const isNetworkErr = err instanceof TypeError;
+    if (isNetworkErr) {
+      // Vrai problème réseau → fallback
+      showToast('Redirection vers le paiement...');
+      setTimeout(()=>{ window.location.href = FALLBACK_URL; }, 800);
+    } else {
+      // Erreur API → afficher le message et ne pas quitter
+      document.getElementById('co-btn').disabled = false;
+      document.getElementById('co-spin').style.display = 'none';
+      document.getElementById('co-btn-ico').style.display = 'inline';
+      document.getElementById('co-btn-txt').textContent = 'Proceder au paiement';
+      showToast('Erreur : ' + (err.message || 'Veuillez réessayer'));
+    }
   }
 }
 
