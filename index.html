@@ -976,7 +976,7 @@ function updateOptUI(){
   var isB=selectedOpt===1;
   var price=isB?currentPlan.priceBasic:currentPlan.priceComplete;
   document.getElementById('sb-name').textContent=isB?'Plan Basique + Devis':'Plans Complets';
-  document.getElementById('sb-price').textContent=price;
+  document.getElementById('sb-price').textContent=price+' FCFA';
 }
 
 function toggleDd(n){
