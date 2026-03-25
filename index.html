@@ -350,7 +350,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   .det-content{grid-template-columns:1fr;gap:20px}
   .det-features{grid-template-columns:1fr}
   .purchase-box{position:static}
-  .sticky-bar{display:flex}
+  /* sticky-bar géré par JS uniquement */
   .ft-inner{grid-template-columns:1fr;gap:28px}
   nav{padding:0 18px}
   .nav-link{display:none}
@@ -513,57 +513,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         <p class="det-desc" id="det-desc">—</p>
         <ul class="det-features" id="det-features"></ul>
 
-        <!-- FAQ -->
-        <section class="faq-section">
-          <h3 class="faq-section-title">Questions fréquentes</h3>
-
-          <details class="faq-item">
-            <summary>
-              Comment recevoir mon plan après l'achat ?
-              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-            </summary>
-            <p class="faq-answer">Le <strong>Plan Basique</strong> est envoyé instantanément par email après validation du paiement. Vous recevez un lien de téléchargement sécurisé directement dans votre boîte mail. Pour le <strong>Plan Complet</strong>, notre équipe vous livre l'ensemble des documents sous <strong>3 à 5 jours ouvrés</strong> via email ou WhatsApp.</p>
-          </details>
-
-          <details class="faq-item">
-            <summary>
-              Puis-je personnaliser ce plan selon mes besoins ?
-              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-            </summary>
-            <p class="faq-answer">Oui, tous nos plans sont personnalisables. Nous pouvons adapter la surface, le nombre de chambres, l'orientation ou les finitions. Contactez-nous sur WhatsApp avec vos contraintes (budget, terrain, préférences) et nous vous ferons une proposition sur mesure.</p>
-          </details>
-
-          <details class="faq-item">
-            <summary>
-              Quels moyens de paiement sont acceptés ?
-              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-            </summary>
-            <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN MoMo, Orange Money) disponible dans toute l'Afrique francophone. Pour les Plans Complets, un paiement par virement bancaire est également possible — contactez-nous pour les coordonnées.</p>
-          </details>
-
-          <details class="faq-item">
-            <summary>
-              Que contient exactement le Plan Basique ?
-              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-            </summary>
-            <p class="faq-answer">Le Plan Basique inclut : le <strong>plan de distribution avec cotes</strong> (RDC et étage le cas échéant), les <strong>façades extérieures</strong>, des <strong>rendus 3D</strong> de l'extérieur, et un <strong>devis estimatif</strong> des travaux de la fondation aux finitions. C'est le document idéal pour valider votre projet avant de passer à la construction.</p>
-          </details>
-
-          <details class="faq-item">
-            <summary>
-              Le plan est-il adapté à mon terrain ?
-              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-            </summary>
-            <p class="faq-answer">Nos plans sont conçus pour des terrains plats standards. Pour un terrain en pente, de forme particulière ou avec des contraintes spécifiques (lotissement, permis de construire), une adaptation est nécessaire. Partagez-nous les dimensions de votre terrain et nous évaluerons ensemble les ajustements à prévoir.</p>
-          </details>
-
-          <div class="faq-whatsapp-wrap">
-            <a class="whatsapp-btn" href="https://wa.me/237694327885?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20plan%20" id="whatsapp-link" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
-              Une question ? Ecrivez-nous sur WhatsApp
-            </a>
-          </div>
-        </section>
       </div>
 
       <!-- SIDEBAR -->
@@ -645,6 +594,59 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         </div>
       </div>
     </div>
+
+    <!-- FAQ — pleine largeur, après les formules -->
+    <section class="faq-section" style="margin-top:0;border-top:1px solid var(--creme-3);padding:36px 28px 44px">
+      <h3 class="faq-section-title">Questions fréquentes</h3>
+
+      <details class="faq-item">
+        <summary>
+          Comment recevoir mon plan après l'achat ?
+          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <p class="faq-answer">Le <strong>Plan Basique</strong> est envoyé instantanément par email après validation du paiement. Vous recevez un lien de téléchargement sécurisé directement dans votre boîte mail. Pour le <strong>Plan Complet</strong>, notre équipe vous livre l'ensemble des documents sous <strong>3 à 5 jours ouvrés</strong> via email ou WhatsApp.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          Puis-je personnaliser ce plan selon mes besoins ?
+          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <p class="faq-answer">Oui, tous nos plans sont personnalisables. Nous pouvons adapter la surface, le nombre de chambres, l'orientation ou les finitions. Contactez-nous sur WhatsApp avec vos contraintes (budget, terrain, préférences) et nous vous ferons une proposition sur mesure.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          Quels moyens de paiement sont acceptés ?
+          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN MoMo, Orange Money) disponible dans toute l'Afrique francophone. Pour les Plans Complets, un paiement par virement bancaire est également possible — contactez-nous pour les coordonnées.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          Que contient exactement le Plan Basique ?
+          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <p class="faq-answer">Le Plan Basique inclut : le <strong>plan de distribution avec cotes</strong> (RDC et étage le cas échéant), les <strong>façades extérieures</strong>, des <strong>rendus 3D</strong> de l'extérieur, et un <strong>devis estimatif</strong> des travaux de la fondation aux finitions. C'est le document idéal pour valider votre projet avant de passer à la construction.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          Le plan est-il adapté à mon terrain ?
+          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <p class="faq-answer">Nos plans sont conçus pour des terrains plats standards. Pour un terrain en pente, de forme particulière ou avec des contraintes spécifiques (lotissement, permis de construire), une adaptation est nécessaire. Partagez-nous les dimensions de votre terrain et nous évaluerons ensemble les ajustements à prévoir.</p>
+      </details>
+
+      <div class="faq-whatsapp-wrap">
+        <a class="whatsapp-btn" href="https://wa.me/237694327885?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20plan%20" id="whatsapp-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+          Une question ? Ecrivez-nous sur WhatsApp
+        </a>
+      </div>
+    </section>
+
   </div>
 </div>
 

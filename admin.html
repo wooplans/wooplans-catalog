@@ -186,6 +186,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .btn-save:hover{background:var(--or-pale)}
 .btn-save:disabled{opacity:.5;cursor:not-allowed}
 .btn-cancel{background:var(--creme-2);color:var(--gris-fonce);font-weight:600;font-size:.85rem;padding:13px 24px;border:none;cursor:pointer}
+.file-current{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--gris);margin-top:6px;flex-wrap:wrap}
+.file-current a{color:var(--terre);text-decoration:none}
+.file-current a:hover{text-decoration:underline}
+.btn-del-file{background:none;border:1px solid var(--rouge);color:var(--rouge);font-size:.72rem;font-weight:600;padding:3px 9px;cursor:pointer;border-radius:2px;white-space:nowrap}
+.btn-del-file:hover{background:var(--rouge);color:#fff}
 .btn-cancel:hover{background:var(--creme-3)}
 
 /* ── CONFIRM ── */
@@ -396,15 +401,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
           <div class="form-row">
             <div class="form-group">
               <label>PDF du plan (optionnel)</label>
+              <div id="current-pdf" class="file-current"></div>
               <input type="file" id="f-pdf" accept=".pdf" style="padding:8px">
             </div>
             <div class="form-group">
-              <label>Video (optionnel)</label>
+              <label>Vidéo (optionnel)</label>
+              <div id="current-video" class="file-current"></div>
               <input type="file" id="f-video" accept="video/*" style="padding:8px">
-              <div id="current-video" style="font-size:.8rem;color:var(--gris);margin-top:4px"></div>
             </div>
           </div>
-          <div id="current-pdf" style="font-size:.8rem;color:var(--gris);margin-top:4px"></div>
         </div>
       </form>
     </div>
@@ -496,8 +501,43 @@ let plans=[];
 // imageItems = [{src: string (objectURL ou URL existante), file: File|null}]
 let imageItems=[];
 let existingVideoUrl=null;
+let existingPdfUrl=null;
+let deletePdf=false;
+let deleteVideo=false;
 let selectedIds=new Set();
 let _dragSrcIdx=null;
+
+function renderCurrentPdf(){
+  const el=document.getElementById('current-pdf');
+  if(!el) return;
+  if(existingPdfUrl && !deletePdf){
+    el.innerHTML='<a href="'+existingPdfUrl+'" target="_blank">📄 Voir le PDF actuel</a>'
+      +'<button class="btn-del-file" onclick="removePdf()">✕ Supprimer</button>';
+  } else if(deletePdf){
+    el.innerHTML='<span style="color:var(--rouge)">PDF supprimé — sauvegardez pour confirmer</span>'
+      +'<button class="btn-del-file" onclick="restorePdf()" style="border-color:var(--vert);color:var(--vert)">Annuler</button>';
+  } else {
+    el.innerHTML='';
+  }
+}
+function removePdf(){deletePdf=true;renderCurrentPdf();}
+function restorePdf(){deletePdf=false;renderCurrentPdf();}
+
+function renderCurrentVideo(){
+  const el=document.getElementById('current-video');
+  if(!el) return;
+  if(existingVideoUrl && !deleteVideo){
+    el.innerHTML='<a href="'+existingVideoUrl+'" target="_blank">🎬 Voir la vidéo actuelle</a>'
+      +'<button class="btn-del-file" onclick="removeVideo()">✕ Supprimer</button>';
+  } else if(deleteVideo){
+    el.innerHTML='<span style="color:var(--rouge)">Vidéo supprimée — sauvegardez pour confirmer</span>'
+      +'<button class="btn-del-file" onclick="restoreVideo()" style="border-color:var(--vert);color:var(--vert)">Annuler</button>';
+  } else {
+    el.innerHTML='';
+  }
+}
+function removeVideo(){deleteVideo=true;renderCurrentVideo();}
+function restoreVideo(){deleteVideo=false;renderCurrentVideo();}
 
 // ── AUTH ──
 function tryAuth(){
@@ -722,6 +762,9 @@ document.getElementById('f-type').addEventListener('change',function(){
 function openModal(plan){
   imageItems=[];
   existingVideoUrl=null;
+  existingPdfUrl=null;
+  deletePdf=false;
+  deleteVideo=false;
   document.getElementById('plan-form').reset();
   document.getElementById('f-id').value='';
   document.getElementById('f-rating').value='4.8';
@@ -754,13 +797,10 @@ function openModal(plan){
     document.getElementById('f-features').value=(plan.features||[]).join('\n');
     document.getElementById('f-extrasBasic').value=(plan.extrasBasic||[]).join('\n');
     document.getElementById('f-extrasComplete').value=(plan.extrasComplete||[]).join('\n');
-    if(plan.video_url){
-      existingVideoUrl=plan.video_url;
-      document.getElementById('current-video').innerHTML='Video actuelle : <a href="'+plan.video_url+'" target="_blank" style="color:var(--terre)">Voir la video</a>';
-    }
-    if(plan.pdf_basic_url){
-      document.getElementById('current-pdf').innerHTML='PDF actuel : <a href="'+plan.pdf_basic_url+'" target="_blank" style="color:var(--terre)">Voir le PDF</a>';
-    }
+    if(plan.video_url){ existingVideoUrl=plan.video_url; }
+    renderCurrentVideo();
+    if(plan.pdf_basic_url){ existingPdfUrl=plan.pdf_basic_url; }
+    renderCurrentPdf();
     imageItems=(plan.images||[]).map(url=>({src:url,file:null}));
     renderImagePreviews();
   } else {
@@ -1018,9 +1058,14 @@ async function savePlan(e){
       extrasComplete:toLines(document.getElementById('f-extrasComplete').value),
       images:imageUrls,
     };
-    if(videoUrl) planData.video_url=videoUrl;
-    else if(!document.getElementById('f-video').files.length) planData.video_url=existingVideoUrl||null;
+    // PDF : nouveau upload > suppression > URL existante
     if(pdfUrl) planData.pdf_basic_url=pdfUrl;
+    else if(deletePdf) planData.pdf_basic_url=null;
+    else if(existingPdfUrl) planData.pdf_basic_url=existingPdfUrl;
+    // Vidéo : nouveau upload > suppression > URL existante
+    if(videoUrl) planData.video_url=videoUrl;
+    else if(deleteVideo) planData.video_url=null;
+    else if(existingVideoUrl) planData.video_url=existingVideoUrl;
 
     if(isEdit){
       const{error}=await _supabase.from('plans').update(planData).eq('id',id);
