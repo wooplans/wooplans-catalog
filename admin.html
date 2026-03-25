@@ -397,6 +397,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
         </div>
 
         <div class="form-section">
+          <div class="form-section-title">Paiement Chariow</div>
+          <p style="font-size:.78rem;color:var(--gris);margin-bottom:12px">
+            Créez un produit "Downloadable" dans
+            <a href="https://wooplans.mychariow.shop" target="_blank" style="color:var(--terre)">Chariow</a>
+            avec le bon prix, puis collez l'ID ici (ex&nbsp;: <code style="font-size:.75rem">prd_abc123</code>).
+          </p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Chariow ID — Plan Basique</label>
+              <input type="text" id="f-chariow-basic" placeholder="prd_xxxxxx">
+            </div>
+            <div class="form-group">
+              <label>Chariow ID — Plan Complet</label>
+              <input type="text" id="f-chariow-complete" placeholder="prd_xxxxxx">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
           <div class="form-section-title">Fichiers et media</div>
           <div class="form-row">
             <div class="form-group">
@@ -797,6 +816,8 @@ function openModal(plan){
     document.getElementById('f-features').value=(plan.features||[]).join('\n');
     document.getElementById('f-extrasBasic').value=(plan.extrasBasic||[]).join('\n');
     document.getElementById('f-extrasComplete').value=(plan.extrasComplete||[]).join('\n');
+    document.getElementById('f-chariow-basic').value=plan.chariow_basic_id||'';
+    document.getElementById('f-chariow-complete').value=plan.chariow_complete_id||'';
     if(plan.video_url){ existingVideoUrl=plan.video_url; }
     renderCurrentVideo();
     if(plan.pdf_basic_url){ existingPdfUrl=plan.pdf_basic_url; }
@@ -1057,6 +1078,8 @@ async function savePlan(e){
       extrasBasic:toLines(document.getElementById('f-extrasBasic').value),
       extrasComplete:toLines(document.getElementById('f-extrasComplete').value),
       images:imageUrls,
+      chariow_basic_id:document.getElementById('f-chariow-basic').value.trim()||null,
+      chariow_complete_id:document.getElementById('f-chariow-complete').value.trim()||null,
     };
     // PDF : nouveau upload > suppression > URL existante
     if(pdfUrl) planData.pdf_basic_url=pdfUrl;

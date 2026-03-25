@@ -1018,11 +1018,12 @@ async function submitCheckout(e){
   const rawPhone = document.getElementById('co-ph').value.trim();
   const countryCode = document.getElementById('co-cc') ? document.getElementById('co-cc').value : 'CM';
 
-  // Chariow product IDs (type: downloadable)
-  const PRODUCT_ID = p.type === 'villa' ? 'prd_p82tf6' : 'prd_stb3yx';
-  const FALLBACK_URL = p.type === 'villa'
-    ? 'https://wooplans.mychariow.shop/prd_p82tf6'
-    : 'https://wooplans.mychariow.shop/prd_stb3yx';
+  // Chariow product IDs — spécifique au plan, sinon fallback générique par type
+  const genericId = p.type === 'villa' ? 'prd_p82tf6' : 'prd_stb3yx';
+  const PRODUCT_ID = isBasic
+    ? (p.chariow_basic_id || genericId)
+    : (p.chariow_complete_id || genericId);
+  const FALLBACK_URL = 'https://wooplans.mychariow.shop/' + PRODUCT_ID;
 
   // Netlify domain
   const NETLIFY_DOMAIN = 'wooplanscatalog.netlify.app';
