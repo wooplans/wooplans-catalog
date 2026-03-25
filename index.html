@@ -252,9 +252,23 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .voir-exemple-link svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.8;fill:none;flex-shrink:0}
 .trust-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.74rem;color:var(--gris)}
 .trust-note svg{width:12px;height:12px;stroke:var(--vert);fill:none;stroke-width:2}
-.whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:13px;background:#25D366;color:#fff;font-size:.86rem;font-weight:600;text-decoration:none;border-radius:4px;transition:background .2s,transform .2s;margin-top:0}
+.whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:14px 20px;background:#25D366;color:#fff;font-size:.86rem;font-weight:600;text-decoration:none;border-radius:4px;transition:background .2s,transform .2s}
 .whatsapp-btn:hover{background:#1da851;transform:translateY(-1px)}
 .whatsapp-btn svg{width:20px;height:20px;flex-shrink:0}
+
+/* ── FAQ ── */
+.faq-section{margin-top:40px;padding-top:36px;border-top:1px solid var(--creme-3)}
+.faq-section-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;color:var(--brun);margin-bottom:20px;letter-spacing:.01em}
+.faq-item{border-bottom:1px solid var(--creme-2)}
+.faq-item summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;cursor:pointer;font-size:.9rem;font-weight:600;color:var(--brun);user-select:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary .faq-icon{flex-shrink:0;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--or);display:flex;align-items:center;justify-content:center;transition:background .2s,transform .25s}
+.faq-item summary .faq-icon svg{width:10px;height:10px;stroke:var(--or);stroke-width:2.5;fill:none;transition:transform .25s}
+.faq-item[open] summary .faq-icon{background:var(--or)}
+.faq-item[open] summary .faq-icon svg{stroke:var(--brun);transform:rotate(45deg)}
+.faq-item[open] summary{color:var(--terre)}
+.faq-answer{padding:0 0 18px;font-size:.875rem;color:var(--gris-fonce);line-height:1.75;max-width:560px}
+.faq-whatsapp-wrap{margin-top:28px}
 
 /* ── STICKY BAR MOBILE ── */
 .sticky-bar{
@@ -498,6 +512,58 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         </div>
         <p class="det-desc" id="det-desc">—</p>
         <ul class="det-features" id="det-features"></ul>
+
+        <!-- FAQ -->
+        <section class="faq-section">
+          <h3 class="faq-section-title">Questions fréquentes</h3>
+
+          <details class="faq-item">
+            <summary>
+              Comment recevoir mon plan après l'achat ?
+              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            </summary>
+            <p class="faq-answer">Le <strong>Plan Basique</strong> est envoyé instantanément par email après validation du paiement. Vous recevez un lien de téléchargement sécurisé directement dans votre boîte mail. Pour le <strong>Plan Complet</strong>, notre équipe vous livre l'ensemble des documents sous <strong>3 à 5 jours ouvrés</strong> via email ou WhatsApp.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              Puis-je personnaliser ce plan selon mes besoins ?
+              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            </summary>
+            <p class="faq-answer">Oui, tous nos plans sont personnalisables. Nous pouvons adapter la surface, le nombre de chambres, l'orientation ou les finitions. Contactez-nous sur WhatsApp avec vos contraintes (budget, terrain, préférences) et nous vous ferons une proposition sur mesure.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              Quels moyens de paiement sont acceptés ?
+              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            </summary>
+            <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN MoMo, Orange Money) disponible dans toute l'Afrique francophone. Pour les Plans Complets, un paiement par virement bancaire est également possible — contactez-nous pour les coordonnées.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              Que contient exactement le Plan Basique ?
+              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            </summary>
+            <p class="faq-answer">Le Plan Basique inclut : le <strong>plan de distribution avec cotes</strong> (RDC et étage le cas échéant), les <strong>façades extérieures</strong>, des <strong>rendus 3D</strong> de l'extérieur, et un <strong>devis estimatif</strong> des travaux de la fondation aux finitions. C'est le document idéal pour valider votre projet avant de passer à la construction.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              Le plan est-il adapté à mon terrain ?
+              <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            </summary>
+            <p class="faq-answer">Nos plans sont conçus pour des terrains plats standards. Pour un terrain en pente, de forme particulière ou avec des contraintes spécifiques (lotissement, permis de construire), une adaptation est nécessaire. Partagez-nous les dimensions de votre terrain et nous évaluerons ensemble les ajustements à prévoir.</p>
+          </details>
+
+          <div class="faq-whatsapp-wrap">
+            <a class="whatsapp-btn" href="https://wa.me/237694327885?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20plan%20" id="whatsapp-link" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+              Une question ? Ecrivez-nous sur WhatsApp
+            </a>
+          </div>
+        </section>
       </div>
 
       <!-- SIDEBAR -->
@@ -534,14 +600,10 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
             <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Telecharger maintenant
           </button>
-          <div class="trust-note" style="margin-bottom:18px">
+          <div class="trust-note" style="margin-bottom:22px">
             <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             Paiement securise &middot; Mobile Money
           </div>
-          <a class="whatsapp-btn" href="https://wa.me/237694327885?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20plan%20" id="whatsapp-link" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
-            Des questions ? Ecrivez-nous sur WhatsApp
-          </a>
 
           <!-- SEPARATEUR -->
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
