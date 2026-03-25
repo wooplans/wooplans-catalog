@@ -384,8 +384,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
               <input type="file" id="f-pdf" accept=".pdf" style="padding:8px">
             </div>
             <div class="form-group">
-              <label>URL video Bunny CDN (optionnel)</label>
-              <input type="text" id="f-video" placeholder="https://wooplans.b-cdn.net/v3-020.mp4">
+              <label>Video (optionnel)</label>
+              <input type="file" id="f-video" accept="video/*" style="padding:8px">
+              <div id="current-video" style="font-size:.8rem;color:var(--gris);margin-top:4px"></div>
             </div>
           </div>
           <div id="current-pdf" style="font-size:.8rem;color:var(--gris);margin-top:4px"></div>
@@ -423,11 +424,28 @@ const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const ADMIN_PW='wooplans2024';
 const _supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
+// ── BUNNY CDN ──
+const BUNNY_STORAGE_ZONE='mes-videos-storage';
+const BUNNY_API_KEY='59ce304f-8b15-4549-a924-1a552a3b5f5f2b1cc6ba-aba2-4fc7-a1c2-26e9ca468e96';
+const BUNNY_STORAGE_URL='https://storage.bunnycdn.com/'+BUNNY_STORAGE_ZONE;
+const BUNNY_CDN_URL='https://wooplans.b-cdn.net';
+
+async function uploadToBunny(file,path){
+  const res=await fetch(BUNNY_STORAGE_URL+'/'+path,{
+    method:'PUT',
+    headers:{'AccessKey':BUNNY_API_KEY,'Content-Type':file.type||'application/octet-stream'},
+    body:file
+  });
+  if(!res.ok) throw new Error('Bunny upload failed: '+res.status);
+  return BUNNY_CDN_URL+'/'+path;
+}
+
 const DEFAULTS={villa:{basic:'14 900',complete:'149 000'},duplex:{basic:'24 900',complete:'249 000'}};
 
 let plans=[];
 let imageFiles=[];
 let existingImageUrls=[];
+let existingVideoUrl=null;
 let selectedIds=new Set();
 
 // ── AUTH ──
@@ -653,6 +671,7 @@ document.getElementById('f-type').addEventListener('change',function(){
 function openModal(plan){
   imageFiles=[];
   existingImageUrls=[];
+  existingVideoUrl=null;
   document.getElementById('plan-form').reset();
   document.getElementById('f-id').value='';
   document.getElementById('f-rating').value='4.8';
@@ -660,6 +679,7 @@ function openModal(plan){
   document.getElementById('f-status').checked=true;
   document.getElementById('img-previews').innerHTML='';
   document.getElementById('current-pdf').textContent='';
+  document.getElementById('current-video').innerHTML='';
   // Set defaults
   const d=DEFAULTS.villa;
   document.getElementById('f-priceBasic').value=d.basic;
@@ -684,7 +704,10 @@ function openModal(plan){
     document.getElementById('f-features').value=(plan.features||[]).join('\n');
     document.getElementById('f-extrasBasic').value=(plan.extrasBasic||[]).join('\n');
     document.getElementById('f-extrasComplete').value=(plan.extrasComplete||[]).join('\n');
-    document.getElementById('f-video').value=plan.video_url||'';
+    if(plan.video_url){
+      existingVideoUrl=plan.video_url;
+      document.getElementById('current-video').innerHTML='Video actuelle : <a href="'+plan.video_url+'" target="_blank" style="color:var(--terre)">Voir la video</a>';
+    }
     if(plan.pdf_basic_url){
       document.getElementById('current-pdf').innerHTML='PDF actuel : <a href="'+plan.pdf_basic_url+'" target="_blank" style="color:var(--terre)">Voir le PDF</a>';
     }
@@ -738,17 +761,17 @@ function renderImagePreviews(){
 }
 function removeExistingImg(idx){existingImageUrls.splice(idx,1);renderImagePreviews()}
 
-// ── UPLOAD ──
+// ── UPLOAD (Bunny CDN) ──
 async function uploadImages(planId){
   const urls=[...existingImageUrls];
   for(let i=0;i<imageFiles.length;i++){
     const file=imageFiles[i];
     const ext=file.name.split('.').pop().toLowerCase();
-    const path=`${planId}/img-${Date.now()}-${i}.${ext}`;
-    const{error}=await _supabase.storage.from('plan-images').upload(path,file,{upsert:true,contentType:file.type});
-    if(error){console.error(error);showToast('Erreur upload image');continue}
-    const{data}=_supabase.storage.from('plan-images').getPublicUrl(path);
-    urls.push(data.publicUrl);
+    const path=`images/${planId}/img-${Date.now()}-${i}.${ext}`;
+    try{
+      const url=await uploadToBunny(file,path);
+      urls.push(url);
+    }catch(err){console.error(err);showToast('Erreur upload image '+(i+1));}
   }
   return urls;
 }
@@ -756,11 +779,20 @@ async function uploadPdf(planId){
   const fi=document.getElementById('f-pdf');
   if(!fi.files.length)return null;
   const file=fi.files[0];
-  const path=`${planId}/plan-${Date.now()}.pdf`;
-  const{error}=await _supabase.storage.from('plan-pdfs').upload(path,file,{upsert:true,contentType:'application/pdf'});
-  if(error){console.error(error);showToast('Erreur upload PDF');return null}
-  const{data}=_supabase.storage.from('plan-pdfs').getPublicUrl(path);
-  return data.publicUrl;
+  const path=`pdfs/${planId}/plan-${Date.now()}.pdf`;
+  try{
+    return await uploadToBunny(file,path);
+  }catch(err){console.error(err);showToast('Erreur upload PDF');return null}
+}
+async function uploadVideo(planId){
+  const fi=document.getElementById('f-video');
+  if(!fi.files.length)return null;
+  const file=fi.files[0];
+  const ext=file.name.split('.').pop().toLowerCase();
+  const path=`videos/${planId}/video-${Date.now()}.${ext}`;
+  try{
+    return await uploadToBunny(file,path);
+  }catch(err){console.error(err);showToast('Erreur upload video');return null}
 }
 
 // ── SAVE ──
@@ -777,6 +809,7 @@ async function savePlan(e){
     const planId=isEdit?id:crypto.randomUUID();
     const imageUrls=await uploadImages(planId);
     const pdfUrl=await uploadPdf(planId);
+    const videoUrl=await uploadVideo(planId);
     const toLines=v=>(v||'').split('\n').map(s=>s.trim()).filter(Boolean);
 
     const planData={
@@ -797,8 +830,9 @@ async function savePlan(e){
       extrasBasic:toLines(document.getElementById('f-extrasBasic').value),
       extrasComplete:toLines(document.getElementById('f-extrasComplete').value),
       images:imageUrls,
-      video_url:document.getElementById('f-video').value.trim()||null,
     };
+    if(videoUrl) planData.video_url=videoUrl;
+    else if(!document.getElementById('f-video').files.length) planData.video_url=existingVideoUrl||null;
     if(pdfUrl) planData.pdf_basic_url=pdfUrl;
 
     if(isEdit){
@@ -834,10 +868,7 @@ document.getElementById('btn-confirm-del').addEventListener('click',async()=>{
   const btn=document.getElementById('btn-confirm-del');
   btn.textContent='Suppression...';btn.disabled=true;
   try{
-    const{data:imgFiles}=await _supabase.storage.from('plan-images').list(deleteId);
-    if(imgFiles&&imgFiles.length) await _supabase.storage.from('plan-images').remove(imgFiles.map(f=>deleteId+'/'+f.name));
-    const{data:pdfFiles}=await _supabase.storage.from('plan-pdfs').list(deleteId);
-    if(pdfFiles&&pdfFiles.length) await _supabase.storage.from('plan-pdfs').remove(pdfFiles.map(f=>deleteId+'/'+f.name));
+    // Fichiers sur Bunny CDN — pas de suppression auto (stockage minimal)
     const{error}=await _supabase.from('plans').delete().eq('id',deleteId);
     if(error)throw error;
     showToast('Plan supprime');

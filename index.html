@@ -468,6 +468,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
     <div class="det-gallery">
       <div class="gal-main" id="gal-main">
         <img class="gal-img" id="gal-img" src="" alt="">
+        <video class="gal-img" id="gal-video" src="" controls playsinline style="display:none"></video>
         <div class="gal-counter" id="gal-counter">1 / 4</div>
         <div class="gal-nav">
           <button class="gal-btn" onclick="galNav(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -832,24 +833,49 @@ function closeDetail(){
 }
 
 // ── GALERIE ──────────────────────────────────────────────────
+let galMedia=[];// {type:'image'|'video', src:'...'}
+
 function renderGallery(){
-  const imgs=currentPlan.images||[];
+  galMedia=[];
+  // Video en premier si disponible
+  if(currentPlan.video_url){
+    galMedia.push({type:'video',src:currentPlan.video_url});
+  }
+  (currentPlan.images||[]).forEach(function(s){
+    galMedia.push({type:'image',src:s});
+  });
   setImg(0);
-  document.getElementById('gal-thumbs').innerHTML=imgs.map((s,i)=>`
-    <div class="gal-thumb ${i===0?'active':''}" onclick="setImg(${i})">
-      <img src="${s}" alt="" loading="lazy">
-    </div>
-  `).join('');
+  document.getElementById('gal-thumbs').innerHTML=galMedia.map(function(m,i){
+    if(m.type==='video'){
+      return '<div class="gal-thumb '+(i===0?'active':'')+'" onclick="setImg('+i+')">' +
+        '<div style="width:100%;height:100%;background:var(--brun);display:flex;align-items:center;justify-content:center">' +
+        '<svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--or);stroke:none"><polygon points="5 3 19 12 5 21"/></svg></div></div>';
+    }
+    return '<div class="gal-thumb '+(i===0?'active':'')+'" onclick="setImg('+i+')">' +
+      '<img src="'+m.src+'" alt="" loading="lazy"></div>';
+  }).join('');
 }
 
 function setImg(i){
-  const imgs=currentPlan.images||[];
-  imgIdx=(i+imgs.length)%imgs.length;
-  const el=document.getElementById('gal-img');
-  el.style.opacity='0';
-  setTimeout(()=>{el.src=imgs[imgIdx];el.style.opacity='1';},200);
-  document.getElementById('gal-counter').textContent=(imgIdx+1)+' / '+imgs.length;
-  document.querySelectorAll('.gal-thumb').forEach((t,j)=>t.classList.toggle('active',j===imgIdx));
+  if(!galMedia.length)return;
+  imgIdx=(i+galMedia.length)%galMedia.length;
+  var m=galMedia[imgIdx];
+  var imgEl=document.getElementById('gal-img');
+  var vidEl=document.getElementById('gal-video');
+  if(m.type==='video'){
+    imgEl.style.display='none';
+    vidEl.style.display='block';
+    vidEl.src=m.src;
+    vidEl.style.opacity='1';
+  } else {
+    vidEl.style.display='none';
+    vidEl.pause();
+    imgEl.style.display='block';
+    imgEl.style.opacity='0';
+    setTimeout(function(){imgEl.src=m.src;imgEl.style.opacity='1';},200);
+  }
+  document.getElementById('gal-counter').textContent=(imgIdx+1)+' / '+galMedia.length;
+  document.querySelectorAll('.gal-thumb').forEach(function(t,j){t.classList.toggle('active',j===imgIdx)});
 }
 
 function galNav(d){setImg(imgIdx+d)}
