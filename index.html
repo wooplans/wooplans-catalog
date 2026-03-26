@@ -358,6 +358,9 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   .det-title{font-size:1.6rem}
 }
 </style>
+<!-- Meta Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1651374605332302');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1651374605332302&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -828,6 +831,15 @@ function toggleSave(id,btn){
 function openDetail(id){
   currentPlan=plans.find(p=>p.id===id);
   if(!currentPlan)return;
+  // Meta Pixel — ViewContent
+  if(typeof fbq!=='undefined') fbq('track','ViewContent',{
+    content_ids:[currentPlan.id],
+    content_name:currentPlan.title,
+    content_type:'product',
+    content_category:currentPlan.type,
+    currency:'XAF',
+    value:parseFloat((currentPlan.priceBasic||'0').replace(/\s/g,''))||0
+  });
   imgIdx=0; selectedOpt=1; ddOpen=false;
 
   document.getElementById('det-title').textContent=currentPlan.title;
@@ -993,6 +1005,18 @@ function toggleDd(n){
 function openCheckout(){
   if(!currentPlan)return;
   const isB=selectedOpt===1;
+  // Meta Pixel — InitiateCheckout
+  if(typeof fbq!=='undefined'){
+    const price=parseFloat(((isB?currentPlan.priceBasic:currentPlan.priceComplete)||'0').replace(/\s/g,''))||0;
+    fbq('track','InitiateCheckout',{
+      content_ids:[currentPlan.id],
+      content_name:currentPlan.title,
+      content_type:'product',
+      currency:'XAF',
+      value:price,
+      num_items:1
+    });
+  }
   document.getElementById('co-plan').textContent=currentPlan.title;
   document.getElementById('co-pkg').textContent=isB?'Plan Basique + Devis \u00b7 Telechargement instantane':'Plans Complets \u00b7 Livraison 3-5 jours';
   document.getElementById('co-sum-lbl').textContent=isB?'Plan Basique + Devis':'Plans Complets';
@@ -1026,7 +1050,7 @@ async function submitCheckout(e){
   const FALLBACK_URL = 'https://wooplans.mychariow.shop/' + PRODUCT_ID;
 
   // Netlify domain
-  const SITE_DOMAIN = 'wooplans-catalog.pages.dev';
+  const SITE_DOMAIN = 'shop.wooplans.com';
 
   try {
     const res = await fetch(SUPABASE_URL + '/functions/v1/chariow-checkout', {
