@@ -968,10 +968,10 @@ function renderGrid(list){
   const g=document.getElementById('plans-grid');
   g.classList.add('loaded'); // supprime min-height réservée → évite CLS résiduel
   if(!list.length){g.innerHTML='<p style="color:var(--gris);grid-column:1/-1;text-align:center;padding:40px 0">Aucun plan dans cette categorie.</p>';return}
-  g.innerHTML=list.map(p=>`
+  g.innerHTML=list.map((p,idx)=>`
     <div class="plan-card" onclick="openDetail('${p.id}')">
       <div class="card-img-wrap">
-        <img class="card-img" src="${thumbUrl(p.images[0])}" alt="${p.title}" loading="lazy" width="340" height="255">
+        <img class="card-img" src="${thumbUrl(p.images[0])}" alt="${p.title}" ${idx===0?'fetchpriority="high" loading="eager"':'loading="lazy"'} width="340" height="255">
         <span class="card-badge ${p.type==='villa'?'badge-villa':'badge-duplex'}">${p.type}</span>
         <button class="card-save ${saved.includes(p.id)?'saved':''}" onclick="event.stopPropagation();toggleSave('${p.id}',this)" title="Sauvegarder">
           <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -1188,11 +1188,11 @@ function setImg(i, immediate){
     imgEl.style.display='block';
     if(immediate){
       // Pas d'animation pour la première image : LCP visible immédiatement
-      imgEl.src=m.src;
+      imgEl.src=thumbUrl(m.src,900);
       imgEl.style.opacity='1';
     } else {
       imgEl.style.opacity='0';
-      setTimeout(function(){imgEl.src=m.src;imgEl.style.opacity='1';},200);
+      setTimeout(function(){imgEl.src=thumbUrl(m.src,900);imgEl.style.opacity='1';},200);
     }
   }
   document.getElementById('gal-counter').textContent=(imgIdx+1)+' / '+galMedia.length;

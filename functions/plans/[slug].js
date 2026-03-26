@@ -18,6 +18,12 @@ function esc(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+// Miroir de thumbUrl() côté client — optimise les images Bunny CDN pour le preload LCP
+function galThumbUrl(src, w) {
+  if (!src || !src.includes('b-cdn.net')) return src;
+  return src + '?width=' + (w || 900) + '&quality=80&format=webp';
+}
+
 export async function onRequest({ request, env, params }) {
   const slug = params.slug;
 
@@ -43,12 +49,13 @@ export async function onRequest({ request, env, params }) {
 
     // 3. Prépare l'injection
     const firstImage = plan?.images?.[0] ?? '';
+    const firstImageOpt = galThumbUrl(firstImage, 900); // URL optimisée Bunny CDN (WebP 900px)
     const safeAllPlans = JSON.stringify(allPlans).replace(/<\/script>/gi, '<\\/script>');
     const safePlan = JSON.stringify(plan || null).replace(/<\/script>/gi, '<\\/script>');
 
     const injection = [
-      // Preload image LCP avec priorité maximale
-      firstImage ? `<link rel="preload" as="image" href="${esc(firstImage)}" fetchpriority="high">` : '',
+      // Preload image LCP avec priorité maximale — URL optimisée pour correspondre à setImg()
+      firstImage ? `<link rel="preload" as="image" href="${esc(firstImageOpt)}" fetchpriority="high">` : '',
       // Données pré-injectées — évite la requête Supabase côté client
       `<script>window.__ALL_PLANS__=${safeAllPlans};window.__INITIAL_PLAN__=${safePlan};</script>`,
     ].filter(Boolean).join('\n');
@@ -66,7 +73,7 @@ export async function onRequest({ request, env, params }) {
         .replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`)
         .replace(/(id="meta-og-title"[^>]+content=")[^"]*(")/,  `$1${esc(title)}$2`)
         .replace(/(id="meta-og-description"[^>]+content=")[^"]*(")/,  `$1${esc(desc)}$2`)
-        .replace(/(id="meta-og-image"[^>]+content=")[^"]*(")/,  `$1${esc(firstImage)}$2`)
+        .replace(/(id="meta-og-image"[^>]+content=")[^"]*(")/,  `$1${esc(firstImageOpt)}$2`)
         .replace(/(id="meta-og-url"[^>]+content=")[^"]*(")/,  `$1${canonUrl}$2`)
         .replace(/(id="meta-canonical"[^>]+href=")[^"]*(")/,  `$1${canonUrl}$2`);
     }
