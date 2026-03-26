@@ -275,6 +275,18 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .whatsapp-btn:hover{background:#1da851;transform:translateY(-1px)}
 .whatsapp-btn svg{width:20px;height:20px;flex-shrink:0}
 
+/* ── PARTAGE SOCIAL ── */
+.share-row{display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--creme-3)}
+.share-label{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gris);font-weight:500;margin-right:4px;white-space:nowrap}
+.share-btn{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1.5px solid var(--creme-3);background:var(--blanc);cursor:pointer;transition:background .2s,border-color .2s,transform .18s;text-decoration:none;color:var(--brun);flex-shrink:0}
+.share-btn:hover{transform:translateY(-2px);border-color:var(--or);background:var(--orange-bg)}
+.share-btn svg{width:16px;height:16px;flex-shrink:0;fill:currentColor}
+.share-btn.share-wa{color:#25D366}
+.share-btn.share-fb{color:#1877F2}
+.share-btn.share-x{color:#000}
+.share-btn.share-copy{color:var(--terre)}
+.share-copy-ok{border-color:var(--vert)!important;background:var(--vert-bg)!important;color:var(--vert)!important}
+
 /* ── FAQ ── */
 .faq-section{margin-top:40px;padding-top:36px;border-top:1px solid var(--creme-3)}
 .faq-section-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;color:var(--brun);margin-bottom:20px;letter-spacing:.01em}
@@ -673,6 +685,27 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
           Une question ? Ecrivez-nous sur WhatsApp
         </a>
+
+        <!-- PARTAGE SOCIAL -->
+        <div class="share-row">
+          <span class="share-label">Partager</span>
+          <!-- WhatsApp -->
+          <a class="share-btn share-wa" id="share-wa" href="#" target="_blank" rel="noopener" title="Partager sur WhatsApp">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+          </a>
+          <!-- Facebook -->
+          <a class="share-btn share-fb" id="share-fb" href="#" target="_blank" rel="noopener" title="Partager sur Facebook">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+          </a>
+          <!-- X / Twitter -->
+          <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener" title="Partager sur X">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <!-- Copier le lien -->
+          <button class="share-btn share-copy" id="share-copy" onclick="copyPlanLink()" title="Copier le lien">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -1020,11 +1053,39 @@ function openDetail(id,skipPush){
   // Afficher sticky bar mobile
   var sb=document.getElementById('sticky-bar');
   if(sb) sb.style.display='flex';
-  // Mettre a jour le lien WhatsApp avec le nom du plan
+  // Mettre a jour le lien WhatsApp contact
   var waLink=document.getElementById('whatsapp-link');
   if(waLink){
     var msg=encodeURIComponent('Bonjour, question sur le plan : '+currentPlan.title);
     waLink.href='https://wa.me/237694327885?text='+msg;
+  }
+  // Partage social — URLs dynamiques
+  var planUrl=SITE_ORIGIN+'/plans/'+slugify(currentPlan.title);
+  var shareText=encodeURIComponent('Découvrez ce plan de maison : '+currentPlan.title+' — '+planUrl);
+  var sWa=document.getElementById('share-wa');
+  var sFb=document.getElementById('share-fb');
+  var sX =document.getElementById('share-x');
+  var sCp=document.getElementById('share-copy');
+  if(sWa) sWa.href='https://wa.me/?text='+shareText;
+  if(sFb) sFb.href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(planUrl);
+  if(sX)  sX.href='https://x.com/intent/tweet?text='+shareText;
+  if(sCp) sCp.classList.remove('share-copy-ok');
+}
+
+function copyPlanLink(){
+  if(!currentPlan)return;
+  var url=SITE_ORIGIN+'/plans/'+slugify(currentPlan.title);
+  var btn=document.getElementById('share-copy');
+  function onCopied(){
+    if(btn){btn.classList.add('share-copy-ok');setTimeout(function(){btn.classList.remove('share-copy-ok');},2000);}
+    showToast('Lien copié !');
+  }
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(onCopied);
+  } else {
+    var ta=document.createElement('textarea');
+    ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    onCopied();
   }
 }
 
