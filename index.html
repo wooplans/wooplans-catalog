@@ -432,7 +432,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
     </div>
   </div>
   <div class="hero-right">
-    <img class="hero-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=75&auto=format" alt="Villa moderne" loading="eager">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=75&auto=format" alt="Villa moderne" loading="lazy">
     <div class="hero-badge">
       <div class="badge-main">Telechargement instantane</div>
       <div class="badge-sub">Paiement Mobile Money</div>
@@ -870,30 +870,44 @@ let selectedOpt = 1;
 let imgIdx = 0;
 let ddOpen = false;
 
+// ── FAST PATH : exécuté immédiatement, sans attendre le load event ──────────
+// Le script est en fin de body donc le DOM est déjà prêt.
+// Si les données SSR sont disponibles, on lance fetchPlans() tout de suite
+// pour que le panneau de détail s'ouvre dès que possible (LCP critique).
+if (window.__ALL_PLANS__ && window.__ALL_PLANS__.length) {
+  document.getElementById('loader').classList.add('hidden');
+  fetchPlans();
+}
+
+// ── Listeners navigation (enregistrés immédiatement — DOM prêt) ──────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20);
+},{passive:true});
+window.addEventListener('popstate',()=>{
+  const overlay=document.getElementById('detail-overlay');
+  const pathMatch=location.pathname.match(/^\/plans\/(.+)$/);
+  if(pathMatch){
+    const match=plans.find(p=>slugify(p.title)===pathMatch[1]);
+    if(match) openDetail(match.id,true);
+  } else if(location.hash){
+    const match=plans.find(p=>slugify(p.title)===location.hash.slice(1));
+    if(match) openDetail(match.id,true);
+  } else if(overlay.classList.contains('open')){
+    overlay.classList.remove('open');
+    document.body.style.overflow='';
+    var sb=document.getElementById('sticky-bar');
+    if(sb) sb.style.display='none';
+    resetMetaTags();
+  }
+});
+
 // ── INIT ─────────────────────────────────────────────────────
 window.addEventListener('load',()=>{
   document.getElementById('loader').classList.add('hidden');
-  fetchPlans();
-  window.addEventListener('scroll',()=>{
-    document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20);
-  },{passive:true});
-  window.addEventListener('popstate',()=>{
-    const overlay=document.getElementById('detail-overlay');
-    const pathMatch=location.pathname.match(/^\/plans\/(.+)$/);
-    if(pathMatch){
-      const match=plans.find(p=>slugify(p.title)===pathMatch[1]);
-      if(match) openDetail(match.id,true);
-    } else if(location.hash){
-      const match=plans.find(p=>slugify(p.title)===location.hash.slice(1));
-      if(match) openDetail(match.id,true);
-    } else if(overlay.classList.contains('open')){
-      overlay.classList.remove('open');
-      document.body.style.overflow='';
-      var sb=document.getElementById('sticky-bar');
-      if(sb) sb.style.display='none';
-      resetMetaTags();
-    }
-  });
+  // Si le fast path n'a pas encore lancé fetchPlans() (pas de SSR data)
+  if (!window.__ALL_PLANS__ || !window.__ALL_PLANS__.length) {
+    fetchPlans();
+  }
 });
 
 // ── SLUG (URL routing) ────────────────────────────────────────
@@ -1146,7 +1160,7 @@ function renderGallery(){
   (currentPlan.images||[]).forEach(function(s){
     galMedia.push({type:'image',src:s});
   });
-  setImg(0);
+  setImg(0, true); // immediate=true → LCP visible sans délai
   document.getElementById('gal-thumbs').innerHTML=galMedia.map(function(m,i){
     if(m.type==='video'){
       return '<div class="gal-thumb '+(i===0?'active':'')+'" onclick="setImg('+i+')">' +
@@ -1154,11 +1168,11 @@ function renderGallery(){
         '<svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--or);stroke:none"><polygon points="5 3 19 12 5 21"/></svg></div></div>';
     }
     return '<div class="gal-thumb '+(i===0?'active':'')+'" onclick="setImg('+i+')">' +
-      '<img src="'+m.src+'" alt="" loading="lazy"></div>';
+      '<img src="'+thumbUrl(m.src,160)+'" alt="" loading="lazy" width="78" height="58"></div>';
   }).join('');
 }
 
-function setImg(i){
+function setImg(i, immediate){
   if(!galMedia.length)return;
   imgIdx=(i+galMedia.length)%galMedia.length;
   var m=galMedia[imgIdx];
@@ -1173,8 +1187,14 @@ function setImg(i){
     vidEl.style.display='none';
     vidEl.pause();
     imgEl.style.display='block';
-    imgEl.style.opacity='0';
-    setTimeout(function(){imgEl.src=m.src;imgEl.style.opacity='1';},200);
+    if(immediate){
+      // Pas d'animation pour la première image : LCP visible immédiatement
+      imgEl.src=m.src;
+      imgEl.style.opacity='1';
+    } else {
+      imgEl.style.opacity='0';
+      setTimeout(function(){imgEl.src=m.src;imgEl.style.opacity='1';},200);
+    }
   }
   document.getElementById('gal-counter').textContent=(imgIdx+1)+' / '+galMedia.length;
   document.querySelectorAll('.gal-thumb').forEach(function(t,j){t.classList.toggle('active',j===imgIdx)});
