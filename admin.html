@@ -209,6 +209,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .spinner{width:18px;height:18px;border:2px solid var(--creme-3);border-top-color:var(--or);border-radius:50%;animation:spin .6s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ── AI PREFILL ── */
+.ai-banner{border:1.5px dashed var(--or);background:var(--orange-bg);padding:16px 20px;margin-bottom:8px;border-radius:3px}
+.ai-banner-head{display:flex;align-items:center;gap:9px;font-weight:600;font-size:.92rem;color:var(--brun);margin-bottom:5px}
+.ai-banner-head svg{width:18px;height:18px;flex-shrink:0;fill:var(--or);stroke:none}
+.ai-banner-desc{font-size:.79rem;color:var(--gris-fonce);line-height:1.5;margin-bottom:12px}
+.ai-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ai-file-input{flex:1;min-width:0;font-size:.82rem;padding:7px 8px;border:1.5px solid var(--creme-3);background:var(--blanc);color:var(--brun);cursor:pointer}
+.ai-file-input::-webkit-file-upload-button{background:var(--creme-2);border:none;padding:5px 10px;font-size:.78rem;cursor:pointer;color:var(--brun);margin-right:10px}
+.btn-ai{background:var(--brun);color:var(--or);border:none;padding:9px 18px;font-size:.84rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;transition:background .2s;flex-shrink:0}
+.btn-ai:hover{background:var(--terre)}
+.btn-ai:disabled{opacity:.5;cursor:not-allowed}
+.btn-ai svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.ai-status{font-size:.8rem;padding:8px 12px;margin-top:10px;border-radius:2px;display:none;align-items:center;gap:7px}
+.ai-status.loading{display:flex;background:#EFF6FF;color:#1D4ED8}
+.ai-status.success{display:flex;background:var(--vert-bg);color:var(--vert);font-weight:500}
+.ai-status.error{display:flex;background:#FEF2F2;color:#DC2626}
+.ai-spin{width:14px;height:14px;border:2px solid #BFDBFE;border-top-color:#1D4ED8;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+
 @media(max-width:600px){
   .toolbar,.filters,.analytics{padding-left:16px;padding-right:16px}
   .grid{padding:0 16px 24px;grid-template-columns:1fr}
@@ -313,6 +331,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
     <div class="modal-body">
       <form id="plan-form" onsubmit="savePlan(event)">
         <input type="hidden" id="f-id">
+
+        <!-- IA PRÉ-REMPLISSAGE -->
+        <div class="ai-banner" id="ai-banner">
+          <div class="ai-banner-head">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+            Pré-remplir avec l'IA
+          </div>
+          <p class="ai-banner-desc">Chargez le PDF du plan — l'IA extrait automatiquement les données (titre, surface, chambres, pièces, description…). Vous pouvez tout modifier avant d'enregistrer.</p>
+          <div class="ai-row">
+            <input type="file" id="ai-pdf-input" accept=".pdf" class="ai-file-input">
+            <button type="button" class="btn-ai" id="ai-btn" onclick="aiPrefill()">
+              <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Analyser
+            </button>
+          </div>
+          <div class="ai-status" id="ai-status"></div>
+        </div>
 
         <div class="form-section">
           <div class="form-section-title">Informations generales</div>
@@ -741,6 +776,91 @@ async function applyBulk(){
   document.getElementById('bulk-basic').value='';
   document.getElementById('bulk-complete').value='';
   await fetchPlans();
+}
+
+// ── AI PRÉ-REMPLISSAGE ──
+async function aiPrefill(){
+  const input=document.getElementById('ai-pdf-input');
+  const statusEl=document.getElementById('ai-status');
+  const btn=document.getElementById('ai-btn');
+
+  // Réinitialiser le statut
+  statusEl.className='ai-status';
+  statusEl.style.display='none';
+
+  if(!input.files.length){
+    statusEl.className='ai-status error';
+    statusEl.innerHTML='Veuillez sélectionner un fichier PDF.';
+    statusEl.style.display='flex';
+    return;
+  }
+  const file=input.files[0];
+  if(file.size>25*1024*1024){
+    statusEl.className='ai-status error';
+    statusEl.innerHTML='Fichier trop volumineux (max 25 Mo).';
+    statusEl.style.display='flex';
+    return;
+  }
+
+  btn.disabled=true;
+  statusEl.className='ai-status loading';
+  statusEl.innerHTML='<div class="ai-spin"></div>L\'IA analyse votre PDF… (10-20 secondes)';
+  statusEl.style.display='flex';
+
+  try {
+    // Lire le PDF en base64
+    const base64=await new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+      reader.onload=e=>resolve(e.target.result.split(',')[1]);
+      reader.onerror=reject;
+      reader.readAsDataURL(file);
+    });
+
+    // Appel Edge Function
+    const res=await fetch(`${SUPABASE_URL}/functions/v1/ai-prefill`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+SUPABASE_ANON_KEY,
+      },
+      body:JSON.stringify({pdfBase64:base64}),
+    });
+
+    const json=await res.json();
+    if(!res.ok||json.error) throw new Error(json.error||'Erreur serveur '+res.status);
+    const d=json.data;
+
+    // Remplir les champs
+    if(d.title)    document.getElementById('f-title').value=d.title;
+    if(d.type)     document.getElementById('f-type').value=d.type;
+    if(d.subtitle) document.getElementById('f-subtitle').value=d.subtitle;
+    if(d.area)     document.getElementById('f-area').value=d.area;
+    if(d.beds!=null)   document.getElementById('f-beds').value=d.beds;
+    if(d.baths!=null)  document.getElementById('f-baths').value=d.baths;
+    if(d.floors!=null) document.getElementById('f-floors').value=d.floors;
+    if(d.terrain){
+      const tv='à partir de '+d.terrain+' m²';
+      const sel=document.getElementById('f-terrain');
+      const opt=Array.from(sel.options).find(o=>o.value===tv);
+      if(opt) sel.value=opt.value;
+    }
+    if(d.description) document.getElementById('f-desc').value=d.description;
+    if(d.features&&d.features.length) document.getElementById('f-features').value=d.features.join('\n');
+    if(d.extrasBasic&&d.extrasBasic.length) document.getElementById('f-extrasBasic').value=d.extrasBasic.join('\n');
+    if(d.extrasComplete&&d.extrasComplete.length) document.getElementById('f-extrasComplete').value=d.extrasComplete.join('\n');
+
+    // Déclencher les prix par défaut selon le type
+    document.getElementById('f-type').dispatchEvent(new Event('change'));
+
+    statusEl.className='ai-status success';
+    statusEl.innerHTML='✓ Formulaire pré-rempli — vérifiez et modifiez avant d\'enregistrer.';
+
+  } catch(err){
+    statusEl.className='ai-status error';
+    statusEl.innerHTML='Erreur : '+err.message;
+  }
+
+  btn.disabled=false;
 }
 
 // ── PRICE STEPPER ──
