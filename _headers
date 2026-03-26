@@ -1,0 +1,22 @@
+# Headers pour optimiser les performances
+# https://developers.cloudflare.com/pages/platform/headers/
+
+# Toutes les pages - sécurité et compression
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# Pages de détail des plans - cache avec revalidation
+/plans/*
+  Cache-Control: public, max-age=60, stale-while-revalidate=3600
+  X-Robots-Tag: index, follow
+
+# Assets statiques - cache agressif (1 an)
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images Bunny CDN - cache long
+https://wooplans.b-cdn.net/*
+  Cache-Control: public, max-age=86400, immutable

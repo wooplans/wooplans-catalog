@@ -15,10 +15,6 @@
 <meta id="meta-og-url"         property="og:url"         content="https://shop.wooplans.com/">
 <meta id="meta-og-type"        property="og:type"        content="website">
 <link id="meta-canonical"      rel="canonical"            href="https://shop.wooplans.com/">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#1a1208">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <!-- Performance preconnects -->
 <link rel="preconnect" href="https://xlmwzvkqjnoijdldzrol.supabase.co" crossorigin>
 <link rel="preconnect" href="https://wooplans.b-cdn.net" crossorigin>
@@ -1634,53 +1630,6 @@ function showToast(msg){
   clearTimeout(tTimer);
   tTimer=setTimeout(()=>t.classList.remove('show'),3000);
 }
-
-// ── SERVICE WORKER ───────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('[SW] Registered:', reg.scope))
-      .catch(err => console.log('[SW] Registration failed:', err));
-  });
-}
-
-// ── PREFETCH INTELLIGENT ─────────────────────────────────────
-(function initPrefetch() {
-  const prefetched = new Set();
-  const prefetchDelay = 100;
-  let prefetchTimer = null;
-  
-  document.addEventListener('mouseover', (e) => {
-    const card = e.target.closest('.plan-card');
-    if (!card) return;
-    
-    const planId = card.getAttribute('onclick')?.match(/openDetail\('([^']+)'\)/)?.[1];
-    if (!planId || prefetched.has(planId)) return;
-    
-    clearTimeout(prefetchTimer);
-    prefetchTimer = setTimeout(() => {
-      if (!card.matches(':hover')) return;
-      prefetched.add(planId);
-      
-      const plan = plans.find(p => p.id === planId);
-      if (plan?.images?.[0]) {
-        const img = new Image();
-        img.src = thumbUrl(plan.images[0], 800);
-      }
-      
-      if ('IntersectionObserver' in window) {
-        const link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = '/plans/' + slugify(plan.title);
-        document.head.appendChild(link);
-      }
-    }, prefetchDelay);
-  }, { passive: true });
-  
-  document.addEventListener('mouseout', () => {
-    clearTimeout(prefetchTimer);
-  }, { passive: true });
-})();
 </script>
 <!-- Supabase JS — chargé de façon asynchrone en fin de body -->
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
