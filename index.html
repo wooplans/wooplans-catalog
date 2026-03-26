@@ -183,8 +183,13 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .det-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--brun);margin-bottom:8px;line-height:1.2}
 .det-subtitle{font-size:.95rem;color:var(--gris-fonce);margin-bottom:24px;line-height:1.6}
 .det-specs-row{display:flex;gap:20px;flex-wrap:wrap;padding:18px 0;border-top:1px solid var(--creme-2);border-bottom:1px solid var(--creme-2);margin-bottom:22px}
-.det-spec-lbl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:3px}
+.det-spec-lbl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:3px;display:flex;align-items:center;gap:5px}
 .det-spec-val{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:var(--brun)}
+/* info-bulle */
+.tooltip-wrap{position:relative;display:inline-flex;align-items:center}
+.tooltip-icon{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--gris-clair);color:var(--gris);font-size:.6rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:default;line-height:1;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.tooltip-box{position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);background:var(--brun);color:var(--or-pale);font-size:.72rem;font-weight:400;line-height:1.5;padding:8px 12px;border-radius:4px;white-space:nowrap;max-width:220px;white-space:normal;width:200px;z-index:50;pointer-events:none;opacity:0;transition:opacity .2s}
+.tooltip-wrap:hover .tooltip-box{opacity:1}
 .det-desc{font-size:.93rem;line-height:1.8;color:var(--gris-fonce);margin-bottom:22px}
 .det-features{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .det-features li{display:flex;align-items:flex-start;gap:8px;font-size:.88rem;color:var(--gris-fonce);line-height:1.5}
@@ -507,11 +512,21 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         <h2 class="det-title" id="det-title">—</h2>
         <p class="det-subtitle" id="det-subtitle">—</p>
         <div class="det-specs-row">
-          <div><div class="det-spec-lbl">Surface</div><div class="det-spec-val" id="det-area">—</div></div>
+          <div>
+            <div class="det-spec-lbl">
+              Surface
+              <span class="tooltip-wrap">
+                <span class="tooltip-icon">?</span>
+                <span class="tooltip-box">Surface totale bâtie (RDC + Étage pour les duplex)</span>
+              </span>
+            </div>
+            <div class="det-spec-val" id="det-area">—</div>
+          </div>
           <div><div class="det-spec-lbl">Chambres</div><div class="det-spec-val" id="det-beds">—</div></div>
           <div><div class="det-spec-lbl">Salles de bain</div><div class="det-spec-val" id="det-baths">—</div></div>
           <div><div class="det-spec-lbl">Niveaux</div><div class="det-spec-val" id="det-floors">—</div></div>
-          <div><div class="det-spec-lbl">Cout estime</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
+          <div id="det-terrain-wrap" style="display:none"><div class="det-spec-lbl">Terrain</div><div class="det-spec-val" id="det-terrain">—</div></div>
+          <div><div class="det-spec-lbl">Coût estimé</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
         </div>
         <p class="det-desc" id="det-desc">—</p>
         <ul class="det-features" id="det-features"></ul>
@@ -837,10 +852,30 @@ function openDetail(id){
   document.getElementById('det-title').textContent=currentPlan.title;
   document.getElementById('det-subtitle').textContent=currentPlan.subtitle;
   document.getElementById('det-area').textContent=currentPlan.area;
+
+  // Terrain
+  const terrainWrap=document.getElementById('det-terrain-wrap');
+  if(currentPlan.terrain){
+    document.getElementById('det-terrain').textContent=currentPlan.terrain;
+    terrainWrap.style.display='';
+  } else { terrainWrap.style.display='none'; }
+
   document.getElementById('det-beds').textContent=currentPlan.beds;
   document.getElementById('det-baths').textContent=currentPlan.baths;
   document.getElementById('det-floors').textContent=currentPlan.floors+(currentPlan.floors>1?' niveaux':' niveau');
-  document.getElementById('det-cost').textContent=currentPlan.cost;
+  // Coût estimé calculé automatiquement depuis la surface
+  (function(){
+    var area=currentPlan.area||'';
+    var m=area.match(/(\d[\d\s]*)/);
+    var sqm=m?parseFloat(m[1].replace(/\s/g,'')):0;
+    var costTxt='—';
+    if(sqm>0){
+      var lo=sqm*150000, hi=sqm*200000;
+      function fmtM(n){var v=n/1000000;return(v===Math.floor(v)?Math.floor(v):parseFloat(v.toFixed(1)))+' M';}
+      costTxt='de '+fmtM(lo)+' à '+fmtM(hi)+' Fcfa';
+    }
+    document.getElementById('det-cost').textContent=costTxt;
+  })();
   document.getElementById('det-rating').textContent=currentPlan.rating;
   document.getElementById('det-reviews').textContent=currentPlan.reviews+' avis';
   document.getElementById('det-desc').textContent=currentPlan.desc;

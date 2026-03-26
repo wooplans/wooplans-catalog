@@ -343,7 +343,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
           </div>
           <div class="form-row col-3">
             <div class="form-group"><label>Niveaux</label><input type="number" id="f-floors" min="1" value="1"></div>
-            <div class="form-group"><label>Cout construction</label><input type="text" id="f-cost" placeholder="22 911 990 FCFA"></div>
+            <div class="form-group">
+              <label>Terrain recommandé</label>
+              <select id="f-terrain">
+                <option value="">— Non précisé —</option>
+                <option value="à partir de 200 m²">à partir de 200 m²</option>
+                <option value="à partir de 300 m²">à partir de 300 m²</option>
+                <option value="à partir de 400 m²">à partir de 400 m²</option>
+                <option value="à partir de 500 m²">à partir de 500 m²</option>
+              </select>
+            </div>
             <div class="form-group"><label>Note (0-5)</label><input type="number" id="f-rating" min="0" max="5" step="0.1" value="4.8"></div>
           </div>
         </div>
@@ -808,7 +817,7 @@ function openModal(plan){
     document.getElementById('f-beds').value=plan.beds||'';
     document.getElementById('f-baths').value=plan.baths||'';
     document.getElementById('f-floors').value=plan.floors||1;
-    document.getElementById('f-cost').value=plan.cost||'';
+    document.getElementById('f-terrain').value=plan.terrain||'';
     document.getElementById('f-rating').value=plan.rating||4.8;
     document.getElementById('f-priceBasic').value=plan.priceBasic||'';
     document.getElementById('f-priceComplete').value=plan.priceComplete||'';
@@ -988,7 +997,7 @@ async function uploadImages(planSlug, stepOffset, totalSteps){
       const fileLabel=`Image ${uploadIdx+1} / ${n} — ${file.name}`;
       setProgress('Compression + upload des images...', fileLabel, ((stepOffset+uploadIdx)/totalSteps)*100);
       file=await compressImage(file);
-      const path=`${planSlug}/images/img-${Date.now()}-${uploadIdx}.jpg`;
+      const path=`${planSlug}/images/${planSlug}-img-${uploadIdx+1}.jpg`;
       try{
         const url=await uploadToBunnyXHR(file, path, pct=>{
           const overall=((stepOffset+uploadIdx+pct)/totalSteps)*100;
@@ -1005,7 +1014,7 @@ async function uploadPdf(planSlug, stepOffset, totalSteps){
   const fi=document.getElementById('f-pdf');
   if(!fi.files.length)return null;
   const file=fi.files[0];
-  const path=`${planSlug}/pdfs/plan-${Date.now()}.pdf`;
+  const path=`${planSlug}/pdfs/${planSlug}-plan.pdf`;
   setProgress('Upload du PDF...', file.name, (stepOffset/totalSteps)*100);
   try{
     return await uploadToBunnyXHR(file, path, pct=>{
@@ -1018,7 +1027,7 @@ async function uploadVideo(planSlug, stepOffset, totalSteps){
   if(!fi.files.length)return null;
   const file=fi.files[0];
   const ext=file.name.split('.').pop().toLowerCase();
-  const path=`${planSlug}/videos/video-${Date.now()}.${ext}`;
+  const path=`${planSlug}/videos/${planSlug}-video.${ext}`;
   setProgress('Upload de la vidéo...', file.name, (stepOffset/totalSteps)*100);
   try{
     return await uploadToBunnyXHR(file, path, pct=>{
@@ -1069,7 +1078,7 @@ async function savePlan(e){
       beds:parseInt(document.getElementById('f-beds').value)||0,
       baths:parseInt(document.getElementById('f-baths').value)||0,
       floors:parseInt(document.getElementById('f-floors').value)||1,
-      cost:document.getElementById('f-cost').value.trim(),
+      terrain:document.getElementById('f-terrain').value||null,
       priceBasic:document.getElementById('f-priceBasic').value.trim(),
       priceComplete:document.getElementById('f-priceComplete').value.trim(),
       rating:parseFloat(document.getElementById('f-rating').value)||4.8,
