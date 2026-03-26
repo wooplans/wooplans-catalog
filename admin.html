@@ -244,7 +244,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 <div class="analytics" id="analytics">
   <div class="analytics-title">Analytiques</div>
   <div class="kpi-row" id="kpi-row"></div>
-  <div class="price-row" id="price-row"></div>
 </div>
 
 <!-- TOOLBAR -->
@@ -599,13 +598,6 @@ function renderAnalytics(){
   const noImg=plans.filter(p=>!p.images||!p.images.length).length;
   const noPdf=plans.filter(p=>!p.pdf_basic_url).length;
 
-  const parseP=v=>parseInt(String(v||'0').replace(/\s/g,''))||0;
-  const avg=(list,field)=>{
-    const vals=list.map(p=>parseP(p[field])).filter(v=>v>0);
-    return vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0;
-  };
-  const fmt=n=>n.toLocaleString('fr-FR');
-
   document.getElementById('kpi-row').innerHTML=`
     <div class="kpi"><div class="kpi-val">${total}</div><div class="kpi-label">Total plans</div></div>
     <div class="kpi"><div class="kpi-val">${villas.length}</div><div class="kpi-label">Villas</div></div>
@@ -616,20 +608,6 @@ function renderAnalytics(){
     ${noPdf?`<div class="kpi alert"><div class="kpi-val">${noPdf}</div><div class="kpi-label">Sans PDF</div></div>`:''}
   `;
 
-  document.getElementById('price-row').innerHTML=`
-    <div class="price-box">
-      <div class="price-box-title">Prix moyen Basique</div>
-      <div class="price-line"><span>Villa</span><span>${fmt(avg(villas,'priceBasic'))} FCFA</span></div>
-      <div class="price-line"><span>Duplex</span><span>${fmt(avg(duplex,'priceBasic'))} FCFA</span></div>
-      <div class="price-line" style="border-top:1px solid var(--creme-2);margin-top:4px;padding-top:6px"><span>Global</span><span>${fmt(avg(plans,'priceBasic'))} FCFA</span></div>
-    </div>
-    <div class="price-box">
-      <div class="price-box-title">Prix moyen Complet</div>
-      <div class="price-line"><span>Villa</span><span>${fmt(avg(villas,'priceComplete'))} FCFA</span></div>
-      <div class="price-line"><span>Duplex</span><span>${fmt(avg(duplex,'priceComplete'))} FCFA</span></div>
-      <div class="price-line" style="border-top:1px solid var(--creme-2);margin-top:4px;padding-top:6px"><span>Global</span><span>${fmt(avg(plans,'priceComplete'))} FCFA</span></div>
-    </div>
-  `;
 }
 
 // ── FILTERS ──

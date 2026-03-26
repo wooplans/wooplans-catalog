@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WooPlans — Plans de Maison Premium</title>
 <meta name="description" content="Téléchargez instantanément votre plan de maison. Villas et duplex conçus pour l'Afrique.">
+<!-- Dynamic SEO / OG -->
+<meta id="meta-og-title"       property="og:title"       content="WooPlans — Plans de Maison Premium">
+<meta id="meta-og-description" property="og:description" content="Téléchargez instantanément votre plan de maison. Villas et duplex conçus pour l'Afrique.">
+<meta id="meta-og-image"       property="og:image"       content="">
+<meta id="meta-og-url"         property="og:url"         content="https://shop.wooplans.com/">
+<meta id="meta-og-type"        property="og:type"        content="website">
+<link id="meta-canonical"      rel="canonical"            href="https://shop.wooplans.com/">
+<!-- Performance preconnects -->
+<link rel="preconnect" href="https://xlmwzvkqjnoijdldzrol.supabase.co">
+<link rel="preconnect" href="https://wooplans.b-cdn.net">
+<link rel="dns-prefetch" href="https://connect.facebook.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
@@ -363,8 +374,13 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   .det-title{font-size:1.6rem}
 }
 </style>
-<!-- Meta Pixel -->
-<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1651374605332302');fbq('track','PageView');</script>
+<!-- Meta Pixel (chargé en différé pour ne pas bloquer le premier paint) -->
+<script>
+(window.requestIdleCallback||function(cb){setTimeout(cb,1)})(function(){
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','1651374605332302');fbq('track','PageView');
+},{timeout:3000});
+</script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1651374605332302&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
@@ -372,9 +388,9 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 <div id="loader"><div class="loader-logo">WooPlans</div></div>
 
 <nav id="nav">
-  <div class="nav-logo" onclick="scrollToTop()"><span class="nav-dot"></span>WooPlans</div>
+  <div class="nav-logo" onclick="window.location.href='/'"><span class="nav-dot"></span>WooPlans</div>
   <span class="nav-link" onclick="scrollToConcept()">Comment ca marche</span>
-  <button class="nav-cta" onclick="scrollToCatalogue()">Voir les plans</button>
+  <a class="nav-cta" href="/plans">Voir les plans</a>
 </nav>
 
 <!-- ═══ HERO ═══ -->
@@ -726,6 +742,27 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 </div>
 
 <script>
+// ── ROUTING ───────────────────────────────────────────────────
+const IS_PLANS_ROUTE = location.pathname.startsWith('/plans');
+
+function initRouteUI() {
+  if (!IS_PLANS_ROUTE) return;
+  var hero = document.getElementById('hero');
+  var concept = document.getElementById('concept');
+  if (hero) hero.style.display = 'none';
+  if (concept) concept.style.display = 'none';
+  var cat = document.getElementById('catalogue');
+  if (cat) cat.style.paddingTop = '96px';
+  document.title = 'Catalogue de Plans — WooPlans';
+  var ogTitle = document.getElementById('meta-og-title');
+  var ogDesc  = document.getElementById('meta-og-description');
+  var canon   = document.getElementById('meta-canonical');
+  if (ogTitle) ogTitle.setAttribute('content', 'Catalogue de Plans — WooPlans');
+  if (ogDesc)  ogDesc.setAttribute('content', 'Parcourez tous nos plans de maison (villas et duplex) et téléchargez instantanément.');
+  if (canon)   canon.setAttribute('href', 'https://shop.wooplans.com/plans');
+}
+initRouteUI();
+
 // ── SUPABASE ──────────────────────────────────────────────────
 const SUPABASE_URL = 'https://xlmwzvkqjnoijdldzrol.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbXd6dmtxam5vaWpkbGR6cm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTAzMjAsImV4cCI6MjA4OTY4NjMyMH0.cQcRRHaaMiht2Tq9CB9l4_XN8-SOjixxhHFJDjytze4';
@@ -738,10 +775,20 @@ async function fetchPlans() {
   if (error) { console.error('Supabase error:', error); return; }
   plans = data || [];
   renderGrid(plans);
-  const hash = location.hash.slice(1);
-  if(hash){
-    const match = plans.find(p=>slugify(p.title)===hash);
-    if(match) openDetail(match.id);
+  // Chemin /plans/{slug} en priorité, hash #slug en fallback (rétrocompatibilité)
+  const pathMatch = location.pathname.match(/^\/plans\/(.+)$/);
+  if (pathMatch) {
+    const match = plans.find(p => slugify(p.title) === pathMatch[1]);
+    if (match) openDetail(match.id, true); // skipPush=true — URL déjà correcte
+  } else {
+    const hash = location.hash.slice(1);
+    if (hash) {
+      const match = plans.find(p => slugify(p.title) === hash);
+      if (match) {
+        history.replaceState({planId: match.id}, '', '/plans/' + hash);
+        openDetail(match.id, true);
+      }
+    }
   }
 }
 
@@ -761,15 +808,19 @@ window.addEventListener('load',()=>{
   },{passive:true});
   window.addEventListener('popstate',()=>{
     const overlay=document.getElementById('detail-overlay');
-    if(!location.hash && overlay.classList.contains('open')){
+    const pathMatch=location.pathname.match(/^\/plans\/(.+)$/);
+    if(pathMatch){
+      const match=plans.find(p=>slugify(p.title)===pathMatch[1]);
+      if(match) openDetail(match.id,true);
+    } else if(location.hash){
+      const match=plans.find(p=>slugify(p.title)===location.hash.slice(1));
+      if(match) openDetail(match.id,true);
+    } else if(overlay.classList.contains('open')){
       overlay.classList.remove('open');
       document.body.style.overflow='';
       var sb=document.getElementById('sticky-bar');
       if(sb) sb.style.display='none';
-    } else if(location.hash){
-      const hash=location.hash.slice(1);
-      const match=plans.find(p=>slugify(p.title)===hash);
-      if(match) openDetail(match.id);
+      resetMetaTags();
     }
   });
 });
@@ -780,6 +831,46 @@ function slugify(str){
     .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
     .replace(/[^a-z0-9]+/g,'-')
     .replace(/^-|-$/g,'');
+}
+
+// ── SEO META TAGS ────────────────────────────────────────────
+const SITE_ORIGIN = 'https://shop.wooplans.com';
+
+function updateMetaTags(plan) {
+  var slug  = plan ? slugify(plan.title) : null;
+  var url   = plan ? (SITE_ORIGIN + '/plans/' + slug) : SITE_ORIGIN;
+  var title = plan ? (plan.title + ' — WooPlans') : 'WooPlans — Plans de Maison Premium';
+  var desc  = plan
+    ? ('Plan ' + plan.type + ' ' + (plan.area||'') + ' · ' + (plan.beds||'') + ' ch. — À partir de ' + (plan.priceBasic||'') + ' FCFA')
+    : 'Téléchargez instantanément votre plan de maison. Villas et duplex conçus pour l\'Afrique.';
+  var image = (plan && plan.images && plan.images[0]) ? plan.images[0] : '';
+
+  document.title = title;
+  var ogTitle = document.getElementById('meta-og-title');
+  var ogDesc  = document.getElementById('meta-og-description');
+  var ogImg   = document.getElementById('meta-og-image');
+  var ogUrl   = document.getElementById('meta-og-url');
+  var canon   = document.getElementById('meta-canonical');
+  if (ogTitle) ogTitle.setAttribute('content', title);
+  if (ogDesc)  ogDesc.setAttribute('content', desc);
+  if (ogImg)   ogImg.setAttribute('content', image);
+  if (ogUrl)   ogUrl.setAttribute('content', url);
+  if (canon)   canon.setAttribute('href', url);
+}
+function resetMetaTags() {
+  if (IS_PLANS_ROUTE) {
+    document.title = 'Catalogue de Plans — WooPlans';
+    var ogTitle = document.getElementById('meta-og-title');
+    var ogDesc  = document.getElementById('meta-og-description');
+    var ogUrl   = document.getElementById('meta-og-url');
+    var canon   = document.getElementById('meta-canonical');
+    if (ogTitle) ogTitle.setAttribute('content', 'Catalogue de Plans — WooPlans');
+    if (ogDesc)  ogDesc.setAttribute('content', 'Parcourez tous nos plans de maison (villas et duplex) et téléchargez instantanément.');
+    if (ogUrl)   ogUrl.setAttribute('content', SITE_ORIGIN + '/plans');
+    if (canon)   canon.setAttribute('href', SITE_ORIGIN + '/plans');
+  } else {
+    updateMetaTags(null);
+  }
 }
 
 // ── NAVIGATION ───────────────────────────────────────────────
@@ -835,7 +926,7 @@ function toggleSave(id,btn){
 }
 
 // ── DETAIL ───────────────────────────────────────────────────
-function openDetail(id){
+function openDetail(id,skipPush){
   currentPlan=plans.find(p=>p.id===id);
   if(!currentPlan)return;
   // Meta Pixel — ViewContent
@@ -915,7 +1006,10 @@ function openDetail(id){
   renderGallery();
   document.getElementById('detail-overlay').classList.add('open');
   document.body.style.overflow='hidden';
-  history.pushState({planId:id},'','#'+slugify(currentPlan.title));
+  if(!skipPush){
+    history.pushState({planId:id},'','/plans/'+slugify(currentPlan.title));
+  }
+  updateMetaTags(currentPlan);
   // Afficher sticky bar mobile
   var sb=document.getElementById('sticky-bar');
   if(sb) sb.style.display='flex';
@@ -932,7 +1026,8 @@ function closeDetail(){
   document.body.style.overflow='';
   var sb=document.getElementById('sticky-bar');
   if(sb) sb.style.display='none';
-  history.pushState({},'',location.pathname+location.search);
+  history.pushState({},'',IS_PLANS_ROUTE ? '/plans' : '/');
+  resetMetaTags();
 }
 
 // ── GALERIE ──────────────────────────────────────────────────
