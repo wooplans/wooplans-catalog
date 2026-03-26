@@ -869,6 +869,8 @@ let currentPlan = null;
 let selectedOpt = 1;
 let imgIdx = 0;
 let ddOpen = false;
+let galMedia = []; // déclaré ici pour éviter la TDZ lors du fast path
+const SITE_ORIGIN = 'https://shop.wooplans.com'; // idem
 
 // ── FAST PATH : exécuté immédiatement, sans attendre le load event ──────────
 // Le script est en fin de body donc le DOM est déjà prêt.
@@ -919,8 +921,6 @@ function slugify(str){
 }
 
 // ── SEO META TAGS ────────────────────────────────────────────
-const SITE_ORIGIN = 'https://shop.wooplans.com';
-
 function updateMetaTags(plan) {
   var slug  = plan ? slugify(plan.title) : null;
   var url   = plan ? (SITE_ORIGIN + '/plans/' + slug) : SITE_ORIGIN;
@@ -1149,7 +1149,6 @@ function closeDetail(){
 }
 
 // ── GALERIE ──────────────────────────────────────────────────
-let galMedia=[];// {type:'image'|'video', src:'...'}
 
 function renderGallery(){
   galMedia=[];
