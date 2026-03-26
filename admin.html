@@ -399,7 +399,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
               <label>Prix Basique (FCFA) * <small style="color:var(--gris-clair)">pas de 5 000</small></label>
               <div class="stepper">
                 <button type="button" class="step-btn" onclick="stepPrice('f-priceBasic',-1)">-</button>
-                <input type="text" id="f-priceBasic" required value="14 900">
+                <input type="text" id="f-priceBasic" required value="29 000">
                 <button type="button" class="step-btn" onclick="stepPrice('f-priceBasic',1)">+</button>
               </div>
             </div>
@@ -407,7 +407,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
               <label>Prix Complet (FCFA) * <small style="color:var(--gris-clair)">pas de 50 000</small></label>
               <div class="stepper">
                 <button type="button" class="step-btn" onclick="stepPrice('f-priceComplete',-1)">-</button>
-                <input type="text" id="f-priceComplete" required value="149 000">
+                <input type="text" id="f-priceComplete" required value="99 000">
                 <button type="button" class="step-btn" onclick="stepPrice('f-priceComplete',1)">+</button>
               </div>
             </div>
@@ -422,10 +422,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
           <div class="form-row col-1">
             <div class="form-group"><label>Caracteristiques (1 par ligne)</label><textarea id="f-features" placeholder="Salon/Sejour 18,67 m2&#10;Cuisine 8,73 m2&#10;3 chambres"></textarea></div>
           </div>
-          <div class="form-row">
-            <div class="form-group"><label>Extras Basique (1/ligne)</label><textarea id="f-extrasBasic" placeholder="Plan de masse&#10;Devis estimatif"></textarea></div>
-            <div class="form-group"><label>Extras Complet (1/ligne)</label><textarea id="f-extrasComplete" placeholder="Plans d'execution&#10;Details techniques"></textarea></div>
-          </div>
+          <!-- Extras masqués mais présents pour compatibilité Supabase -->
+          <textarea id="f-extrasBasic" style="display:none"></textarea>
+          <textarea id="f-extrasComplete" style="display:none"></textarea>
         </div>
 
         <div class="form-section">
@@ -439,24 +438,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
           <div class="previews-hint" id="img-drag-hint" style="display:none">⠿ Glissez les images pour réordonner — la première sera la miniature principale</div>
         </div>
 
-        <div class="form-section">
-          <div class="form-section-title">Paiement Chariow</div>
-          <p style="font-size:.78rem;color:var(--gris);margin-bottom:12px">
-            Créez un produit "Downloadable" dans
-            <a href="https://wooplans.mychariow.shop" target="_blank" style="color:var(--terre)">Chariow</a>
-            avec le bon prix, puis collez l'ID ici (ex&nbsp;: <code style="font-size:.75rem">prd_abc123</code>).
-          </p>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Chariow ID — Plan Basique</label>
-              <input type="text" id="f-chariow-basic" placeholder="prd_xxxxxx">
-            </div>
-            <div class="form-group">
-              <label>Chariow ID — Plan Complet</label>
-              <input type="text" id="f-chariow-complete" placeholder="prd_xxxxxx">
-            </div>
-          </div>
-        </div>
+        <!-- Chariow IDs masqués mais présents pour compatibilité -->
+        <input type="hidden" id="f-chariow-basic">
+        <input type="hidden" id="f-chariow-complete">
 
         <div class="form-section">
           <div class="form-section-title">Fichiers et media</div>
@@ -523,7 +507,7 @@ const BUNNY_STORAGE_URL='https://storage.bunnycdn.com/'+BUNNY_STORAGE_ZONE;
 const BUNNY_CDN_URL='https://wooplans.b-cdn.net';
 
 
-const DEFAULTS={villa:{basic:'14 900',complete:'149 000'},duplex:{basic:'24 900',complete:'249 000'}};
+const DEFAULTS={villa:{basic:'29 000',complete:'99 000'},duplex:{basic:'29 000',complete:'199 000'}};
 
 // ── HELPERS ──
 function slugifyPlan(title){
