@@ -3,5 +3,3 @@ Allow: /
 Allow: /plans/
 Disallow: /admin.html
 Disallow: /merci.html
-
-Sitemap: https://shop.wooplans.com/sitemap.xml
