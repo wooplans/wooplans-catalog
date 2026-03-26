@@ -2,6 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<!-- Cache hero/concept AVANT le rendu pour éviter le flash sur /plans -->
+<script>if(location.pathname.startsWith('/plans'))document.documentElement.classList.add('plans-route');</script>
+<style>.plans-route #hero,.plans-route #concept{display:none!important}.plans-route #catalogue{padding-top:96px!important}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WooPlans — Plans de Maison Premium</title>
 <meta name="description" content="Téléchargez instantanément votre plan de maison. Villas et duplex conçus pour l'Afrique.">
@@ -573,7 +576,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
               <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
               <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendu 3D exterieurs</li>
             </ul>
-            <a class="voir-exemple-link" href="https://drive.google.com/file/d/EXEMPLE_PDF_ID/view" target="_blank" rel="noopener">
+            <a class="voir-exemple-link" id="voir-exemple-link" href="https://drive.google.com/file/d/1UyIZo5TPHYZtyJf3a63KEJpu_PIUsH_F/view?usp=sharing" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
               Voir un exemple
             </a>
@@ -997,9 +1000,13 @@ function openDetail(id,skipPush){
     var el1=document.getElementById('dd1-extras');
     if(el1) el1.innerHTML=currentPlan.extrasBasic.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
   }
-  if(currentPlan.extrasComplete){
+  var dd2btn=document.getElementById('dd2-btn');
+  if(currentPlan.extrasComplete && currentPlan.extrasComplete.length){
     var el2=document.getElementById('dd2-extras');
     if(el2) el2.innerHTML=currentPlan.extrasComplete.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
+    if(dd2btn) dd2btn.style.display='';
+  } else {
+    if(dd2btn) dd2btn.style.display='none';
   }
 
   updateOptUI();
