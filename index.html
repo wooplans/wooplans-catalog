@@ -15,14 +15,17 @@
 <meta id="meta-og-url"         property="og:url"         content="https://shop.wooplans.com/">
 <meta id="meta-og-type"        property="og:type"        content="website">
 <link id="meta-canonical"      rel="canonical"            href="https://shop.wooplans.com/">
-<!-- Performance preconnects -->
-<link rel="preconnect" href="https://xlmwzvkqjnoijdldzrol.supabase.co">
-<link rel="preconnect" href="https://wooplans.b-cdn.net">
+<!-- Performance preconnects (crossorigin requis pour CORS) -->
+<link rel="preconnect" href="https://xlmwzvkqjnoijdldzrol.supabase.co" crossorigin>
+<link rel="preconnect" href="https://wooplans.b-cdn.net" crossorigin>
 <link rel="dns-prefetch" href="https://connect.facebook.net">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Google Fonts — chargement non bloquant + display=optional élimine le CLS -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=optional">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=optional" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=optional"></noscript>
+<!-- Supabase JS déplacé en fin de body — ne bloque plus le rendu initial -->
 <style>
 :root {
   --brun:        #1a1208;
@@ -123,7 +126,8 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .f-btn{padding:10px 22px;font-size:.85rem;font-weight:500;border:1.5px solid var(--gris-clair);background:transparent;color:var(--gris);cursor:pointer;transition:all .25s;border-radius:100px}
 .f-btn:hover{border-color:var(--brun);color:var(--brun)}
 .f-btn.active{background:var(--brun);color:var(--or);border-color:var(--brun)}
-.plans-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px}
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px;min-height:60vh}
+.plans-grid.loaded{min-height:0}
 
 /* ── CARD ── */
 .plan-card{background:var(--blanc);cursor:pointer;transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s;border:1px solid var(--creme-3)}
@@ -520,7 +524,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 
     <div class="det-gallery">
       <div class="gal-main" id="gal-main">
-        <img class="gal-img" id="gal-img" src="" alt="">
+        <img class="gal-img" id="gal-img" src="" alt="" fetchpriority="high">
         <video class="gal-img" id="gal-video" src="" controls playsinline style="display:none"></video>
         <div class="gal-counter" id="gal-counter">1 / 4</div>
         <div class="gal-nav">
@@ -802,20 +806,51 @@ initRouteUI();
 // ── SUPABASE ──────────────────────────────────────────────────
 const SUPABASE_URL = 'https://xlmwzvkqjnoijdldzrol.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbXd6dmtxam5vaWpkbGR6cm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTAzMjAsImV4cCI6MjA4OTY4NjMyMH0.cQcRRHaaMiht2Tq9CB9l4_XN8-SOjixxhHFJDjytze4';
-const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Supabase client créé à la demande (JS chargé en fin de body)
+let _supabase = null;
+function getSupabase() {
+  if (!_supabase && window.supabase) {
+    _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+  return _supabase;
+}
 
 let plans = [];
 
+// Optimisation images : Bunny CDN resize + WebP pour les miniatures
+function thumbUrl(src, w) {
+  if (!src || !src.includes('b-cdn.net')) return src;
+  return src + '?width=' + (w||340) + '&quality=80&format=webp';
+}
+
 async function fetchPlans() {
-  const { data, error } = await _supabase.from('plans').select('*').eq('status','online').order('created_at');
+  // ── CHEMIN RAPIDE : données injectées par la Cloudflare Pages Function ──
+  if (window.__ALL_PLANS__ && window.__ALL_PLANS__.length) {
+    plans = window.__ALL_PLANS__;
+    renderGrid(plans);
+    if (window.__INITIAL_PLAN__) {
+      const match = plans.find(p => p.id === window.__INITIAL_PLAN__.id);
+      if (match) { openDetail(match.id, true); return; }
+    }
+    const pathMatch = location.pathname.match(/^\/plans\/(.+)$/);
+    if (pathMatch) {
+      const match = plans.find(p => slugify(p.title) === pathMatch[1]);
+      if (match) openDetail(match.id, true);
+    }
+    return; // Pas de requête réseau nécessaire
+  }
+
+  // ── CHEMIN LENT : pas de données SSR, on interroge Supabase ──
+  const sb = getSupabase();
+  if (!sb) { console.error('Supabase non disponible'); return; }
+  const { data, error } = await sb.from('plans').select('*').eq('status','online').order('created_at');
   if (error) { console.error('Supabase error:', error); return; }
   plans = data || [];
   renderGrid(plans);
-  // Chemin /plans/{slug} en priorité, hash #slug en fallback (rétrocompatibilité)
   const pathMatch = location.pathname.match(/^\/plans\/(.+)$/);
   if (pathMatch) {
     const match = plans.find(p => slugify(p.title) === pathMatch[1]);
-    if (match) openDetail(match.id, true); // skipPush=true — URL déjà correcte
+    if (match) openDetail(match.id, true);
   } else {
     const hash = location.hash.slice(1);
     if (hash) {
@@ -917,11 +952,12 @@ function scrollToCatalogue(){document.getElementById('catalogue').scrollIntoView
 // ── GRILLE ───────────────────────────────────────────────────
 function renderGrid(list){
   const g=document.getElementById('plans-grid');
+  g.classList.add('loaded'); // supprime min-height réservée → évite CLS résiduel
   if(!list.length){g.innerHTML='<p style="color:var(--gris);grid-column:1/-1;text-align:center;padding:40px 0">Aucun plan dans cette categorie.</p>';return}
   g.innerHTML=list.map(p=>`
     <div class="plan-card" onclick="openDetail('${p.id}')">
       <div class="card-img-wrap">
-        <img class="card-img" src="${p.images[0]}" alt="${p.title}" loading="lazy">
+        <img class="card-img" src="${thumbUrl(p.images[0])}" alt="${p.title}" loading="lazy" width="340" height="255">
         <span class="card-badge ${p.type==='villa'?'badge-villa':'badge-duplex'}">${p.type}</span>
         <button class="card-save ${saved.includes(p.id)?'saved':''}" onclick="event.stopPropagation();toggleSave('${p.id}',this)" title="Sauvegarder">
           <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -1314,5 +1350,7 @@ function showToast(msg){
   tTimer=setTimeout(()=>t.classList.remove('show'),3000);
 }
 </script>
+<!-- Supabase JS chargé EN DERNIER — ne bloque plus le rendu initial -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
 </body>
 </html>
