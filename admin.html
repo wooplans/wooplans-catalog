@@ -781,14 +781,15 @@ async function aiPrefill(){
   const file=input.files[0];
   if(file.size>25*1024*1024){
     statusEl.className='ai-status error';
-    statusEl.innerHTML='Fichier trop volumineux (max 25 Mo).';
+    statusEl.innerHTML='Fichier trop volumineux (max 25 Mo). Utilisez la version APS uniquement (sans devis).';
     statusEl.style.display='flex';
     return;
   }
 
   btn.disabled=true;
+  const isBig = file.size > 3*1024*1024;
   statusEl.className='ai-status loading';
-  statusEl.innerHTML='<div class="ai-spin"></div>L\'IA analyse votre PDF… (10-20 secondes)';
+  statusEl.innerHTML='<div class="ai-spin"></div>L\'IA analyse votre PDF… '+(isBig?'(30-45 secondes pour un gros fichier)':'(10-20 secondes)');
   statusEl.style.display='flex';
 
   try {
@@ -800,15 +801,24 @@ async function aiPrefill(){
       reader.readAsDataURL(file);
     });
 
-    // Appel Edge Function
-    const res=await fetch(`${SUPABASE_URL}/functions/v1/ai-prefill`,{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+SUPABASE_ANON_KEY,
-      },
-      body:JSON.stringify({pdfBase64:base64}),
-    });
+    // Appel Edge Function avec timeout 50s
+    const controller=new AbortController();
+    const timeoutId=setTimeout(()=>controller.abort(),50000);
+
+    let res;
+    try {
+      res=await fetch(`${SUPABASE_URL}/functions/v1/ai-prefill`,{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+SUPABASE_ANON_KEY,
+        },
+        body:JSON.stringify({pdfBase64:base64}),
+        signal:controller.signal,
+      });
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
     const json=await res.json();
     if(!res.ok||json.error) throw new Error(json.error||'Erreur serveur '+res.status);
@@ -841,7 +851,10 @@ async function aiPrefill(){
 
   } catch(err){
     statusEl.className='ai-status error';
-    statusEl.innerHTML='Erreur : '+err.message;
+    const isTimeout = err.name==='AbortError';
+    statusEl.innerHTML=isTimeout
+      ? '⏱ Délai dépassé (50s). Le PDF est trop volumineux — essayez avec un fichier plus léger ou les premières pages seulement.'
+      : '❌ Erreur : '+err.message;
   }
 
   btn.disabled=false;
