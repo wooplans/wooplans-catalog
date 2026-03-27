@@ -122,7 +122,7 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 
 /* ── CATALOGUE ── */
 #catalogue{padding:88px 5vw;max-width:1400px;margin:0 auto}
-.sec-eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terre);margin-bottom:10px;font-weight:500}
+.sec-eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terre);margin-bottom:10px;font-weight:500;cursor:default;user-select:none}
 .sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,3.2vw,2.8rem);font-weight:500;color:var(--brun);line-height:1.2;margin-bottom:40px}
 .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px}
 .f-btn{padding:10px 22px;font-size:.85rem;font-weight:500;border:1.5px solid var(--gris-clair);background:transparent;color:var(--gris);cursor:pointer;transition:all .25s;border-radius:100px}
@@ -190,6 +190,7 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .gal-btn{width:42px;height:42px;background:rgba(250,247,242,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);cursor:pointer;pointer-events:all;display:flex;align-items:center;justify-content:center;transition:background .2s;border-radius:4px}
 .gal-btn:hover{background:rgba(250,247,242,.3)}
 .gal-btn svg{width:18px;height:18px;stroke:white;stroke-width:2;fill:none}
+@media(max-width:768px){.gal-btn{width:54px;height:54px;}.gal-btn svg{width:22px;height:22px;}}
 .gal-thumbs{display:flex;gap:3px;padding:3px;overflow-x:auto;scrollbar-width:none}
 .gal-thumbs::-webkit-scrollbar{display:none}
 .gal-thumb{flex-shrink:0;width:78px;height:58px;overflow:hidden;cursor:pointer;opacity:.45;transition:opacity .2s;border:2px solid transparent}
@@ -202,7 +203,7 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .det-main{}
 .det-type-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .det-type-pill{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;font-weight:600}
-.det-stars{display:flex;align-items:center;gap:4px;font-size:.85rem;color:var(--gris)}
+.det-stars{display:flex;align-items:center;gap:4px;font-size:.85rem;color:var(--gris);cursor:default;user-select:none}
 .det-stars svg{width:14px;height:14px;fill:var(--or);stroke:none}
 .det-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--brun);margin-bottom:8px;line-height:1.2}
 .det-subtitle{font-size:.95rem;color:var(--gris-fonce);margin-bottom:24px;line-height:1.6}
@@ -276,9 +277,9 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .cta-secondary svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
 
 .opt-card-sub{font-size:.8rem;color:var(--gris);margin-top:3px;line-height:1.4}
-.voir-exemple-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--creme-2);font-size:.84rem;color:var(--terre);font-weight:500;text-decoration:none;transition:color .2s}
-.voir-exemple-link:hover{color:var(--brun)}
-.voir-exemple-link svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.8;fill:none;flex-shrink:0}
+.voir-exemple-link{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:10px 16px;border:1.5px solid var(--terre);background:transparent;font-size:.8rem;color:var(--terre);font-weight:700;text-decoration:none;letter-spacing:.05em;text-transform:uppercase;transition:background .2s,color .2s;border-radius:3px}
+.voir-exemple-link:hover{background:var(--terre);color:#fff}
+.voir-exemple-link svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
 .trust-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.74rem;color:var(--gris)}
 .trust-note svg{width:12px;height:12px;stroke:var(--vert);fill:none;stroke-width:2}
 .whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:14px 20px;background:#25D366;color:#fff;font-size:.86rem;font-weight:600;text-decoration:none;border-radius:4px;transition:background .2s,transform .2s}
