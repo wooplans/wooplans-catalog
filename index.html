@@ -828,6 +828,32 @@ function getSupabase() {
 
 let plans = [];
 
+/* ── Analytics WooPlans ───────────────────────────────────────────────────── */
+function getVisitorId(){
+  try{
+    var vid=localStorage.getItem('wp_vid');
+    if(!vid){ vid='v_'+Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem('wp_vid',vid); }
+    return vid;
+  }catch(e){ return 'anonymous'; }
+}
+function track(eventType,extra){
+  try{
+    var payload=Object.assign({
+      event_type : eventType,
+      visitor_id : getVisitorId(),
+      referrer   : document.referrer||null,
+      page_url   : location.pathname
+    }, extra||{});
+    fetch(SUPABASE_URL+'/rest/v1/analytics_events',{
+      method :'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Prefer':'return=minimal'},
+      body   :JSON.stringify(payload),
+      keepalive:true
+    }).catch(function(){});
+  }catch(e){}
+}
+/* ────────────────────────────────────────────────────────────────────────── */
+
 // Optimisation images : Bunny CDN resize + WebP pour les miniatures
 function thumbUrl(src, w) {
   if (!src) return '';
@@ -1015,6 +1041,8 @@ window.addEventListener('load',()=>{
   if (!window.__ALL_PLANS__ || !window.__ALL_PLANS__.length) {
     fetchPlans();
   }
+  // Analytics — page vue
+  track('page_view');
 });
 
 // ── SLUG (URL routing) ────────────────────────────────────────
@@ -1120,6 +1148,8 @@ function toggleSave(id,btn){
 function openDetail(id,skipPush){
   currentPlan=plans.find(p=>p.id===id);
   if(!currentPlan)return;
+  // Analytics — clic sur un plan
+  track('plan_click',{plan_id:currentPlan.id,plan_type:currentPlan.type,plan_title:currentPlan.title});
   // Meta Pixel — ViewContent
   if(typeof fbq!=='undefined') fbq('track','ViewContent',{
     content_ids:[currentPlan.id],
@@ -1540,6 +1570,8 @@ function openCheckout(){
   document.getElementById('co-sum-lbl').textContent=isB?'Plan Basique + Devis':'Plans Complets';
   document.getElementById('co-sum-price').textContent=(isB?currentPlan.priceBasic:currentPlan.priceComplete)+' FCFA';
   const ccSel=document.getElementById('co-cc');if(ccSel)ccSel.value=detectedCountryCode;
+  // Analytics — ouverture checkout
+  track('checkout_open',{plan_id:currentPlan.id,plan_type:currentPlan.type,plan_title:currentPlan.title,option_type:isB?'basic':'complete'});
   document.getElementById('checkout-overlay').classList.add('open');
 }
 
@@ -1589,6 +1621,9 @@ async function submitCheckout(e){
   const email = document.getElementById('co-em').value.trim();
   const rawPhone = document.getElementById('co-ph').value.trim();
   const countryCode = document.getElementById('co-cc') ? document.getElementById('co-cc').value : 'CM';
+
+  // Analytics — soumission checkout
+  track('checkout_submit',{plan_id:p.id,plan_type:p.type,plan_title:p.title,option_type:isBasic?'basic':'complete'});
 
   // Chariow product IDs — villa→prd_p82tf6 (19k), duplex→prd_stb3yx (29k)
   const basicId    = p.type === 'villa' ? 'prd_p82tf6' : 'prd_stb3yx';
