@@ -322,6 +322,11 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
   animation:slideUp .3s ease;
 }
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes sbShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-5px)}30%{transform:translateX(5px)}45%{transform:translateX(-4px)}60%{transform:translateX(4px)}75%{transform:translateX(-2px)}90%{transform:translateX(2px)}}
+@keyframes sbFlash{0%,100%{box-shadow:0 -4px 20px rgba(0,0,0,.25)}40%{box-shadow:0 -4px 40px rgba(212,175,55,.6),0 0 60px rgba(212,175,55,.3)}70%{box-shadow:0 -4px 30px rgba(212,175,55,.4)}}
+.sticky-bar.sb-shake{animation:sbShake .55s cubic-bezier(.36,.07,.19,.97) both,sbFlash .55s ease both}
+.sb-btn.sb-pulse{animation:sbBtnPulse 1.2s ease-in-out}
+@keyframes sbBtnPulse{0%,100%{transform:scale(1);box-shadow:none}50%{transform:scale(1.06);box-shadow:0 0 22px rgba(212,175,55,.7)}}
 .sb-info{}
 .sb-name{font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:2px}
 .sb-price{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--or);font-weight:600;line-height:1}
@@ -637,13 +642,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
               <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tous les plans architecturaux</li>
               <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Avec modifications que vous voulez</li>
             </ul>
-            <button class="opt-dropdown-btn" id="dd2-btn" onclick="toggleDd(2)">
-              <span id="dd2-label">Voir tous les details</span>
-              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="opt-dropdown-body" id="dd2-body">
-              <ul class="opt-extras" id="dd2-extras"></ul>
-            </div>
           </div>
 
           <button class="cta-secondary" disabled style="opacity:.45;cursor:not-allowed;pointer-events:none;">
@@ -1541,6 +1539,42 @@ function openCheckout(){
 
 function closeCheckout(){document.getElementById('checkout-overlay').classList.remove('open')}
 
+/* ── Sticky CTA : shake + flashlight périodique ── */
+(function initStickyAttention(){
+  var _timer = null;
+  function triggerAnim(){
+    var sb  = document.getElementById('sticky-bar');
+    var btn = sb ? sb.querySelector('.sb-btn') : null;
+    if(!sb || sb.style.display === 'none') return;
+    // Shake du sticky bar
+    sb.classList.remove('sb-shake');
+    void sb.offsetWidth; // reflow pour relancer l'animation
+    sb.classList.add('sb-shake');
+    sb.addEventListener('animationend', function h(){ sb.classList.remove('sb-shake'); sb.removeEventListener('animationend',h); }, {once:true});
+    // Pulse du bouton (décalé de 100ms)
+    if(btn){ setTimeout(function(){
+      btn.classList.remove('sb-pulse');
+      void btn.offsetWidth;
+      btn.classList.add('sb-pulse');
+      btn.addEventListener('animationend', function h(){ btn.classList.remove('sb-pulse'); btn.removeEventListener('animationend',h); }, {once:true});
+    }, 100); }
+  }
+  // Observe quand le sticky bar devient visible
+  var observer = new MutationObserver(function(){
+    var sb = document.getElementById('sticky-bar');
+    if(!sb) return;
+    var visible = sb.style.display !== 'none' && sb.style.display !== '';
+    if(visible && !_timer){
+      // Premier shake après 2.5s, puis toutes les 7s
+      setTimeout(triggerAnim, 2500);
+      _timer = setInterval(triggerAnim, 7000);
+    } else if(!visible && _timer){
+      clearInterval(_timer); _timer = null;
+    }
+  });
+  observer.observe(document.body, {subtree:true, attributes:true, attributeFilter:['style']});
+})();
+
 async function submitCheckout(e){
   e.preventDefault();
   const btn=document.getElementById('co-btn');
@@ -1557,8 +1591,8 @@ async function submitCheckout(e){
   const rawPhone = document.getElementById('co-ph').value.trim();
   const countryCode = document.getElementById('co-cc') ? document.getElementById('co-cc').value : 'CM';
 
-  // Chariow product IDs — spécifique au plan, sinon fallback générique par type
-  const basicId    = p.type === 'villa' ? 'prd_stb3yx' : 'prd_p82tf6';
+  // Chariow product IDs — villa→prd_p82tf6 (19k), duplex→prd_stb3yx (29k)
+  const basicId    = p.type === 'villa' ? 'prd_p82tf6' : 'prd_stb3yx';
   const completeId = p.type === 'villa' ? 'prd_p82tf6' : 'prd_stb3yx';
   const PRODUCT_ID = isBasic
     ? (p.chariow_basic_id    || basicId)
