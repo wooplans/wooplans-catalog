@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300..600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root{
   --brun:#1a1208;--brun-moyen:#3d2b14;--terre:#8B5E3C;--terre-clair:#C4894F;
@@ -37,7 +38,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .nav-link{color:var(--creme-3);text-decoration:none;font-size:.82rem;letter-spacing:.06em}
 .nav-link:hover{color:var(--or)}
 
-/* ── ANALYTICS ── */
+/* ── ANALYTICS PLANS ── */
 .analytics{padding:24px 32px;display:none}
 .analytics.show{display:block}
 .analytics-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--terre);margin-bottom:16px}
@@ -48,6 +49,57 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .kpi-sub{font-size:.7rem;color:var(--gris-clair);margin-top:2px}
 .kpi.alert .kpi-val{color:var(--orange)}
 .price-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* ── ANALYTICS VISITEURS ── */
+.av-section{background:#0f0f0f;margin:0 0 0 0;padding:24px 32px}
+.av-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.av-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#d4af37;display:flex;align-items:center;gap:10px}
+.av-live{display:flex;align-items:center;gap:6px;font-size:.75rem;color:rgba(255,255,255,.45)}
+.av-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:av-pulse 2s infinite;flex-shrink:0}
+@keyframes av-pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.av-tabs{display:flex;gap:3px;background:#1a1a1a;padding:3px}
+.av-tab{padding:6px 14px;font-size:.75rem;cursor:pointer;color:rgba(255,255,255,.45);letter-spacing:.05em;border:none;background:transparent;text-transform:uppercase;font-family:'DM Sans',sans-serif}
+.av-tab.active{background:#d4af37;color:#1a1200;font-weight:700}
+.av-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.av-kpi{background:#1a1a1a;border:1px solid rgba(255,255,255,.06);padding:16px 14px}
+.av-kpi.gold{border-color:rgba(212,175,55,.3);background:rgba(212,175,55,.08)}
+.av-kpi-label{font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.av-kpi-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:#f0f0f0;line-height:1}
+.av-kpi.gold .av-kpi-val{color:#d4af37}
+.av-kpi-sub{font-size:.68rem;color:rgba(255,255,255,.3);margin-top:4px}
+.av-row2{display:grid;grid-template-columns:1fr 280px;gap:14px;margin-bottom:14px}
+.av-row3{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.av-card{background:#1a1a1a;border:1px solid rgba(255,255,255,.06);padding:18px}
+.av-card-title{font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.av-card-title span{color:rgba(255,255,255,.6)}
+.av-funnel{display:flex;flex-direction:column;gap:10px}
+.av-funnel-step{display:flex;align-items:center;gap:10px}
+.av-funnel-lbl{width:130px;font-size:.76rem;color:rgba(255,255,255,.6);flex-shrink:0}
+.av-funnel-wrap{flex:1;background:#111;height:26px;overflow:hidden}
+.av-funnel-bar{height:100%;transition:width .8s ease;display:flex;align-items:center;padding-left:8px;font-size:.72rem;font-weight:700;color:#1a1200;white-space:nowrap}
+.av-funnel-n{width:44px;text-align:right;font-size:.82rem;font-weight:600;color:#f0f0f0;flex-shrink:0}
+.av-funnel-pct{width:40px;text-align:right;font-size:.72rem;color:rgba(255,255,255,.35);flex-shrink:0}
+.av-donut-wrap{height:160px;display:flex;align-items:center;justify-content:center}
+.av-donut-legend{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.av-donut-item{display:flex;align-items:center;gap:8px;font-size:.76rem}
+.av-donut-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.av-chart-wrap{height:200px;position:relative}
+.av-feed{max-height:280px;overflow-y:auto}
+.av-feed::-webkit-scrollbar{width:3px}
+.av-feed::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1)}
+.av-feed-item{display:grid;grid-template-columns:100px 1fr 70px 110px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.75rem}
+.av-feed-item:last-child{border:none}
+.av-badge{display:inline-block;padding:2px 7px;font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.av-badge-page_view{background:rgba(96,165,250,.15);color:#60a5fa}
+.av-badge-plan_click{background:rgba(212,175,55,.15);color:#d4af37}
+.av-badge-checkout_open{background:rgba(167,139,250,.15);color:#a78bfa}
+.av-badge-checkout_submit{background:rgba(34,197,94,.15);color:#22c55e}
+.av-badge-voir_exemple{background:rgba(251,146,60,.15);color:#fb923c}
+.av-feed-plan{color:rgba(255,255,255,.6);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.av-feed-time{color:rgba(255,255,255,.3);text-align:right}
+@keyframes av-fadein{from{background:rgba(212,175,55,.12)}to{background:transparent}}
+.av-feed-new{animation:av-fadein .6s ease}
+@media(max-width:1100px){.av-kpis{grid-template-columns:repeat(3,1fr)}.av-row2,.av-row3{grid-template-columns:1fr}}
+@media(max-width:640px){.av-section{padding:16px}.av-kpis{grid-template-columns:1fr 1fr}.av-feed-item{grid-template-columns:90px 1fr 90px}}
 .price-box{background:var(--blanc);padding:16px}
 .price-box-title{font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gris-fonce);margin-bottom:10px}
 .price-line{display:flex;justify-content:space-between;font-size:.85rem;padding:4px 0;color:var(--brun)}
@@ -246,7 +298,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
   <div class="auth-logo">WooPlans</div>
   <div class="auth-box">
     <label>Mot de passe admin</label>
-    <input type="password" id="auth-pw" placeholder="Entrez le mot de passe" autofocus>
+    <input type="text" id="auth-pw" placeholder="Entrez le mot de passe" autofocus autocomplete="off">
     <button onclick="tryAuth()">Connexion</button>
     <div class="auth-err" id="auth-err"></div>
   </div>
@@ -258,10 +310,74 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
   <a href="index.html" class="nav-link" target="_blank">Voir le catalogue &rarr;</a>
 </nav>
 
-<!-- ANALYTICS -->
+<!-- ANALYTICS PLANS -->
 <div class="analytics" id="analytics">
-  <div class="analytics-title">Analytiques</div>
+  <div class="analytics-title">Catalogue — Résumé</div>
   <div class="kpi-row" id="kpi-row"></div>
+</div>
+
+<!-- ANALYTICS VISITEURS -->
+<div class="av-section" id="av-section" style="display:none">
+  <div class="av-header">
+    <div class="av-title">
+      Analytics Visiteurs
+      <div class="av-live"><div class="av-live-dot"></div>Live</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="av-tabs">
+        <button class="av-tab active" data-p="today" onclick="avSetPeriod(this)">Aujourd'hui</button>
+        <button class="av-tab" data-p="7d" onclick="avSetPeriod(this)">7 jours</button>
+        <button class="av-tab" data-p="30d" onclick="avSetPeriod(this)">30 jours</button>
+      </div>
+      <span style="font-size:.72rem;color:rgba(255,255,255,.3)" id="av-refresh-time"></span>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="av-kpis">
+    <div class="av-kpi"><div class="av-kpi-label">Visiteurs uniques</div><div class="av-kpi-val" id="av-visitors">—</div><div class="av-kpi-sub">IDs distincts</div></div>
+    <div class="av-kpi"><div class="av-kpi-label">Pages vues</div><div class="av-kpi-val" id="av-pageviews">—</div><div class="av-kpi-sub">page_view</div></div>
+    <div class="av-kpi"><div class="av-kpi-label">Plans consultés</div><div class="av-kpi-val" id="av-clicks">—</div><div class="av-kpi-sub">fiches ouvertes</div></div>
+    <div class="av-kpi"><div class="av-kpi-label">Exemples vus</div><div class="av-kpi-val" id="av-exemples">—</div><div class="av-kpi-sub">clics "Voir exemple"</div></div>
+    <div class="av-kpi gold"><div class="av-kpi-label">Checkouts ouverts</div><div class="av-kpi-val" id="av-checkouts">—</div><div class="av-kpi-sub">taux : <span id="av-rate">—</span></div></div>
+  </div>
+
+  <!-- Funnel + Donut -->
+  <div class="av-row2">
+    <div class="av-card">
+      <div class="av-card-title">Tunnel de conversion</div>
+      <div class="av-funnel">
+        <div class="av-funnel-step"><div class="av-funnel-lbl">Page vue</div><div class="av-funnel-wrap"><div class="av-funnel-bar" id="avfb-pv" style="width:100%;background:#60a5fa"></div></div><div class="av-funnel-n" id="avfc-pv">—</div><div class="av-funnel-pct">100%</div></div>
+        <div class="av-funnel-step"><div class="av-funnel-lbl">Plan consulté</div><div class="av-funnel-wrap"><div class="av-funnel-bar" id="avfb-pc" style="width:0%;background:#d4af37"></div></div><div class="av-funnel-n" id="avfc-pc">—</div><div class="av-funnel-pct" id="avfp-pc">—</div></div>
+        <div class="av-funnel-step"><div class="av-funnel-lbl">Exemple vu</div><div class="av-funnel-wrap"><div class="av-funnel-bar" id="avfb-ve" style="width:0%;background:#fb923c"></div></div><div class="av-funnel-n" id="avfc-ve">—</div><div class="av-funnel-pct" id="avfp-ve">—</div></div>
+        <div class="av-funnel-step"><div class="av-funnel-lbl">Checkout ouvert</div><div class="av-funnel-wrap"><div class="av-funnel-bar" id="avfb-co" style="width:0%;background:#a78bfa"></div></div><div class="av-funnel-n" id="avfc-co">—</div><div class="av-funnel-pct" id="avfp-co">—</div></div>
+        <div class="av-funnel-step"><div class="av-funnel-lbl">Checkout soumis</div><div class="av-funnel-wrap"><div class="av-funnel-bar" id="avfb-cs" style="width:0%;background:#22c55e"></div></div><div class="av-funnel-n" id="avfc-cs">—</div><div class="av-funnel-pct" id="avfp-cs">—</div></div>
+      </div>
+    </div>
+    <div class="av-card">
+      <div class="av-card-title">Villa vs Duplex <span id="av-type-sub"></span></div>
+      <div class="av-donut-wrap"><canvas id="av-donut"></canvas></div>
+      <div class="av-donut-legend" id="av-donut-legend"></div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="av-row3">
+    <div class="av-card">
+      <div class="av-card-title">Évolution dans le temps</div>
+      <div class="av-chart-wrap"><canvas id="av-timeline"></canvas></div>
+    </div>
+    <div class="av-card">
+      <div class="av-card-title">Top plans consultés</div>
+      <div class="av-chart-wrap"><canvas id="av-plans"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Feed -->
+  <div class="av-card">
+    <div class="av-card-title">Activité en temps réel <span id="av-feed-count"></span></div>
+    <div class="av-feed" id="av-feed"><div style="color:rgba(255,255,255,.3);font-size:.8rem;padding:16px 0;text-align:center">Chargement…</div></div>
+  </div>
 </div>
 
 <!-- TOOLBAR -->
@@ -497,7 +613,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 <script>
 const SUPABASE_URL='https://xlmwzvkqjnoijdldzrol.supabase.co';
 const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbXd6dmtxam5vaWpkbGR6cm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTAzMjAsImV4cCI6MjA4OTY4NjMyMH0.cQcRRHaaMiht2Tq9CB9l4_XN8-SOjixxhHFJDjytze4';
-const ADMIN_PW='wooplans2024';
+const ADMIN_PW='wooplans.9999';
 const _supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
 // ── BUNNY CDN ──
@@ -590,12 +706,134 @@ function tryAuth(){
   if(document.getElementById('auth-pw').value===ADMIN_PW){
     document.getElementById('auth-screen').classList.add('hidden');
     document.getElementById('analytics').classList.add('show');
+    document.getElementById('av-section').style.display='block';
     fetchPlans();
+    avLoadData();
+    avSubscribeRealtime();
+    setInterval(avLoadData,60000);
   } else {
     document.getElementById('auth-err').textContent='Mot de passe incorrect';
   }
 }
 document.getElementById('auth-pw').addEventListener('keydown',e=>{if(e.key==='Enter')tryAuth()});
+
+// ── ANALYTICS VISITEURS ──
+let avPeriod='today', avEvents=[], avTimelineChart=null, avPlansChart=null, avDonutChart=null;
+
+function avSetPeriod(btn){
+  document.querySelectorAll('.av-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  avPeriod=btn.dataset.p;
+  avLoadData();
+}
+function avPeriodStart(){
+  const now=new Date();
+  if(avPeriod==='today'){const d=new Date(now);d.setHours(0,0,0,0);return d;}
+  if(avPeriod==='7d'){const d=new Date(now);d.setDate(d.getDate()-7);return d;}
+  const d=new Date(now);d.setDate(d.getDate()-30);return d;
+}
+async function avLoadData(){
+  const since=avPeriodStart().toISOString();
+  const{data,error}=await _supabase.from('analytics_events').select('*').gte('created_at',since).order('created_at',{ascending:false}).limit(2000);
+  if(error){console.error('av:',error);return;}
+  avEvents=data||[];
+  avRenderAll();
+  const el=document.getElementById('av-refresh-time');
+  if(el)el.textContent='Mis à jour '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+}
+function avRenderAll(){avRenderKPIs();avRenderFunnel();avRenderTimeline();avRenderTopPlans();avRenderDonut();avRenderFeed();}
+
+function avRenderKPIs(){
+  const ev=avEvents;
+  const visitors=new Set(ev.map(e=>e.visitor_id).filter(Boolean)).size;
+  const pv=ev.filter(e=>e.event_type==='page_view').length;
+  const pc=ev.filter(e=>e.event_type==='plan_click').length;
+  const ve=ev.filter(e=>e.event_type==='voir_exemple').length;
+  const co=ev.filter(e=>e.event_type==='checkout_open').length;
+  const rate=visitors>0?Math.round(co/visitors*100)+'%':'0%';
+  avSet('av-visitors',visitors);avSet('av-pageviews',pv);avSet('av-clicks',pc);avSet('av-exemples',ve);avSet('av-checkouts',co);avSet('av-rate',rate);
+}
+function avRenderFunnel(){
+  const pv=avEvents.filter(e=>e.event_type==='page_view').length;
+  const pc=avEvents.filter(e=>e.event_type==='plan_click').length;
+  const ve=avEvents.filter(e=>e.event_type==='voir_exemple').length;
+  const co=avEvents.filter(e=>e.event_type==='checkout_open').length;
+  const cs=avEvents.filter(e=>e.event_type==='checkout_submit').length;
+  const top=Math.max(pv,1);
+  const pct=(n,d)=>d>0?Math.round(n/d*100)+'%':'0%';
+  avSet('avfc-pv',pv);avSet('avfc-pc',pc);avSet('avfc-ve',ve);avSet('avfc-co',co);avSet('avfc-cs',cs);
+  avSet('avfp-pc',pct(pc,pv));avSet('avfp-ve',pct(ve,pv));avSet('avfp-co',pct(co,pv));avSet('avfp-cs',pct(cs,pv));
+  const bars={pv:100,pc:pc/top*100,ve:ve/top*100,co:co/top*100,cs:cs/top*100};
+  Object.entries(bars).forEach(([k,w])=>{const b=document.getElementById('avfb-'+k);if(b)b.style.width=w+'%';});
+}
+function avRenderTimeline(){
+  const isToday=avPeriod==='today';
+  const gk=e=>{const d=new Date(e.created_at);return isToday?d.getHours()+'h':d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});};
+  const now=new Date();
+  const labels=[];
+  if(isToday){for(let h=0;h<=now.getHours();h++)labels.push(h+'h');}
+  else{const days=avPeriod==='7d'?7:30;for(let i=days-1;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}));}}
+  const types=['page_view','plan_click','voir_exemple','checkout_open','checkout_submit'];
+  const colors=['rgba(96,165,250,.8)','rgba(212,175,55,.8)','rgba(251,146,60,.8)','rgba(167,139,250,.8)','rgba(34,197,94,.8)'];
+  const names=['Page vue','Plan consulté','Exemple vu','Checkout ouvert','Checkout soumis'];
+  const datasets=types.map((t,i)=>{
+    const counts={};
+    avEvents.filter(e=>e.event_type===t).forEach(e=>{const k=gk(e);counts[k]=(counts[k]||0)+1;});
+    return{label:names[i],data:labels.map(l=>counts[l]||0),borderColor:colors[i],backgroundColor:colors[i].replace('.8)','.1)'),borderWidth:1.5,tension:.35,fill:true,pointRadius:2};
+  });
+  if(avTimelineChart)avTimelineChart.destroy();
+  const ctx=document.getElementById('av-timeline').getContext('2d');
+  avTimelineChart=new Chart(ctx,{type:'line',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'rgba(255,255,255,.45)',boxWidth:10,font:{size:10}}}},scales:{x:{ticks:{color:'rgba(255,255,255,.3)',maxTicksLimit:8,font:{size:9}},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'rgba(255,255,255,.3)',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'},beginAtZero:true}}}});
+}
+function avRenderTopPlans(){
+  const counts={};
+  avEvents.filter(e=>e.event_type==='plan_click'&&e.plan_title).forEach(e=>{counts[e.plan_title]=(counts[e.plan_title]||0)+1;});
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  if(avPlansChart)avPlansChart.destroy();
+  const ctx=document.getElementById('av-plans').getContext('2d');
+  avPlansChart=new Chart(ctx,{type:'bar',data:{labels:sorted.map(([t])=>t.length>16?t.slice(0,16)+'…':t),datasets:[{label:'Clics',data:sorted.map(([,v])=>v),backgroundColor:'rgba(212,175,55,.7)',borderColor:'rgba(212,175,55,1)',borderWidth:1,borderRadius:2}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'rgba(255,255,255,.3)',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'},beginAtZero:true},y:{ticks:{color:'rgba(255,255,255,.5)',font:{size:10}},grid:{display:false}}}}});
+}
+function avRenderDonut(){
+  const villa=avEvents.filter(e=>e.event_type==='plan_click'&&e.plan_type==='villa').length;
+  const duplex=avEvents.filter(e=>e.event_type==='plan_click'&&e.plan_type==='duplex').length;
+  const total=villa+duplex;
+  avSet('av-type-sub',total?total+' clics':'');
+  if(avDonutChart)avDonutChart.destroy();
+  const ctx=document.getElementById('av-donut').getContext('2d');
+  avDonutChart=new Chart(ctx,{type:'doughnut',data:{labels:['Villa','Duplex'],datasets:[{data:[villa,duplex],backgroundColor:['rgba(212,175,55,.8)','rgba(96,165,250,.8)'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false}}}});
+  const lg=document.getElementById('av-donut-legend');
+  if(lg)lg.innerHTML=[{label:'Villa',count:villa,color:'rgba(212,175,55,.8)'},{label:'Duplex',count:duplex,color:'rgba(96,165,250,.8)'}].map(({label,count,color})=>`<div class="av-donut-item"><div class="av-donut-dot" style="background:${color}"></div><span style="color:rgba(255,255,255,.6);flex:1">${label}</span><strong style="color:#f0f0f0">${count}</strong><span style="color:rgba(255,255,255,.3);margin-left:6px">${total?Math.round(count/total*100)+'%':'0%'}</span></div>`).join('');
+}
+function avRenderFeed(newIds=[]){
+  const labels={page_view:'Page vue',plan_click:'Plan consulté',checkout_open:'Checkout ouvert',checkout_submit:'Checkout soumis',voir_exemple:'Exemple vu'};
+  const recent=avEvents.slice(0,60);
+  avSet('av-feed-count',recent.length+' derniers');
+  const feed=document.getElementById('av-feed');
+  if(!feed)return;
+  feed.innerHTML=recent.map(e=>`
+    <div class="av-feed-item${newIds.includes(e.id)?' av-feed-new':''}">
+      <div><span class="av-badge av-badge-${e.event_type}">${labels[e.event_type]||e.event_type}</span></div>
+      <div class="av-feed-plan">${e.plan_title||'—'}</div>
+      <div style="color:rgba(255,255,255,.35)">${e.option_type||'—'}</div>
+      <div class="av-feed-time">${avFmtTime(e.created_at)}</div>
+    </div>`).join('')||'<div style="color:rgba(255,255,255,.3);font-size:.8rem;padding:16px 0;text-align:center">Aucune activité sur cette période</div>';
+}
+function avSubscribeRealtime(){
+  _supabase.channel('admin-analytics-live')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'analytics_events'},payload=>{
+      avEvents.unshift(payload.new);
+      avEvents=avEvents.slice(0,2000);
+      avRenderKPIs();avRenderFunnel();avRenderFeed([payload.new.id]);
+    }).subscribe();
+}
+function avSet(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+function avFmtTime(iso){
+  const d=new Date(iso),now=new Date(),diff=Math.round((now-d)/1000);
+  if(diff<60)return 'il y a '+diff+'s';
+  if(diff<3600)return 'il y a '+Math.round(diff/60)+'min';
+  if(diff<86400)return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'});
+}
 
 // ── FETCH ──
 async function fetchPlans(){
