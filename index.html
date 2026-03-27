@@ -322,11 +322,17 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
   animation:slideUp .3s ease;
 }
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-@keyframes sbShake{0%,100%{transform:translateX(0)}15%{transform:translateX(-5px)}30%{transform:translateX(5px)}45%{transform:translateX(-4px)}60%{transform:translateX(4px)}75%{transform:translateX(-2px)}90%{transform:translateX(2px)}}
-@keyframes sbFlash{0%,100%{box-shadow:0 -4px 20px rgba(0,0,0,.25)}40%{box-shadow:0 -4px 40px rgba(212,175,55,.6),0 0 60px rgba(212,175,55,.3)}70%{box-shadow:0 -4px 30px rgba(212,175,55,.4)}}
-.sticky-bar.sb-shake{animation:sbShake .55s cubic-bezier(.36,.07,.19,.97) both,sbFlash .55s ease both}
-.sb-btn.sb-pulse{animation:sbBtnPulse 1.2s ease-in-out}
-@keyframes sbBtnPulse{0%,100%{transform:scale(1);box-shadow:none}50%{transform:scale(1.06);box-shadow:0 0 22px rgba(212,175,55,.7)}}
+@keyframes sbBtnAttract{
+  0%,100%{transform:translateX(0) scale(1);box-shadow:none}
+  10%{transform:translateX(-5px) scale(1.02)}
+  20%{transform:translateX(5px) scale(1.02);box-shadow:0 0 18px rgba(212,175,55,.6)}
+  30%{transform:translateX(-4px) scale(1.03);box-shadow:0 0 28px rgba(212,175,55,.8)}
+  40%{transform:translateX(4px) scale(1.03);box-shadow:0 0 36px rgba(212,175,55,.9)}
+  55%{transform:translateX(-2px) scale(1.02);box-shadow:0 0 24px rgba(212,175,55,.6)}
+  70%{transform:translateX(2px) scale(1.01);box-shadow:0 0 16px rgba(212,175,55,.4)}
+  85%{transform:translateX(-1px);box-shadow:0 0 8px rgba(212,175,55,.2)}
+}
+.sb-btn.sb-attract{animation:sbBtnAttract .9s cubic-bezier(.36,.07,.19,.97) both}
 .sb-info{}
 .sb-name{font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:2px}
 .sb-price{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--or);font-weight:600;line-height:1}
@@ -1539,25 +1545,18 @@ function openCheckout(){
 
 function closeCheckout(){document.getElementById('checkout-overlay').classList.remove('open')}
 
-/* ── Sticky CTA : shake + flashlight périodique ── */
+/* ── Sticky CTA : shake + flashlight sur le bouton uniquement ── */
 (function initStickyAttention(){
   var _timer = null;
   function triggerAnim(){
     var sb  = document.getElementById('sticky-bar');
     var btn = sb ? sb.querySelector('.sb-btn') : null;
-    if(!sb || sb.style.display === 'none') return;
-    // Shake du sticky bar
-    sb.classList.remove('sb-shake');
-    void sb.offsetWidth; // reflow pour relancer l'animation
-    sb.classList.add('sb-shake');
-    sb.addEventListener('animationend', function h(){ sb.classList.remove('sb-shake'); sb.removeEventListener('animationend',h); }, {once:true});
-    // Pulse du bouton (décalé de 100ms)
-    if(btn){ setTimeout(function(){
-      btn.classList.remove('sb-pulse');
-      void btn.offsetWidth;
-      btn.classList.add('sb-pulse');
-      btn.addEventListener('animationend', function h(){ btn.classList.remove('sb-pulse'); btn.removeEventListener('animationend',h); }, {once:true});
-    }, 100); }
+    if(!btn || sb.style.display === 'none') return;
+    // Animation uniquement sur le bouton
+    btn.classList.remove('sb-attract');
+    void btn.offsetWidth; // reflow pour relancer l'animation
+    btn.classList.add('sb-attract');
+    btn.addEventListener('animationend', function h(){ btn.classList.remove('sb-attract'); btn.removeEventListener('animationend',h); }, {once:true});
   }
   // Observe quand le sticky bar devient visible
   var observer = new MutationObserver(function(){
