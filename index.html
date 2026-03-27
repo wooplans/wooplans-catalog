@@ -1361,10 +1361,11 @@ function openDetailFast(id) {
     } else {
       vidEl.style.display = 'none';
       imgEl.style.display = 'block';
-      // Image optimisée pour LCP rapide
+      // Image optimisée pour LCP rapide — taille adaptée mobile/desktop
+      var galW = window.innerWidth <= 768 ? 750 : 900;
       var optimizedSrc = m.src;
       if (optimizedSrc.includes('b-cdn.net')) {
-        optimizedSrc = optimizedSrc + '?width=1200&quality=85&format=webp';
+        optimizedSrc = optimizedSrc + '?width=' + galW + '&quality=75&format=webp';
       }
       imgEl.src = optimizedSrc;
       imgEl.style.opacity = '1'; // Pas d'animation !
@@ -1487,10 +1488,11 @@ function setImg(i, immediate){
     vidEl.style.display='none';
     vidEl.pause();
     imgEl.style.display='block';
-    // Utiliser une taille optimisée pour la galerie (max 1200px)
+    // Taille adaptée à l'écran : mobile 750px (2× retina 375), desktop 900px
+    var galW = window.innerWidth <= 768 ? 750 : 900;
     var optimizedSrc = m.src;
     if(optimizedSrc.includes('b-cdn.net')){
-      optimizedSrc = optimizedSrc + '?width=1200&quality=85&format=webp';
+      optimizedSrc = optimizedSrc + '?width=' + galW + '&quality=75&format=webp';
     }
     if(immediate){
       // Pas d'animation pour la première image : LCP visible immédiatement
