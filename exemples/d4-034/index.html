@@ -33,10 +33,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 
 /* ── COVER ── */
 .cover{
-  position:relative;width:100%;height:100svh;min-height:500px;
+  position:relative;width:100%;height:clamp(320px,55vw,520px);
   overflow:hidden;display:flex;align-items:flex-end;
 }
-.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
 .cover-overlay{
   position:absolute;inset:0;
   background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,rgba(0,0,0,.65) 100%);
@@ -146,16 +146,16 @@ td:last-child{text-align:right;font-variant-numeric:tabular-nums}
   padding:14px 20px;display:flex;align-items:center;
   justify-content:space-between;gap:12px;flex-wrap:wrap;
 }
-.sticky-cta-info{color:rgba(255,255,255,.6);font-size:.78rem;line-height:1.4}
-.sticky-cta-info strong{display:block;color:var(--or-pale);font-size:.92rem;font-family:'Cormorant Garamond',serif}
+.sticky-cta-info{color:rgba(255,255,255,.75);font-size:.85rem;line-height:1.4;font-style:italic}
 .sticky-cta-btn{
   background:var(--or);color:var(--brun);
   font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;
   padding:13px 22px;border:none;cursor:pointer;white-space:nowrap;
-  text-decoration:none;display:inline-block;flex-shrink:0;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;flex-shrink:0;
   transition:background .2s;
 }
 .sticky-cta-btn:hover{background:var(--or-pale)}
+.sticky-cta-btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.5;fill:none;flex-shrink:0}
 .body-pad{padding-bottom:80px}
 
 /* ── RESPONSIVE ── */
@@ -264,31 +264,6 @@ td:last-child{text-align:right;font-variant-numeric:tabular-nums}
   </div>
 
   <table>
-    <caption>Surfaces par pièce</caption>
-    <thead><tr><th>Niveau</th><th>Pièce</th><th>Surface (m²)</th></tr></thead>
-    <tbody>
-      <tr><td rowspan="8">Rez-de-chaussée</td><td>Chambre V.</td><td>10,66</td></tr>
-      <tr><td>Cuisine</td><td>9,70</td></tr>
-      <tr><td>Entrée</td><td>8,15</td></tr>
-      <tr><td>Salon</td><td>20,58</td></tr>
-      <tr><td>SAM</td><td>9,51</td></tr>
-      <tr><td>SDB</td><td>2,82</td></tr>
-      <tr><td>Terrasse 1</td><td>6,24</td></tr>
-      <tr><td>Terrasse 2</td><td>3,24</td></tr>
-      <tr class="row-sub"><td colspan="2">Sous-total RDC</td><td>70,90</td></tr>
-      <tr><td rowspan="7">Étage</td><td>Chambre 1</td><td>17,66</td></tr>
-      <tr><td>Chambre 2</td><td>12,86</td></tr>
-      <tr><td>Chambre 3</td><td>11,62</td></tr>
-      <tr><td>Dressing</td><td>9,06</td></tr>
-      <tr><td>Hall</td><td>4,84</td></tr>
-      <tr><td>SDB 1</td><td>5,81</td></tr>
-      <tr><td>SDB 2</td><td>3,06</td></tr>
-      <tr class="row-sub"><td colspan="2">Sous-total Étage</td><td>71,73</td></tr>
-      <tr class="row-total"><td colspan="2">SURFACE TOTALE HABITABLE</td><td>142,63</td></tr>
-    </tbody>
-  </table>
-
-  <table>
     <caption>Devis estimatif (en FCFA)</caption>
     <thead><tr><th>N°</th><th>Poste de travaux</th><th>Montant (FCFA)</th></tr></thead>
     <tbody>
@@ -360,25 +335,13 @@ td:last-child{text-align:right;font-variant-numeric:tabular-nums}
 
 <!-- STICKY CTA -->
 <div class="sticky-cta">
-  <div class="sticky-cta-info">
-    <strong>Votre plan commence ici</strong>
-    Ce document est inclus dans le Plan Basique — 29&nbsp;000 FCFA
-  </div>
-  <a class="sticky-cta-btn" href="https://shop.wooplans.com" onclick="window.history.back()">
-    ↓ Télécharger ce plan
+  <span class="sticky-cta-info">Voici un exemple de Plan Basique + devis</span>
+  <a class="sticky-cta-btn" href="javascript:history.back()">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Retour
   </a>
 </div>
 
-<script>
-// Si ouvert depuis la page de détail, le bouton CTA renvoie directement au checkout
-(function(){
-  var btn = document.querySelector('.sticky-cta-btn');
-  if(btn && document.referrer && document.referrer.includes('wooplans')){
-    btn.href = 'javascript:void(0)';
-    btn.addEventListener('click', function(){ window.history.back(); });
-  }
-})();
-</script>
 
 </body>
 </html>
