@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plan Basique + Devis — Duplex D4-034 · WooPlans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brun:#1a1208;--terre:#8B5E3C;--or:#D4A853;--or-pale:#F0D49A;
+  --creme:#FAF7F2;--creme-2:#F3EDE3;--gris:#7A736C;--gris-fonce:#4A4540;
+  --vert:#2D6A4F;--blanc:#fff;
+  --shadow:0 4px 24px rgba(26,18,8,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);line-height:1.6}
+
+/* ── CLOSE BUTTON ── */
+#close-btn{
+  position:fixed;top:16px;right:16px;z-index:999;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--brun);color:var(--or);
+  border:2px solid var(--or);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);
+  transition:background .2s,transform .15s;
+  text-decoration:none;font-size:20px;line-height:1;
+}
+#close-btn:hover{background:var(--or);color:var(--brun);transform:scale(1.08)}
+#close-btn svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none}
+
+/* ── COVER ── */
+.cover{
+  position:relative;width:100%;height:100svh;min-height:500px;
+  overflow:hidden;display:flex;align-items:flex-end;
+}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.cover-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,rgba(0,0,0,.65) 100%);
+}
+.cover-content{
+  position:relative;z-index:2;width:100%;
+  padding:40px 28px 60px;color:#fff;
+}
+.cover-badge{
+  display:inline-block;background:var(--or);color:var(--brun);
+  font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 14px;margin-bottom:16px;
+}
+.cover-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,8vw,3.5rem);font-weight:700;line-height:1.1;
+  margin-bottom:10px;text-shadow:0 2px 12px rgba(0,0,0,.4);
+}
+.cover-sub{font-size:1rem;opacity:.85;margin-bottom:24px}
+.cover-specs{display:flex;flex-wrap:wrap;gap:12px}
+.cover-spec{
+  background:rgba(255,255,255,.15);backdrop-filter:blur(4px);
+  border:1px solid rgba(255,255,255,.25);
+  padding:6px 14px;font-size:.82rem;color:#fff;
+}
+
+/* ── SECTION STRUCTURE ── */
+.section{padding:48px 24px;max-width:860px;margin:0 auto}
+.section+.section{border-top:1px solid var(--creme-2)}
+.section-label{
+  font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--or);font-weight:600;margin-bottom:8px;
+}
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:var(--brun);
+  margin-bottom:24px;line-height:1.2;
+}
+.section-desc{font-size:.9rem;color:var(--gris-fonce);line-height:1.75;margin-bottom:28px}
+
+/* ── PLAN IMAGES ── */
+.plan-block{margin-bottom:28px}
+.plan-img-wrap{
+  background:#fff;border:1px solid var(--creme-2);
+  box-shadow:var(--shadow);overflow:hidden;text-align:center;
+}
+.plan-img-wrap img{width:100%;height:auto;display:block}
+.plan-caption{
+  padding:14px 18px;background:var(--brun);color:var(--or-pale);
+  font-size:.78rem;letter-spacing:.06em;display:flex;
+  justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;
+}
+.plan-caption strong{font-size:.9rem;color:#fff}
+.plan-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.plan-tag{
+  background:var(--creme-2);border:1px solid var(--creme-2);
+  padding:4px 12px;font-size:.78rem;color:var(--gris-fonce);
+}
+
+/* ── DEVIS ── */
+.devis-intro{
+  background:var(--blanc);border-left:3px solid var(--or);
+  padding:18px 22px;margin-bottom:28px;box-shadow:var(--shadow);
+}
+.devis-intro p{font-size:.88rem;color:var(--gris-fonce);line-height:1.7}
+.devis-intro p+p{margin-top:6px}
+
+table{width:100%;border-collapse:collapse;font-size:.84rem;margin-bottom:24px;background:#fff;box-shadow:var(--shadow)}
+caption{
+  background:var(--brun);color:var(--or-pale);
+  padding:10px 16px;text-align:left;font-size:.8rem;
+  letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+}
+thead th{background:#34495E;color:#fff;padding:10px 14px;text-align:left;font-weight:500;font-size:.8rem}
+tbody td{padding:9px 14px;border-bottom:1px solid #eee}
+tbody tr:nth-child(even){background:#faf9f7}
+.row-go{background:#EAF4EE !important}
+.row-fin{background:#FFF8EE !important}
+.row-sub{background:#2C3E50 !important;color:#fff;font-weight:600}
+.row-sub td{color:#fff}
+.row-total{background:var(--brun) !important}
+.row-total td{color:var(--or);font-weight:700;font-size:.92rem}
+td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.devis-note{
+  background:#FFF8E1;border-left:3px solid #FFC107;
+  padding:16px 20px;font-size:.8rem;color:var(--gris-fonce);
+}
+.devis-note h4{color:#E67E22;margin-bottom:8px;font-size:.84rem}
+.devis-note ul{margin-left:18px}
+.devis-note li{margin:4px 0}
+
+/* ── RENDUS 3D ── */
+.rendus-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:560px){.rendus-grid{grid-template-columns:1fr 1fr}}
+.rendu-block{overflow:hidden;box-shadow:var(--shadow)}
+.rendu-block.full{grid-column:1/-1}
+.rendu-block img{width:100%;height:auto;display:block}
+.rendu-block figcaption{
+  background:var(--brun);color:rgba(255,255,255,.6);
+  font-size:.72rem;padding:8px 14px;
+}
+
+/* ── STICKY CTA ── */
+.sticky-cta{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--brun);border-top:2px solid var(--or);
+  padding:14px 20px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.sticky-cta-info{color:rgba(255,255,255,.6);font-size:.78rem;line-height:1.4}
+.sticky-cta-info strong{display:block;color:var(--or-pale);font-size:.92rem;font-family:'Cormorant Garamond',serif}
+.sticky-cta-btn{
+  background:var(--or);color:var(--brun);
+  font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;
+  padding:13px 22px;border:none;cursor:pointer;white-space:nowrap;
+  text-decoration:none;display:inline-block;flex-shrink:0;
+  transition:background .2s;
+}
+.sticky-cta-btn:hover{background:var(--or-pale)}
+.body-pad{padding-bottom:80px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:540px){
+  .section{padding:36px 16px}
+  .cover-content{padding:28px 16px 56px}
+}
+</style>
+</head>
+<body class="body-pad">
+
+<!-- BOUTON FERMER -->
+<a id="close-btn" href="javascript:history.back()" title="Fermer et retourner au catalogue" aria-label="Fermer">
+  <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</a>
+
+<!-- COVER -->
+<div class="cover">
+  <img src="cover.jpeg" alt="Duplex D4-034 WooPlans" loading="eager">
+  <div class="cover-overlay"></div>
+  <div class="cover-content">
+    <div class="cover-badge">📐 Plan Basique + Devis — Exemple</div>
+    <h1 class="cover-title">Duplex D4-034</h1>
+    <p class="cover-sub">Plan d'Architecture &amp; Devis Estimatif complet</p>
+    <div class="cover-specs">
+      <span class="cover-spec">142 m² habitables</span>
+      <span class="cover-spec">4 chambres · 3 SDB</span>
+      <span class="cover-spec">2 niveaux · 10m × 9m</span>
+    </div>
+  </div>
+</div>
+
+<!-- PLAN D'IMPLANTATION -->
+<section class="section">
+  <div class="section-label">Page 1 · Plan</div>
+  <h2 class="section-title">Plan d'Implantation</h2>
+  <div class="plan-block">
+    <div class="plan-img-wrap">
+      <img src="implantation.jpeg" alt="Plan d'implantation D4-034" loading="lazy">
+      <div class="plan-caption">
+        <strong>Plan d'Implantation</strong>
+        <span>Ref. D4-034</span>
+      </div>
+    </div>
+    <div class="plan-tags">
+      <span class="plan-tag">Dimensions : 10m × 9m</span>
+      <span class="plan-tag">Emprise au sol : 90 m²</span>
+      <span class="plan-tag">Orientation Nord indiquée</span>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN RDC -->
+<section class="section">
+  <div class="section-label">Page 2 · Plan</div>
+  <h2 class="section-title">Plan de Distribution — Rez-de-Chaussée</h2>
+  <div class="plan-block">
+    <div class="plan-img-wrap">
+      <img src="rdc.jpeg" alt="Plan RDC D4-034" loading="lazy">
+      <div class="plan-caption">
+        <strong>Rez-de-Chaussée — 70,90 m²</strong>
+        <span>Ref. D4-034</span>
+      </div>
+    </div>
+    <div class="plan-tags">
+      <span class="plan-tag">Chambre V. (10,66 m²)</span>
+      <span class="plan-tag">Cuisine (9,70 m²)</span>
+      <span class="plan-tag">Salon (20,58 m²)</span>
+      <span class="plan-tag">SAM (9,51 m²)</span>
+      <span class="plan-tag">SDB (2,82 m²)</span>
+      <span class="plan-tag">Terrasses (9,48 m²)</span>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN ÉTAGE -->
+<section class="section">
+  <div class="section-label">Page 3 · Plan</div>
+  <h2 class="section-title">Plan de Distribution — Étage</h2>
+  <div class="plan-block">
+    <div class="plan-img-wrap">
+      <img src="etage.jpeg" alt="Plan étage D4-034" loading="lazy">
+      <div class="plan-caption">
+        <strong>Étage — 71,73 m²</strong>
+        <span>Ref. D4-034</span>
+      </div>
+    </div>
+    <div class="plan-tags">
+      <span class="plan-tag">Chambre 1 (17,66 m²)</span>
+      <span class="plan-tag">Chambre 2 (12,86 m²)</span>
+      <span class="plan-tag">Chambre 3 (11,62 m²)</span>
+      <span class="plan-tag">Dressing (9,06 m²)</span>
+      <span class="plan-tag">2 SDB</span>
+      <span class="plan-tag">Terrasse (6,82 m²)</span>
+    </div>
+  </div>
+</section>
+
+<!-- DEVIS ESTIMATIF -->
+<section class="section">
+  <div class="section-label">Page 4 · Devis</div>
+  <h2 class="section-title">Devis Estimatif</h2>
+  <div class="devis-intro">
+    <p><strong>Surface habitable totale :</strong> 142,63 m² (RDC : 70,90 m² + Étage : 71,73 m²)</p>
+    <p><strong>Composition :</strong> 1 Salon · 1 SAM · 4 Chambres · 3 SDB · 1 Cuisine · 2 Terrasses</p>
+  </div>
+
+  <table>
+    <caption>Surfaces par pièce</caption>
+    <thead><tr><th>Niveau</th><th>Pièce</th><th>Surface (m²)</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="8">Rez-de-chaussée</td><td>Chambre V.</td><td>10,66</td></tr>
+      <tr><td>Cuisine</td><td>9,70</td></tr>
+      <tr><td>Entrée</td><td>8,15</td></tr>
+      <tr><td>Salon</td><td>20,58</td></tr>
+      <tr><td>SAM</td><td>9,51</td></tr>
+      <tr><td>SDB</td><td>2,82</td></tr>
+      <tr><td>Terrasse 1</td><td>6,24</td></tr>
+      <tr><td>Terrasse 2</td><td>3,24</td></tr>
+      <tr class="row-sub"><td colspan="2">Sous-total RDC</td><td>70,90</td></tr>
+      <tr><td rowspan="7">Étage</td><td>Chambre 1</td><td>17,66</td></tr>
+      <tr><td>Chambre 2</td><td>12,86</td></tr>
+      <tr><td>Chambre 3</td><td>11,62</td></tr>
+      <tr><td>Dressing</td><td>9,06</td></tr>
+      <tr><td>Hall</td><td>4,84</td></tr>
+      <tr><td>SDB 1</td><td>5,81</td></tr>
+      <tr><td>SDB 2</td><td>3,06</td></tr>
+      <tr class="row-sub"><td colspan="2">Sous-total Étage</td><td>71,73</td></tr>
+      <tr class="row-total"><td colspan="2">SURFACE TOTALE HABITABLE</td><td>142,63</td></tr>
+    </tbody>
+  </table>
+
+  <table>
+    <caption>Devis estimatif (en FCFA)</caption>
+    <thead><tr><th>N°</th><th>Poste de travaux</th><th>Montant (FCFA)</th></tr></thead>
+    <tbody>
+      <tr class="row-go"><td>100</td><td>Fondation</td><td>2 438 970</td></tr>
+      <tr class="row-go"><td>200</td><td>Élévation RDC</td><td>1 797 140</td></tr>
+      <tr class="row-go"><td>300</td><td>Dalle</td><td>3 465 910</td></tr>
+      <tr class="row-go"><td>400</td><td>Élévation Étage</td><td>2 053 870</td></tr>
+      <tr class="row-go"><td>500</td><td>Charpente et Toiture</td><td>3 080 810</td></tr>
+      <tr class="row-sub"><td colspan="2">SOUS-TOTAL GROS ŒUVRE</td><td>12 836 700</td></tr>
+      <tr class="row-fin"><td>600</td><td>Crépissage et Antivols</td><td>3 765 430</td></tr>
+      <tr class="row-fin"><td>700</td><td>Portes et Fenêtres</td><td>2 824 070</td></tr>
+      <tr class="row-fin"><td>800</td><td>Plomberie et Électricité</td><td>2 353 400</td></tr>
+      <tr class="row-fin"><td>900</td><td>Plafond et Peinture</td><td>3 294 750</td></tr>
+      <tr class="row-fin"><td>1000</td><td>Carrelage</td><td>3 451 650</td></tr>
+      <tr class="row-sub"><td colspan="2">SOUS-TOTAL FINITIONS</td><td>15 689 300</td></tr>
+      <tr class="row-total"><td colspan="2">TOTAL CLÉ EN MAIN</td><td>28 526 000</td></tr>
+    </tbody>
+  </table>
+
+  <div class="devis-note">
+    <h4>⚠ Note importante</h4>
+    <ul>
+      <li>Les coûts de fondation varient selon le type de sol (terrain marécageux = surcoût)</li>
+      <li>La qualité des techniciens influence le coût de la main d'œuvre</li>
+      <li>Les matériaux de finition dépendent du standing souhaité et de votre budget</li>
+    </ul>
+  </div>
+</section>
+
+<!-- RENDUS 3D JOUR -->
+<section class="section">
+  <div class="section-label">Page 5 · Rendus 3D</div>
+  <h2 class="section-title">Vues Extérieures — Jour</h2>
+  <div class="rendus-grid">
+    <figure class="rendu-block full">
+      <img src="image1.jpeg" alt="Vue principale façade avant - Duplex D4-034" loading="lazy">
+      <figcaption>Vue principale — Façade avant</figcaption>
+    </figure>
+    <figure class="rendu-block">
+      <img src="image2.jpeg" alt="Vue latérale gauche - Duplex D4-034" loading="lazy">
+      <figcaption>Vue latérale gauche</figcaption>
+    </figure>
+    <figure class="rendu-block">
+      <img src="image3.jpeg" alt="Vue perspective angle droit - Duplex D4-034" loading="lazy">
+      <figcaption>Vue perspective — Angle droit</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- RENDUS 3D NUIT -->
+<section class="section">
+  <div class="section-label">Page 6 · Rendus 3D</div>
+  <h2 class="section-title">Vues Extérieures — Nuit</h2>
+  <div class="rendus-grid">
+    <figure class="rendu-block full">
+      <img src="image4.jpeg" alt="Vue de nuit façade avant éclairée - Duplex D4-034" loading="lazy">
+      <figcaption>Vue de nuit — Façade avant éclairée</figcaption>
+    </figure>
+    <figure class="rendu-block">
+      <img src="image5.jpeg" alt="Vue nocturne perspective jardin - Duplex D4-034" loading="lazy">
+      <figcaption>Vue nocturne — Perspective jardin</figcaption>
+    </figure>
+    <figure class="rendu-block">
+      <img src="image6.jpeg" alt="Vue nocturne angle latéral - Duplex D4-034" loading="lazy">
+      <figcaption>Vue nocturne — Angle latéral</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- STICKY CTA -->
+<div class="sticky-cta">
+  <div class="sticky-cta-info">
+    <strong>Votre plan commence ici</strong>
+    Ce document est inclus dans le Plan Basique — 29&nbsp;000 FCFA
+  </div>
+  <a class="sticky-cta-btn" href="https://shop.wooplans.com" onclick="window.history.back()">
+    ↓ Télécharger ce plan
+  </a>
+</div>
+
+<script>
+// Si ouvert depuis la page de détail, le bouton CTA renvoie directement au checkout
+(function(){
+  var btn = document.querySelector('.sticky-cta-btn');
+  if(btn && document.referrer && document.referrer.includes('wooplans')){
+    btn.href = 'javascript:void(0)';
+    btn.addEventListener('click', function(){ window.history.back(); });
+  }
+})();
+</script>
+
+</body>
+</html>
