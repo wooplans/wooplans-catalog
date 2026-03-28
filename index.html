@@ -781,15 +781,40 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
           <label class="form-lbl">Telephone (WhatsApp)</label>
           <div class="tel-wrap">
             <select class="tel-select" id="co-cc">
-              <option value="CM">&#127) CM +237</option>
-              <option value="CI">CI +225</option>
-              <option value="SN">SN +221</option>
-              <option value="ML">ML +223</option>
-              <option value="BF">BF +226</option>
-              <option value="BJ">BJ +229</option>
-              <option value="TG">TG +228</option>
-              <option value="GN">GN +224</option>
-              <option value="CD">CD +243</option>
+              <option value="CM">🇨🇲 CM +237</option>
+              <option value="CI">🇨🇮 CI +225</option>
+              <option value="SN">🇸🇳 SN +221</option>
+              <option value="ML">🇲🇱 ML +223</option>
+              <option value="BF">🇧🇫 BF +226</option>
+              <option value="BJ">🇧🇯 BJ +229</option>
+              <option value="TG">🇹🇬 TG +228</option>
+              <option value="GN">🇬🇳 GN +224</option>
+              <option value="GW">🇬🇼 GW +245</option>
+              <option value="NE">🇳🇪 NE +227</option>
+              <option value="TD">🇹🇩 TD +235</option>
+              <option value="CG">🇨🇬 CG +242</option>
+              <option value="CD">🇨🇩 CD +243</option>
+              <option value="GA">🇬🇦 GA +241</option>
+              <option value="GQ">🇬🇶 GQ +240</option>
+              <option value="CF">🇨🇫 CF +236</option>
+              <option value="MG">🇲🇬 MG +261</option>
+              <option value="MR">🇲🇷 MR +222</option>
+              <option value="GH">🇬🇭 GH +233</option>
+              <option value="NG">🇳🇬 NG +234</option>
+              <option value="RW">🇷🇼 RW +250</option>
+              <option value="BI">🇧🇮 BI +257</option>
+              <option value="KM">🇰🇲 KM +269</option>
+              <option value="MZ">🇲🇿 MZ +258</option>
+              <option value="TZ">🇹🇿 TZ +255</option>
+              <option value="KE">🇰🇪 KE +254</option>
+              <option value="UG">🇺🇬 UG +256</option>
+              <option value="ZM">🇿🇲 ZM +260</option>
+              <option value="ZW">🇿🇼 ZW +263</option>
+              <option value="ET">🇪🇹 ET +251</option>
+              <option value="SL">🇸🇱 SL +232</option>
+              <option value="LR">🇱🇷 LR +231</option>
+              <option value="GM">🇬🇲 GM +220</option>
+              <option value="ST">🇸🇹 ST +239</option>
             </select>
             <input class="form-input" type="tel" id="co-ph" placeholder="6 XX XX XX XX" required style="flex:1">
           </div>
@@ -996,7 +1021,7 @@ let saved = JSON.parse(localStorage.getItem('wp_saved')||'[]');
 let currentPlan = null;
 let selectedOpt = 1;
 let detectedCountryCode = 'CM';
-(async function(){try{const r=await fetch('https://ipapi.co/json/');const d=await r.json();const c=d.country_code||'CM';if(['CM','CI','SN','ML','BF','BJ','TG','GN','CD'].includes(c))detectedCountryCode=c;}catch(e){}})();
+(async function(){try{const r=await fetch('https://ipapi.co/json/');const d=await r.json();const c=(d.country_code||'').toUpperCase();if(c) detectedCountryCode=c;}catch(e){}})();
 let imgIdx = 0;
 let ddOpen = false;
 let galMedia = []; // déclaré ici pour éviter la TDZ lors du fast path
@@ -1598,7 +1623,17 @@ function openCheckout(){
   document.getElementById('co-pkg').textContent=isB?'Plan Basique + Devis \u00b7 Telechargement instantane':'Plans Complets \u00b7 Livraison 3-5 jours';
   document.getElementById('co-sum-lbl').textContent=isB?'Plan Basique + Devis':'Plans Complets';
   document.getElementById('co-sum-price').textContent=(isB?currentPlan.priceBasic:currentPlan.priceComplete)+' FCFA';
-  const ccSel=document.getElementById('co-cc');if(ccSel)ccSel.value=detectedCountryCode;
+  const ccSel=document.getElementById('co-cc');
+  if(ccSel){
+    // Si le pays détecté n'est pas dans la liste, l'ajouter dynamiquement
+    if(detectedCountryCode && ![...ccSel.options].some(o=>o.value===detectedCountryCode)){
+      const opt=document.createElement('option');
+      opt.value=detectedCountryCode;
+      opt.textContent=detectedCountryCode+' +?';
+      ccSel.insertBefore(opt,ccSel.firstChild);
+    }
+    ccSel.value=detectedCountryCode;
+  }
   // Analytics — ouverture checkout
   track('checkout_open',{plan_id:currentPlan.id,plan_type:currentPlan.type,plan_title:currentPlan.title,option_type:isB?'basic':'complete'});
   document.getElementById('checkout-overlay').classList.add('open');
