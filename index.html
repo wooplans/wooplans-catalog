@@ -597,7 +597,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <!-- SIDEBAR -->
       <div class="det-sidebar">
         <div class="purchase-box">
-          <div class="pbox-total">
+          <div class="pbox-total" style="display:none" aria-hidden="true">
             <div class="pbox-total-tag">💳 Paiement en 2 versements</div>
             <div class="pbox-total-label">Prix total du dossier complet</div>
             <div class="pbox-total-val" id="pbox-total-val">— FCFA</div>
@@ -639,35 +639,14 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
             Paiement securise &middot; Mobile Money
           </div>
 
-          <!-- SEPARATEUR -->
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-            <div style="flex:1;height:1px;background:var(--creme-3)"></div>
-            <span style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)">Ou</span>
-            <div style="flex:1;height:1px;background:var(--creme-3)"></div>
+          <!-- CARTE 2 masquée + bouton hint -->
+          <div id="opt-card-2" style="display:none" aria-hidden="true">
+            <div class="opt-price-val" id="price-complete" style="display:none">—</div>
           </div>
 
-          <!-- CARTE 2 : PLANS COMPLETS -->
-          <div class="opt-card" id="opt-card-2">
-            <div class="opt-card-head">
-              <div class="opt-card-left">
-                <div class="opt-card-name">Plans Complets</div>
-                <div class="opt-card-sub">Pour la construction</div>
-              </div>
-              <div class="opt-card-price">
-                <div class="opt-price-val" id="price-complete">—</div>
-                <div class="opt-price-cur">FCFA</div>
-              </div>
-            </div>
-            <span class="opt-card-tag tag-ord" style="margin-bottom:12px;display:inline-flex">Disponible 5-7 jours</span>
-            <ul class="opt-card-items">
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tous les plans architecturaux</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Avec modifications que vous voulez</li>
-            </ul>
-          </div>
-
-          <button class="cta-secondary" disabled style="opacity:.45;cursor:not-allowed;pointer-events:none;">
+          <button class="cta-secondary" disabled style="opacity:.5;cursor:not-allowed;pointer-events:none;margin-top:8px">
             <svg viewBox="0 0 24 24" style="width:15px;height:15px;flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Disponible apr&egrave;s achat du plan basique
+            Compl&eacute;tez avec le Dossier Complet apr&egrave;s votre achat
           </button>
 
         </div>
@@ -684,6 +663,14 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
           <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </summary>
         <p class="faq-answer">Le <strong>Plan Basique avec devis</strong> est envoyé instantanément par email et WhatsApp après validation du paiement.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          Dois-je tout payer en une seule fois ?
+          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </summary>
+        <p class="faq-answer">Non. Vous commencez avec le <strong>Plan Basique</strong> à <strong>29 000 FCFA</strong>, livré instantanément après paiement. Si vous souhaitez aller plus loin avec les plans d'exécution détaillés, le <strong>Dossier Complet</strong> est disponible en complément quand vous êtes prêt. Aucune obligation.</p>
       </details>
 
       <details class="faq-item">
