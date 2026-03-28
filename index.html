@@ -171,7 +171,8 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 @keyframes slideR{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}
 
 .det-header{position:sticky;top:0;z-index:10;background:var(--creme);border-bottom:1px solid var(--creme-3);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
-.det-crumb{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.det-crumb{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);background:none;border:none;cursor:pointer;font-family:inherit;padding:0;transition:color .2s}
+.det-crumb:hover{color:var(--terre)}
 .det-close{width:38px;height:38px;border:1.5px solid var(--gris-clair);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px}
 .det-close:hover{background:var(--brun);border-color:var(--brun)}
 .det-close:hover svg{stroke:var(--or)}
@@ -357,9 +358,17 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .co-x:hover{background:rgba(255,255,255,.1)}
 .co-x svg{width:14px;height:14px;stroke:white;stroke-width:2;fill:none}
 .co-body{padding:24px 26px}
-.co-summary{background:var(--creme-2);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;border:1px solid var(--creme-3)}
+.co-summary{background:var(--creme-2);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;border:1px solid var(--creme-3);cursor:default;user-select:none}
+.co-sum-tag{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--vert);margin-bottom:3px}
 .co-sum-lbl{font-size:.82rem;color:var(--gris-fonce)}
 .co-sum-price{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--brun)}
+
+/* ── CTA MOBILE RAPIDE (sous galerie) ── */
+.det-mobile-cta{display:none;padding:14px 20px;background:var(--brun);border-top:2px solid var(--or)}
+.det-mobile-cta-btn{width:100%;background:var(--or);color:var(--brun);font-size:.9rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:15px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .2s}
+.det-mobile-cta-btn:hover{background:var(--or-pale)}
+.det-mobile-cta-price{text-align:center;font-size:.75rem;color:rgba(255,255,255,.55);margin-top:7px}
+@media(max-width:640px){.det-mobile-cta{display:block}}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form-group{margin-bottom:13px}
 .form-lbl{display:block;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris-fonce);margin-bottom:7px;font-weight:500}
@@ -542,7 +551,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   <div class="det-backdrop" onclick="closeDetail()"></div>
   <div class="det-panel">
     <div class="det-header">
-      <span class="det-crumb">Catalogue &rsaquo; Detail du plan</span>
+      <button class="det-crumb" onclick="closeDetail()" title="Retour au catalogue">Catalogue &rsaquo; Detail du plan</button>
       <button class="det-close" onclick="closeDetail()">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
@@ -559,6 +568,15 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         </div>
       </div>
       <div class="gal-thumbs" id="gal-thumbs"></div>
+    </div>
+
+    <!-- CTA rapide mobile — visible immédiatement sous la galerie -->
+    <div class="det-mobile-cta" id="det-mobile-cta">
+      <button class="det-mobile-cta-btn" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Telecharger le Plan Basique
+      </button>
+      <div class="det-mobile-cta-price"><span id="det-mcta-price">—</span> FCFA · Livraison instantanée</div>
     </div>
 
     <div class="det-content">
@@ -747,7 +765,10 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
     </div>
     <div class="co-body">
       <div class="co-summary">
-        <span class="co-sum-lbl" id="co-sum-lbl">Plan Basique + Devis</span>
+        <div>
+          <div class="co-sum-tag">✓ Formule selectionnee</div>
+          <span class="co-sum-lbl" id="co-sum-lbl">Plan Basique + Devis</span>
+        </div>
         <span class="co-sum-price" id="co-sum-price">—</span>
       </div>
       <form onsubmit="submitCheckout(event)">
@@ -1543,6 +1564,8 @@ function updateOptUI(){
   var price=isB?currentPlan.priceBasic:currentPlan.priceComplete;
   document.getElementById('sb-name').textContent=isB?'Plan Basique + Devis':'Plans Complets';
   document.getElementById('sb-price').textContent=price+' FCFA';
+  var mctaPrice=document.getElementById('det-mcta-price');
+  if(mctaPrice) mctaPrice.textContent=price;
 }
 
 function toggleDd(n){
@@ -1615,10 +1638,12 @@ function closeCheckout(){document.getElementById('checkout-overlay').classList.r
 async function submitCheckout(e){
   e.preventDefault();
   const btn=document.getElementById('co-btn');
+  if(btn.disabled) return; // bloquer les doubles clics
   btn.disabled=true;
+  btn.style.background='var(--terre)';
   document.getElementById('co-spin').style.display='block';
   document.getElementById('co-btn-ico').style.display='none';
-  document.getElementById('co-btn-txt').textContent='Redirection...';
+  document.getElementById('co-btn-txt').textContent='Traitement en cours...';
 
   const p = currentPlan;
   const isBasic = selectedOpt === 1;
@@ -1695,7 +1720,9 @@ async function submitCheckout(e){
       setTimeout(()=>{ window.location.href = FALLBACK_URL; }, 800);
     } else {
       // Erreur API → afficher le message et ne pas quitter
-      document.getElementById('co-btn').disabled = false;
+      const coBtn=document.getElementById('co-btn');
+      coBtn.disabled = false;
+      coBtn.style.background = '';
       document.getElementById('co-spin').style.display = 'none';
       document.getElementById('co-btn-ico').style.display = 'inline';
       document.getElementById('co-btn-txt').textContent = 'Proceder au paiement';
