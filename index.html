@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!-- Cache hero/concept AVANT le rendu pour éviter le flash sur /plans -->
 <script>if(location.pathname.startsWith('/plans'))document.documentElement.classList.add('plans-route');</script>
-<style>.plans-route #hero,.plans-route #concept{display:none!important}.plans-route #catalogue{padding-top:96px!important}</style>
+<style>.plans-route #hero,.plans-route #concept{display:none!important}.plans-route #catalogue{padding-top:132px!important}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WooPlans — Plans de Maison Premium</title>
 <meta name="description" content="Téléchargez instantanément votre plan de maison. Villas et duplex conçus pour l'Afrique.">
@@ -65,9 +65,19 @@ body{
 .loader-logo{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--or);letter-spacing:.2em;animation:blink 1.4s ease infinite}
 @keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
 
+/* ── ALERT BAR ── */
+#alert-bar{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:var(--brun);color:var(--or);
+  text-align:center;font-size:.8rem;font-weight:600;
+  letter-spacing:.05em;padding:9px 16px;line-height:1;
+}
+#alert-bar strong{color:#fff}
+@media(max-width:480px){#alert-bar{font-size:.72rem;padding:8px 12px}}
+
 /* ── NAV ── */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
+  position:fixed;top:36px;left:0;right:0;z-index:100;
   height:68px;padding:0 5vw;
   display:flex;align-items:center;justify-content:space-between;
   background:rgba(250,247,242,.95);
@@ -84,7 +94,7 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .nav-cta:hover{background:var(--terre);transform:translateY(-1px)}
 
 /* ── HERO ── */
-#hero{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;padding-top:68px;overflow:hidden}
+#hero{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;padding-top:104px;overflow:hidden}
 .hero-left{display:flex;flex-direction:column;justify-content:center;padding:7vw 5vw 7vw 6vw}
 .hero-eyebrow{display:flex;align-items:center;gap:10px;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terre);margin-bottom:24px;font-weight:500}
 .hero-eyebrow::before{content:'';width:28px;height:1.5px;background:var(--terre)}
@@ -238,13 +248,15 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .opt-card.featured{border-color:var(--or)}
 .opt-card.featured.selected{border-color:var(--brun)}
 
-/* Badge "Recommande" */
-.opt-featured-badge{
+/* Badge promo -50% */
+.opt-promo-badge{
   position:absolute;top:-1px;right:16px;
-  background:var(--or);color:var(--brun);
-  font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:#e63946;color:#fff;
+  font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   padding:3px 10px;
 }
+/* Ancien prix barré */
+.opt-price-old{font-size:.75rem;color:var(--gris);text-decoration:line-through;margin-bottom:2px;line-height:1;text-align:right}
 
 /* Header de la carte */
 .opt-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:10px}
@@ -457,6 +469,19 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 
 <div id="loader"><div class="loader-logo">WooPlans</div></div>
 
+<!-- ALERT BAR -->
+<div id="alert-bar">
+  🔥 <strong>-50%</strong> &nbsp;·&nbsp; Offre valable ce <span id="alert-date"></span>
+</div>
+<script>
+(function(){
+  var j=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  var m=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  var d=new Date();
+  document.getElementById('alert-date').textContent=j[d.getDay()]+' '+d.getDate()+' '+m[d.getMonth()];
+})();
+</script>
+
 <nav id="nav">
   <div class="nav-logo" onclick="window.location.href='/'"><span class="nav-dot"></span>WooPlans</div>
   <span class="nav-link" onclick="scrollToConcept()">Comment ca marche</span>
@@ -586,14 +611,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="gal-thumbs" id="gal-thumbs"></div>
     </div>
 
-    <!-- CTA rapide mobile — visible immédiatement sous la galerie -->
-    <div class="det-mobile-cta" id="det-mobile-cta">
-      <button class="det-mobile-cta-btn" onclick="selectOpt(1);openCheckout()">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Telecharger le Plan Basique
-      </button>
-      <div class="det-mobile-cta-price"><span id="det-mcta-price">—</span> FCFA · Livraison instantanée</div>
-    </div>
 
     <div class="det-content">
       <div class="det-main">
@@ -637,17 +654,17 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
             <div class="pbox-total-val" id="pbox-total-val">— FCFA</div>
             <div class="pbox-total-sub">Avance&nbsp;<strong id="pbox-acompte">—</strong>&nbsp;FCFA · Solde&nbsp;<strong id="pbox-solde">—</strong>&nbsp;FCFA</div>
           </div>
-          <div class="pbox-title">Choisir une formule</div>
 
           <!-- CARTE 1 : PLAN BASIQUE -->
           <div class="opt-card featured selected" id="opt-card-1">
-            <div class="opt-featured-badge">Recommande</div>
+            <div class="opt-promo-badge">−50%</div>
             <div class="opt-card-head">
               <div class="opt-card-left">
                 <div class="opt-card-name">Plan Basique + Devis</div>
                 <div class="opt-card-sub">Pour demarrer et personnaliser votre projet</div>
               </div>
               <div class="opt-card-price">
+                <div class="opt-price-old">30 000 FCFA</div>
                 <div class="opt-price-val" id="price-basic">—</div>
                 <div class="opt-price-cur">FCFA</div>
               </div>
