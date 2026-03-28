@@ -376,7 +376,23 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .form-input:focus{border-color:var(--brun)}
 .form-input::placeholder{color:var(--gris-clair)}
 .tel-wrap{display:flex;gap:8px}
-.tel-select{padding:13px 10px;border:1.5px solid var(--creme-3);background:var(--creme-2);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--gris-fonce);outline:none;cursor:pointer;flex-shrink:0;width:118px;border-radius:2px}
+/* ── CUSTOM COUNTRY PICKER ── */
+.cc-wrap{position:relative;flex-shrink:0}
+.cc-trigger{display:flex;align-items:center;gap:7px;padding:13px 10px;border:1.5px solid var(--creme-3);background:var(--creme-2);cursor:pointer;min-width:114px;transition:border-color .2s;user-select:none;border-radius:2px}
+.cc-trigger:hover,.cc-wrap.open .cc-trigger{border-color:var(--brun)}
+.cc-flag{width:22px;height:15px;object-fit:cover;flex-shrink:0;border-radius:1px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.cc-label{font-size:.84rem;color:var(--gris-fonce);white-space:nowrap;flex:1;font-family:'DM Sans',sans-serif}
+.cc-chevron{width:12px;height:12px;stroke:var(--gris);stroke-width:2.5;fill:none;flex-shrink:0;transition:transform .2s}
+.cc-wrap.open .cc-chevron{transform:rotate(180deg)}
+.cc-dropdown{position:absolute;top:calc(100% + 3px);left:0;width:220px;background:var(--blanc);border:1.5px solid var(--creme-3);box-shadow:0 8px 28px rgba(0,0,0,.14);z-index:600;max-height:230px;overflow-y:auto;display:none;border-radius:2px}
+.cc-dropdown::-webkit-scrollbar{width:4px}
+.cc-dropdown::-webkit-scrollbar-thumb{background:var(--creme-3)}
+.cc-wrap.open .cc-dropdown{display:block}
+.cc-item{display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;transition:background .12s;font-size:.83rem;color:var(--brun);font-family:'DM Sans',sans-serif}
+.cc-item:hover{background:var(--creme-2)}
+.cc-item.active{background:var(--creme-2);font-weight:600;color:var(--brun)}
+.cc-item img{width:22px;height:15px;object-fit:cover;flex-shrink:0;border-radius:1px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.cc-item-dial{color:var(--gris);font-size:.76rem;margin-left:auto}
 .co-submit{width:100%;margin-top:6px;background:var(--brun);color:var(--or);font-size:.88rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:16px;border:none;cursor:pointer;transition:background .25s;display:flex;align-items:center;justify-content:center;gap:10px}
 .co-submit:hover{background:var(--terre)}
 .co-submit:disabled{opacity:.6;cursor:not-allowed}
@@ -780,42 +796,17 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         <div class="form-group">
           <label class="form-lbl">Telephone (WhatsApp)</label>
           <div class="tel-wrap">
-            <select class="tel-select" id="co-cc">
-              <option value="CM">🇨🇲 CM +237</option>
-              <option value="CI">🇨🇮 CI +225</option>
-              <option value="SN">🇸🇳 SN +221</option>
-              <option value="ML">🇲🇱 ML +223</option>
-              <option value="BF">🇧🇫 BF +226</option>
-              <option value="BJ">🇧🇯 BJ +229</option>
-              <option value="TG">🇹🇬 TG +228</option>
-              <option value="GN">🇬🇳 GN +224</option>
-              <option value="GW">🇬🇼 GW +245</option>
-              <option value="NE">🇳🇪 NE +227</option>
-              <option value="TD">🇹🇩 TD +235</option>
-              <option value="CG">🇨🇬 CG +242</option>
-              <option value="CD">🇨🇩 CD +243</option>
-              <option value="GA">🇬🇦 GA +241</option>
-              <option value="GQ">🇬🇶 GQ +240</option>
-              <option value="CF">🇨🇫 CF +236</option>
-              <option value="MG">🇲🇬 MG +261</option>
-              <option value="MR">🇲🇷 MR +222</option>
-              <option value="GH">🇬🇭 GH +233</option>
-              <option value="NG">🇳🇬 NG +234</option>
-              <option value="RW">🇷🇼 RW +250</option>
-              <option value="BI">🇧🇮 BI +257</option>
-              <option value="KM">🇰🇲 KM +269</option>
-              <option value="MZ">🇲🇿 MZ +258</option>
-              <option value="TZ">🇹🇿 TZ +255</option>
-              <option value="KE">🇰🇪 KE +254</option>
-              <option value="UG">🇺🇬 UG +256</option>
-              <option value="ZM">🇿🇲 ZM +260</option>
-              <option value="ZW">🇿🇼 ZW +263</option>
-              <option value="ET">🇪🇹 ET +251</option>
-              <option value="SL">🇸🇱 SL +232</option>
-              <option value="LR">🇱🇷 LR +231</option>
-              <option value="GM">🇬🇲 GM +220</option>
-              <option value="ST">🇸🇹 ST +239</option>
-            </select>
+            <!-- Custom country picker avec drapeaux -->
+            <div class="cc-wrap" id="cc-wrap">
+              <div class="cc-trigger" id="cc-trigger" onclick="ccToggle()">
+                <img class="cc-flag" id="cc-flag" src="https://flagcdn.com/w40/cm.png" alt="CM">
+                <span class="cc-label" id="cc-label">CM +237</span>
+                <svg class="cc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="cc-dropdown" id="cc-dropdown"></div>
+            </div>
+            <!-- Valeur transmise à l'API -->
+            <input type="hidden" id="co-cc" value="CM">
             <input class="form-input" type="tel" id="co-ph" placeholder="6 XX XX XX XX" required style="flex:1">
           </div>
         </div>
@@ -948,12 +939,12 @@ async function fetchPlans() {
     setCachedPlans(plans);
     if (window.__INITIAL_PLAN__) {
       const match = plans.find(p => p.id === window.__INITIAL_PLAN__.id);
-      if (match) { openDetail(match.id, true); return; }
+      if (match) { openDetail(match.id, true); maybeAutoCheckout(); return; }
     }
     const pathMatch = location.pathname.match(/^\/plans\/(.+)$/);
     if (pathMatch) {
       const match = plans.find(p => slugify(p.title) === pathMatch[1]);
-      if (match) openDetail(match.id, true);
+      if (match) { openDetail(match.id, true); maybeAutoCheckout(); }
     }
     return; // Pas de requête réseau nécessaire
   }
@@ -969,7 +960,7 @@ async function fetchPlans() {
     const pathMatch = location.pathname.match(/^\/plans\/(.+)$/);
     if (pathMatch) {
       const match = plans.find(p => slugify(p.title) === pathMatch[1]);
-      if (match) openDetail(match.id, true);
+      if (match) { openDetail(match.id, true); maybeAutoCheckout(); }
     }
     return;
   }
@@ -1003,7 +994,7 @@ async function fetchPlansFromServer(silent) {
   const pathMatch = location.pathname.match(/^\/plans\/(.+)$/);
   if (pathMatch) {
     const match = plans.find(p => slugify(p.title) === pathMatch[1]);
-    if (match) openDetail(match.id, true);
+    if (match) { openDetail(match.id, true); maybeAutoCheckout(); }
   } else {
     const hash = location.hash.slice(1);
     if (hash) {
@@ -1011,8 +1002,18 @@ async function fetchPlansFromServer(silent) {
       if (match) {
         history.replaceState({planId: match.id}, '', '/plans/' + hash);
         openDetail(match.id, true);
+        maybeAutoCheckout();
       }
     }
+  }
+}
+
+// ── AUTO-CHECKOUT via URL (?checkout=1) ──────────────────────
+// Si l'URL contient ?checkout=1, ouvrir le checkout dès que le plan est chargé
+function maybeAutoCheckout(){
+  if(new URLSearchParams(location.search).get('checkout')==='1'){
+    selectOpt(1);
+    openCheckout();
   }
 }
 
@@ -1623,17 +1624,7 @@ function openCheckout(){
   document.getElementById('co-pkg').textContent=isB?'Plan Basique + Devis \u00b7 Telechargement instantane':'Plans Complets \u00b7 Livraison 3-5 jours';
   document.getElementById('co-sum-lbl').textContent=isB?'Plan Basique + Devis':'Plans Complets';
   document.getElementById('co-sum-price').textContent=(isB?currentPlan.priceBasic:currentPlan.priceComplete)+' FCFA';
-  const ccSel=document.getElementById('co-cc');
-  if(ccSel){
-    // Si le pays détecté n'est pas dans la liste, l'ajouter dynamiquement
-    if(detectedCountryCode && ![...ccSel.options].some(o=>o.value===detectedCountryCode)){
-      const opt=document.createElement('option');
-      opt.value=detectedCountryCode;
-      opt.textContent=detectedCountryCode+' +?';
-      ccSel.insertBefore(opt,ccSel.firstChild);
-    }
-    ccSel.value=detectedCountryCode;
-  }
+  ccPickerSelect(detectedCountryCode);
   // Analytics — ouverture checkout
   track('checkout_open',{plan_id:currentPlan.id,plan_type:currentPlan.type,plan_title:currentPlan.title,option_type:isB?'basic':'complete'});
   document.getElementById('checkout-overlay').classList.add('open');
@@ -1765,6 +1756,102 @@ async function submitCheckout(e){
     }
   }
 }
+
+// ── COUNTRY PICKER ───────────────────────────────────────────
+// c=code ISO, d=indicatif, p=placeholder numéro (indicatif uniquement)
+const CC_DATA=[
+  {c:'CM',d:'+237',p:'6 XX XX XX XX'},
+  {c:'CI',d:'+225',p:'07 XX XX XX XX'},
+  {c:'SN',d:'+221',p:'77 XXX XX XX'},
+  {c:'ML',d:'+223',p:'70 XX XX XX'},
+  {c:'BF',d:'+226',p:'70 XX XX XX'},
+  {c:'BJ',d:'+229',p:'97 XX XX XX'},
+  {c:'TG',d:'+228',p:'90 XX XX XX'},
+  {c:'GN',d:'+224',p:'6XX XXX XXX'},
+  {c:'GW',d:'+245',p:'955 XXXX'},
+  {c:'NE',d:'+227',p:'90 XX XX XX'},
+  {c:'TD',d:'+235',p:'66 XX XX XX'},
+  {c:'CG',d:'+242',p:'06 XXX XX XX'},
+  {c:'CD',d:'+243',p:'081 XXX XXXX'},
+  {c:'GA',d:'+241',p:'07 XX XX XX'},
+  {c:'GQ',d:'+240',p:'222 XX XX XX'},
+  {c:'CF',d:'+236',p:'75 XX XX XX'},
+  {c:'MG',d:'+261',p:'034 XX XXX XX'},
+  {c:'MR',d:'+222',p:'22 XX XX XX'},
+  {c:'GH',d:'+233',p:'024 XXX XXXX'},
+  {c:'NG',d:'+234',p:'0801 XXX XXXX'},
+  {c:'RW',d:'+250',p:'078 XXX XXXX'},
+  {c:'BI',d:'+257',p:'79 XX XX XX'},
+  {c:'KM',d:'+269',p:'321 XXXX'},
+  {c:'MZ',d:'+258',p:'84 XXX XXXX'},
+  {c:'TZ',d:'+255',p:'071 XXX XXXX'},
+  {c:'KE',d:'+254',p:'0712 XXX XXX'},
+  {c:'UG',d:'+256',p:'075 XXX XXXX'},
+  {c:'ZM',d:'+260',p:'097 XXX XXXX'},
+  {c:'ZW',d:'+263',p:'071 XXX XXXX'},
+  {c:'ET',d:'+251',p:'091 XXX XXXX'},
+  {c:'SL',d:'+232',p:'076 XXXXX'},
+  {c:'LR',d:'+231',p:'077 XXXXX'},
+  {c:'GM',d:'+220',p:'7XX XXXX'},
+  {c:'ST',d:'+239',p:'981 XXXX'},
+];
+(function buildCcDropdown(){
+  const dd=document.getElementById('cc-dropdown');
+  if(!dd) return;
+  dd.innerHTML=CC_DATA.map(({c,d})=>
+    `<div class="cc-item" data-code="${c}" onclick="ccPickerSelect('${c}')">
+      <img src="https://flagcdn.com/w40/${c.toLowerCase()}.png" alt="${c}" loading="lazy">
+      <span>${c}</span>
+      <span class="cc-item-dial">${d}</span>
+    </div>`
+  ).join('');
+})();
+function ccPickerSelect(code){
+  const found=CC_DATA.find(x=>x.c===code);
+  const dial=found?found.d:'+?';
+  const ph=found?found.p:'XX XX XX XX';
+  // Si le code n'est pas dans la liste, l'ajouter en tête
+  if(!found){
+    const dd=document.getElementById('cc-dropdown');
+    if(dd){
+      const el=document.createElement('div');
+      el.className='cc-item';el.dataset.code=code;
+      el.innerHTML=`<img src="https://flagcdn.com/w40/${code.toLowerCase()}.png" alt="${code}" onerror="this.style.display='none'" loading="lazy"><span>${code}</span><span class="cc-item-dial">+?</span>`;
+      el.onclick=()=>ccPickerSelect(code);
+      dd.insertBefore(el,dd.firstChild);
+    }
+  }
+  // Mettre à jour le déclencheur visuel
+  const flag=document.getElementById('cc-flag');
+  const lbl=document.getElementById('cc-label');
+  const hidden=document.getElementById('co-cc');
+  const phInput=document.getElementById('co-ph');
+  if(flag){flag.src='https://flagcdn.com/w40/'+code.toLowerCase()+'.png';flag.alt=code;}
+  if(lbl) lbl.textContent=code+' '+dial;
+  if(hidden) hidden.value=code;
+  // Adapter le placeholder au format du pays (sans restriction de longueur)
+  if(phInput){
+    phInput.placeholder=ph;
+    phInput.removeAttribute('maxlength');
+    phInput.value=''; // réinitialiser si on change de pays
+  }
+  // Marquer l'item actif
+  document.querySelectorAll('.cc-item').forEach(el=>{
+    el.classList.toggle('active',el.dataset.code===code);
+  });
+  ccClose();
+}
+function ccToggle(){
+  document.getElementById('cc-wrap').classList.toggle('open');
+}
+function ccClose(){
+  const w=document.getElementById('cc-wrap');
+  if(w) w.classList.remove('open');
+}
+document.addEventListener('click',function(e){
+  const w=document.getElementById('cc-wrap');
+  if(w && !w.contains(e.target)) ccClose();
+});
 
 // ── TOAST ────────────────────────────────────────────────────
 let tTimer;
