@@ -67,7 +67,7 @@ body{
 
 /* ── ALERT BAR ── */
 #alert-bar{
-  position:fixed;top:0;left:0;right:0;z-index:200;
+  position:fixed;top:0;left:0;right:0;z-index:350;
   background:var(--brun);color:var(--or);
   text-align:center;font-size:.8rem;font-weight:600;
   letter-spacing:.05em;padding:9px 16px;line-height:1;
@@ -170,7 +170,7 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .card-btn svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none}
 
 /* ── DETAIL OVERLAY ── */
-#detail-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:stretch}
+#detail-overlay{position:fixed;inset:0;top:36px;z-index:200;display:none;align-items:stretch}
 #detail-overlay.open{display:flex}
 .det-backdrop{position:absolute;inset:0;background:rgba(10,8,5,.6);backdrop-filter:blur(5px);animation:fadeIn .3s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -1060,6 +1060,7 @@ if (window.__ALL_PLANS__ && window.__ALL_PLANS__.length) {
     // Ouvrir le plan avec affichage immédiat (pas d'animation pour LCP)
     setTimeout(function() {
       openDetailFast(window.__INITIAL_PLAN__.id);
+      maybeAutoCheckout();
     }, 0);
   } else {
     fetchPlans();
