@@ -39,8 +39,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .nav-link:hover{color:var(--or)}
 
 /* ── ANALYTICS PLANS ── */
-.analytics{padding:24px 32px;display:none}
-.analytics.show{display:block}
+.analytics{padding:24px 32px;}
 .analytics-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--terre);margin-bottom:16px}
 .kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:16px}
 .kpi{background:var(--blanc);padding:16px;text-align:center}
@@ -289,6 +288,72 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
   .price-row{grid-template-columns:1fr}
   .bulk-bar{flex-direction:column;align-items:stretch;gap:10px}
 }
+
+/* ── ADMIN TABS ── */
+.admin-tabs{display:none;background:var(--brun-moyen);padding:0 32px;border-bottom:2px solid var(--terre);gap:0}
+.admin-tabs.show{display:flex}
+.admin-tab{padding:14px 24px;font-size:.82rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border:none;background:transparent;color:rgba(255,255,255,.4);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .2s,border-color .2s;display:flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif}
+.admin-tab:hover{color:var(--or-pale)}
+.admin-tab.active{color:var(--or);border-bottom-color:var(--or)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ── PDF CONSTRUCTOR ── */
+.pdf-con{padding:32px;max-width:960px;margin:0 auto}
+.pdf-con-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brun);margin-bottom:6px}
+.pdf-con-sub{font-size:.85rem;color:var(--gris);margin-bottom:28px}
+.pdf-step{background:var(--blanc);margin-bottom:20px;border:1px solid var(--creme-2)}
+.pdf-step-head{background:var(--brun);color:var(--or);padding:14px 20px;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.pdf-step-num{width:22px;height:22px;border-radius:50%;background:var(--or);color:var(--brun);font-size:.72rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pdf-step-body{padding:22px}
+.pdf-api-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.pdf-api-input{flex:1;padding:10px 14px;border:1.5px solid var(--creme-3);background:var(--creme);font-size:.9rem;color:var(--brun);font-family:inherit;min-width:0}
+.pdf-api-input:focus{outline:none;border-color:var(--or);background:var(--blanc)}
+.pdf-api-saved{font-size:.75rem;color:var(--vert);background:var(--vert-bg);padding:4px 10px;border-radius:2px;display:none}
+.pdf-drop{border:2px dashed var(--creme-3);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:var(--creme)}
+.pdf-drop:hover,.pdf-drop.dragover{border-color:var(--or);background:rgba(212,168,83,.08)}
+.pdf-drop p{color:var(--gris);font-size:.88rem;margin-bottom:4px}
+.pdf-drop small{font-size:.75rem;color:var(--gris-clair)}
+.pdf-files{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.pdf-file{position:relative;width:90px;flex-shrink:0}
+.pdf-file img{width:90px;height:72px;object-fit:cover;border:2px solid var(--creme-2);display:block}
+.pdf-file-name{font-size:.64rem;color:var(--gris-fonce);text-align:center;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pdf-file select{width:90px;font-size:.62rem;padding:3px 4px;border:1px solid var(--creme-3);background:var(--blanc);color:var(--brun);margin-top:3px;font-family:inherit}
+.pdf-file .remove-img{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:var(--rouge);color:#fff;border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;border-radius:50%;z-index:2}
+.btn-analyze{background:var(--brun);color:var(--or);border:2px solid var(--or);padding:12px 28px;font-size:.88rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:9px;transition:background .2s;margin-top:16px;font-family:inherit}
+.btn-analyze:hover{background:var(--terre)}
+.btn-analyze:disabled{opacity:.5;cursor:not-allowed}
+.pdf-ai-status{font-size:.82rem;padding:10px 14px;margin-top:12px;display:none;align-items:center;gap:8px;border-radius:2px}
+.pdf-ai-status.loading{display:flex;background:#EFF6FF;color:#1D4ED8}
+.pdf-ai-status.success{display:flex;background:var(--vert-bg);color:var(--vert)}
+.pdf-ai-status.error{display:flex;background:#FEF2F2;color:#DC2626}
+.pdf-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pdf-meta-grid.col3{grid-template-columns:1fr 1fr 1fr}
+.pdf-fg{display:flex;flex-direction:column;gap:5px}
+.pdf-fg label{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gris-fonce)}
+.pdf-fg input,.pdf-fg select,.pdf-fg textarea{padding:9px 13px;border:1px solid var(--creme-3);background:var(--creme);font-size:.88rem;color:var(--brun);font-family:inherit}
+.pdf-fg input:focus,.pdf-fg select:focus,.pdf-fg textarea:focus{outline:none;border-color:var(--or);background:var(--blanc)}
+.pdf-fg textarea{min-height:70px;resize:vertical;line-height:1.6}
+.pdf-devis-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:10px}
+.pdf-devis-table th{background:var(--brun);color:var(--or-pale);padding:8px 12px;text-align:left;font-weight:500}
+.pdf-devis-table td{padding:7px 12px;border-bottom:1px solid var(--creme-2)}
+.pdf-devis-table td input{width:100%;border:none;background:transparent;font-size:.82rem;color:var(--brun);font-family:inherit;padding:2px 4px}
+.pdf-devis-table td input:focus{outline:1px solid var(--or);background:var(--blanc)}
+.pdf-devis-table tr:nth-child(even) td{background:var(--creme)}
+.pdf-devis-table tr.row-sub td{background:var(--brun-moyen);color:#fff}
+.pdf-devis-table tr.row-sub td input{color:#fff}
+.pdf-devis-table tr.row-total td{background:var(--brun);color:var(--or);font-weight:700}
+.pdf-devis-table tr.row-total td input{color:var(--or);font-weight:700}
+.btn-add-row{background:var(--creme-2);border:1px dashed var(--creme-3);color:var(--gris-fonce);font-size:.78rem;padding:6px 14px;cursor:pointer;margin-top:8px}
+.btn-add-row:hover{background:var(--creme-3)}
+.pdf-actions{display:flex;gap:12px;justify-content:flex-end;padding:20px 0 0;flex-wrap:wrap}
+.btn-preview{background:var(--creme-2);color:var(--brun);border:1px solid var(--creme-3);font-weight:600;font-size:.85rem;padding:12px 24px;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;font-family:inherit;display:flex;align-items:center;gap:8px}
+.btn-preview:hover{background:var(--creme-3)}
+.btn-dl-pdf{background:var(--or);color:var(--brun);border:none;font-weight:700;font-size:.85rem;padding:12px 28px;cursor:pointer;letter-spacing:.05em;text-transform:uppercase;font-family:inherit;display:flex;align-items:center;gap:8px}
+.btn-dl-pdf:hover{background:var(--or-pale)}
+.btn-dl-pdf:disabled,.btn-preview:disabled{opacity:.5;cursor:not-allowed}
+.pdf-preview-frame{width:100%;height:600px;border:2px solid var(--creme-3);margin-top:16px;background:#fff}
+@media(max-width:600px){.admin-tabs{padding:0 16px}.pdf-con{padding:16px}.pdf-meta-grid,.pdf-meta-grid.col3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -310,14 +375,162 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
   <a href="index.html" class="nav-link" target="_blank">Voir le catalogue &rarr;</a>
 </nav>
 
+<!-- ADMIN TABS -->
+<div class="admin-tabs" id="admin-tabs">
+  <button class="admin-tab active" id="tab-btn-plans" onclick="switchTab('plans')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Plans
+  </button>
+  <button class="admin-tab" id="tab-btn-pdf" onclick="switchTab('pdf')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    Constructeur PDF
+  </button>
+  <button class="admin-tab" id="tab-btn-analytics" onclick="switchTab('analytics')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    Analytics
+  </button>
+</div>
+
+<!-- TAB PLANS -->
+<div class="tab-pane active" id="tab-plans">
+
 <!-- ANALYTICS PLANS -->
 <div class="analytics" id="analytics">
   <div class="analytics-title">Catalogue — Résumé</div>
   <div class="kpi-row" id="kpi-row"></div>
 </div>
 
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="btn-add" onclick="openModal()">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Nouveau plan
+  </button>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search" placeholder="Rechercher un plan..." oninput="applyFilters()">
+  </div>
+  <div class="stats" id="stats"></div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <select id="fil-type" onchange="applyFilters()">
+    <option value="">Tous les types</option>
+    <option value="villa">Villa</option>
+    <option value="duplex">Duplex</option>
+  </select>
+  <select id="fil-status" onchange="applyFilters()">
+    <option value="">Tous les statuts</option>
+    <option value="online">En ligne</option>
+    <option value="offline">Hors ligne</option>
+  </select>
+  <input type="number" id="fil-min" placeholder="Prix min (FCFA)" oninput="applyFilters()" style="width:130px">
+  <input type="number" id="fil-max" placeholder="Prix max (FCFA)" oninput="applyFilters()" style="width:130px">
+  <button class="btn-reset" onclick="resetFilters()">Reinitialiser</button>
+</div>
+
+<!-- GRID -->
+<div class="grid" id="grid"></div>
+
+</div><!-- /tab-plans -->
+
+<!-- TAB PDF -->
+<div class="tab-pane" id="tab-pdf">
+<div class="pdf-con">
+  <h2 class="pdf-con-title">Constructeur de Plan PDF</h2>
+  <p class="pdf-con-sub">Chargez les images de votre plan, laissez l'IA extraire les données, puis générez un PDF professionnel prêt à envoyer.</p>
+
+  <!-- STEP 1 : Clé API -->
+  <div class="pdf-step">
+    <div class="pdf-step-head"><div class="pdf-step-num">1</div>Clé API Claude</div>
+    <div class="pdf-step-body">
+      <p style="font-size:.84rem;color:var(--gris);margin-bottom:12px">Votre clé API Anthropic est stockée localement dans votre navigateur (jamais envoyée à un serveur).</p>
+      <div class="pdf-api-row">
+        <input type="password" id="pdf-api-key" class="pdf-api-input" placeholder="sk-ant-api03-...">
+        <button class="btn-ai" onclick="pdfSaveKey()" style="flex-shrink:0">Sauvegarder</button>
+        <span class="pdf-api-saved" id="pdf-key-saved">✓ Clé sauvegardée</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 : Fichiers -->
+  <div class="pdf-step">
+    <div class="pdf-step-head"><div class="pdf-step-num">2</div>Images du plan</div>
+    <div class="pdf-step-body">
+      <div class="pdf-drop" id="pdf-drop" onclick="document.getElementById('pdf-file-input').click()">
+        <p>Glissez toutes les images du plan ici ou cliquez pour parcourir</p>
+        <small>Cover, implantation, RDC, étage, rendus 3D — JPG/PNG — assignez les rôles via les menus déroulants</small>
+        <input type="file" id="pdf-file-input" multiple accept="image/*" style="display:none" onchange="pdfHandleFiles(this.files)">
+      </div>
+      <div class="pdf-files" id="pdf-files"></div>
+
+      <button class="btn-analyze" id="pdf-analyze-btn" onclick="pdfAnalyze()" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+        Analyser avec Claude
+      </button>
+      <div class="pdf-ai-status" id="pdf-ai-status"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3 : Métadonnées -->
+  <div class="pdf-step">
+    <div class="pdf-step-head"><div class="pdf-step-num">3</div>Données du plan</div>
+    <div class="pdf-step-body">
+      <div class="pdf-meta-grid" style="margin-bottom:14px">
+        <div class="pdf-fg"><label>Titre du plan *</label><input type="text" id="pm-title" placeholder="Duplex D4-034"></div>
+        <div class="pdf-fg"><label>Type</label>
+          <select id="pm-type"><option value="duplex">Duplex</option><option value="villa">Villa</option></select>
+        </div>
+      </div>
+      <div class="pdf-meta-grid col3" style="margin-bottom:14px">
+        <div class="pdf-fg"><label>Surface (m²)</label><input type="text" id="pm-area" placeholder="142"></div>
+        <div class="pdf-fg"><label>Dimensions</label><input type="text" id="pm-dims" placeholder="10m × 9m"></div>
+        <div class="pdf-fg"><label>Niveaux</label><input type="number" id="pm-floors" min="1" value="2"></div>
+      </div>
+      <div class="pdf-meta-grid col3" style="margin-bottom:14px">
+        <div class="pdf-fg"><label>Chambres</label><input type="number" id="pm-beds" min="0"></div>
+        <div class="pdf-fg"><label>Salles de bain</label><input type="number" id="pm-baths" min="0"></div>
+        <div class="pdf-fg"><label>Sous-titre</label><input type="text" id="pm-sub" placeholder="Plan d'Architecture & Devis"></div>
+      </div>
+      <div class="pdf-fg" style="margin-bottom:14px">
+        <label>Description (optionnel)</label>
+        <textarea id="pm-desc" placeholder="Bref descriptif du plan..."></textarea>
+      </div>
+
+      <!-- Devis -->
+      <div style="margin-top:20px">
+        <div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gris-fonce);margin-bottom:10px">Devis estimatif</div>
+        <table class="pdf-devis-table" id="pdf-devis-table">
+          <thead><tr><th>Désignation</th><th>Unité</th><th>Qté</th><th>P.U (FCFA)</th><th>Total (FCFA)</th><th style="width:30px"></th></tr></thead>
+          <tbody id="pdf-devis-body"></tbody>
+        </table>
+        <button class="btn-add-row" onclick="pdfAddDevisRow()">+ Ajouter une ligne</button>
+        <button class="btn-add-row" onclick="pdfAddSubtotalRow()" style="margin-left:8px">+ Sous-total</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="pdf-actions">
+    <button class="btn-preview" id="pdf-prev-btn" onclick="pdfPreview()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      Aperçu
+    </button>
+    <button class="btn-dl-pdf" id="pdf-dl-btn" onclick="pdfDownload()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Télécharger PDF
+    </button>
+  </div>
+  <iframe id="pdf-preview-iframe" class="pdf-preview-frame" style="display:none"></iframe>
+</div>
+</div><!-- /tab-pdf -->
+
+<!-- TAB ANALYTICS -->
+<div class="tab-pane" id="tab-analytics">
+
 <!-- ANALYTICS VISITEURS -->
-<div class="av-section" id="av-section" style="display:none">
+<div class="av-section" id="av-section">
   <div class="av-header">
     <div class="av-title">
       Analytics Visiteurs
@@ -380,38 +593,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
   </div>
 </div>
 
-<!-- TOOLBAR -->
-<div class="toolbar">
-  <button class="btn-add" onclick="openModal()">
-    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    Nouveau plan
-  </button>
-  <div class="search-wrap">
-    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search" placeholder="Rechercher un plan..." oninput="applyFilters()">
-  </div>
-  <div class="stats" id="stats"></div>
-</div>
-
-<!-- FILTERS -->
-<div class="filters">
-  <select id="fil-type" onchange="applyFilters()">
-    <option value="">Tous les types</option>
-    <option value="villa">Villa</option>
-    <option value="duplex">Duplex</option>
-  </select>
-  <select id="fil-status" onchange="applyFilters()">
-    <option value="">Tous les statuts</option>
-    <option value="online">En ligne</option>
-    <option value="offline">Hors ligne</option>
-  </select>
-  <input type="number" id="fil-min" placeholder="Prix min (FCFA)" oninput="applyFilters()" style="width:130px">
-  <input type="number" id="fil-max" placeholder="Prix max (FCFA)" oninput="applyFilters()" style="width:130px">
-  <button class="btn-reset" onclick="resetFilters()">Reinitialiser</button>
-</div>
-
-<!-- GRID -->
-<div class="grid" id="grid"></div>
+</div><!-- /tab-analytics -->
 
 <!-- BULK BAR -->
 <div class="bulk-bar" id="bulk-bar">
@@ -705,10 +887,9 @@ function restoreVideo(){deleteVideo=false;renderCurrentVideo();}
 function tryAuth(){
   if(document.getElementById('auth-pw').value===ADMIN_PW){
     document.getElementById('auth-screen').classList.add('hidden');
-    document.getElementById('analytics').classList.add('show');
-    document.getElementById('av-section').style.display='block';
+    document.getElementById('admin-tabs').classList.add('show');
+    switchTab('plans');
     fetchPlans();
-    avLoadData();
     avSubscribeRealtime();
     setInterval(avLoadData,60000);
   } else {
@@ -1491,6 +1672,416 @@ function showToast(msg){
   clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
 }
+
+// ── TAB SWITCHING ──
+function switchTab(name){
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-btn-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='analytics' && !avEvents.length) avLoadData();
+}
+
+// ── PDF CONSTRUCTOR ──
+let pdfFiles=[]; // [{file, role, src}]
+let pdfDevisRows=[]; // [{label,unit,qty,pu,total,type}] type: 'row'|'sub'|'total'
+
+function pdfSaveKey(){
+  const k=document.getElementById('pdf-api-key').value.trim();
+  if(!k){showToast('Entrez une clé API');return;}
+  localStorage.setItem('wp_claude_key',k);
+  const s=document.getElementById('pdf-key-saved');
+  s.style.display='inline-block';
+  setTimeout(()=>s.style.display='none',3000);
+  showToast('Clé API sauvegardée');
+}
+
+// Init: charger la clé depuis localStorage
+function pdfInitKey(){
+  const k=localStorage.getItem('wp_claude_key');
+  if(k) document.getElementById('pdf-api-key').value=k;
+}
+
+function pdfHandleFiles(fileList){
+  for(const f of fileList){
+    if(!f.type.startsWith('image/'))continue;
+    const src=URL.createObjectURL(f);
+    const name=f.name.toLowerCase();
+    // Auto-detect role from filename
+    let role='rendu';
+    if(name.includes('cover')||name.includes('couverture')) role='cover';
+    else if(name.includes('implant')) role='implantation';
+    else if(name.includes('rdc')||name.includes('rez')) role='rdc';
+    else if(name.includes('etage')||name.includes('étage')||name.includes('r+1')) role='etage';
+    else if(name.includes('devis')) role='devis';
+    pdfFiles.push({file:f,role,src});
+  }
+  pdfRenderFiles();
+  document.getElementById('pdf-analyze-btn').disabled=pdfFiles.length===0;
+}
+
+const ROLE_OPTIONS=['cover','implantation','rdc','etage','devis','rendu','rendu2','rendu3','rendu4','rendu5','rendu6','ignore'];
+
+function pdfRenderFiles(){
+  const c=document.getElementById('pdf-files');
+  c.innerHTML='';
+  pdfFiles.forEach((item,i)=>{
+    const d=document.createElement('div');
+    d.className='pdf-file';
+    d.innerHTML=`<img src="${item.src}" alt=""><div class="pdf-file-name">${item.file.name}</div>
+      <select onchange="pdfFiles[${i}].role=this.value">
+        ${ROLE_OPTIONS.map(r=>`<option value="${r}"${r===item.role?' selected':''}>${r}</option>`).join('')}
+      </select>
+      <button class="remove-img" onclick="pdfFiles.splice(${i},1);pdfRenderFiles()">×</button>`;
+    c.appendChild(d);
+  });
+  document.getElementById('pdf-analyze-btn').disabled=pdfFiles.length===0;
+}
+
+async function pdfAnalyze(){
+  const apiKey=localStorage.getItem('wp_claude_key')||document.getElementById('pdf-api-key').value.trim();
+  if(!apiKey){showToast('Entrez et sauvegardez votre clé API Claude');return;}
+
+  const statusEl=document.getElementById('pdf-ai-status');
+  const btn=document.getElementById('pdf-analyze-btn');
+  statusEl.className='pdf-ai-status loading';
+  statusEl.innerHTML='<div class="ai-spin"></div>Claude analyse vos images… (20-40 secondes)';
+  btn.disabled=true;
+
+  try{
+    // Préparer les images (max 5 pour l'API, prioriser cover + plans)
+    const priority=['cover','implantation','rdc','etage','devis'];
+    const sorted=[...pdfFiles].sort((a,b)=>{
+      const ai=priority.indexOf(a.role),bi=priority.indexOf(b.role);
+      return (ai===-1?99:ai)-(bi===-1?99:bi);
+    });
+    const toSend=sorted.slice(0,5);
+
+    const imgContents=await Promise.all(toSend.map(async item=>{
+      const b64=await new Promise(res=>{
+        const reader=new FileReader();
+        reader.onload=e=>res(e.target.result.split(',')[1]);
+        reader.readAsDataURL(item.file);
+      });
+      const mt=item.file.type||'image/jpeg';
+      return {type:'image',source:{type:'base64',media_type:mt,data:b64}};
+    }));
+
+    const prompt=`Tu es un expert en architecture africaine. Analyse ces images d'un plan architectural et extrait les données suivantes au format JSON strict.
+
+Images fournies (dans l'ordre): ${toSend.map(i=>i.role).join(', ')}
+
+Réponds UNIQUEMENT avec un objet JSON valide, sans markdown, sans explication :
+{
+  "title": "nom du plan ex: Duplex D4-034 ou Villa V3-020",
+  "type": "villa" ou "duplex",
+  "area": "surface habitable en m² (nombre entier)",
+  "dims": "dimensions ex: 10m × 9m",
+  "floors": 1 ou 2,
+  "beds": nombre de chambres,
+  "baths": nombre de salles de bain,
+  "sub": "sous-titre court",
+  "desc": "description courte 1-2 phrases",
+  "devis": [
+    {"type":"section","label":"NOM SECTION"},
+    {"type":"row","label":"Désignation","unit":"U","qty":1,"pu":50000,"total":50000},
+    {"type":"sub","label":"Sous-total section","total":50000},
+    ...
+    {"type":"total","label":"TOTAL GÉNÉRAL","total":0}
+  ]
+}
+
+Pour le devis : si tu vois un tableau de devis dans les images, extrait les lignes. Sinon génère un devis estimatif réaliste pour ce type de construction en Afrique subsaharienne (Cameroun/Côte d'Ivoire). Inclus ces sections : Terrassement & fondations, Gros œuvre, Charpente & couverture, Menuiserie, Plomberie, Électricité, Carrelage & finitions. Mets des prix en FCFA réalistes.`;
+
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'x-api-key':apiKey,
+        'anthropic-version':'2023-06-01',
+        'content-type':'application/json',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-opus-4-5',
+        max_tokens:3000,
+        messages:[{role:'user',content:[...imgContents,{type:'text',text:prompt}]}]
+      })
+    });
+
+    if(!resp.ok){
+      const err=await resp.json();
+      throw new Error(err.error?.message||'Erreur API '+resp.status);
+    }
+    const data=await resp.json();
+    const raw=data.content[0].text.trim();
+    // Extraire le JSON (ignorer markdown si présent)
+    const jsonStr=raw.replace(/^```json?\n?/,'').replace(/\n?```$/,'');
+    const d=JSON.parse(jsonStr);
+
+    // Remplir les champs
+    if(d.title) document.getElementById('pm-title').value=d.title;
+    if(d.type) document.getElementById('pm-type').value=d.type;
+    if(d.area) document.getElementById('pm-area').value=d.area;
+    if(d.dims) document.getElementById('pm-dims').value=d.dims;
+    if(d.floors) document.getElementById('pm-floors').value=d.floors;
+    if(d.beds!=null) document.getElementById('pm-beds').value=d.beds;
+    if(d.baths!=null) document.getElementById('pm-baths').value=d.baths;
+    if(d.sub) document.getElementById('pm-sub').value=d.sub;
+    if(d.desc) document.getElementById('pm-desc').value=d.desc;
+
+    // Remplir le devis
+    if(d.devis&&d.devis.length){
+      pdfDevisRows=d.devis;
+      pdfRenderDevisTable();
+    } else {
+      pdfAddDefaultDevis();
+    }
+
+    statusEl.className='pdf-ai-status success';
+    statusEl.innerHTML='✓ Données extraites — vérifiez et modifiez avant de générer le PDF.';
+
+  }catch(err){
+    statusEl.className='pdf-ai-status error';
+    statusEl.innerHTML='❌ '+err.message;
+  }
+  btn.disabled=false;
+}
+
+function pdfRenderDevisTable(){
+  const tbody=document.getElementById('pdf-devis-body');
+  tbody.innerHTML='';
+  pdfDevisRows.forEach((row,i)=>{
+    const tr=document.createElement('tr');
+    if(row.type==='section'){
+      tr.innerHTML=`<td colspan="5" style="background:var(--brun-moyen);color:var(--or-pale);font-weight:700;padding:8px 12px;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase">
+        <input style="width:100%;border:none;background:transparent;color:var(--or-pale);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;font-family:inherit;padding:2px 4px" value="${row.label||''}" oninput="pdfDevisRows[${i}].label=this.value">
+      </td><td><button onclick="pdfDevisRows.splice(${i},1);pdfRenderDevisTable()" style="background:none;border:none;color:var(--rouge);cursor:pointer;font-size:.85rem">×</button></td>`;
+    } else if(row.type==='sub'){
+      tr.className='row-sub';
+      tr.innerHTML=`<td colspan="4"><input style="width:100%;border:none;background:transparent;color:#fff;font-weight:600;font-family:inherit;padding:2px 4px" value="${row.label||'Sous-total'}" oninput="pdfDevisRows[${i}].label=this.value"></td>
+        <td><input style="width:100%;border:none;background:transparent;color:#fff;font-weight:600;text-align:right;font-family:inherit;padding:2px 4px" value="${pdfFmt(row.total)}" oninput="pdfDevisRows[${i}].total=pdfParse(this.value)"></td>
+        <td><button onclick="pdfDevisRows.splice(${i},1);pdfRenderDevisTable()" style="background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:.85rem">×</button></td>`;
+    } else if(row.type==='total'){
+      tr.className='row-total';
+      tr.innerHTML=`<td colspan="4" style="color:var(--or);font-weight:700">TOTAL GÉNÉRAL</td>
+        <td><input style="width:100%;border:none;background:transparent;color:var(--or);font-weight:700;text-align:right;font-family:inherit;padding:2px 4px" value="${pdfFmt(row.total)}" oninput="pdfDevisRows[${i}].total=pdfParse(this.value)"></td><td></td>`;
+    } else {
+      tr.innerHTML=`<td><input value="${row.label||''}" oninput="pdfDevisRows[${i}].label=this.value"></td>
+        <td><input value="${row.unit||'Ens.'}" style="width:60px" oninput="pdfDevisRows[${i}].unit=this.value"></td>
+        <td><input value="${row.qty||1}" style="width:50px" type="number" oninput="pdfDevisRows[${i}].qty=+this.value;pdfCalcRow(${i})"></td>
+        <td><input value="${pdfFmt(row.pu)}" style="width:90px" oninput="pdfDevisRows[${i}].pu=pdfParse(this.value);pdfCalcRow(${i})"></td>
+        <td><input value="${pdfFmt(row.total)}" style="width:100px;text-align:right" oninput="pdfDevisRows[${i}].total=pdfParse(this.value)"></td>
+        <td><button onclick="pdfDevisRows.splice(${i},1);pdfRenderDevisTable()" style="background:none;border:none;color:var(--rouge);cursor:pointer;font-size:.85rem">×</button></td>`;
+    }
+    tbody.appendChild(tr);
+  });
+}
+
+function pdfCalcRow(i){
+  const r=pdfDevisRows[i];
+  r.total=(r.qty||0)*(r.pu||0);
+  pdfRenderDevisTable();
+}
+function pdfFmt(n){if(!n&&n!==0)return '';return Number(n).toLocaleString('fr-FR');}
+function pdfParse(s){return parseInt(String(s).replace(/[\s,\.]/g,'').replace(/\u202f/g,''))||0;}
+
+function pdfAddDevisRow(){
+  pdfDevisRows.push({type:'row',label:'',unit:'Ens.',qty:1,pu:0,total:0});
+  pdfRenderDevisTable();
+}
+function pdfAddSubtotalRow(){
+  pdfDevisRows.push({type:'sub',label:'Sous-total',total:0});
+  pdfRenderDevisTable();
+}
+function pdfAddDefaultDevis(){
+  pdfDevisRows=[
+    {type:'section',label:'Terrassement & Fondations'},
+    {type:'row',label:'Terrassement général',unit:'m²',qty:90,pu:8000,total:720000},
+    {type:'row',label:'Béton de propreté',unit:'m³',qty:3,pu:120000,total:360000},
+    {type:'row',label:'Fondations filantes',unit:'ml',qty:80,pu:45000,total:3600000},
+    {type:'sub',label:'Sous-total Terrassement & Fondations',total:4680000},
+    {type:'section',label:'Gros Œuvre'},
+    {type:'row',label:'Colonnes et poteaux',unit:'ml',qty:60,pu:35000,total:2100000},
+    {type:'row',label:'Maçonnerie parpaings',unit:'m²',qty:280,pu:18000,total:5040000},
+    {type:'row',label:'Plancher dalle',unit:'m²',qty:140,pu:55000,total:7700000},
+    {type:'sub',label:'Sous-total Gros Œuvre',total:14840000},
+    {type:'section',label:'Charpente & Couverture'},
+    {type:'row',label:'Charpente métallique',unit:'Ens.',qty:1,pu:4500000,total:4500000},
+    {type:'row',label:'Couverture tôle bac acier',unit:'m²',qty:120,pu:22000,total:2640000},
+    {type:'sub',label:'Sous-total Charpente & Couverture',total:7140000},
+    {type:'section',label:'Finitions'},
+    {type:'row',label:'Carrelage sol',unit:'m²',qty:140,pu:25000,total:3500000},
+    {type:'row',label:'Peinture intérieure/extérieure',unit:'Ens.',qty:1,pu:3000000,total:3000000},
+    {type:'row',label:'Menuiserie alu',unit:'Ens.',qty:1,pu:4000000,total:4000000},
+    {type:'sub',label:'Sous-total Finitions',total:10500000},
+    {type:'total',label:'TOTAL GÉNÉRAL',total:37160000},
+  ];
+  pdfRenderDevisTable();
+}
+
+function pdfGetImageByRole(role){
+  const item=pdfFiles.find(f=>f.role===role);
+  return item?item.src:null;
+}
+function pdfGetImagesByRoles(roles){
+  return pdfFiles.filter(f=>roles.includes(f.role)).map(f=>f.src);
+}
+
+function pdfBuildHTML(){
+  const title=document.getElementById('pm-title').value||'Plan Architecture';
+  const type=document.getElementById('pm-type').value;
+  const area=document.getElementById('pm-area').value||'—';
+  const dims=document.getElementById('pm-dims').value||'—';
+  const floors=document.getElementById('pm-floors').value||'1';
+  const beds=document.getElementById('pm-beds').value||'—';
+  const baths=document.getElementById('pm-baths').value||'—';
+  const sub=document.getElementById('pm-sub').value||'Plan Basique + Devis Estimatif';
+
+  const coverSrc=pdfGetImageByRole('cover')||'';
+  const implSrc=pdfGetImageByRole('implantation')||'';
+  const rdcSrc=pdfGetImageByRole('rdc')||'';
+  const etageSrc=pdfGetImageByRole('etage')||'';
+  const rendus=pdfGetImagesByRoles(['rendu','rendu2','rendu3','rendu4','rendu5','rendu6']);
+
+  // Build devis HTML
+  let devisHTML='';
+  pdfDevisRows.forEach(r=>{
+    if(r.type==='section'){
+      devisHTML+=`<tr><td colspan="5" style="background:#34495E;color:#fff;font-weight:700;padding:9px 14px;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase">${r.label}</td></tr>`;
+    } else if(r.type==='sub'){
+      devisHTML+=`<tr style="background:#2C3E50"><td colspan="4" style="color:#fff;font-weight:600;padding:9px 14px">${r.label}</td><td style="color:#fff;font-weight:600;text-align:right;padding:9px 14px">${pdfFmt(r.total)} FCFA</td></tr>`;
+    } else if(r.type==='total'){
+      devisHTML+=`<tr style="background:#1a1208"><td colspan="4" style="color:#D4A853;font-weight:700;padding:10px 14px;font-size:.9rem">TOTAL GÉNÉRAL</td><td style="color:#D4A853;font-weight:700;text-align:right;padding:10px 14px;font-size:.9rem">${pdfFmt(r.total)} FCFA</td></tr>`;
+    } else {
+      devisHTML+=`<tr><td style="padding:9px 14px">${r.label}</td><td style="padding:9px 14px">${r.unit}</td><td style="padding:9px 14px">${r.qty}</td><td style="padding:9px 14px;text-align:right">${pdfFmt(r.pu)}</td><td style="padding:9px 14px;text-align:right">${pdfFmt(r.total)}</td></tr>`;
+    }
+  });
+
+  const planSections=[];
+  if(implSrc) planSections.push({label:"Plan d'Implantation", src:implSrc, page:"Page 1 · Plan"});
+  if(rdcSrc) planSections.push({label:"Plan Rez-de-Chaussée (RDC)", src:rdcSrc, page:"Page 2 · Plan"});
+  if(etageSrc) planSections.push({label:"Plan Étage R+1", src:etageSrc, page:"Page 3 · Plan"});
+
+  const rendusHTML=rendus.length?rendus.map(src=>`<figure style="overflow:hidden;box-shadow:0 4px 24px rgba(26,18,8,.1)"><img src="${src}" style="width:100%;height:auto;display:block"></figure>`).join(''):'';
+
+  return `<!DOCTYPE html><html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title} — WooPlans</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--brun:#1a1208;--terre:#8B5E3C;--or:#D4A853;--or-pale:#F0D49A;--creme:#FAF7F2;--creme-2:#F3EDE3;--gris:#7A736C;--gris-fonce:#4A4540;--vert:#2D6A4F;--blanc:#fff;--shadow:0 4px 24px rgba(26,18,8,.1)}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);line-height:1.6}
+.cover-header{background:var(--brun);padding:28px 24px 24px}
+.cover-badge{display:inline-block;background:var(--or);color:var(--brun);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;margin-bottom:14px}
+.cover-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,6vw,2.8rem);font-weight:700;line-height:1.1;color:#fff;margin-bottom:8px}
+.cover-sub{font-size:.88rem;color:rgba(255,255,255,.6);margin-bottom:18px}
+.cover-specs{display:flex;flex-wrap:wrap;gap:8px}
+.cover-spec{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:5px 12px;font-size:.78rem;color:var(--or-pale)}
+.cover{width:100%;overflow:hidden;height:clamp(260px,50vw,480px)}
+.cover img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.section{padding:48px 24px;max-width:860px;margin:0 auto}
+.section+.section{border-top:1px solid var(--creme-2)}
+.section-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--or);font-weight:600;margin-bottom:8px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:var(--brun);margin-bottom:24px;line-height:1.2}
+.plan-img-wrap{background:#fff;border:1px solid var(--creme-2);box-shadow:var(--shadow);overflow:hidden;text-align:center}
+.plan-img-wrap img{width:100%;height:auto;display:block}
+.plan-caption{padding:14px 18px;background:var(--brun);color:var(--or-pale);font-size:.78rem;letter-spacing:.06em;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.plan-caption strong{font-size:.9rem;color:#fff}
+.devis-intro{background:var(--blanc);border-left:3px solid var(--or);padding:18px 22px;margin-bottom:28px;box-shadow:var(--shadow)}
+.devis-intro p{font-size:.88rem;color:var(--gris-fonce);line-height:1.7}
+table{width:100%;border-collapse:collapse;font-size:.84rem;margin-bottom:24px;background:#fff;box-shadow:var(--shadow)}
+caption{background:var(--brun);color:var(--or-pale);padding:10px 16px;text-align:left;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+thead th{background:#34495E;color:#fff;padding:10px 14px;text-align:left;font-weight:500;font-size:.8rem}
+tbody td{padding:9px 14px;border-bottom:1px solid #eee}
+.rendus-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rendus-grid figure{overflow:hidden;box-shadow:var(--shadow)}
+.rendus-grid img{width:100%;height:auto;display:block}
+.footer{background:var(--brun);color:rgba(255,255,255,.5);text-align:center;padding:24px;font-size:.78rem;margin-top:40px}
+@media print{.no-print{display:none}.cover{height:auto}.cover img{height:auto}body{background:#fff}}
+</style></head><body>
+
+<div class="cover-header">
+  <div class="cover-badge">📐 Plan Basique + Devis — Exemple</div>
+  <h1 class="cover-title">${title}</h1>
+  <p class="cover-sub">${sub}</p>
+  <div class="cover-specs">
+    <span class="cover-spec">${area} m² habitables</span>
+    <span class="cover-spec">${beds} chambre${beds>1?'s':''} · ${baths} SDB</span>
+    <span class="cover-spec">${floors} niveau${floors>1?'x':''} · ${dims}</span>
+  </div>
+</div>
+${coverSrc?`<div class="cover"><img src="${coverSrc}" alt="${title}"></div>`:''}
+
+${planSections.map((s,idx)=>`
+<section class="section">
+  <div class="section-label">${s.page}</div>
+  <h2 class="section-title">${s.label}</h2>
+  <div class="plan-img-wrap">
+    <img src="${s.src}" alt="${s.label}">
+    <div class="plan-caption"><strong>${s.label}</strong><span>Ref. ${title}</span></div>
+  </div>
+</section>`).join('')}
+
+<section class="section">
+  <div class="section-label">Devis Estimatif</div>
+  <h2 class="section-title">Devis Descriptif et Estimatif</h2>
+  <div class="devis-intro">
+    <p>Ce devis est une estimation indicative des coûts de construction pour le plan <strong>${title}</strong>.</p>
+    <p>Les prix sont donnés à titre indicatif et peuvent varier selon la région et les prestataires.</p>
+  </div>
+  <table>
+    <caption>Devis Estimatif — ${title}</caption>
+    <thead><tr><th>Désignation</th><th>Unité</th><th>Qté</th><th>P.U (FCFA)</th><th>Total (FCFA)</th></tr></thead>
+    <tbody>${devisHTML}</tbody>
+  </table>
+</section>
+
+${rendus.length?`<section class="section">
+  <div class="section-label">Rendus 3D</div>
+  <h2 class="section-title">Vues Extérieures</h2>
+  <div class="rendus-grid">${rendusHTML}</div>
+</section>`:''}
+
+<div class="footer">
+  <strong style="color:var(--or)">WooPlans</strong> — Ce document est un Plan Basique à des fins d'estimation et de personnalisation.<br>
+  Pour obtenir le dossier complet de construction, contactez-nous sur WhatsApp.
+</div>
+</body></html>`;
+}
+
+function pdfPreview(){
+  const html=pdfBuildHTML();
+  const iframe=document.getElementById('pdf-preview-iframe');
+  iframe.style.display='block';
+  const doc=iframe.contentDocument||iframe.contentWindow.document;
+  doc.open();doc.write(html);doc.close();
+  iframe.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function pdfDownload(){
+  const title=document.getElementById('pm-title').value||'plan-wooplans';
+  const html=pdfBuildHTML();
+  const win=window.open('','_blank');
+  if(!win){showToast('Autorisez les popups pour télécharger le PDF');return;}
+  win.document.write(html);
+  win.document.close();
+  setTimeout(()=>{
+    win.focus();
+    win.print();
+  },800);
+}
+
+// ── PDF DROP ZONE EVENT LISTENERS ──
+document.addEventListener('DOMContentLoaded',function(){
+  const pdfDrop=document.getElementById('pdf-drop');
+  if(pdfDrop){
+    pdfDrop.addEventListener('dragover',e=>{e.preventDefault();pdfDrop.classList.add('dragover')});
+    pdfDrop.addEventListener('dragleave',()=>pdfDrop.classList.remove('dragover'));
+    pdfDrop.addEventListener('drop',e=>{e.preventDefault();pdfDrop.classList.remove('dragover');pdfHandleFiles(e.dataTransfer.files)});
+  }
+  pdfInitKey();
+  pdfAddDefaultDevis();
+});
 </script>
 </body>
 </html>
