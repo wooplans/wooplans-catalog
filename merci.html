@@ -194,6 +194,23 @@ main{
 .error-state{padding:20px 0}
 .error-state p{color:var(--gris);font-size:.95rem;margin-bottom:16px}
 
+/* PROMO UPSELL */
+#promo-block{max-width:600px;width:100%;margin-top:20px}
+.promo-inner{background:linear-gradient(135deg,#1a1208 0%,#3d2b14 100%);border-radius:20px;padding:32px 28px;text-align:center;box-shadow:0 4px 40px rgba(26,18,8,.18)}
+.promo-eyebrow{color:var(--or-pale);font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:10px}
+.promo-headline{color:var(--blanc);font-size:1.05rem;line-height:1.5;margin-bottom:20px}
+.promo-headline strong{color:var(--or)}
+.promo-code{display:inline-block;background:var(--or);color:var(--brun);font-size:1.6rem;font-weight:700;letter-spacing:.12em;padding:13px 32px;border-radius:10px;margin-bottom:16px;cursor:pointer;transition:transform .1s}
+.promo-code:active{transform:scale(.97)}
+.promo-copy-hint{color:var(--gris-clair);font-size:.75rem;margin-bottom:18px}
+.promo-timer-label{color:var(--or-pale);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.promo-timer{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--blanc);letter-spacing:.05em;margin-bottom:8px}
+.promo-timer.urgent{color:#F87171}
+.promo-sub{color:var(--gris-clair);font-size:.8rem;margin-bottom:22px}
+.promo-cta{display:inline-block;border:1.5px solid var(--or);color:var(--or);padding:11px 26px;border-radius:10px;text-decoration:none;font-size:.9rem;font-weight:600;transition:all .2s}
+.promo-cta:hover{background:var(--or);color:var(--brun)}
+.promo-copied{display:none;color:var(--vert);font-size:.8rem;margin-top:8px;font-weight:600}
+
 /* FOOTER */
 footer{
   text-align:center;
@@ -231,6 +248,7 @@ footer{
 
 <!-- MAIN -->
 <main>
+  <div style="max-width:600px;width:100%;display:flex;flex-direction:column;align-items:stretch">
   <div class="merci-card" id="merci-card">
     <!-- Etat chargement -->
     <div class="loading-state" id="state-loading">
@@ -299,6 +317,23 @@ footer{
         </a>
       </div>
     </div>
+  </div>
+
+  <!-- PROMO UPSELL -->
+  <div id="promo-block" style="display:none">
+    <div class="promo-inner">
+      <p class="promo-eyebrow">🎁 Offre exclusive — clients WooPlans</p>
+      <p class="promo-headline">Profitez de <strong>-10 000 FCFA</strong> de réduction<br>sur vos 3 prochains plans</p>
+      <div class="promo-code" onclick="copyPromo()" title="Cliquer pour copier">PROMO49</div>
+      <p class="promo-copy-hint">👆 Cliquer pour copier le code</p>
+      <p class="promo-copied" id="promo-copied">✓ Code copié !</p>
+      <p class="promo-timer-label">⏰ Expire dans</p>
+      <div class="promo-timer" id="promo-timer">24:00:00</div>
+      <p class="promo-sub">Utilisable 3 fois · Entrez le code au checkout</p>
+      <a href="/" class="promo-cta">Choisir un autre plan →</a>
+    </div>
+  </div>
+
   </div>
 </main>
 
@@ -373,12 +408,14 @@ window.addEventListener('load', function() {
       btn.href = plan.pdf_basic_url;
       btn.setAttribute('download', '');
       showState('state-basic');
+      showPromoBlock(saleId);
       // Declenchement auto apres 2 secondes
       setTimeout(function() { btn.click(); }, 2000);
     } else {
       document.getElementById('plan-name-complete').textContent = plan.title || 'Votre plan';
       document.getElementById('plan-specs-complete').innerHTML = buildSpecs(plan);
       showState('state-complete');
+      showPromoBlock(saleId);
     }
   }).catch(function() {
     showState('state-error');
@@ -388,6 +425,49 @@ window.addEventListener('load', function() {
     document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
   }, {passive: true});
 });
+
+function showPromoBlock(saleId) {
+  var block = document.getElementById('promo-block');
+  if (!block) return;
+  var key = 'promo_expiry_' + (saleId || 'default');
+  var stored = localStorage.getItem(key);
+  var expiresAt;
+  if (stored) {
+    expiresAt = parseInt(stored);
+  } else {
+    expiresAt = Date.now() + 24 * 3600 * 1000;
+    localStorage.setItem(key, String(expiresAt));
+  }
+  if (expiresAt <= Date.now()) return; // déjà expiré
+  block.style.display = 'block';
+  var timerEl = document.getElementById('promo-timer');
+  function tick() {
+    var remaining = expiresAt - Date.now();
+    if (remaining <= 0) {
+      timerEl.textContent = 'Expiré';
+      block.style.opacity = '0.5';
+      block.style.pointerEvents = 'none';
+      return;
+    }
+    var h = Math.floor(remaining / 3600000);
+    var m = Math.floor((remaining % 3600000) / 60000);
+    var s = Math.floor((remaining % 60000) / 1000);
+    timerEl.textContent =
+      String(h).padStart(2,'0') + ':' +
+      String(m).padStart(2,'0') + ':' +
+      String(s).padStart(2,'0');
+    if (remaining < 3600000) timerEl.classList.add('urgent');
+    setTimeout(tick, 1000);
+  }
+  tick();
+}
+
+function copyPromo() {
+  navigator.clipboard.writeText('PROMO49').then(function() {
+    var copied = document.getElementById('promo-copied');
+    if (copied) { copied.style.display = 'block'; setTimeout(function(){ copied.style.display='none'; }, 2500); }
+  }).catch(function() {});
+}
 </script>
 </body>
 </html>
