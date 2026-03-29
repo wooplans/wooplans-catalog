@@ -1711,9 +1711,9 @@ async function submitCheckout(e){
   // Analytics — soumission checkout
   track('checkout_submit',{plan_id:p.id,plan_type:p.type,plan_title:p.title,option_type:isBasic?'basic':'complete'});
 
-  // Chariow product IDs — villa→prd_p82tf6 (19k), duplex→prd_stb3yx (29k)
-  const basicId    = p.type === 'villa' ? 'prd_p82tf6' : 'prd_stb3yx';
-  const completeId = p.type === 'villa' ? 'prd_p82tf6' : 'prd_stb3yx';
+  // Chariow product IDs — type License (achats multiples autorisés)
+  const basicId    = p.type === 'villa' ? 'prd_n770b0' : 'prd_krnnh9';
+  const completeId = p.type === 'villa' ? 'prd_n770b0' : 'prd_krnnh9';
   const PRODUCT_ID = isBasic
     ? (p.chariow_basic_id    || basicId)
     : (p.chariow_complete_id || completeId);
