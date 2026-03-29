@@ -827,6 +827,16 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
             <input class="form-input" type="tel" id="co-ph" placeholder="6 XX XX XX XX" required style="flex:1">
           </div>
         </div>
+        <div class="form-group co-promo-group" id="co-promo-group">
+          <label class="form-lbl" style="display:flex;align-items:center;gap:6px;cursor:pointer" onclick="togglePromo()">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            Code promo
+            <svg id="co-promo-chev" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;transition:transform .2s"><polyline points="6 9 12 15 18 9"/></svg>
+          </label>
+          <div id="co-promo-wrap" style="display:none;margin-top:8px">
+            <input class="form-input" type="text" id="co-promo" placeholder="Ex: GRATOS" autocomplete="off" style="text-transform:uppercase;letter-spacing:.05em">
+          </div>
+        </div>
         <button type="submit" class="co-submit" id="co-btn">
           <span id="co-btn-txt">Proceder au paiement</span>
           <div class="spinner" id="co-spin"></div>
@@ -1696,6 +1706,7 @@ async function submitCheckout(e){
   const email = document.getElementById('co-em').value.trim();
   const rawPhone = document.getElementById('co-ph').value.trim();
   const countryCode = document.getElementById('co-cc') ? document.getElementById('co-cc').value : 'CM';
+  const promoCode = (document.getElementById('co-promo')?.value || '').trim().toUpperCase();
 
   // Analytics — soumission checkout
   track('checkout_submit',{plan_id:p.id,plan_type:p.type,plan_title:p.title,option_type:isBasic?'basic':'complete'});
@@ -1723,6 +1734,7 @@ async function submitCheckout(e){
         first_name: fname,
         last_name: lname,
         phone: { number: rawPhone, country_code: countryCode },
+        ...(promoCode ? { discount_code: promoCode } : {}),
         custom_metadata: {
           plan_id: String(p.id),
           plan_title: p.title,
@@ -1746,15 +1758,20 @@ async function submitCheckout(e){
     const saleId = json?.data?.purchase?.id || '';
     const merciUrl = 'https://' + SITE_DOMAIN + '/merci.html?plan_id=' + encodeURIComponent(String(p.id)) + (saleId ? '&sale_id=' + encodeURIComponent(saleId) : '');
 
+    const step = json?.data?.step;
     const checkoutUrl = json?.data?.payment?.checkout_url;
     if (checkoutUrl) {
       showToast('Redirection vers le paiement...');
       window.location.href = checkoutUrl;
-    } else if (json?.data?.step === 'completed') {
+    } else if (step === 'completed') {
       window.location.href = merciUrl;
+    } else if (step === 'already_purchased') {
+      throw new Error('Vous avez deja achete ce plan. Verifiez votre email pour retrouver votre lien de telechargement.');
     } else {
+      // Extraire le message d'erreur Chariow (ex: code promo invalide)
+      const msg = json?.message || json?.error || 'Réponse inattendue du serveur de paiement';
       console.error('Réponse inattendue Chariow:', JSON.stringify(json));
-      throw new Error('Réponse inattendue du serveur de paiement');
+      throw new Error(msg);
     }
   } catch(err) {
     const isNetworkErr = err instanceof TypeError;
@@ -1859,6 +1876,16 @@ function ccPickerSelect(code){
   });
   ccClose();
 }
+function togglePromo(){
+  const wrap=document.getElementById('co-promo-wrap');
+  const chev=document.getElementById('co-promo-chev');
+  if(!wrap) return;
+  const open=wrap.style.display==='none';
+  wrap.style.display=open?'block':'none';
+  if(chev) chev.style.transform=open?'rotate(180deg)':'';
+  if(open) document.getElementById('co-promo')?.focus();
+}
+
 function ccToggle(){
   document.getElementById('cc-wrap').classList.toggle('open');
 }
