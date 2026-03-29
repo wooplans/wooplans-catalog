@@ -407,7 +407,8 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .cc-item-dial{color:var(--gris);font-size:.76rem;margin-left:auto}
 .co-submit{width:100%;margin-top:6px;background:var(--brun);color:var(--or);font-size:.88rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:16px;border:none;cursor:pointer;transition:background .25s;display:flex;align-items:center;justify-content:center;gap:10px}
 .co-submit:hover{background:var(--terre)}
-.co-submit:disabled{opacity:.6;cursor:not-allowed}
+.co-submit:disabled{opacity:1;cursor:not-allowed;background:var(--terre);animation:btnPulse 1.4s ease-in-out infinite}
+@keyframes btnPulse{0%,100%{opacity:.85}50%{opacity:1}}
 .co-note{text-align:center;font-size:.76rem;color:var(--gris);margin-top:12px;display:flex;align-items:center;justify-content:center;gap:5px;line-height:1.5}
 .co-note svg{width:12px;height:12px;stroke:var(--vert);fill:none;stroke-width:2;flex-shrink:0}
 .spinner{width:16px;height:16px;border:2px solid rgba(212,168,83,.3);border-top-color:var(--or);border-radius:50%;animation:spin .7s linear infinite;display:none}
@@ -676,7 +677,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
               <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendu 3D exterieurs</li>
               <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Echange avec un architecte sur WhatsApp</li>
             </ul>
-            <a class="voir-exemple-link" id="voir-exemple-link" href="/exemples/d4-034/" onclick="track('voir_exemple',{plan_id:currentPlan&&currentPlan.id,plan_type:currentPlan&&currentPlan.type,plan_title:currentPlan&&currentPlan.title});window.open('/exemples/d4-034/','_blank');return false;">
+            <a class="voir-exemple-link" id="voir-exemple-link" href="/exemples/d4-034/" onclick="track('voir_exemple',{plan_id:currentPlan&&currentPlan.id,plan_type:currentPlan&&currentPlan.type,plan_title:currentPlan&&currentPlan.title});(function(){var ua=navigator.userAgent||'';if(/FBAN|FBAV|Instagram|FB_IAB/.test(ua)){window.location.href='/exemples/d4-034/';}else{var w=window.open('/exemples/d4-034/','_blank');if(!w)window.location.href='/exemples/d4-034/';}})();return false;">
               <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
               Voir un exemple
             </a>
@@ -1217,10 +1218,24 @@ function toggleSave(id,btn){
   localStorage.setItem('wp_saved',JSON.stringify(saved));
 }
 
+// Précharge l'image hero pour améliorer le LCP sur arrivée directe
+function preloadHeroImage(plan){
+  if(!plan||!plan.images||!plan.images[0])return;
+  var src=plan.images[0];
+  if(src.includes('b-cdn.net')) src+=src.includes('?')?'':'?width=750&quality=75&format=webp';
+  if(document.querySelector('link[data-hero-preload]'))return; // déjà injecté
+  var link=document.createElement('link');
+  link.rel='preload';link.as='image';link.href=src;
+  link.setAttribute('fetchpriority','high');
+  link.setAttribute('data-hero-preload','1');
+  document.head.appendChild(link);
+}
+
 // ── DETAIL ───────────────────────────────────────────────────
 function openDetail(id,skipPush){
   currentPlan=plans.find(p=>p.id===id);
   if(!currentPlan)return;
+  preloadHeroImage(currentPlan);
   // Analytics — clic sur un plan
   track('plan_click',{plan_id:currentPlan.id,plan_type:currentPlan.type,plan_title:currentPlan.title});
   // Meta Pixel — ViewContent
@@ -1262,7 +1277,7 @@ function openDetail(id,skipPush){
     document.getElementById('det-cost').textContent=costTxt;
   })();
   document.getElementById('det-rating').textContent=currentPlan.rating;
-  document.getElementById('det-reviews').textContent=currentPlan.reviews+' avis';
+  document.getElementById('det-reviews').textContent=(currentPlan.reviews??0)+' avis';
   document.getElementById('det-desc').textContent=currentPlan.desc;
 
   const pill=document.getElementById('det-pill');
@@ -1372,7 +1387,7 @@ function openDetailFast(id) {
   })();
   
   document.getElementById('det-rating').textContent = currentPlan.rating;
-  document.getElementById('det-reviews').textContent = currentPlan.reviews + ' avis';
+  document.getElementById('det-reviews').textContent = (currentPlan.reviews??0) + ' avis';
   document.getElementById('det-desc').textContent = currentPlan.desc;
   
   const pill = document.getElementById('det-pill');
@@ -1692,12 +1707,15 @@ function closeCheckout(){document.getElementById('checkout-overlay').classList.r
 async function submitCheckout(e){
   e.preventDefault();
   const btn=document.getElementById('co-btn');
-  if(btn.disabled) return; // bloquer les doubles clics
+  if(btn.disabled){
+    // Feedback tactile si l'utilisateur reclique pendant le traitement
+    if(navigator.vibrate) navigator.vibrate([30,20,30]);
+    return;
+  }
   btn.disabled=true;
-  btn.style.background='var(--terre)';
   document.getElementById('co-spin').style.display='block';
   document.getElementById('co-btn-ico').style.display='none';
-  document.getElementById('co-btn-txt').textContent='Traitement en cours...';
+  document.getElementById('co-btn-txt').textContent='⏳ Redirection en cours...';
 
   const p = currentPlan;
   const isBasic = selectedOpt === 1;
