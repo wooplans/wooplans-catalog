@@ -592,6 +592,8 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37.jpeg" alt="Témoignage client WooPlans" loading="lazy"></div>
       <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(1).jpeg" alt="Témoignage client WooPlans" loading="lazy"></div>
       <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(2).jpeg" alt="Témoignage client WooPlans" loading="lazy"></div>
+      <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58.jpeg" alt="Témoignage client WooPlans" loading="lazy"></div>
+      <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58%20(1).jpeg" alt="Témoignage client WooPlans" loading="lazy"></div>
     </div>
     <button class="temo-arrow temo-prev" onclick="temoNav(-1)" aria-label="Précédent">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -747,6 +749,24 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       </div>
     </div>
 
+    <!-- Témoignages dans le panneau de détail -->
+    <div style="padding:36px 28px 8px;border-top:1px solid var(--creme-3);background:var(--creme)">
+      <div class="temo-eyebrow" style="text-align:center;margin-bottom:16px">Ils ont fait confiance à WooPlans</div>
+      <div class="temo-wrap" style="max-width:420px">
+        <div class="temo-track" id="temo-track-2">
+          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.36.jpeg" alt="Témoignage" loading="lazy"></div>
+          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37.jpeg" alt="Témoignage" loading="lazy"></div>
+          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
+          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(2).jpeg" alt="Témoignage" loading="lazy"></div>
+          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58.jpeg" alt="Témoignage" loading="lazy"></div>
+          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
+        </div>
+        <button class="temo-arrow temo-prev" onclick="temoNav2(-1)" aria-label="Précédent"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="temo-arrow temo-next" onclick="temoNav2(1)" aria-label="Suivant"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="temo-dots" id="temo-dots-2" style="margin-top:16px"></div>
+    </div>
+
     <!-- FAQ — pleine largeur, après les formules -->
     <section class="faq-section" style="margin-top:0;border-top:1px solid var(--creme-3);padding:36px 28px 44px">
       <h3 class="faq-section-title">Questions fréquentes</h3>
@@ -764,7 +784,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
           Quels sont les moyens de paiement ?
           <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </summary>
-        <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> — au <strong id="faq-country-name">Cameroun</strong> : <span id="faq-mm-list">MTN, Orange</span>. Disponible dans toute l'Afrique.</p>
+        <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> — au <strong id="faq-country-name">Cameroun</strong> : <span id="faq-mm-list">MTN MoMo, Orange Money</span>.</p>
       </details>
 
       <details class="faq-item">
@@ -1118,7 +1138,7 @@ function updateCountryUI(code){
     faqMm.textContent=mm.join(', ');
   } else if(faqAnswer){
     // Pays sans liste détaillée → texte générique
-    faqAnswer.innerHTML='Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN, Orange, Wave, Moov, Djamo, Airtel, etc.) disponible dans toute l\'Afrique.';
+    faqAnswer.innerHTML='Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN, Orange, Wave, Moov, Djamo, Airtel, etc.).';
   }
 }
 // updateCountryUI() est appelée après CC_DATA (ligne ~1887)
@@ -2048,34 +2068,37 @@ if ('serviceWorker' in navigator) {
 
 // ── SLIDER TÉMOIGNAGES ──────────────────────────────────────
 (function(){
-  const TOTAL=4;
-  let idx=0,autoTimer=null;
-  const track=document.getElementById('temo-track');
-  const dotsWrap=document.getElementById('temo-dots');
-  if(!track||!dotsWrap)return;
-  // Générer les dots
-  for(let i=0;i<TOTAL;i++){
-    const b=document.createElement('button');
-    b.className='temo-dot'+(i===0?' active':'');
-    b.setAttribute('aria-label','Témoignage '+(i+1));
-    b.onclick=()=>temoGo(i);
-    dotsWrap.appendChild(b);
+  const TOTAL=6,DELAY=7000;
+  function initTemoSlider(trackId,dotsId,navFn){
+    const track=document.getElementById(trackId);
+    const dotsWrap=document.getElementById(dotsId);
+    if(!track||!dotsWrap)return;
+    let idx=0,autoTimer=null;
+    dotsWrap.innerHTML='';
+    for(let i=0;i<TOTAL;i++){
+      const b=document.createElement('button');
+      b.className='temo-dot'+(i===0?' active':'');
+      b.setAttribute('aria-label','Témoignage '+(i+1));
+      b.onclick=()=>go(i);
+      dotsWrap.appendChild(b);
+    }
+    function go(n){
+      idx=(n+TOTAL)%TOTAL;
+      track.style.transform='translateX(-'+idx*100+'%)';
+      dotsWrap.querySelectorAll('.temo-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+    }
+    function startAuto(){autoTimer=setTimeout(()=>{go(idx+1);startAuto();},DELAY);}
+    window[navFn]=function(dir){clearTimeout(autoTimer);go(idx+dir);startAuto();};
+    let sx=0;
+    track.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+    track.addEventListener('touchend',e=>{
+      const dx=sx-e.changedTouches[0].clientX;
+      if(Math.abs(dx)>40){clearTimeout(autoTimer);go(idx+(dx>0?1:-1));startAuto();}
+    },{passive:true});
+    startAuto();
   }
-  function temoGo(n){
-    idx=(n+TOTAL)%TOTAL;
-    track.style.transform='translateX(-'+idx*100+'%)';
-    dotsWrap.querySelectorAll('.temo-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
-  }
-  window.temoNav=function(dir){clearTimeout(autoTimer);temoGo(idx+dir);startAuto();}
-  function startAuto(){autoTimer=setTimeout(()=>{temoGo(idx+1);startAuto();},4500);}
-  // Swipe mobile
-  let sx=0;
-  track.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
-  track.addEventListener('touchend',e=>{
-    const dx=sx-e.changedTouches[0].clientX;
-    if(Math.abs(dx)>40){clearTimeout(autoTimer);temoGo(idx+(dx>0?1:-1));startAuto();}
-  },{passive:true});
-  startAuto();
+  initTemoSlider('temo-track','temo-dots','temoNav');
+  initTemoSlider('temo-track-2','temo-dots-2','temoNav2');
 })();
 </script>
 <!-- Supabase JS — chargé de façon asynchrone en fin de body -->
