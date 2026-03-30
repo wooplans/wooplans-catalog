@@ -1121,7 +1121,7 @@ function updateCountryUI(code){
     faqAnswer.innerHTML='Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN, Orange, Wave, Moov, Djamo, Airtel, etc.) disponible dans toute l\'Afrique.';
   }
 }
-updateCountryUI('CM'); // défaut Cameroun
+// updateCountryUI() est appelée après CC_DATA (ligne ~1887)
 (async function(){try{const r=await fetch('https://ipapi.co/json/');const d=await r.json();const c=(d.country_code||'').toUpperCase();if(c){detectedCountryCode=c;updateCountryUI(c);}}catch(e){}})();
 let imgIdx = 0;
 let ddOpen = false;
@@ -1920,6 +1920,7 @@ const CC_DATA=[
   {c:'GM',d:'+220',p:'7XX XXXX',     n:'Gambie',           mm:null},
   {c:'ST',d:'+239',p:'981 XXXX',     n:'São Tomé',         mm:null},
 ];
+updateCountryUI('CM'); // défaut Cameroun — après CC_DATA
 (function buildCcDropdown(){
   const dd=document.getElementById('cc-dropdown');
   if(!dd) return;
