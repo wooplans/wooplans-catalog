@@ -49,25 +49,27 @@ function generateSrcset(url) {
 }
 
 export async function onRequest(context) {
-  const { request, env, params } = context;
+  const { request, env, params, waitUntil } = context;
   const slug = params.slug;
   const url = new URL(request.url);
-  
-  // Early Hints 103 - Démarre le chargement immédiatement
-  // Note: Cloudflare supporte Early Hints, on l'envoie si possible
-  if (request.headers.get('accept')?.includes('text/html')) {
-    context.waitUntil(
-      fetch(request.url, {
-        method: 'HEAD',
-        headers: { 'Accept': 'text/html' }
-      }).catch(() => {})
-    );
-  }
+
+  // ── CACHE NORMALISÉ (sans query params) ──────────────────────────────────
+  // Les URLs Facebook Ads (?fbclid=xxx) et clean (/plans/slug) partagent
+  // le même cache edge → plus de cache miss systématique sur chaque clic pub.
+  const cacheUrl = new URL(request.url);
+  cacheUrl.search = '';  // strip ?fbclid=, ?utm_source=, etc.
+  const cacheKey = new Request(cacheUrl.toString());
+  const edgeCache = caches.default;
 
   try {
-    // Récupère les plans avec timeout strict (800ms max pour LCP rapide)
+    const cached = await edgeCache.match(cacheKey);
+    if (cached) return cached; // Réponse instantanée depuis le cache edge
+  } catch(_) {}
+
+  try {
+    // Récupère les plans avec timeout 2000ms (mobile africain peut être lent)
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 800);
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
     
     const sbRes = await fetch(
       `${SUPABASE_URL}/rest/v1/plans?status=eq.online&select=*&order=created_at.asc`,
@@ -248,7 +250,12 @@ export async function onRequest(context) {
       headers['Link'] = `<${firstImageOptimized}>; rel=preload; as=image; fetchpriority=high`;
     }
 
-    return new Response(html, { headers });
+    const response = new Response(html, { headers });
+
+    // Stocker dans le cache edge avec clé normalisée (TTL 5 min)
+    waitUntil(edgeCache.put(cacheKey, response.clone()));
+
+    return response;
 
   } catch (err) {
     // Fallback rapide en cas d'erreur (Supabase down ou timeout)

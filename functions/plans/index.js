@@ -6,9 +6,20 @@
 const SUPABASE_URL = 'https://xlmwzvkqjnoijdldzrol.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbXd6dmtxam5vaWpkbGR6cm9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxMTAzMjAsImV4cCI6MjA4OTY4NjMyMH0.cQcRRHaaMiht2Tq9CB9l4_XN8-SOjixxhHFJDjytze4';
 
-export async function onRequest({ request, env }) {
+export async function onRequest(context) {
+  const { request, env, waitUntil } = context;
   const url = new URL(request.url);
-  
+
+  // Cache normalisé (sans query params)
+  const cacheUrl = new URL(request.url);
+  cacheUrl.search = '';
+  const cacheKey = new Request(cacheUrl.toString());
+  const edgeCache = caches.default;
+  try {
+    const cached = await edgeCache.match(cacheKey);
+    if (cached) return cached;
+  } catch(_) {}
+
   try {
     // Récupère tous les plans
     const sbRes = await fetch(
@@ -53,7 +64,7 @@ export async function onRequest({ request, env }) {
       .replace(/(id="meta-og-url"[^>]+content=")[^"]*(")/, '$1https://shop.wooplans.com/plans$2')
       .replace(/(id="meta-canonical"[^>]+href=")[^"]*(")/, '$1https://shop.wooplans.com/plans$2');
 
-    return new Response(html, {
+    const response = new Response(html, {
       headers: {
         'Content-Type': 'text/html;charset=UTF-8',
         'Cache-Control': 'public, max-age=60, stale-while-revalidate=1800',
@@ -61,6 +72,8 @@ export async function onRequest({ request, env }) {
         'Vary': 'Accept-Encoding',
       },
     });
+    waitUntil(edgeCache.put(cacheKey, response.clone()));
+    return response;
 
   } catch (err) {
     console.error('CF Function error (list):', err);
