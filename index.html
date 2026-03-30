@@ -419,6 +419,29 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast svg{width:16px;height:16px;stroke:var(--or);stroke-width:2;fill:none;flex-shrink:0}
 
+/* ── TÉMOIGNAGES ── */
+#temoignages{padding:72px 5vw;background:var(--creme)}
+.temo-header{text-align:center;margin-bottom:44px}
+.temo-eyebrow{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--terre);font-weight:500;margin-bottom:12px}
+.temo-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:500;color:var(--brun);line-height:1.15}
+.temo-wrap{position:relative;max-width:900px;margin:0 auto;overflow:hidden}
+.temo-track{display:flex;transition:transform .45s cubic-bezier(.25,.46,.45,.94)}
+.temo-slide{min-width:100%;display:flex;justify-content:center;align-items:center;padding:0 10px}
+.temo-slide img{width:100%;max-width:360px;border-radius:18px;box-shadow:0 12px 48px rgba(0,0,0,.14);object-fit:contain}
+.temo-arrow{position:absolute;top:50%;transform:translateY(-50%);background:var(--or);border:none;cursor:pointer;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.15);z-index:2;transition:background .2s}
+.temo-arrow:hover{background:var(--terre)}
+.temo-arrow svg{width:20px;height:20px;stroke:var(--brun);stroke-width:2.5;fill:none}
+.temo-prev{left:0}
+.temo-next{right:0}
+.temo-dots{display:flex;justify-content:center;gap:8px;margin-top:28px}
+.temo-dot{width:8px;height:8px;border-radius:50%;background:var(--gris-clair);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+.temo-dot.active{background:var(--terre);transform:scale(1.3)}
+@media(max-width:640px){
+  #temoignages{padding:52px 18px}
+  .temo-slide img{max-width:290px}
+  .temo-arrow{width:36px;height:36px}
+}
+
 /* ── FOOTER ── */
 footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .ft-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:44px;margin-bottom:44px}
@@ -557,6 +580,30 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   <div class="plans-grid" id="plans-grid"></div>
 </section>
 
+<!-- ═══ TÉMOIGNAGES ═══ -->
+<section id="temoignages">
+  <div class="temo-header">
+    <div class="temo-eyebrow">Ils ont fait confiance à WooPlans</div>
+    <h2 class="temo-title">Ce que disent<br>nos clients</h2>
+  </div>
+  <div class="temo-wrap" id="temo-wrap">
+    <div class="temo-track" id="temo-track">
+      <div class="temo-slide"><img src="/temoignages/1.jpg" alt="Témoignage client WooPlans 1" loading="lazy"></div>
+      <div class="temo-slide"><img src="/temoignages/2.jpg" alt="Témoignage client WooPlans 2" loading="lazy"></div>
+      <div class="temo-slide"><img src="/temoignages/3.jpg" alt="Témoignage client WooPlans 3" loading="lazy"></div>
+      <div class="temo-slide"><img src="/temoignages/4.jpg" alt="Témoignage client WooPlans 4" loading="lazy"></div>
+      <div class="temo-slide"><img src="/temoignages/5.jpg" alt="Témoignage client WooPlans 5" loading="lazy"></div>
+    </div>
+    <button class="temo-arrow temo-prev" onclick="temoNav(-1)" aria-label="Précédent">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="temo-arrow temo-next" onclick="temoNav(1)" aria-label="Suivant">
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="temo-dots" id="temo-dots"></div>
+  </div>
+</section>
+
 <!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="ft-inner">
@@ -687,9 +734,9 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
             <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Telecharger maintenant
           </button>
-          <div class="trust-note" style="margin-bottom:22px">
+          <div class="trust-note" id="trust-cta-note" style="margin-bottom:22px">
             <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Paiement securise &middot; Mobile Money
+            Paiement Mobile Money au <strong id="trust-country-name">Cameroun</strong>
           </div>
 
           <!-- CARTE 2 masquée + bouton hint -->
@@ -718,7 +765,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
           Quels sont les moyens de paiement ?
           <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </summary>
-        <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN, Orange, Wave, Moov, Djamo, Airtel, etc.) disponible dans toute l'Afrique.</p>
+        <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> — au <strong id="faq-country-name">Cameroun</strong> : <span id="faq-mm-list">MTN, Orange</span>. Disponible dans toute l'Afrique.</p>
       </details>
 
       <details class="faq-item">
@@ -1050,7 +1097,33 @@ let saved = JSON.parse(localStorage.getItem('wp_saved')||'[]');
 let currentPlan = null;
 let selectedOpt = 1;
 let detectedCountryCode = 'CM';
-(async function(){try{const r=await fetch('https://ipapi.co/json/');const d=await r.json();const c=(d.country_code||'').toUpperCase();if(c) detectedCountryCode=c;}catch(e){}})();
+function updateCountryUI(code){
+  const found=CC_DATA.find(x=>x.c===code);
+  const name=found?found.n:null;
+  const mm=found&&found.mm;
+  // Trust note sous le CTA
+  const trustEl=document.getElementById('trust-country-name');
+  const trustNote=document.getElementById('trust-cta-note');
+  if(name&&trustEl){
+    trustEl.textContent=name;
+  } else if(trustNote){
+    // Pays inconnu → texte générique
+    trustNote.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Paiement securise &middot; Mobile Money';
+  }
+  // FAQ moyen de paiement
+  const faqCountry=document.getElementById('faq-country-name');
+  const faqMm=document.getElementById('faq-mm-list');
+  const faqAnswer=faqMm&&faqMm.parentElement;
+  if(name&&mm&&faqCountry&&faqMm){
+    faqCountry.textContent=name;
+    faqMm.textContent=mm.join(', ');
+  } else if(faqAnswer){
+    // Pays sans liste détaillée → texte générique
+    faqAnswer.innerHTML='Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN, Orange, Wave, Moov, Djamo, Airtel, etc.) disponible dans toute l\'Afrique.';
+  }
+}
+updateCountryUI('CM'); // défaut Cameroun
+(async function(){try{const r=await fetch('https://ipapi.co/json/');const d=await r.json();const c=(d.country_code||'').toUpperCase();if(c){detectedCountryCode=c;updateCountryUI(c);}}catch(e){}})();
 let imgIdx = 0;
 let ddOpen = false;
 let galMedia = []; // déclaré ici pour éviter la TDZ lors du fast path
@@ -1813,40 +1886,40 @@ async function submitCheckout(e){
 // ── COUNTRY PICKER ───────────────────────────────────────────
 // c=code ISO, d=indicatif, p=placeholder numéro (indicatif uniquement)
 const CC_DATA=[
-  {c:'CM',d:'+237',p:'6 XX XX XX XX'},
-  {c:'CI',d:'+225',p:'07 XX XX XX XX'},
-  {c:'SN',d:'+221',p:'77 XXX XX XX'},
-  {c:'ML',d:'+223',p:'70 XX XX XX'},
-  {c:'BF',d:'+226',p:'70 XX XX XX'},
-  {c:'BJ',d:'+229',p:'97 XX XX XX'},
-  {c:'TG',d:'+228',p:'90 XX XX XX'},
-  {c:'GN',d:'+224',p:'6XX XXX XXX'},
-  {c:'GW',d:'+245',p:'955 XXXX'},
-  {c:'NE',d:'+227',p:'90 XX XX XX'},
-  {c:'TD',d:'+235',p:'66 XX XX XX'},
-  {c:'CG',d:'+242',p:'06 XXX XX XX'},
-  {c:'CD',d:'+243',p:'081 XXX XXXX'},
-  {c:'GA',d:'+241',p:'07 XX XX XX'},
-  {c:'GQ',d:'+240',p:'222 XX XX XX'},
-  {c:'CF',d:'+236',p:'75 XX XX XX'},
-  {c:'MG',d:'+261',p:'034 XX XXX XX'},
-  {c:'MR',d:'+222',p:'22 XX XX XX'},
-  {c:'GH',d:'+233',p:'024 XXX XXXX'},
-  {c:'NG',d:'+234',p:'0801 XXX XXXX'},
-  {c:'RW',d:'+250',p:'078 XXX XXXX'},
-  {c:'BI',d:'+257',p:'79 XX XX XX'},
-  {c:'KM',d:'+269',p:'321 XXXX'},
-  {c:'MZ',d:'+258',p:'84 XXX XXXX'},
-  {c:'TZ',d:'+255',p:'071 XXX XXXX'},
-  {c:'KE',d:'+254',p:'0712 XXX XXX'},
-  {c:'UG',d:'+256',p:'075 XXX XXXX'},
-  {c:'ZM',d:'+260',p:'097 XXX XXXX'},
-  {c:'ZW',d:'+263',p:'071 XXX XXXX'},
-  {c:'ET',d:'+251',p:'091 XXX XXXX'},
-  {c:'SL',d:'+232',p:'076 XXXXX'},
-  {c:'LR',d:'+231',p:'077 XXXXX'},
-  {c:'GM',d:'+220',p:'7XX XXXX'},
-  {c:'ST',d:'+239',p:'981 XXXX'},
+  {c:'CM',d:'+237',p:'6 XX XX XX XX',n:'Cameroun',          mm:['MTN MoMo','Orange Money']},
+  {c:'CI',d:'+225',p:'07 XX XX XX XX',n:"Côte d'Ivoire",   mm:['Orange Money','MTN MoMo','Moov Money','Wave','Djamo']},
+  {c:'SN',d:'+221',p:'77 XXX XX XX', n:'Sénégal',          mm:['Orange Money','Wave','Free Money']},
+  {c:'ML',d:'+223',p:'70 XX XX XX',  n:'Mali',             mm:['Moov Money','Orange Money']},
+  {c:'BF',d:'+226',p:'70 XX XX XX',  n:'Burkina Faso',     mm:['Orange Money','Moov Money','Wave']},
+  {c:'BJ',d:'+229',p:'97 XX XX XX',  n:'Bénin',            mm:['MTN MoMo','Moov Money']},
+  {c:'TG',d:'+228',p:'90 XX XX XX',  n:'Togo',             mm:['Togocel','Moov Money']},
+  {c:'GN',d:'+224',p:'6XX XXX XXX',  n:'Guinée Conakry',   mm:['MTN MoMo','Orange Money']},
+  {c:'GW',d:'+245',p:'955 XXXX',     n:'Guinée-Bissau',    mm:null},
+  {c:'NE',d:'+227',p:'90 XX XX XX',  n:'Niger',            mm:['Amanata','Moov','Zamani Cash','MyNita','Airtel']},
+  {c:'TD',d:'+235',p:'66 XX XX XX',  n:'Tchad',            mm:null},
+  {c:'CG',d:'+242',p:'06 XXX XX XX', n:'Congo Brazzaville',mm:['MTN MoMo','Airtel Money']},
+  {c:'CD',d:'+243',p:'081 XXX XXXX', n:'RD Congo',         mm:null},
+  {c:'GA',d:'+241',p:'07 XX XX XX',  n:'Gabon',            mm:['Airtel Money']},
+  {c:'GQ',d:'+240',p:'222 XX XX XX', n:'Guinée Équatoriale',mm:null},
+  {c:'CF',d:'+236',p:'75 XX XX XX',  n:'Centrafrique',     mm:null},
+  {c:'MG',d:'+261',p:'034 XX XXX XX',n:'Madagascar',       mm:null},
+  {c:'MR',d:'+222',p:'22 XX XX XX',  n:'Mauritanie',       mm:null},
+  {c:'GH',d:'+233',p:'024 XXX XXXX', n:'Ghana',            mm:null},
+  {c:'NG',d:'+234',p:'0801 XXX XXXX',n:'Nigéria',          mm:null},
+  {c:'RW',d:'+250',p:'078 XXX XXXX', n:'Rwanda',           mm:null},
+  {c:'BI',d:'+257',p:'79 XX XX XX',  n:'Burundi',          mm:null},
+  {c:'KM',d:'+269',p:'321 XXXX',     n:'Comores',          mm:null},
+  {c:'MZ',d:'+258',p:'84 XXX XXXX',  n:'Mozambique',       mm:null},
+  {c:'TZ',d:'+255',p:'071 XXX XXXX', n:'Tanzanie',         mm:null},
+  {c:'KE',d:'+254',p:'0712 XXX XXX', n:'Kenya',            mm:null},
+  {c:'UG',d:'+256',p:'075 XXX XXXX', n:'Ouganda',          mm:null},
+  {c:'ZM',d:'+260',p:'097 XXX XXXX', n:'Zambie',           mm:null},
+  {c:'ZW',d:'+263',p:'071 XXX XXXX', n:'Zimbabwe',         mm:null},
+  {c:'ET',d:'+251',p:'091 XXX XXXX', n:'Éthiopie',         mm:null},
+  {c:'SL',d:'+232',p:'076 XXXXX',    n:'Sierra Leone',     mm:null},
+  {c:'LR',d:'+231',p:'077 XXXXX',    n:'Libéria',          mm:null},
+  {c:'GM',d:'+220',p:'7XX XXXX',     n:'Gambie',           mm:null},
+  {c:'ST',d:'+239',p:'981 XXXX',     n:'São Tomé',         mm:null},
 ];
 (function buildCcDropdown(){
   const dd=document.getElementById('cc-dropdown');
@@ -1971,6 +2044,38 @@ if ('serviceWorker' in navigator) {
   document.addEventListener('mouseout', () => {
     clearTimeout(prefetchTimer);
   }, { passive: true });
+})();
+
+// ── SLIDER TÉMOIGNAGES ──────────────────────────────────────
+(function(){
+  const TOTAL=5;
+  let idx=0,autoTimer=null;
+  const track=document.getElementById('temo-track');
+  const dotsWrap=document.getElementById('temo-dots');
+  if(!track||!dotsWrap)return;
+  // Générer les dots
+  for(let i=0;i<TOTAL;i++){
+    const b=document.createElement('button');
+    b.className='temo-dot'+(i===0?' active':'');
+    b.setAttribute('aria-label','Témoignage '+(i+1));
+    b.onclick=()=>temoGo(i);
+    dotsWrap.appendChild(b);
+  }
+  function temoGo(n){
+    idx=(n+TOTAL)%TOTAL;
+    track.style.transform='translateX(-'+idx*100+'%)';
+    dotsWrap.querySelectorAll('.temo-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  }
+  window.temoNav=function(dir){clearTimeout(autoTimer);temoGo(idx+dir);startAuto();}
+  function startAuto(){autoTimer=setTimeout(()=>{temoGo(idx+1);startAuto();},4500);}
+  // Swipe mobile
+  let sx=0;
+  track.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',e=>{
+    const dx=sx-e.changedTouches[0].clientX;
+    if(Math.abs(dx)>40){clearTimeout(autoTimer);temoGo(idx+(dx>0?1:-1));startAuto();}
+  },{passive:true});
+  startAuto();
 })();
 </script>
 <!-- Supabase JS — chargé de façon asynchrone en fin de body -->
