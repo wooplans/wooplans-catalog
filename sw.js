@@ -1,132 +1,112 @@
 /**
- * Service Worker WooPlans — Cache Strategique
- * Version: 1.0.0
+ * Service Worker WooPlans — Cache Stratégique v2
+ * Version: 2.0.0
+ * Stratégies : Cache First+BG refresh (images), Network First (API), SWR (HTML)
  */
 
-const CACHE_NAME = 'wooplans-v1';
-const STATIC_CACHE = 'wooplans-static-v1';
-const IMAGE_CACHE = 'wooplans-images-v1';
+const CACHE_VERSION = 'v2';
+const STATIC_CACHE  = `wooplans-static-${CACHE_VERSION}`;
+const IMAGE_CACHE   = `wooplans-images-${CACHE_VERSION}`;
+const API_CACHE     = `wooplans-api-${CACHE_VERSION}`;
 
-// Assets à précharger
-const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/merci.html'
-];
+const STATIC_ASSETS = ['/', '/index.html', '/merci.html', '/manifest.json'];
 
-// Stratégies de cache
-const STRATEGIES = {
-  // Network First pour les données Supabase
-  api: async (request) => {
-    try {
-      const networkResponse = await fetch(request);
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, networkResponse.clone());
-      return networkResponse;
-    } catch (error) {
-      const cached = await caches.match(request);
-      if (cached) return cached;
-      throw error;
-    }
-  },
+// ── STRATÉGIES ────────────────────────────────────────────────────────────────
 
-  // Cache First pour les images
-  image: async (request) => {
-    const cached = await caches.match(request);
-    if (cached) return cached;
-    
-    const networkResponse = await fetch(request);
-    const cache = await caches.open(IMAGE_CACHE);
-    cache.put(request, networkResponse.clone());
-    return networkResponse;
-  },
-
-  // Stale While Revalidate pour le HTML statique
-  staleWhileRevalidate: async (request) => {
-    const cached = await caches.match(request);
-    
-    const fetchPromise = fetch(request).then(networkResponse => {
-      const cache = await caches.open(STATIC_CACHE);
-      cache.put(request, networkResponse.clone());
-      return networkResponse;
-    }).catch(() => cached);
-
-    return cached || fetchPromise;
+// Cache First + background refresh (images Bunny CDN & témoignages)
+async function stratImage(request) {
+  const cached = await caches.match(request);
+  if (cached) {
+    // Refresh silencieux en arrière-plan
+    fetch(request).then(r => {
+      if (r && r.ok) caches.open(IMAGE_CACHE).then(c => c.put(request, r));
+    }).catch(() => {});
+    return cached;
   }
-};
+  try {
+    const r = await fetch(request);
+    if (r.ok) caches.open(IMAGE_CACHE).then(c => c.put(request, r.clone()));
+    return r;
+  } catch (e) {
+    return new Response('', { status: 404 });
+  }
+}
 
-// Installation
-self.addEventListener('install', (event) => {
-  event.waitUntil(
+// Network First avec fallback cache + timeout 2.5s (API Supabase)
+async function stratApi(request) {
+  const cache = await caches.open(API_CACHE);
+  try {
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 2500);
+    const r = await fetch(request, { signal: controller.signal });
+    clearTimeout(tid);
+    if (r.ok) cache.put(request, r.clone());
+    return r;
+  } catch (e) {
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    throw e;
+  }
+}
+
+// Stale While Revalidate (HTML pages)
+async function stratSWR(request) {
+  const cached = await caches.match(request);
+  const fetchPromise = fetch(request).then(async r => {
+    if (r && r.ok) {
+      const c = await caches.open(STATIC_CACHE);
+      c.put(request, r.clone());
+    }
+    return r;
+  }).catch(() => cached);
+  return cached || fetchPromise;
+}
+
+// ── LIFECYCLE ─────────────────────────────────────────────────────────────────
+
+self.addEventListener('install', e => {
+  e.waitUntil(
     caches.open(STATIC_CACHE)
-      .then(cache => cache.addAll(STATIC_ASSETS))
+      .then(c => c.addAll(STATIC_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
-// Activation
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames
-          .filter(name => !name.startsWith('wooplans-'))
-          .map(name => caches.delete(name))
-      );
-    }).then(() => self.clients.claim())
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(k => k.startsWith('wooplans-') && !k.includes(CACHE_VERSION))
+            .map(k => caches.delete(k))
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
-// Fetch
-self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
+// ── FETCH ─────────────────────────────────────────────────────────────────────
 
-  // Ignorer les requêtes non GET
-  if (request.method !== 'GET') return;
+self.addEventListener('fetch', e => {
+  const req = e.request;
+  const url = new URL(req.url);
 
-  // API Supabase
+  if (req.method !== 'GET') return;
+  if (url.protocol === 'chrome-extension:') return;
+
+  // API Supabase → Network First avec timeout
   if (url.hostname.includes('supabase')) {
-    event.respondWith(STRATEGIES.api(request));
-    return;
+    e.respondWith(stratApi(req)); return;
   }
 
-  // Images
-  if (request.destination === 'image') {
-    event.respondWith(STRATEGIES.image(request));
-    return;
+  // Images (Bunny CDN, Supabase storage, temoignages) → Cache First
+  if (req.destination === 'image' ||
+      url.hostname.includes('b-cdn.net') ||
+      url.pathname.startsWith('/temoignages/') ||
+      url.pathname.match(/\.(jpg|jpeg|png|gif|webp|svg|ico)$/i)) {
+    e.respondWith(stratImage(req)); return;
   }
 
-  // HTML statique
-  if (request.mode === 'navigate') {
-    event.respondWith(STRATEGIES.staleWhileRevalidate(request));
-    return;
-  }
-});
-
-// Background Sync pour offline
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'checkout-sync') {
-    event.waitUntil(syncPendingCheckouts());
-  }
-});
-
-async function syncPendingCheckouts() {
-  // Logique de sync si nécessaire
-  console.log('[SW] Syncing pending checkouts...');
-}
-
-// Push notifications (préparation)
-self.addEventListener('push', (event) => {
-  if (event.data) {
-    const data = event.data.json();
-    event.waitUntil(
-      self.registration.showNotification(data.title, {
-        body: data.body,
-        icon: '/icon-192.png',
-        badge: '/badge-72.png',
-        data: data.url
-      })
-    );
+  // Navigation HTML → Stale While Revalidate
+  if (req.mode === 'navigate') {
+    e.respondWith(stratSWR(req)); return;
   }
 });

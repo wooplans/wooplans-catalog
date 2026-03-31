@@ -414,6 +414,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
     <input type="text" id="search" placeholder="Rechercher un plan..." oninput="applyFilters()">
   </div>
   <div class="stats" id="stats"></div>
+  <button class="btn-add" id="btn-sync" onclick="syncStaticPlans()" style="background:var(--or);color:var(--brun);margin-left:auto" title="Met à jour les données statiques embarquées dans index.html">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+    Sync Static
+  </button>
 </div>
 
 <!-- FILTERS -->
@@ -1029,6 +1033,27 @@ async function fetchPlans(){
   document.getElementById('stats').textContent=plans.length+' plan'+(plans.length>1?'s':'');
 }
 
+// Génère et affiche le bloc window.__PLANS_STATIC__ à coller dans index.html
+async function syncStaticPlans(){
+  const btn=document.getElementById('btn-sync');
+  btn.disabled=true; btn.textContent='Chargement...';
+  try {
+    const{data,error}=await _supabase.from('plans').select('*').eq('status','online').order('created_at',{ascending:true});
+    if(error) throw error;
+    const json=JSON.stringify(data,null,0);
+    const script=`<script id="plans-static">\n/* Mis à jour le ${new Date().toISOString().slice(0,10)} — ${data.length} plans */\nwindow.__PLANS_STATIC__=${json};\n<\/script>`;
+    // Copier dans le presse-papier
+    await navigator.clipboard.writeText(script);
+    showToast('✅ Données statiques copiées — colle dans index.html avant </head>');
+    // Purger aussi le cache CF
+    await fetch('/api/purge-cache',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+(localStorage.getItem('wp_purge_secret')||'')},body:JSON.stringify({tags:['plans']})}).catch(()=>{});
+  } catch(e) {
+    showToast('Erreur : '+e.message);
+  } finally {
+    btn.disabled=false; btn.textContent='Sync Static';
+  }
+}
+
 // ── ANALYTICS ──
 function renderAnalytics(){
   const total=plans.length;
@@ -1638,6 +1663,14 @@ async function savePlan(e){
       showToast('Plan cree avec succes');
     }
     setProgress('Terminé !', '', 100);
+    // Auto-sync : purger le cache CF edge pour refléter le nouveau plan immédiatement
+    try {
+      await fetch('/api/purge-cache',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+(localStorage.getItem('wp_purge_secret')||'')},
+        body:JSON.stringify({tags:['plans']})
+      });
+    } catch(e){}
     await new Promise(r=>setTimeout(r,500));
     closeModal();
     await fetchPlans();

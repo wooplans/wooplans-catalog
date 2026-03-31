@@ -25,6 +25,13 @@
 <link rel="dns-prefetch" href="https://connect.facebook.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image"
+  href="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=75&auto=format&fm=webp"
+  imagesrcset="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&q=75&auto=format&fm=webp 400w,
+               https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=75&auto=format&fm=webp 800w,
+               https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=75&auto=format&fm=webp 1200w"
+  imagesizes="(max-width:768px) 100vw, 50vw"
+  fetchpriority="high">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"></noscript>
@@ -196,6 +203,7 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .gal-img[src]{opacity:1!important}
 /* Éviter le CLS sur l'image principale */
 #gal-img{min-height:200px;background:var(--brun-moyen)}
+#detail-overlay,#checkout-overlay{contain:layout style paint}
 .gal-counter{position:absolute;bottom:14px;right:14px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.9);font-size:.78rem;padding:5px 11px;letter-spacing:.06em}
 .gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none}
 .gal-btn{width:42px;height:42px;background:rgba(250,247,242,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);cursor:pointer;pointer-events:all;display:flex;align-items:center;justify-content:center;transition:background .2s;border-radius:4px}
@@ -532,7 +540,13 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
     </div>
   </div>
   <div class="hero-right">
-    <img class="hero-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=70&auto=format&fm=webp" alt="Villa moderne" loading="eager" fetchpriority="high" width="800" height="600">
+    <img class="hero-img"
+      src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=75&auto=format&fm=webp"
+      srcset="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&q=75&auto=format&fm=webp 400w,
+              https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=75&auto=format&fm=webp 800w,
+              https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=75&auto=format&fm=webp 1200w"
+      sizes="(max-width:768px) 100vw, 50vw"
+      alt="Villa moderne" loading="eager" fetchpriority="high" decoding="async" width="800" height="600">
     <div class="hero-badge">
       <div class="badge-main">Telechargement instantane</div>
       <div class="badge-sub">Paiement Mobile Money</div>
@@ -2122,7 +2136,15 @@ if ('serviceWorker' in navigator) {
   initTemoSlider('temo-track-2','temo-dots-2','temoNav2');
 })();
 </script>
-<!-- Supabase JS — chargé de façon asynchrone en fin de body -->
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Supabase JS — chargé uniquement si les données SSR sont absentes -->
+<script>
+(function(){
+  if(window.__ALL_PLANS__&&window.__ALL_PLANS__.length>0) return;
+  var s=document.createElement('script');
+  s.defer=true;
+  s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  document.head.appendChild(s);
+})();
+</script>
 </body>
 </html>
