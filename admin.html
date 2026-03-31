@@ -414,10 +414,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
     <input type="text" id="search" placeholder="Rechercher un plan..." oninput="applyFilters()">
   </div>
   <div class="stats" id="stats"></div>
-  <button class="btn-add" id="btn-sync" onclick="syncStaticPlans()" style="background:var(--or);color:var(--brun);margin-left:auto" title="Met à jour les données statiques embarquées dans index.html">
+  <button class="btn-add" id="btn-sync" onclick="syncStaticPlans()" style="background:var(--or);color:var(--brun);margin-left:auto" title="Met à jour les données statiques et pousse sur GitHub → Netlify redéploie">
     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
     Sync Static
   </button>
+  <button onclick="document.getElementById('gh-token-bar').style.display=document.getElementById('gh-token-bar').style.display==='none'?'flex':'none'" style="background:transparent;border:1.5px solid var(--creme-3);color:var(--gris);padding:6px 10px;cursor:pointer;display:flex;align-items:center" title="Configurer le token GitHub">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+</div>
+<!-- GitHub token config bar -->
+<div id="gh-token-bar" style="display:none;align-items:center;gap:10px;padding:10px 20px;background:var(--creme-2);border-bottom:1px solid var(--creme-3);flex-wrap:wrap">
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="var(--gris)" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+  <span style="font-size:.82rem;color:var(--gris);white-space:nowrap">GitHub Token (scope <code>repo</code>) :</span>
+  <input type="password" id="gh-token-input" class="pdf-api-input" placeholder="ghp_xxxxxxxxxxxx" style="flex:1;min-width:200px;max-width:360px;font-size:.84rem;padding:7px 12px">
+  <button class="btn-ai" onclick="ghSaveToken()" style="padding:7px 16px;font-size:.82rem">Sauvegarder</button>
+  <span id="gh-token-saved" style="font-size:.75rem;color:var(--vert);background:var(--vert-bg);padding:4px 10px;display:none">✓ Token sauvegardé</span>
+  <a href="https://github.com/settings/tokens/new?scopes=repo&description=WooPlans+Sync" target="_blank" style="font-size:.75rem;color:var(--terre);margin-left:auto">Générer un token GitHub →</a>
 </div>
 
 <!-- FILTERS -->
@@ -1033,22 +1045,80 @@ async function fetchPlans(){
   document.getElementById('stats').textContent=plans.length+' plan'+(plans.length>1?'s':'');
 }
 
-// Génère et affiche le bloc window.__PLANS_STATIC__ à coller dans index.html
+// ── GITHUB TOKEN ──
+function ghSaveToken(){
+  const v=document.getElementById('gh-token-input').value.trim();
+  if(!v){showToast('Entrez un token GitHub');return;}
+  localStorage.setItem('wp_github_token',v);
+  const s=document.getElementById('gh-token-saved');
+  s.style.display='inline-block';
+  setTimeout(()=>s.style.display='none',3000);
+  showToast('Token GitHub sauvegardé');
+}
+function ghInitToken(){
+  const k=localStorage.getItem('wp_github_token');
+  if(k) document.getElementById('gh-token-input').value=k;
+}
+
+// Pousse les données statiques directement sur GitHub → Netlify redéploie
 async function syncStaticPlans(){
   const btn=document.getElementById('btn-sync');
-  btn.disabled=true; btn.textContent='Chargement...';
+  const token=localStorage.getItem('wp_github_token');
+  if(!token){
+    document.getElementById('gh-token-bar').style.display='flex';
+    showToast('⚠️ Configure d\'abord ton token GitHub (bouton ⚙)');
+    return;
+  }
+  btn.disabled=true;
+  const steps=[{t:'Récupération des plans…',i:'⬇️'},{t:'Lecture du fichier GitHub…',i:'📄'},{t:'Mise à jour du fichier…',i:'✏️'},{t:'Push GitHub…',i:'🚀'}];
+  let step=0;
+  const setLabel=()=>{btn.textContent=steps[step].i+' '+steps[step].t;};
+  setLabel();
   try {
+    // 1. Fetch plans Supabase
     const{data,error}=await _supabase.from('plans').select('*').eq('status','online').order('created_at',{ascending:true});
     if(error) throw error;
     const json=JSON.stringify(data,null,0);
-    const script=`<script id="plans-static">\n/* Mis à jour le ${new Date().toISOString().slice(0,10)} — ${data.length} plans */\nwindow.__PLANS_STATIC__=${json};\n<\/script>`;
-    // Copier dans le presse-papier
-    await navigator.clipboard.writeText(script);
-    showToast('✅ Données statiques copiées — colle dans index.html avant </head>');
+    const newBlock=`<script id="plans-static">\n/* Sync ${new Date().toISOString().slice(0,10)} — ${data.length} plans */\nwindow.__PLANS_STATIC__=${json};\n<\/script>`;
+
+    // 2. Lire le fichier actuel sur GitHub
+    step=1; setLabel();
+    const REPO='wooplans/wooplans-catalog';
+    const FILE='wooplans-catalogue.html';
+    const BRANCH='master';
+    const ghHeaders={'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'};
+    const fileRes=await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}?ref=${BRANCH}`,{headers:ghHeaders});
+    if(!fileRes.ok) throw new Error('GitHub '+fileRes.status+' — vérifie le token (scope repo)');
+    const fileData=await fileRes.json();
+    const currentContent=decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
+
+    // 3. Injecter / remplacer le bloc statique
+    step=2; setLabel();
+    let newContent;
+    if(currentContent.includes('<script id="plans-static">')){
+      newContent=currentContent.replace(/<script id="plans-static">[\s\S]*?<\/script>/,newBlock);
+    } else {
+      newContent=currentContent.replace('</head>',newBlock+'\n</head>');
+    }
+
+    // 4. Pusher sur GitHub
+    step=3; setLabel();
+    const pushRes=await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`,{
+      method:'PUT',
+      headers:{...ghHeaders,'Content-Type':'application/json'},
+      body:JSON.stringify({
+        message:`sync: données statiques (${data.length} plans) — ${new Date().toISOString().slice(0,10)}`,
+        content:btoa(unescape(encodeURIComponent(newContent))),
+        sha:fileData.sha,
+        branch:BRANCH
+      })
+    });
+    if(!pushRes.ok){const e=await pushRes.json();throw new Error(e.message||'Push échoué');}
+    showToast('🚀 Pushé ! Netlify redéploie dans ~60s ('+data.length+' plans)');
     // Purger aussi le cache CF
     await fetch('/api/purge-cache',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+(localStorage.getItem('wp_purge_secret')||'')},body:JSON.stringify({tags:['plans']})}).catch(()=>{});
   } catch(e) {
-    showToast('Erreur : '+e.message);
+    showToast('❌ Erreur : '+e.message);
   } finally {
     btn.disabled=false; btn.textContent='Sync Static';
   }
@@ -2127,6 +2197,7 @@ document.addEventListener('DOMContentLoaded',function(){
     pdfDrop.addEventListener('drop',e=>{e.preventDefault();pdfDrop.classList.remove('dragover');pdfHandleFiles(e.dataTransfer.files)});
   }
   pdfInitKey();
+  ghInitToken();
   pdfAddDefaultDevis();
 });
 </script>
