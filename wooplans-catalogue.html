@@ -684,17 +684,16 @@ let imgIdx = 0;
 let ddOpen = false;
 
 // ── INIT ─────────────────────────────────────────────────────
-// Cacher le loader dès que le DOM est prêt (sans attendre images/scripts)
-document.addEventListener('DOMContentLoaded',()=>{
-  setTimeout(()=>document.getElementById('loader').classList.add('hidden'), 300);
-  // Bloquer clic droit et drag sur les images de la galerie
-  var overlay=document.getElementById('detail-overlay');
-  overlay.addEventListener('contextmenu',function(e){
-    if(e.target.tagName==='IMG') e.preventDefault();
-  });
-  overlay.addEventListener('dragstart',function(e){
-    if(e.target.tagName==='IMG') e.preventDefault();
-  });
+// Script en bas de body → DOM déjà parsé → cacher le loader immédiatement
+setTimeout(()=>document.getElementById('loader').classList.add('hidden'), 0);
+
+// Bloquer clic droit et drag sur les images de la galerie
+var overlay=document.getElementById('detail-overlay');
+overlay.addEventListener('contextmenu',function(e){
+  if(e.target.tagName==='IMG') e.preventDefault();
+});
+overlay.addEventListener('dragstart',function(e){
+  if(e.target.tagName==='IMG') e.preventDefault();
 });
 
 window.addEventListener('load',()=>{
