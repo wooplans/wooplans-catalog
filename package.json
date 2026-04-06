@@ -5,7 +5,7 @@
   "scripts": {
     "build": "eleventy",
     "start": "eleventy --serve --watch",
-    "build:prod": "npm-run-all clean build generate-mockups optimize",
+    "build:prod": "npm-run-all clean build optimize",
     "clean": "rimraf dist",
     "optimize": "npm-run-all optimize:*",
     "optimize:css": "postcss dist/css/*.css --replace --no-map",

@@ -1,3 +1,6 @@
+# Redirection racine vers FR par défaut
+/ /fr/ 302
+
 # /plans/[slug] est géré par la Cloudflare Pages Function (functions/plans/[slug].js)
 # Ne pas ajouter /plans/* ici pour éviter le conflit avec la Function
 /plans    /index.html  200

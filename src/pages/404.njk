@@ -1,0 +1,98 @@
+---
+layout: base.njk
+permalink: "/404.html"
+---
+
+{% set lang = 'fr' %}
+{% set title = '404 - Page non trouvée' %}
+{% set bodyClass = 'error-page' %}
+
+<style>
+.error-page {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.error-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+.error-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .error-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.lang-switch {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.lang-switch p {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+</style>
+
+<div class="error-page">
+  <div class="container">
+    <div class="error-code">404</div>
+    
+    <h1 class="error-title">
+      Page non trouvée / Page not found
+    </h1>
+    
+    <p class="error-message">
+      La page que vous recherchez n'existe pas ou a été déplacée.<br>
+      The page you are looking for does not exist or has been moved.
+    </p>
+    
+    <div class="error-actions">
+      <a href="/fr/" class="btn btn-primary">
+        🇫🇷 Retour à l'accueil
+      </a>
+      <a href="/en/" class="btn btn-secondary">
+        🇬🇧 Back to home
+      </a>
+    </div>
+    
+    <div class="lang-switch">
+      <p>Change language / Changer de langue :</p>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="/fr/" style="color: var(--gold);">Français</a>
+        <span style="color: var(--text-muted);">|</span>
+        <a href="/en/" style="color: var(--gold);">English</a>
+      </div>
+    </div>
+  </div>
+</div>
