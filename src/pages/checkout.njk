@@ -1,0 +1,163 @@
+---
+layout: base.njk
+permalink: "/fr/checkout/"
+---
+
+{% set lang = 'fr' %}
+{% set title = 'Checkout' %}
+{% set bodyClass = 'checkout-page' %}
+
+<div class="checkout-page">
+  <div class="container">
+    <article class="checkout-card">
+      <button class="close-btn" onclick="history.back()" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      
+      <header class="checkout-header">
+        <h1>{{ 'checkout.title' | t(lang) | replace('{plan}', plan.title or 'Plan') }}</h1>
+      </header>
+      
+      <div class="checkout-price-section">
+        <div class="price-main">
+          <span class="price-value" id="checkout-price">14 900</span>
+          <span class="price-currency">{{ 'checkout.price_suffix' | t(lang) }}</span>
+        </div>
+        <div class="price-original">
+          <s id="checkout-original-price">30 000 Fcfa</s>
+          <span class="discount">{{ 'checkout.discount' | t(lang) }}</span>
+        </div>
+      </div>
+      
+      <!-- Mockup -->
+      <div class="mockup-container">
+        <img id="checkout-mockup" 
+             src="/images/mockups/villa-3-chambres-v3-037-mockup.png" 
+             alt="Plan preview"
+             class="mockup-image"
+             width="400"
+             height="500">
+      </div>
+      
+      <!-- Formulaire -->
+      <form class="checkout-form" id="checkout-form" onsubmit="submitCheckout(event)">
+        <input type="hidden" name="plan_id" id="plan-id" value="">
+        <input type="hidden" name="lang" value="{{ lang }}">
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">{{ 'checkout.first_name' | t(lang) }} *</label>
+            <input type="text" 
+                   id="firstName" 
+                   name="first_name" 
+                   required 
+                   autocomplete="given-name"
+                   placeholder="Jean">
+          </div>
+          <div class="form-group">
+            <label for="lastName">{{ 'checkout.last_name' | t(lang) }} *</label>
+            <input type="text" 
+                   id="lastName" 
+                   name="last_name" 
+                   required 
+                   autocomplete="family-name"
+                   placeholder="Dupont">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">{{ 'checkout.email' | t(lang) }} *</label>
+          <input type="email" 
+                 id="email" 
+                 name="email" 
+                 required 
+                 autocomplete="email"
+                 placeholder="jean.dupont@email.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">{{ 'checkout.phone' | t(lang) }} *</label>
+          <div class="phone-input">
+            <select name="country_code" id="country-code" aria-label="Country code">
+              <option value="+237" data-flag="🇨🇲">🇨🇲 +237</option>
+              <option value="+225" data-flag="🇨🇮">🇨🇮 +225</option>
+              <option value="+221" data-flag="🇸🇳">🇸🇳 +221</option>
+              <option value="+223" data-flag="🇲🇱">🇲🇱 +223</option>
+              <option value="+226" data-flag="🇧🇫">🇧🇫 +226</option>
+              <option value="+227" data-flag="🇳🇪">🇳🇪 +227</option>
+              <option value="+228" data-flag="🇹🇬">🇹🇬 +228</option>
+              <option value="+229" data-flag="🇧🇯">🇧🇯 +229</option>
+              <option value="+230" data-flag="🇲🇺">🇲🇺 +230</option>
+              <option value="+231" data-flag="🇱🇷">🇱🇷 +231</option>
+              <option value="+232" data-flag="🇸🇱">🇸🇱 +232</option>
+              <option value="+233" data-flag="🇬🇭">🇬🇭 +233</option>
+              <option value="+234" data-flag="🇳🇬">🇳🇬 +234</option>
+              <option value="+235" data-flag="🇹🇩">🇹🇩 +235</option>
+              <option value="+236" data-flag="🇨🇫">🇨🇫 +236</option>
+              <option value="+238" data-flag="🇨🇻">🇨🇻 +238</option>
+              <option value="+239" data-flag="🇸🇹">🇸🇹 +239</option>
+              <option value="+240" data-flag="🇬🇶">🇬🇶 +240</option>
+              <option value="+241" data-flag="🇬🇦">🇬🇦 +241</option>
+              <option value="+242" data-flag="🇨🇬">🇨🇬 +242</option>
+              <option value="+243" data-flag="🇨🇩">🇨🇩 +243</option>
+              <option value="+244" data-flag="🇦🇴">🇦🇴 +244</option>
+              <option value="+245" data-flag="🇬🇼">🇬🇼 +245</option>
+              <option value="+248" data-flag="🇸🇨">🇸🇨 +248</option>
+              <option value="+250" data-flag="🇷🇼">🇷🇼 +250</option>
+              <option value="+251" data-flag="🇪🇹">🇪🇹 +251</option>
+              <option value="+253" data-flag="🇩🇯">🇩🇯 +253</option>
+              <option value="+254" data-flag="🇰🇪">🇰🇪 +254</option>
+              <option value="+255" data-flag="🇹🇿">🇹🇿 +255</option>
+              <option value="+256" data-flag="🇺🇬">🇺🇬 +256</option>
+            </select>
+            <input type="tel" 
+                   id="phone" 
+                   name="phone" 
+                   required 
+                   autocomplete="tel"
+                   placeholder="6 12 34 56 78">
+          </div>
+        </div>
+        
+        <!-- Code promo toggle -->
+        <div class="promo-toggle" onclick="togglePromo(this)">
+          {{ 'checkout.promo_code' | t(lang) }}
+        </div>
+        <div class="promo-input" id="promo-input">
+          <input type="text" 
+                 name="promo_code" 
+                 placeholder="PROMO2024"
+                 aria-label="Promo code">
+        </div>
+        
+        <button type="submit" class="btn btn-gold btn-lg btn-block" id="submit-btn">
+          {{ 'checkout.pay_button' | t(lang) }} →
+        </button>
+        
+        <p class="payment-security">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          {{ 'checkout.redirect_info' | t(lang) }}
+        </p>
+        
+        <div class="trust-badges">
+          <div class="trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            {{ 'checkout.satisfaction' | t(lang) }}
+          </div>
+          <div class="trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            {{ 'checkout.instant_delivery' | t(lang) }}
+          </div>
+        </div>
+      </form>
+    </article>
+  </div>
+</div>

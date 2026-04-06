@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="{{ lang or 'fr' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a0a">
+  
+  <title>{{ title }} | {{ 'site.name' | t(lang) }}</title>
+  <meta name="description" content="{{ description or ('site.description' | t(lang)) }}">
+  
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://wooplans.b-cdn.net">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+  
+  <!-- SEO -->
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="{{ ogType or 'website' }}">
+  <meta property="og:title" content="{{ ogTitle or title }}">
+  <meta property="og:description" content="{{ ogDescription or description }}">
+  <meta property="og:image" content="{{ ogImage or site.defaultImage }}">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:locale" content="{{ lang == 'en' ? 'en_US' : 'fr_FR' }}">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ ogTitle or title }}">
+  <meta name="twitter:description" content="{{ ogDescription or description }}">
+  <meta name="twitter:image" content="{{ ogImage or site.defaultImage }}">
+  
+  <!-- Alternate languages -->
+  <link rel="alternate" hreflang="fr" href="{{ site.url }}/fr{{ page.url | replace('^/(fr|en)/', '/') }}">
+  <link rel="alternate" hreflang="en" href="{{ site.url }}/en{{ page.url | replace('^/(fr|en)/', '/') }}">
+  <link rel="alternate" hreflang="x-default" href="{{ site.url }}/fr{{ page.url | replace('^/(fr|en)/', '/') }}">
+  
+  <!-- Critical CSS inline -->
+  <style>
+    :root{--bg:#0a0a0a;--gold:#D4A853;--text:#fff;--text-muted:#666;--border:rgba(255,255,255,0.08)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;-webkit-font-smoothing:antialiased}
+    body{font-family:Inter,-apple-system,sans-serif;font-size:1rem;line-height:1.6;color:var(--text);background:var(--bg);min-height:100vh}
+    img{max-width:100%;height:auto;display:block}
+    a{color:inherit;text-decoration:none}
+    .container{width:100%;max-width:1200px;margin:0 auto;padding:0 1rem}
+    @media(min-width:640px){.container{padding:0 1.5rem}}
+    @media(min-width:1024px){.container{padding:0 2rem}}
+    .alert-bar{background:linear-gradient(90deg,var(--gold),#B8933F);color:#000;padding:8px;text-align:center;font-size:14px;font-weight:600;position:sticky;top:0;z-index:100}
+    .header{position:sticky;top:32px;z-index:90;background:rgba(10,10,10,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+    .header-content{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .logo{font-family:'DM Sans',sans-serif;font-size:1.25rem;font-weight:700;color:var(--gold)}
+    .logo span{color:var(--text)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
+  
+  <!-- Preload main CSS -->
+  <link rel="preload" href="/css/main.css" as="style">
+  <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="/css/main.css"></noscript>
+  
+  <!-- Schema.org JSON-LD -->
+  {% if jsonLd %}
+  <script type="application/ld+json">{{ jsonLd | safe }}</script>
+  {% endif %}
+</head>
+<body class="{{ bodyClass }}">
+  <!-- Bandeau offre flash -->
+  <div class="alert-bar">
+    <span class="flash-icon">🔥</span>
+    {{ 'product.flash_offer' | t(lang) }} - {{ 'product.valid_until' | t(lang) | replace('{date}', 'today') }}
+  </div>
+  
+  {% include "header.njk" %}
+  
+  <main id="main-content">
+    {{ content | safe }}
+  </main>
+  
+  {% include "footer.njk" %}
+  
+  <!-- Scripts -->
+  <script src="/js/main.js" defer></script>
+  {% if pageScripts %}
+    {% for script in pageScripts %}
+    <script src="/js/{{ script }}.js" defer></script>
+    {% endfor %}
+  {% endif %}
+  
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% set faqItems = faq %}
+
+<section class="faq" aria-label="{{ 'product.faq' | t(lang) }}">
+  <div class="faq-header">
+    <h2>{{ 'product.faq' | t(lang) }}</h2>
+    <p>{{ 'product.faq_subtitle' | t(lang) }}</p>
+  </div>
+  
+  <div class="faq-list">
+    {% for item in faqItems %}
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false" onclick="toggleFaq(this)">
+        {% if lang == 'en' %}{{ item.question_en }}{% else %}{{ item.question }}{% endif %}
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
+      <div class="faq-answer">
+        <p>{% if lang == 'en' %}{{ item.answer_en }}{% else %}{{ item.answer }}{% endif %}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

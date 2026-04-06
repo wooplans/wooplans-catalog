@@ -1,0 +1,35 @@
+{% set testimonials = testimonials %}
+
+<section class="testimonials" aria-label="{{ 'product.testimonials' | t(lang) }}">
+  <div class="testimonials-header">
+    <h2>{{ 'product.testimonials' | t(lang) }}</h2>
+    <p>{{ 'product.testimonials_subtitle' | t(lang) }}</p>
+  </div>
+  
+  <div class="testimonials-grid">
+    {% for testimonial in testimonials %}
+    <article class="testimonial-card">
+      <div class="testimonial-rating" aria-label="{{ testimonial.rating }} out of 5 stars">
+        {{ '★' | repeat(testimonial.rating) }}
+      </div>
+      <blockquote class="testimonial-text">
+        {% if lang == 'en' %}{{ testimonial.text_en }}{% else %}{{ testimonial.text }}{% endif %}
+      </blockquote>
+      <footer class="testimonial-author">
+        <img src="{{ testimonial.avatar }}" 
+             alt="" 
+             class="testimonial-avatar"
+             width="48"
+             height="48"
+             loading="lazy">
+        <div class="testimonial-info">
+          <cite class="testimonial-name">{{ testimonial.name }}</cite>
+          <span class="testimonial-location">
+            {% if lang == 'en' %}{{ testimonial.location_en }}{% else %}{{ testimonial.location }}{% endif %}
+          </span>
+        </div>
+      </footer>
+    </article>
+    {% endfor %}
+  </div>
+</section>

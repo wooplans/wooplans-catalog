@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "question": "Que faire si le plan ne correspond pas à mon terrain ?",
+    "question_en": "What if the plan doesn't match my plot?",
+    "answer": "Chaque plan inclut un guide d'adaptation. Notre architecte peut aussi vous conseiller par WhatsApp pour ajuster les dimensions selon votre terrain. La consultation est gratuite pendant 30 jours après l'achat.",
+    "answer_en": "Each plan includes an adaptation guide. Our architect can also advise you via WhatsApp to adjust dimensions according to your plot. Consultation is free for 30 days after purchase."
+  },
+  {
+    "id": 2,
+    "question": "Que contient exactement le fichier que je télécharge ?",
+    "question_en": "What exactly does the downloaded file contain?",
+    "answer": "Vous recevez un PDF complet avec : le plan de distribution détaillé avec toutes les dimensions, les façades et coupes, les rendus 3D extérieurs, le tableau des surfaces pièce par pièce, et un devis estimatif détaillé en FCFA.",
+    "answer_en": "You receive a complete PDF with: detailed floor plan with all dimensions, facades and sections, exterior 3D renders, room-by-room surface area table, and detailed cost estimate in FCFA."
+  },
+  {
+    "id": 3,
+    "question": "Le plan est-il conforme aux normes de construction ?",
+    "question_en": "Is the plan compliant with construction standards?",
+    "answer": "Oui, tous nos plans respectent les normes de construction en vigueur en Afrique francophone (Cameroun, Côte d'Ivoire, Sénégal). Ils incluent les spécifications techniques nécessaires pour obtenir votre permis de construire.",
+    "answer_en": "Yes, all our plans comply with construction standards in French-speaking Africa (Cameroon, Ivory Coast, Senegal). They include the technical specifications needed to obtain your building permit."
+  },
+  {
+    "id": 4,
+    "question": "Comment je reçois le plan après avoir payé ?",
+    "question_en": "How do I receive the plan after paying?",
+    "answer": "Immédiatement après paiement, vous recevez un email avec le lien de téléchargement. Le fichier est aussi disponible dans votre espace client. Le téléchargement est illimité et valable à vie.",
+    "answer_en": "Immediately after payment, you receive an email with the download link. The file is also available in your customer account. Download is unlimited and valid for life."
+  }
+]

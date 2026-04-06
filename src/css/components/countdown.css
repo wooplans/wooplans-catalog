@@ -1,0 +1,149 @@
+/* ============================================
+   COMPONENTS - Compte à rebours
+   ============================================ */
+
+.countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  font-family: var(--font-display);
+}
+
+.countdown-item {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.countdown-value {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--urgent);
+  min-width: 2ch;
+  text-align: center;
+}
+
+/* Bandeau alerte offre flash */
+.alert-bar {
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color: var(--text-dark);
+  padding: var(--space-sm) var(--space-md);
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.alert-bar .flash-icon {
+  animation: pulse 2s infinite;
+  display: inline-block;
+  margin-right: var(--space-xs);
+}
+
+/* Section offre flash */
+.flash-offer-section {
+  padding: var(--space-2xl) 0;
+}
+
+.flash-offer-section .offer-card h3 {
+  text-align: center;
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-md);
+  color: var(--gold);
+}
+
+.offer-countdown {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.offer-countdown p {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.price-comparison {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.price-strikethrough {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.price-highlight {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Mockup preview */
+.mockup-preview {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto var(--space-xl);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Liste ce que vous obtenez */
+.you-get {
+  margin-bottom: var(--space-xl);
+}
+
+.you-get h4 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-md);
+}
+
+.you-get ul {
+  list-style: none;
+}
+
+.you-get li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+}
+
+.you-get li::before {
+  content: '✓';
+  color: var(--success);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Bonus box */
+.bonus-box {
+  background: var(--gold-alpha);
+  border: 1px dashed var(--gold);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.bonus-box strong {
+  display: block;
+  color: var(--gold);
+  margin-bottom: var(--space-xs);
+}
+
+.bonus-box p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}

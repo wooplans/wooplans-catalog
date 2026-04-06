@@ -1,0 +1,352 @@
+/* ============================================
+   PAGES - Page produit
+   ============================================ */
+
+.product-page {
+  padding-bottom: var(--space-3xl);
+}
+
+.product-layout {
+  display: grid;
+  gap: var(--space-2xl);
+}
+
+@media (min-width: 1024px) {
+  .product-layout {
+    grid-template-columns: 1fr 380px;
+    align-items: start;
+  }
+}
+
+/* Hero produit */
+.product-hero {
+  padding: var(--space-lg) 0 var(--space-2xl);
+}
+
+.product-main > section {
+  margin-bottom: var(--space-2xl);
+}
+
+/* Section présentation */
+.product-details {
+  padding: var(--space-xl) 0;
+}
+
+.product-details h2 {
+  margin-bottom: var(--space-md);
+}
+
+.product-details .lead {
+  margin-bottom: var(--space-lg);
+}
+
+/* Sidebar sticky */
+.product-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .product-sidebar {
+    display: block;
+  }
+}
+
+.sticky-card h3 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-sm);
+}
+
+.sticky-card p {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-lg);
+}
+
+/* Prix display */
+.price-display {
+  margin-bottom: var(--space-lg);
+}
+
+.price-old {
+  display: block;
+  font-size: var(--text-base);
+  color: var(--text-muted);
+  text-decoration: line-through;
+  margin-bottom: var(--space-xs);
+}
+
+.price-current {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.price-current .currency {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.payment-info {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: var(--space-sm);
+}
+
+/* Mobile CTA */
+.mobile-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  z-index: 80;
+}
+
+@media (min-width: 1024px) {
+  .mobile-cta {
+    display: none;
+  }
+}
+
+.mobile-cta .price-display {
+  margin: 0;
+}
+
+.mobile-cta .price-current {
+  font-size: var(--text-xl);
+}
+
+.mobile-cta .btn {
+  flex-shrink: 0;
+}
+
+/* Plans similaires */
+.similar-plans {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--border);
+}
+
+.similar-plans h2 {
+  text-align: center;
+  margin-bottom: var(--space-xs);
+}
+
+.similar-plans > p {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.plans-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 640px) {
+  .plans-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .plans-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Page checkout */
+.checkout-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: var(--space-xl) 0;
+}
+
+.checkout-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.checkout-header h1 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-md);
+}
+
+.checkout-price-section {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.price-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.price-value {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.price-currency {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.price-original {
+  font-size: var(--text-base);
+  color: var(--text-muted);
+}
+
+.price-original s {
+  margin-right: var(--space-sm);
+}
+
+.price-original .discount {
+  color: var(--urgent);
+  font-weight: 600;
+}
+
+.mockup-container {
+  margin-bottom: var(--space-xl);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.mockup-image {
+  width: 100%;
+  height: auto;
+}
+
+.checkout-form {
+  margin-top: var(--space-xl);
+}
+
+.checkout-form .btn {
+  margin-top: var(--space-lg);
+}
+
+.payment-security {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-md);
+}
+
+.payment-security svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Trust badges */
+.trust-badges {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xl);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border);
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.trust-badge svg {
+  width: 16px;
+  height: 16px;
+  color: var(--success);
+}
+
+/* Page merci */
+.merci-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+}
+
+.merci-card {
+  text-align: center;
+  max-width: 500px;
+}
+
+.merci-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-xl);
+  background: var(--success);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.merci-card h1 {
+  margin-bottom: var(--space-sm);
+}
+
+.merci-card > p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.merci-info {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.merci-info p {
+  margin-bottom: var(--space-sm);
+  color: var(--text-secondary);
+}
+
+.merci-info p:last-child {
+  margin-bottom: 0;
+}
+
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: #25D366;
+  color: white;
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+  transition: all var(--transition-fast);
+}
+
+.whatsapp-btn:hover {
+  background: #128C7E;
+  color: white;
+  transform: translateY(-2px);
+}

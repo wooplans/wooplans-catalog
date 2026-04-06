@@ -1,0 +1,38 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="/{{ lang }}/" class="logo">Woo<span>Plans</span></a>
+        <p>{{ 'site.description' | t(lang) }}</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3 class="footer-title">{{ 'nav.catalog' | t(lang) }}</h3>
+        <ul class="footer-links">
+          <li><a href="/{{ lang }}/plans/">{{ 'nav.villas' | t(lang) }}</a></li>
+          <li><a href="/{{ lang }}/plans/">{{ 'nav.duplex' | t(lang) }}</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3 class="footer-title">{{ 'nav.faq' | t(lang) }}</h3>
+        <ul class="footer-links">
+          <li><a href="/{{ lang }}/faq/">{{ 'faq' | t(lang) }}</a></li>
+          <li><a href="https://wa.me/237694327885" target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3 class="footer-title">Legal</h3>
+        <ul class="footer-links">
+          <li><a href="/{{ lang }}/privacy/">Privacy Policy</a></li>
+          <li><a href="/{{ lang }}/terms/">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; {{ year() }} WooPlans. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

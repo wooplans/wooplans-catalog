@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      <a href="/{{ lang }}/" class="logo">
+        Woo<span>Plans</span>
+      </a>
+      
+      <nav class="nav-desktop" aria-label="Main navigation">
+        <a href="/{{ lang }}/">{{ 'nav.catalog' | t(lang) }}</a>
+        <a href="/{{ lang }}/faq/">{{ 'nav.faq' | t(lang) }}</a>
+      </nav>
+      
+      <div class="lang-switcher" role="group" aria-label="Language switcher">
+        <button class="lang-btn {{ 'active' if lang == 'fr' }}" 
+                onclick="window.location.href='{{ page.url | replace('/' + lang + '/', '/fr/') }}'"
+                aria-label="Français"
+                {{ 'aria-current="true"' if lang == 'fr' }}>
+          FR
+        </button>
+        <button class="lang-btn {{ 'active' if lang == 'en' }}" 
+                onclick="window.location.href='{{ page.url | replace('/' + lang + '/', '/en/') }}'"
+                aria-label="English"
+                {{ 'aria-current="true"' if lang == 'en' }}>
+          EN
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

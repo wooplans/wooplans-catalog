@@ -1,0 +1,48 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [v3-ssg-refonte]
+  pull_request:
+    branches: [v3-ssg-refonte]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Generate mockups
+      run: npm run generate-mockups
+      continue-on-error: true
+      
+    - name: Build site
+      run: npm run build
+      
+    - name: Deploy to Cloudflare Pages
+      if: github.ref == 'refs/heads/v3-ssg-refonte'
+      uses: cloudflare/pages-action@v1
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: wooplans-shop
+        directory: dist
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Upload artifact
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@v4
+      with:
+        name: site-build
+        path: dist/

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Emmanuel T.",
+    "location": "Douala",
+    "location_en": "Douala",
+    "rating": 5,
+    "text": "Plan très détaillé, le devis est réaliste. Je recommande !",
+    "text_en": "Very detailed plan, the quote is realistic. I recommend!",
+    "avatar": "https://ui-avatars.com/api/?name=Emmanuel+T&background=D4A853&color=fff"
+  },
+  {
+    "id": 2,
+    "name": "Fatou N.",
+    "location": "Yaoundé",
+    "location_en": "Yaounde",
+    "rating": 5,
+    "text": "Excellent rapport qualité-prix. L'architecte m'a aidé à adapter le plan.",
+    "text_en": "Excellent value for money. The architect helped me adapt the plan.",
+    "avatar": "https://ui-avatars.com/api/?name=Fatou+N&background=D4A853&color=fff"
+  },
+  {
+    "id": 3,
+    "name": "Jean-Pierre K.",
+    "location": "Douala",
+    "location_en": "Douala",
+    "rating": 5,
+    "text": "Téléchargement instantané et échange WhatsApp très réactif.",
+    "text_en": "Instant download and very responsive WhatsApp support.",
+    "avatar": "https://ui-avatars.com/api/?name=JP+K&background=D4A853&color=fff"
+  }
+]

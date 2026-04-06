@@ -1,22 +1,41 @@
-# Headers pour optimiser les performances
-# https://developers.cloudflare.com/pages/platform/headers/
+# Headers de sécurité et cache - WooPlans v3
 
-# Toutes les pages - sécurité et compression
+# Toutes les pages
 /*
+  # Sécurité
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
+  
+  # Cache HTML (1 heure)
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
-# Pages de détail des plans - cache avec revalidation
-/plans/*
-  Cache-Control: public, max-age=60, stale-while-revalidate=3600
-  X-Robots-Tag: index, follow
-
-# Assets statiques - cache agressif (1 an)
-/assets/*
+# Assets statiques - Cache long (1 an)
+/css/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Images Bunny CDN - cache long
-https://wooplans.b-cdn.net/*
-  Cache-Control: public, max-age=86400, immutable
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Pages de plans - Cache court avec revalidation
+/fr/plans/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+  X-Robots-Tag: index, follow
+
+/en/plans/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+  X-Robots-Tag: index, follow
+
+# Checkout et API - Pas de cache
+/checkout/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/api/*
+  Cache-Control: no-cache, no-store, must-revalidate

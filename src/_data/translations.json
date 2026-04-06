@@ -1,0 +1,172 @@
+{
+  "fr": {
+    "site": {
+      "name": "WooPlans",
+      "tagline": "Plans de maison modernes pour l'Afrique",
+      "description": "Téléchargez instantanément des plans de maison conçus pour l'Afrique. +50 villas et duplex modernes avec estimation des coûts de construction."
+    },
+    "nav": {
+      "catalog": "Catalogue",
+      "villas": "Villas",
+      "duplex": "Duplex",
+      "faq": "FAQ",
+      "contact": "Contact",
+      "back_to_catalog": "Retour au Catalogue"
+    },
+    "product": {
+      "get_plan": "Obtenez le plan et devis",
+      "download_now": "Téléchargez maintenant le plan et devis de cette villa et commencez à planifier la construction de votre projet",
+      "discover_3d": "Découvrez la villa en 3D",
+      "visualize_details": "Visualisez chaque détail de votre future villa",
+      "share_plan": "Partager ce plan",
+      "copy_link": "Copier le lien",
+      "presentation": "Présentation de la",
+      "specs": {
+        "surface": "Surface",
+        "rooms": "Chambres",
+        "bathrooms": "Salles de bain",
+        "floors": "Niveaux",
+        "terrain": "Terrain min.",
+        "estimate": "Coût estimé"
+      },
+      "flash_offer": "Offre flash : -50% de réduction",
+      "valid_until": "Valable ce {date} avant 23h59",
+      "ends_in": "Fin de l'offre dans",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s",
+      "you_get": "Ce que vous obtenez immédiatement",
+      "includes": {
+        "plan": "Plan de distribution + dimensions",
+        "quote": "Devis de la fondation aux finitions",
+        "support": "Discuter avec un architecte sur WhatsApp"
+      },
+      "bonus": "Bonus inclus !",
+      "testimonials": "Ce que disent nos clients",
+      "testimonials_subtitle": "Ils planifient leur projet de construction",
+      "faq": "Questions fréquentes",
+      "faq_subtitle": "Tout ce que vous devez savoir",
+      "similar_plans": "Plans similaires",
+      "similar_subtitle": "Découvrez d'autres modèles du catalogue",
+      "see_more": "Voir",
+      "starting_from": "À partir de"
+    },
+    "checkout": {
+      "title": "Plan et devis {plan}",
+      "price_suffix": "Fcfa",
+      "instead_of": "Au lieu de",
+      "discount": "-50%",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "email": "Email",
+      "phone": "Téléphone WhatsApp",
+      "promo_code": "Code Promo",
+      "pay_button": "Procéder au paiement",
+      "redirect_info": "Vous serez redirigé vers la page de paiement Mobile Money Sécurisée",
+      "satisfaction": "Satisfait ou remboursé",
+      "instant_delivery": "Livraison instantanée"
+    },
+    "merci": {
+      "title": "Merci pour votre achat !",
+      "subtitle": "Votre commande a été confirmée",
+      "download_info": "Vous recevrez votre plan par email dans quelques minutes",
+      "check_email": "Vérifiez votre boîte mail (et vos spams)",
+      "contact_whatsapp": "Une question ? Contactez-nous sur WhatsApp",
+      "back_to_home": "Retour à l'accueil"
+    },
+    "common": {
+      "buy_now": "Télécharger le plan et devis",
+      "secure_payment": "Paiement sécurisé par mobile money",
+      "today": "aujourd'hui",
+      "tomorrow": "demain",
+      "view": "Voir",
+      "bedrooms": "ch.",
+      "bathrooms": "sdb"
+    }
+  },
+  "en": {
+    "site": {
+      "name": "WooPlans",
+      "tagline": "Modern house plans for Africa",
+      "description": "Instantly download house plans designed for Africa. 50+ modern villas and duplexes with construction cost estimates."
+    },
+    "nav": {
+      "catalog": "Catalog",
+      "villas": "Villas",
+      "duplex": "Duplex",
+      "faq": "FAQ",
+      "contact": "Contact",
+      "back_to_catalog": "Back to Catalog"
+    },
+    "product": {
+      "get_plan": "Get the plan and quote",
+      "download_now": "Download the house plan and quote now and start planning your construction project",
+      "discover_3d": "Discover the villa in 3D",
+      "visualize_details": "Visualize every detail of your future villa",
+      "share_plan": "Share this plan",
+      "copy_link": "Copy link",
+      "presentation": "Presentation of the",
+      "specs": {
+        "surface": "Area",
+        "rooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "floors": "Floors",
+        "terrain": "Min. plot",
+        "estimate": "Est. cost"
+      },
+      "flash_offer": "Flash offer: -50% off",
+      "valid_until": "Valid on {date} until 11:59 PM",
+      "ends_in": "Offer ends in",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s",
+      "you_get": "What you get immediately",
+      "includes": {
+        "plan": "Floor plan + dimensions",
+        "quote": "Quote from foundation to finishing",
+        "support": "Chat with an architect on WhatsApp"
+      },
+      "bonus": "Bonus included!",
+      "testimonials": "What our clients say",
+      "testimonials_subtitle": "They are planning their construction project",
+      "faq": "Frequently asked questions",
+      "faq_subtitle": "Everything you need to know",
+      "similar_plans": "Similar plans",
+      "similar_subtitle": "Discover other models from the catalog",
+      "see_more": "View",
+      "starting_from": "Starting from"
+    },
+    "checkout": {
+      "title": "Plan and quote {plan}",
+      "price_suffix": "Fcfa",
+      "instead_of": "Instead of",
+      "discount": "-50%",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "phone": "WhatsApp Phone",
+      "promo_code": "Promo Code",
+      "pay_button": "Proceed to payment",
+      "redirect_info": "You will be redirected to the secure Mobile Money payment page",
+      "satisfaction": "Satisfied or refunded",
+      "instant_delivery": "Instant delivery"
+    },
+    "merci": {
+      "title": "Thank you for your purchase!",
+      "subtitle": "Your order has been confirmed",
+      "download_info": "You will receive your plan by email in a few minutes",
+      "check_email": "Check your inbox (and spam folder)",
+      "contact_whatsapp": "Any questions? Contact us on WhatsApp",
+      "back_to_home": "Back to home"
+    },
+    "common": {
+      "buy_now": "Download plan and quote",
+      "secure_payment": "Secure payment by mobile money",
+      "today": "today",
+      "tomorrow": "tomorrow",
+      "view": "View",
+      "bedrooms": "beds",
+      "bathrooms": "bath"
+    }
+  }
+}

@@ -1,0 +1,294 @@
+[
+  {
+    "id": "v3-037",
+    "supabaseId": "d3c16e37-1966-47ab-8672-9d9fa987cbb8",
+    "slug": "villa-3-chambres-v3-037",
+    "slug_en": "villa-3-bedrooms-v3-037",
+    "type": "villa",
+    "typeLabel": "Villa",
+    "typeLabelEn": "Villa",
+    "price": 14900,
+    "originalPrice": 30000,
+    "priceComplete": 130000,
+    "currency": "XAF",
+    "rooms": 3,
+    "bathrooms": 2,
+    "surface": 164.08,
+    "floors": 1,
+    "estimateCost": "28M - 35M FCFA",
+    "terrain": "à partir de 300 m²",
+    "rating": "4.8",
+    "reviews": 31,
+    "chariowId": "prd_n770b0",
+    "chariowUrl": "https://wooplans.mychariow.shop/prd_n770b0",
+    "images": [
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-1.jpg",
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-2.jpg",
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-3.jpg",
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-4.jpg",
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-5.jpg",
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-6.jpg",
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-7.jpg",
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-8.jpg",
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-9.jpg",
+      "https://wooplans.b-cdn.net/villa-v3-037/images/villa-v3-037-img-10.jpg"
+    ],
+    "fr": {
+      "title": "Villa V3-037",
+      "subtitle": "Villa plain-pied · 164 m² · 3 chambres · 2 salles de bain",
+      "description": "Villa moderne plain-pied avec 3 chambres et 2 salles de bain, offrant une surface habitable de 164 m². Fonctionnelle et élégante avec garage intégré, salon spacieux et dressing.",
+      "roomsList": ["Salon", "Salle à manger", "3 chambres", "2 douches", "Garage 1 place", "Toilettes visiteur", "Magasin"],
+      "features": [
+        "Plan de distribution avec dimensions détaillées",
+        "Rendus 3D extérieurs en perspective",
+        "Tableau de surface des pièces",
+        "Devis estimatif complet en FCFA"
+      ],
+      "bonusTitle": "Ebook PDF : Les 5 erreurs à éviter avant de lancer votre chantier"
+    },
+    "en": {
+      "title": "Villa V3-037",
+      "subtitle": "Single-story villa · 164 m² · 3 bedrooms · 2 bathrooms",
+      "description": "Modern single-story villa with 3 bedrooms and 2 bathrooms, offering 164 m² of living space. Functional and elegant with integrated garage, spacious living room and dressing room.",
+      "roomsList": ["Living room", "Dining room", "3 bedrooms", "2 showers", "1-car garage", "Guest toilet", "Storage room"],
+      "features": [
+        "Detailed floor plan with dimensions",
+        "3D exterior perspective renders",
+        "Room surface area table",
+        "Complete cost estimate in FCFA"
+      ],
+      "bonusTitle": "PDF Ebook: The 5 mistakes to avoid before starting your construction project"
+    }
+  },
+  {
+    "id": "d4-046",
+    "supabaseId": "d2798992-c962-4335-a284-29dc7497ca5f",
+    "slug": "duplex-4-chambres-d4-046",
+    "slug_en": "duplex-4-bedrooms-d4-046",
+    "type": "duplex",
+    "typeLabel": "Duplex",
+    "typeLabelEn": "Duplex",
+    "price": 14900,
+    "originalPrice": 30000,
+    "priceComplete": 170000,
+    "currency": "XAF",
+    "rooms": 4,
+    "bathrooms": 3,
+    "surface": 293.7,
+    "floors": 2,
+    "estimateCost": "54M FCFA",
+    "terrain": "à partir de 400 m²",
+    "rating": "4.7",
+    "reviews": 18,
+    "chariowId": "prd_krnnh9",
+    "chariowUrl": "https://wooplans.mychariow.shop/prd_krnnh9",
+    "images": [
+      "https://wooplans.b-cdn.net/duplex-d4-046/images/img-1774462340790-0.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-046/images/img-1774462342587-1.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-046/images/img-1774462343743-2.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-046/images/img-1774462345875-4.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-046/images/img-1774462346949-5.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-046/images/img-1774462347956-6.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-046/images/img-1774462348961-7.jpg"
+    ],
+    "fr": {
+      "title": "Duplex D4-046",
+      "subtitle": "Duplex 2 étages · 293,70 m² · 4 chambres · 3 salles de bain",
+      "description": "Duplex moderne de 293,70 m² comprenant 4 chambres et 3 salles de bain répartis sur 2 étages. Dispose d'un garage, d'une cuisine, d'un magasin et d'un bureau.",
+      "roomsList": ["Salon", "Salle à manger", "Cuisine", "Magasin", "Bureau", "4 chambres", "3 salles de bain", "Garage"],
+      "features": [
+        "Plans de distribution RDC et étage avec dimensions",
+        "Plan d'implantation",
+        "Façades et rendus 3D extérieurs (6 images)",
+        "Devis estimatif de construction : 54 334 510 Fcfa"
+      ],
+      "bonusTitle": "Ebook PDF : Les 5 erreurs à éviter avant de lancer votre chantier"
+    },
+    "en": {
+      "title": "Duplex D4-046",
+      "subtitle": "2-story duplex · 293.70 m² · 4 bedrooms · 3 bathrooms",
+      "description": "Modern duplex of 293.70 m² comprising 4 bedrooms and 3 bathrooms spread over 2 floors. Features a garage, kitchen, store room and office.",
+      "roomsList": ["Living room", "Dining room", "Kitchen", "Store room", "Office", "4 bedrooms", "3 bathrooms", "Garage"],
+      "features": [
+        "Ground floor and first floor plans with dimensions",
+        "Site plan",
+        "Facades and 3D exterior renders (6 images)",
+        "Construction cost estimate: 54,334,510 FCFA"
+      ],
+      "bonusTitle": "PDF Ebook: The 5 mistakes to avoid before starting your construction project"
+    }
+  },
+  {
+    "id": "d4-043",
+    "supabaseId": "1dc5fc4a-8326-4bd7-94cb-d8459a7e5003",
+    "slug": "duplex-4-chambres-d4-043",
+    "slug_en": "duplex-4-bedrooms-d4-043",
+    "type": "duplex",
+    "typeLabel": "Duplex",
+    "typeLabelEn": "Duplex",
+    "price": 14900,
+    "originalPrice": 30000,
+    "priceComplete": 170000,
+    "currency": "XAF",
+    "rooms": 4,
+    "bathrooms": 4,
+    "surface": 318.38,
+    "floors": 2,
+    "estimateCost": "40M - 52M FCFA",
+    "terrain": "à partir de 300 m²",
+    "rating": "5.0",
+    "reviews": 8,
+    "chariowId": "prd_krnnh9",
+    "chariowUrl": "https://wooplans.mychariow.shop/prd_krnnh9",
+    "images": [
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462483076-6.jpg",
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462470921-0.jpg",
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462474076-1.jpg",
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462476169-2.jpg",
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462478366-3.jpg",
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462480188-4.jpg",
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462481857-5.jpg",
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462484428-7.jpg",
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462485858-8.jpg",
+      "https://wooplans.b-cdn.net/d4-043/images/img-1774462487185-9.jpg"
+    ],
+    "fr": {
+      "title": "Duplex D4-043",
+      "subtitle": "Duplex moderne · 318,38 m² · 4 chambres · 4 salles de bain",
+      "description": "Duplex contemporain de 318,38 m² offrant une distribution optimale sur 2 niveaux. Comprend 4 chambres, 4 salles de bain, espaces de vie spacieux avec séjour, salle à manger et cuisine aménagée. Façades modernes avec terrasses et balcons.",
+      "roomsList": ["Salon", "Salle à manger", "Cuisine aménagée", "4 chambres", "4 salles de bain", "Terrasses", "Balcons"],
+      "features": [
+        "Plans de distribution RDC et étage avec dimensions",
+        "Rendus 3D extérieurs (3 perspectives)",
+        "Devis estimatif gros œuvre et finitions : 58 830 000 FCFA"
+      ],
+      "bonusTitle": "Ebook PDF : Les 5 erreurs à éviter avant de lancer votre chantier"
+    },
+    "en": {
+      "title": "Duplex D4-043",
+      "subtitle": "Modern duplex · 318.38 m² · 4 bedrooms · 4 bathrooms",
+      "description": "Contemporary duplex of 318.38 m² offering optimal layout over 2 levels. Includes 4 bedrooms, 4 bathrooms, spacious living areas with living room, dining room and fitted kitchen. Modern facades with terraces and balconies.",
+      "roomsList": ["Living room", "Dining room", "Fitted kitchen", "4 bedrooms", "4 bathrooms", "Terraces", "Balconies"],
+      "features": [
+        "Ground floor and first floor plans with dimensions",
+        "3D exterior renders (3 perspectives)",
+        "Structural work and finishing estimate: 58,830,000 FCFA"
+      ],
+      "bonusTitle": "PDF Ebook: The 5 mistakes to avoid before starting your construction project"
+    }
+  },
+  {
+    "id": "d4-034",
+    "supabaseId": "bd7a344d-db00-47c8-83f9-b3f65b71f119",
+    "slug": "duplex-4-chambres-d4-034",
+    "slug_en": "duplex-4-bedrooms-d4-034",
+    "type": "duplex",
+    "typeLabel": "Duplex",
+    "typeLabelEn": "Duplex",
+    "price": 14900,
+    "originalPrice": 30000,
+    "priceComplete": 170000,
+    "currency": "XAF",
+    "rooms": 4,
+    "bathrooms": 3,
+    "surface": 142.63,
+    "floors": 2,
+    "estimateCost": "10M - 13M FCFA",
+    "terrain": "à partir de 300 m²",
+    "rating": "4.6",
+    "reviews": 12,
+    "chariowId": "prd_krnnh9",
+    "chariowUrl": "https://wooplans.mychariow.shop/prd_krnnh9",
+    "images": [
+      "https://wooplans.b-cdn.net/duplex-d4-034/images/img-1774462559384-0.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-034/images/img-1774462563160-1.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-034/images/img-1774462565230-2.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-034/images/img-1774462567203-3.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-034/images/img-1774462568988-4.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-034/images/img-1774462570973-5.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-034/images/img-1774462573125-6.jpg",
+      "https://wooplans.b-cdn.net/duplex-d4-034/images/img-1774462575265-7.jpg"
+    ],
+    "fr": {
+      "title": "Duplex D4-034",
+      "subtitle": "Duplex 2 étages · 142,63 m² · 4 chambres · 3 salles de bain",
+      "description": "Duplex moderne et fonctionnel sur 2 étages avec un footprint compact de 10m x 9m. Rez-de-chaussée accueillant un salon spacieux, une salle à manger, une cuisine, une chambre et des terrasses.",
+      "roomsList": ["Salon spacieux", "Salle à manger", "Cuisine", "1 chambre RDC", "3 chambres étage", "3 salles de bain", "Terrasses"],
+      "features": [
+        "Plans de distribution détaillés",
+        "Vues 3D extérieures",
+        "Devis estimatif construction"
+      ],
+      "bonusTitle": "Ebook PDF : Les 5 erreurs à éviter avant de lancer votre chantier"
+    },
+    "en": {
+      "title": "Duplex D4-034",
+      "subtitle": "2-story duplex · 142.63 m² · 4 bedrooms · 3 bathrooms",
+      "description": "Modern and functional duplex over 2 floors with a compact footprint of 10m x 9m. Ground floor with spacious living room, dining room, kitchen, bedroom and terraces.",
+      "roomsList": ["Spacious living room", "Dining room", "Kitchen", "1 bedroom GF", "3 bedrooms 1st floor", "3 bathrooms", "Terraces"],
+      "features": [
+        "Detailed floor plans",
+        "3D exterior views",
+        "Construction cost estimate"
+      ],
+      "bonusTitle": "PDF Ebook: The 5 mistakes to avoid before starting your construction project"
+    }
+  },
+  {
+    "id": "v4-032",
+    "supabaseId": "4264c88e-f3cd-450c-971d-8db5b014bfab",
+    "slug": "villa-4-chambres-v4-032",
+    "slug_en": "villa-4-bedrooms-v4-032",
+    "type": "villa",
+    "typeLabel": "Villa",
+    "typeLabelEn": "Villa",
+    "price": 14900,
+    "originalPrice": 30000,
+    "priceComplete": 130000,
+    "currency": "XAF",
+    "rooms": 4,
+    "bathrooms": 3,
+    "surface": 240.0,
+    "floors": 2,
+    "estimateCost": "18M - 22M FCFA",
+    "terrain": "à partir de 400 m²",
+    "rating": "4.9",
+    "reviews": 24,
+    "chariowId": "prd_n770b0",
+    "chariowUrl": "https://wooplans.mychariow.shop/prd_n770b0",
+    "images": [
+      "https://wooplans.b-cdn.net/villa-v4-032/images/img-1774456514861-3.jpg",
+      "https://wooplans.b-cdn.net/villa-v4-032/images/img-1774456513010-2.jpg",
+      "https://wooplans.b-cdn.net/villa-v4-032/images/img-1774456519801-5.jpg",
+      "https://wooplans.b-cdn.net/villa-v4-032/images/img-1774456511485-1.jpg",
+      "https://wooplans.b-cdn.net/villa-v4-032/images/img-1774456517387-4.jpg",
+      "https://wooplans.b-cdn.net/villa-v4-032/images/img-1774456509238-0.jpg",
+      "https://wooplans.b-cdn.net/villa-v4-032/images/img-1774456521181-6.jpg",
+      "https://wooplans.b-cdn.net/villa-v4-032/images/img-1774456522951-7.jpg"
+    ],
+    "fr": {
+      "title": "Villa V4-032",
+      "subtitle": "Élégance contemporaine pour famille épanouie",
+      "description": "Villa conçue pour les tropiques africains alliant esthétique contemporaine et fonctionnalité. Double hauteur au salon, terrasse couverte, et ventilation naturelle optimisée pour le climat équatorial.",
+      "roomsList": ["Salon double hauteur", "Salle à manger", "Cuisine", "4 chambres", "3 salles de bain", "Terrasse couverte", "Garage"],
+      "features": [
+        "Spécifications des matériaux",
+        "Tableau des surfaces",
+        "Coupes et façades"
+      ],
+      "bonusTitle": "Ebook PDF : Les 5 erreurs à éviter avant de lancer votre chantier"
+    },
+    "en": {
+      "title": "Villa V4-032",
+      "subtitle": "Contemporary elegance for thriving families",
+      "description": "Villa designed for African tropics combining contemporary aesthetics and functionality. Double-height living room, covered terrace, and natural ventilation optimized for equatorial climate.",
+      "roomsList": ["Double-height living room", "Dining room", "Kitchen", "4 bedrooms", "3 bathrooms", "Covered terrace", "Garage"],
+      "features": [
+        "Material specifications",
+        "Surface area table",
+        "Sections and facades"
+      ],
+      "bonusTitle": "PDF Ebook: The 5 mistakes to avoid before starting your construction project"
+    }
+  }
+]

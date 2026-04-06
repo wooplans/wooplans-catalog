@@ -1,0 +1,116 @@
+/* ============================================
+   COMPONENTS - Galerie d'images
+   ============================================ */
+
+.gallery {
+  position: relative;
+  margin-bottom: var(--space-lg);
+}
+
+.gallery-main {
+  position: relative;
+  aspect-ratio: 16/10;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity var(--transition-base);
+}
+
+.gallery-badge {
+  position: absolute;
+  bottom: var(--space-md);
+  right: var(--space-md);
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--text-primary);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  backdrop-filter: blur(4px);
+}
+
+.gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.gallery-thumb {
+  aspect-ratio: 16/10;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all var(--transition-fast);
+  opacity: 0.7;
+}
+
+.gallery-thumb:hover,
+.gallery-thumb.active {
+  opacity: 1;
+  border-color: var(--gold);
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Navigation flèches */
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+.gallery-nav:hover {
+  background: var(--gold);
+  color: var(--text-dark);
+}
+
+.gallery-nav.prev {
+  left: var(--space-md);
+}
+
+.gallery-nav.next {
+  right: var(--space-md);
+}
+
+.gallery-nav svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Section 3D */
+.section-3d {
+  padding: var(--space-2xl) 0;
+}
+
+.section-3d h2 {
+  margin-bottom: var(--space-xs);
+}
+
+.section-3d p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-lg);
+}
