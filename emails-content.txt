@@ -1,0 +1,194 @@
+================================================================================
+  WOOPLANS — CONTENU DES EMAILS AUTOMATIQUES
+  (modifier ce fichier puis dire à Claude de redéployer)
+================================================================================
+
+
+════════════════════════════════════════════════════════════════════════════════
+  SÉRIE 1 — PROMO49 (code -10 000 FCFA, valable 24h, utilisable 3 fois)
+════════════════════════════════════════════════════════════════════════════════
+
+────────────────────────────────────────────────────────────────────────────────
+EMAIL P1 — Bloc promo intégré dans l'email de confirmation d'achat
+           (envoyé automatiquement après chaque achat)
+────────────────────────────────────────────────────────────────────────────────
+
+  [Ce bloc apparaît EN BAS de l'email de confirmation, après le lien PDF
+   ou le message d'attente pour les plans complets]
+
+  TITRE DU BLOC :
+    🎁 Offre exclusive — clients WooPlans
+
+  CORPS DU BLOC :
+    Profitez de -10 000 FCFA de réduction
+    sur vos 3 prochains plans
+
+    [CODE PROMO EN GRAND]  PROMO49
+
+    ⏰ Expire le [DATE AUTOMATIQUE +24H]
+
+    [BOUTON]  Voir le catalogue →
+
+
+────────────────────────────────────────────────────────────────────────────────
+EMAIL P2 — Rappel promo (envoyé 20h après l'achat si PROMO49 non utilisé)
+────────────────────────────────────────────────────────────────────────────────
+
+  OBJET :
+    ⏰ Votre code PROMO49 expire bientôt — WooPlans
+
+  CORPS :
+    Bonjour [Prénom],
+
+    Vous n'avez pas encore utilisé votre code promo exclusif.
+    Il expire très bientôt !
+
+    [BLOC SOMBRE]
+    ⏰ Expire le
+    [DATE D'EXPIRY]
+
+    [CODE EN GRAND]  PROMO49
+
+    -10 000 FCFA sur votre prochain plan · Utilisable 3 fois
+
+    [BOUTON OR]  Utiliser mon code →
+
+    Des questions ? Contactez-nous sur WhatsApp :
+    +237 694 327 885
+
+
+────────────────────────────────────────────────────────────────────────────────
+EMAIL P3 — Confirmation d'utilisation du code
+           (envoyé quand PROMO49 est détecté dans un achat)
+────────────────────────────────────────────────────────────────────────────────
+
+  OBJET (si reste des utilisations) :
+    ✅ Code PROMO49 utilisé — encore X fois disponible(s) — WooPlans
+
+  OBJET (si plus d'utilisations) :
+    ✅ Code PROMO49 utilisé — WooPlans
+
+  CORPS (si reste des utilisations) :
+    Bonjour [Prénom],
+
+    Votre code PROMO49 a bien été utilisé ✓
+
+    [BLOC ORANGE]
+    Il vous reste encore X utilisation(s) disponible(s) avec ce code.
+    Continuez à explorer notre catalogue !
+
+    [BOUTON]  Choisir un autre plan →
+
+  CORPS (si plus d'utilisations) :
+    Bonjour [Prénom],
+
+    Votre code PROMO49 a bien été utilisé ✓
+
+    Vous avez utilisé toutes vos réductions. Merci pour votre confiance !
+
+
+════════════════════════════════════════════════════════════════════════════════
+  SÉRIE 2 — RELANCE PANIER ÉCHOUÉ / ABANDONNÉ
+  (3 emails sur 48h, séquence stoppée si achat entre-temps)
+════════════════════════════════════════════════════════════════════════════════
+
+────────────────────────────────────────────────────────────────────────────────
+EMAIL R1 — Relance immédiate (envoyée dès la réception de l'événement)
+────────────────────────────────────────────────────────────────────────────────
+
+  OBJET (paiement échoué) :
+    🏠 Votre paiement n'a pas abouti — [Nom du plan] vous attend
+
+  OBJET (panier abandonné) :
+    🏠 Votre plan [Nom du plan] vous attend — WooPlans
+
+  CORPS :
+    Bonjour [Prénom],
+
+    [Si paiement échoué :]
+    Votre paiement n'a malheureusement pas abouti. Pas de panique — votre
+    plan est toujours disponible et votre commande peut être finalisée
+    en quelques secondes.
+
+    [Si panier abandonné :]
+    Vous avez failli finaliser votre commande. Votre plan est toujours
+    disponible — il ne vous reste qu'une étape pour le recevoir
+    instantanément.
+
+    ┌─────────────────────────────────────────┐
+    │  Votre plan                             │
+    │  [NOM DU PLAN]                          │
+    │  ✓ Livraison instantanée                │
+    │  ✓ Paiement sécurisé Mobile Money       │
+    └─────────────────────────────────────────┘
+
+    [BOUTON]  Finaliser ma commande →
+
+    Des questions ? Contactez-nous sur WhatsApp
+
+
+────────────────────────────────────────────────────────────────────────────────
+EMAIL R2 — Relance 24h (envoyée 24h après R1 si pas d'achat)
+────────────────────────────────────────────────────────────────────────────────
+
+  OBJET :
+    Avez-vous des questions sur [Nom du plan] ? — WooPlans
+
+  CORPS :
+    Bonjour [Prénom],
+
+    Avez-vous des questions sur votre plan [NOM DU PLAN] ?
+    Il est normal d'hésiter avant un projet important.
+
+    🔒 Paiement sécurisé
+       Mobile Money (Orange, MTN, Wave) — aucune carte bancaire requise.
+
+    ⚡ Livraison instantanée
+       Votre PDF est disponible immédiatement après paiement, 24h/24.
+
+    ✨ Qualité architecte
+       Plans conçus par des architectes, adaptés aux normes africaines.
+
+    [BOUTON]  Obtenir mon plan →
+
+    Une question spécifique ? Discutons sur WhatsApp →
+
+
+────────────────────────────────────────────────────────────────────────────────
+EMAIL R3 — Relance 48h — Dernier email (envoyé 48h après R1 si pas d'achat)
+────────────────────────────────────────────────────────────────────────────────
+
+  OBJET :
+    🏠 [Prénom], votre projet mérite d'avancer — WooPlans
+
+  CORPS :
+    Bonjour [Prénom],
+
+    Votre projet de construction mérite le meilleur départ possible.
+
+    Des milliers de familles en Afrique ont déjà bâti leur maison de rêve
+    avec nos plans. Ne laissez pas votre projet en attente — chaque
+    étape compte.
+
+    ┌─────────────────────────────────────────┐
+    │  Votre plan                             │
+    │  [NOM DU PLAN]                          │
+    │                                         │
+    │  [BOUTON OR]  Je prends mon plan →      │
+    └─────────────────────────────────────────┘
+
+    Notre équipe est disponible sur WhatsApp pour vous accompagner.
+
+
+================================================================================
+  NOTES TECHNIQUES
+================================================================================
+
+  - [Prénom], [NOM DU PLAN], [DATE] sont des variables automatiques
+  - La séquence de relance s'arrête dès qu'un achat est confirmé
+  - Le rappel PROMO49 est annulé si le code est utilisé avant les 20h
+  - Les emails partent depuis : noreply@shop.wooplans.com
+  - Support WhatsApp : +237 694 327 885
+  - Les délais (24h, 48h, 20h) peuvent être modifiés dans le code
+
+================================================================================

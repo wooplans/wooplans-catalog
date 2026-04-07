@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "wooplans",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["-e", "require('http').createServer((req,res)=>{const fs=require('fs'),path=require('path');let f=path.join('C:\\\\Users\\\\BATIBOO SARL\\\\Documents\\\\WOOPLANS CATALOG',req.url==='/'?'index.html':req.url.split('?')[0]);fs.readFile(f,(e,d)=>{if(e){res.writeHead(404);res.end();}else{const ext=path.extname(f);const m={'html':'text/html','css':'text/css','js':'application/javascript','json':'application/json','webp':'image/webp','png':'image/png','jpg':'image/jpeg','ico':'image/x-icon'};res.writeHead(200,{'Content-Type':m[ext.slice(1)]||'text/plain'});res.end(d);}});}).listen(process.env.PORT||5500)"],
+      "port": 5500,
+      "autoPort": true
+    }
+  ]
+}

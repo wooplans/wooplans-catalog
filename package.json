@@ -1,47 +1,17 @@
 {
   "name": "wooplans-shop-v2",
   "version": "3.0.0",
-  "description": "WooPlans e-commerce - Plans architecturaux pour l'Afrique (SSG)",
+  "description": "WooPlans e-commerce SSG",
   "scripts": {
     "build": "eleventy",
-    "start": "eleventy --serve --watch",
-    "build:prod": "npm-run-all clean build optimize",
-    "clean": "rimraf dist",
-    "optimize": "npm-run-all optimize:*",
-    "optimize:css": "postcss dist/css/*.css --replace --no-map",
-    "optimize:js": "terser dist/js/*.js -o dist/js/ --source-map",
-    "optimize:html": "html-minifier-terser --input-dir dist --output-dir dist --file-ext html --collapse-whitespace --remove-comments --minify-css --minify-js",
-    "generate-mockups": "node scripts/generate-mockups.js",
-    "debug": "DEBUG=* eleventy"
-  },
-  "keywords": [
-    "ecommerce",
-    "architecture",
-    "africa",
-    "house-plans",
-    "ssg"
-  ],
-  "author": "WooPlans",
-  "license": "MIT",
-  "engines": {
-    "node": ">=18.0.0"
+    "start": "eleventy --serve"
   },
   "dependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "@11ty/eleventy-navigation": "^0.3.5",
-    "@11ty/eleventy-plugin-rss": "^1.2.0"
+    "@11ty/eleventy": "2.0.1",
+    "@11ty/eleventy-navigation": "0.3.5",
+    "@11ty/eleventy-plugin-rss": "1.2.0"
   },
-  "devDependencies": {
-    "autoprefixer": "^10.4.16",
-    "html-minifier-terser": "^7.2.0",
-    "node-html-to-image": "^4.0.0",
-    "npm-run-all": "^4.1.5",
-    "postcss": "^8.4.32",
-    "postcss-cli": "^11.0.0",
-    "postcss-csso": "^6.0.1",
-    "postcss-import": "^15.1.0",
-    "postcss-preset-env": "^9.3.0",
-    "rimraf": "^5.0.5",
-    "terser": "^5.24.0"
-  }
+  "devDependencies": {},
+  "author": "WooPlans",
+  "license": "MIT"
 }

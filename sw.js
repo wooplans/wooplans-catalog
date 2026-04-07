@@ -4,7 +4,7 @@
  * Stratégies : Cache First+BG refresh (images), Network First (API), SWR (HTML)
  */
 
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v4';
 const STATIC_CACHE  = `wooplans-static-${CACHE_VERSION}`;
 const IMAGE_CACHE   = `wooplans-images-${CACHE_VERSION}`;
 const API_CACHE     = `wooplans-api-${CACHE_VERSION}`;

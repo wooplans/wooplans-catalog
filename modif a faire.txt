@@ -1,0 +1,15 @@
+alert bar avec le texte "-50% valable ce Samedi 28 Mars" ( date dynamique qui se met a jour tout les jours )
+
+Pour les villa et duplex :
+old price 30 000 FCFA
+selling price 14900 FCFA
+J'ai deja mis a jours les prix des 2 produits chariow utilisé pour le checkout.
+
+retire le badge recommandé sur le pricing du plan basique puisque il ya une seul offre.
+ fait apparaitre la reduction sur la carte du pricing.
+
+noublie pas de mettre a jour les prix des plans basique des villa et duplex a 14900 dans supabase.
+
+retire le cta que tu as mis sous la gallerie.
+
+retire la phrase " choisir une formule"

@@ -1,0 +1,502 @@
+Voici la documentation complète du projet, prête à être convertie en PDF. Tu peux copier ce contenu dans un fichier .md puis utiliser un convertisseur Markdown-to-PDF (comme Typora, VS Code avec extension Markdown PDF, ou pandoc) pour générer le document final.
+Markdown
+Copy
+Code
+Preview
+# DOCUMENTATION TECHNIQUE COMPLETE
+## WooPlans V2.2 - Starter Pack Edition
+### Plateforme de vente de plans architecturaux avec devis estimatif
+
+**Version :** 2.2.0  
+**Date :** 4 Avril 2026  
+**Statut :** Production Ready  
+
+---
+
+## TABLE DES MATIÈRES
+
+1. [Vue d'ensemble du projet](#1-vue-densemble-du-projet)
+2. [Architecture technique](#2-architecture-technique)
+3. [Schéma de base de données](#3-schéma-de-base-de-données)
+4. [Flux fonctionnels](#4-flux-fonctionnels)
+5. [API Reference](#5-api-reference)
+6. [Génération PDF](#6-génération-pdf)
+7. [Intégration paiement (Chariow)](#7-intégration-paiement-chariow)
+8. [Intégration WhatsApp (Green API)](#8-intégration-whatsapp-green-api)
+9. [Calcul des devis](#9-calcul-des-devis)
+10. [Sécurité](#10-sécurité)
+11. [Déploiement](#11-déploiement)
+12. [Guide administrateur](#12-guide-administrateur)
+
+---
+
+## 1. VUE D'ENSEMBLE DU PROJET
+
+### 1.1 Concept métier
+WooPlans V2.2 adopte un modèle **"Starter Pack"** à 14 900 FCFA (prix barré 30 000 FCFA, -50%) :
+- Achat unique d'un plan architectural spécifique
+- Livraison immédiate par PDF composite personnalisé
+- Upsell manuel vers plans complets (150k-450k FCFA) via WhatsApp
+
+### 1.2 Contenu du PDF livré
+Le document PDF comprend :
+1. **Page couverture** : Images 3D, nom du client, date
+2. **Plan d'implantation** (si fourni)
+3. **Plan de distribution** (PNG haute résolution)
+4. **Devis estimatif** : 2 gammes (Moyen/Haut standing) avec fourchettes
+5. **Rendus 3D** extérieurs
+6. **Page Upsell** : upsell vers plan complet
+
+### 1.3 Stack technique
+- **Frontend** : Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS
+- **Backend** : Next.js API Routes, Prisma ORM
+- **Base de données** : PostgreSQL (Supabase/Neon)
+- **Stockage fichiers** : Bunny CDN
+- **Paiement** : Chariow (Mobile Money MTN/Orange)
+- **Notifications** : Green API (WhatsApp Business)
+- **Email** : Resend
+- **PDF** : pdf-lib (Node.js)
+
+---
+
+## 2. ARCHITECTURE TECHNIQUE
+
+### 2.1 Structure des dossiers
+wooplans/
+├── app/                    # Next.js App Router
+│   ├── api/               # Routes API
+│   ├── plan/[id]/         # Page détail plan
+│   ├── telechargement/    # Page post-achat
+│   └── exemple/           # Page démo
+├── lib/                   # Utilitaires
+│   ├── prisma.ts
+│   ├── pdf-generator.ts
+│   ├── chariow.ts
+│   ├── green-api.ts
+│   └── estimate-calculator.ts
+├── prisma/
+│   └── schema.prisma
+└── public/
+plain
+Copy
+
+### 2.2 Flux de données
+Client → Page Plan → Checkout Chariow → Webhook → Génération PDF → Email → Téléchargement
+↓
+Notification WhatsApp Admin
+plain
+Copy
+
+---
+
+## 3. SCHÉMA DE BASE DE DONNÉES
+
+### 3.1 Modèle Prisma complet
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PlanType {
+  VILLA
+  DUPLEX
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum UpsellStatus {
+  NOT_CONTACTED
+  CONTACTED
+  QUOTE_SENT
+  ADVANCE_PAID
+  COMPLETED
+  LOST
+}
+
+model Plan {
+  id              String    @id @default(cuid())
+  name            String
+  type            PlanType
+  surface         Int
+  status          String    @default("ACTIVE")
+  coverImageUrl   String    // Image 3D couverture
+  implantationUrl String?   // Optionnel
+  distributionUrl String    // Plan PNG
+  render3dUrls    String[]  // Array URLs
+  basePdfUrl      String?   // Template PDF
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  purchases       Purchase[]
+}
+
+model Purchase {
+  id                String         @id @default(cuid())
+  planId            String
+  plan              Plan           @relation(fields: [planId], references: [id])
+  
+  // Données client
+  fullName          String
+  email             String
+  phoneNumber       String
+  
+  // Transaction
+  chariowReference  String?        @unique
+  amount            Int            @default(14900)
+  currency          String         @default("XOF")
+  status            PurchaseStatus @default(PENDING)
+  
+  // Livraison
+  downloadToken     String         @unique @default(uuid())
+  downloadUrl       String?
+  downloadExpiresAt DateTime?
+  downloadCount     Int            @default(0)
+  maxDownloads      Int            @default(3)
+  
+  // Upsell tracking
+  upsellStatus      UpsellStatus   @default(NOT_CONTACTED)
+  upsellAmount      Int?
+  upsellNotes       String?
+  
+  // Monitoring
+  adminNotified     Boolean        @default(false)
+  
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  @@index([email])
+  @@index([phoneNumber])
+  @@index([downloadToken])
+}
+3.2 Contraintes métier
+Limite téléchargements : 3 maximum (reset manuel possible via back-office)
+Expiration : 30 jours après achat
+Unicité : Un token UUID par achat, non réutilisable
+4. FLUX FONCTIONNELS
+4.1 Processus d'achat
+Table
+Étape	Action	Technologie
+1	Sélection plan	Next.js SSR
+2	Formulaire (nom, email, téléphone)	React State
+3	Initiation paiement	API Route → Chariow
+4	Paiement Mobile Money	Chariow (MTN/Orange)
+5	Webhook confirmation	Chariow → /api/webhook
+6	Génération PDF	pdf-lib + Bunny CDN
+7	Notification admin	Green API WhatsApp
+8	Email client	Resend
+9	Téléchargement	Page sécurisée (token)
+4.2 Processus Upsell (Manuel)
+Client scanne QR dans PDF ou clique lien /upsell/[token]
+Client clique bouton WhatsApp (wa.me link avec message pré-rempli)
+Admin reçoit message sur +237 694 327 885
+Admin identifie achat via token ou téléphone dans back-office
+Négociation prix plan complet (150k-450k FCFA)
+Paiement avance hors ligne (Mobile Money direct)
+Update statut upsell dans back-office (ADVANCE_PAID → COMPLETED)
+Livraison fichiers complets via WhatsApp
+5. API REFERENCE
+5.1 Endpoints Publics
+POST /api/purchase/initiate
+Description : Créer un achat et rediriger vers Chariow
+Body :
+JSON
+Copy
+{
+  "planId": "string",
+  "fullName": "string",
+  "email": "string",
+  "phoneNumber": "string"
+}
+Response :
+JSON
+Copy
+{
+  "checkoutUrl": "https://chariow.com/checkout/...",
+  "purchaseId": "cuid"
+}
+POST /api/purchase/webhook
+Description : Réception confirmation Chariow
+Headers : X-Chariow-Signature
+Body :
+JSON
+Copy
+{
+  "reference": "cuid",
+  "status": "completed|failed|abandoned",
+  "chariow_reference": "string"
+}
+Actions :
+Génère PDF personnalisé
+Upload Bunny CDN
+Envoie email
+Notifie WhatsApp admin
+GET /api/download/[token]
+Description : Téléchargement sécurisé du PDF
+Validation :
+Token existe
+Status = COMPLETED
+Non expiré (< 30 jours)
+Count < 3
+Response : Redirect 302 vers URL signée Bunny CDN (5min)
+POST /api/estimate/calculate
+Description : Calculer devis prévisualisation
+Body : { "planId": "string", "surface": "number" }
+Response : Devis détaillé (voir section 9)
+5.2 Endpoints Admin
+GET /api/admin/purchases
+Query params : status, upsellStatus, dateFrom, dateTo
+POST /api/admin/purchases/[id]/reset-downloads
+Action : Remet downloadCount à 0
+PUT /api/admin/purchases/[id]/upsell-status
+Body : { "status": "UpsellStatus", "amount": "number", "notes": "string" }
+6. GÉNÉRATION PDF
+6.1 Architecture PDF composite
+Le PDF est généré à la volée après confirmation paiement :
+TypeScript
+Copy
+// Composition du PDF
+async function generateClientPDF(basePdfBuffer, clientData) {
+  // 1. Chargement template base (pages fixes)
+  const pdfDoc = await PDFDocument.load(basePdfBuffer)
+  
+  // 2. Injection données client
+  // - Page 1 : Nom client, date
+  // - Pages intermédiaires : Watermark email
+  // - Page Devis : Calcul dynamique injection
+  
+  // 3. Génération QR Code unique
+  const qrUrl = `https://wooplans.com/upsell/${clientData.token}`
+  const qrImage = await generateQRCode(qrUrl)
+  
+  // 4. Page Upsell finale
+  // - QR Code centré
+  // - Texte "Plan Complet à partir de 150 000 FCFA"
+  
+  // 5. Watermark légal toutes pages
+  // Footer : "Document d'étude - Non contractuel"
+  // Footer : email client (traçabilité)
+  
+  return pdfDoc.save()
+}
+6.2 Spécifications visuelles
+Mentions légales obligatoires :
+Toutes pages : © WooPlans - ${email} - Document d'étude - Usage privé
+Opacité : 30%
+Taille : 8pt
+Bas de page centré
+Page Devis :
+Tableau 3 colonnes : Rubrique | Moyen Standing | Haut Standing
+Sans pourcentages ni prix au m² (comme demandé)
+Fourchette prix incluses (±15%)
+Page Upsell :
+QR Code dynamique (tracké par token)
+URL raccourcie visible
+Numéro WhatsApp : +237 694 327 885
+7. INTÉGRATION PAIEMENT (CHARIOW)
+7.1 Configuration
+TypeScript
+Copy
+// lib/chariow.ts
+const CHARIOW_BASE = 'https://api.chariow.com/v1'
+
+async function createCheckout(data) {
+  return axios.post(`${CHARIOW_BASE}/checkouts`, {
+    amount: 14900,           // FCFA
+    currency: 'XOF',
+    reference: purchaseId,   // ID interne
+    description: `Plan ${planName} + Devis`,
+    customer_email: email,
+    customer_phone: phone,
+    callback_url: `${HOST}/api/purchase/webhook`,
+    return_url: `${HOST}/telechargement/${token}`
+  }, {
+    headers: { 'Authorization': `Bearer ${API_KEY}` }
+  })
+}
+7.2 Gestion des statuts
+Table
+Statut Chariow	Action WooPlans
+completed	Générer PDF, envoyer email, notifier admin
+failed	Logger, éventuellement email échec
+abandoned	Tracker analytics, possible relance email
+pending	Attente (timeout 5min côté client)
+7.3 Sécurité Webhook
+Vérifier signature X-Chariow-Signature avec secret key (à implémenter selon docs Chariow).
+8. INTÉGRATION WHATSAPP (GREEN API)
+8.1 Configuration
+env
+Copy
+GREEN_API_INSTANCE=7103...
+GREEN_API_TOKEN=...
+ADMIN_PHONE=237694327885
+8.2 Notifications automatiques
+Nouvelle vente :
+plain
+Copy
+🟢 NOUVELLE VENTE STARTER
+
+Plan: [Nom du Plan]
+Client: [Prénom Nom]
+Tél: [Numéro]
+Email: [Email]
+Montant: 14 900 FCFA
+Date: [JJ/MM/AAAA HH:mm]
+
+Contactez rapidement le client pour l'upsell.
+Échec critique (fallback) :
+plain
+Copy
+🔴 ERREUR LIVRAISON PDF
+
+Client: [Email]
+Plan: [Nom]
+Erreur: [Message]
+Action requise: Envoi manuel urgent
+8.3 Process conversationnel
+Entrée : Client clique wa.me link avec message pré-rempli contenant token
+Identification : Admin copie token ou téléphone pour chercher dans back-office
+Suivi : Notes manuelles dans champ upsellNotes
+9. CALCUL DES DEVIS
+9.1 Formules
+TypeScript
+Copy
+const COUT_M2 = {
+  MOYEN: 160000,  // FCFA/m²
+  HAUT: 200000    // FCFA/m²
+}
+
+const MARGE_SECURITE = 0.10     // 10%
+const MARGE_COMMERCIALE = 0.15  // 15%
+
+// Calcul base
+base = surface × prix_m2
+total = base × (1 + 0.10) × (1 + 0.15)
+
+// Fourchette marché
+min = total × 0.85
+max = total × 1.15
+9.2 Répartition rubriques (Villa)
+Table
+Rubrique	Gros Œuvre	Finitions
+Fondation	12.60%	-
+Élévations	18.45%	-
+Charpente/Toiture	13.95%	-
+Crépisage	-	13.20%
+Portes/Fenêtres	-	9.90%
+Plomberie/Élec	-	8.25%
+Plafond/Peinture	-	11.55%
+Carrelage	-	12.10%
+Total	45%	55%
+9.3 Affichage PDF
+Format : 45 200 000 FCFA (espaces comme séparateurs de milliers)
+Pas de décimales (arrondi entier).
+10. SÉCURITÉ
+10.1 Protection des téléchargements
+Tokens UUID : Non prédictibles (v4)
+Expiration URL : 5 minutes (signée Bunny CDN)
+Limite absolue : 3 downloads (compteur incrémenté atomiquement)
+Watermark : Email client sur chaque page (dissuasion partage)
+10.2 Données sensibles
+Variables d'environnement pour toutes les clés API
+Pas de logs console en production (ou sanitisation)
+HTTPS obligatoire (cookies secure)
+10.3 Validation entrées
+Validation schéma Zod sur toutes les API routes
+Rate limiting : 10 requêtes/minute par IP sur /api/purchase/*
+Sanitisation emails (format, domaine)
+11. DÉPLOIEMENT
+11.1 Prérequis
+Node.js 20+
+Compte Vercel (frontend)
+Base PostgreSQL (Supabase/Neon)
+Compte Bunny CDN (stockage + pull zone)
+Compte Chariow (production keys)
+Compte Green API (instance WhatsApp Business)
+Compte Resend (email SMTP)
+11.2 Variables d'environnement
+env
+Copy
+# Application
+NEXT_PUBLIC_URL=https://wooplans.com
+DATABASE_URL=postgresql://...
+
+# Paiement
+CHARIOW_API_KEY=sk_chariow_...
+
+# Stockage
+BUNNY_STORAGE_API_KEY=...
+BUNNY_PULL_ZONE=wooplans.b-cdn.net
+
+# Notifications
+GREEN_API_INSTANCE=...
+GREEN_API_TOKEN=...
+
+# Email
+RESEND_API_KEY=re_...
+11.3 Checklist mise en production
+Base de données :
+[ ] Migration Prisma exécutée
+[ ] Index créés (vérifier via Prisma Studio)
+[ ] Seed données plans de test
+Intégrations :
+[ ] Webhook Chariow configuré en dashboard (URL production)
+[ ] Green API authentifié et numéro vérifié
+[ ] Bunny CDN zones configurées (public/private)
+Sécurité :
+[ ] CORS configuré (origines Vercel uniquement)
+[ ] Rate limiting activé
+[ ] Headers sécurité (X-Frame-Options, etc.)
+Monitoring :
+[ ] Logs Vercel activés
+[ ] Alertes email échecs webhooks
+[ ] Vérification quotidienne Green API (crédits)
+12. GUIDE ADMINISTRATEUR
+12.1 Upload d'un nouveau plan
+Accéder à /admin/plans/new
+Remplir :
+Nom du plan
+Type (Villa/Duplex)
+Surface (m²)
+Upload images (Cover, Plan distribution, Rendus 3D)
+Upload plan implantation (optionnel)
+Système génère automatiquement le PDF template de base
+Tester prévisualisation frontend
+12.2 Gestion des upsells
+Dashboard : /admin/purchases
+Filtres utiles :
+Statut COMPLETED + Upsell NOT_CONTACTED → Priorité contact
+Date > 7 jours → Relance
+Actions manuelles :
+Reset download : Si client perd son PDF
+Update upsell : Quand avance reçue, passer à ADVANCE_PAID
+Notes : Historique conversation WhatsApp
+12.3 Procédure livraison Plan Complet
+Recevoir message WhatsApp client avec token
+Identifier achat dans back-office (recherche par token ou téléphone)
+Vérifier paiement avance reçu (hors ligne)
+Modifier statut : ADVANCE_PAID → COMPLETED
+Envoyer fichiers via WhatsApp :
+Plans DWG
+PDF haute définition
+Plans électricité/plomberie
+Noter montant final dans upsellAmount
+13. MAINTENANCE ET EVOLUTIONS
+13.1 Tâches quotidiennes
+Vérifier notifications WhatsApp non lues (Green API)
+Contrôler échecs de génération PDF (logs Vercel)
+Suivre conversions upsell (taux Starter → Complet)
+13.2 Évolutions futures (V2.3)
+Automatisation upsell (paiement en ligne plans complets)
+Dashboard analytics temps réel
+Application mobile React Native
+Génération devis personnalisables (modification surfaces)

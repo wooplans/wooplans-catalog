@@ -141,139 +141,275 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .card-btn:hover{background:var(--terre);transform:translateY(-1px)}
 .card-btn svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none}
 
-/* ── DETAIL OVERLAY ── */
-#detail-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:stretch}
-#detail-overlay.open{display:flex}
-.det-backdrop{position:absolute;inset:0;background:rgba(10,8,5,.6);backdrop-filter:blur(5px);animation:fadeIn .3s ease}
+/* ── DETAIL PAGE FULL PAGE ── */
+#catalogue-view{display:block}
+#detail-page{display:none;background:var(--creme);min-height:100vh;padding-bottom:80px}
+
+/* Breadcrumb sticky */
+.dp-breadcrumb{position:sticky;top:68px;z-index:99;background:rgba(250,247,242,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--creme-3);padding:0 5vw;height:52px;display:flex;align-items:center;gap:6px}
+.dp-back-btn{display:flex;align-items:center;gap:7px;font-size:.82rem;font-weight:500;color:var(--gris-fonce);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;transition:color .2s;padding:0}
+.dp-back-btn:hover{color:var(--terre)}
+.dp-back-btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none}
+.dp-crumb-sep{color:var(--gris-clair);font-size:.78rem}
+.dp-crumb-plan{font-size:.82rem;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+
+/* Hero full page */
+.dp-hero-section{position:relative;overflow:hidden;background:var(--brun)}
+.dp-hero-img{width:100%;height:56vh;min-height:260px;object-fit:cover;display:block;pointer-events:none;user-select:none}
+.dp-hero-badge{position:absolute;top:80px;right:24px;background:#c0392b;color:#fff;font-size:.9rem;font-weight:700;letter-spacing:.08em;padding:8px 16px}
+
+/* Section INTRO */
+.dp-intro-section{background:var(--blanc);padding:48px 5vw 52px}
+.dp-intro-inner{max-width:640px;margin:0 auto;text-align:center}
+.dp-intro-label{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--terre);margin-bottom:14px;font-weight:500}
+.dp-intro-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3.2vw,2.3rem);font-weight:500;color:var(--brun);line-height:1.25;margin-bottom:22px}
+.dp-price-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:26px;flex-wrap:wrap}
+.dp-price-orig{font-size:1.1rem;color:var(--gris-clair);text-decoration:line-through}
+.dp-price-badge{background:#c0392b;color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:3px}
+.dp-price-val{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:600;color:var(--brun);line-height:1}
+.dp-price-cur{font-size:.9rem;color:var(--gris);padding-bottom:5px}
+.dp-trust-line{font-size:.76rem;color:var(--gris);margin-top:14px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 8px}
+.dp-trust-sep{color:var(--gris-clair)}
+
+/* Section GALERIE ROW */
+.dp-gallery-section{background:var(--creme-2);padding:44px 5vw}
+.dp-gallery-heading{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brun);text-align:center;margin-bottom:6px}
+.dp-gallery-sub{font-size:.84rem;color:var(--gris);text-align:center;margin-bottom:24px}
+.dp-gallery-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;max-width:900px;margin:0 auto 28px}
+.dp-gal-item{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:4/3;background:var(--brun)}
+.dp-gal-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease,opacity .3s}
+.dp-gal-item:hover img{transform:scale(1.05);opacity:.85}
+.dp-gal-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(26,18,8,.3)}
+.dp-gal-item:hover .dp-gal-ov{opacity:1}
+.dp-gal-ov svg{width:28px;height:28px;stroke:#fff;stroke-width:1.5;fill:none}
+.dp-gal-more{position:absolute;inset:0;background:rgba(26,18,8,.68);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
+.dp-gal-more span{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500}
+.dp-gal-more small{font-size:.7rem;opacity:.6;letter-spacing:.1em;text-transform:uppercase}
+
+/* Section PRÉSENTATION */
+.dp-pres-section{background:var(--blanc);padding:44px 5vw}
+.dp-pres-inner{max-width:860px;margin:0 auto}
+.dp-pres-heading{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brun);margin-bottom:22px}
+.dp-specs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:16px;padding:20px 0;border-top:1px solid var(--creme-2);border-bottom:1px solid var(--creme-2);margin-bottom:28px}
+.dp-spec-item{display:flex;align-items:center;gap:10px}
+.dp-spec-icon{width:36px;height:36px;background:var(--creme-2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dp-spec-icon svg{width:16px;height:16px;stroke:var(--terre);stroke-width:1.8;fill:none}
+.dp-spec-lbl{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-bottom:2px}
+.dp-spec-val{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:500;color:var(--brun)}
+.dp-pres-desc{font-size:.93rem;line-height:1.85;color:var(--gris-fonce);margin-bottom:24px}
+.dp-feat-grid{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:30px}
+.dp-feat-grid li{display:flex;align-items:flex-start;gap:8px;font-size:.88rem;color:var(--gris-fonce)}
+.dp-feat-grid li svg{width:15px;height:15px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0;margin-top:2px}
+.dp-pres-cta-wrap{text-align:center;margin-top:8px}
+
+/* Section OFFRE FLASH */
+.dp-offer-section{background:var(--brun);padding:52px 5vw}
+.dp-offer-inner{max-width:580px;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center}
+.dp-offer-badge-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.dp-flash-badge{background:#c0392b;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px}
+.dp-flash-text{font-size:.82rem;color:rgba(255,255,255,.45)}
+.dp-offer-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:rgba(255,255,255,.6);margin-bottom:22px;font-style:italic}
+.dp-offer-mockup{width:100%;max-width:420px;aspect-ratio:16/10;object-fit:cover;display:block;margin:0 auto 26px;opacity:.7}
+.dp-offer-price-row{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-bottom:28px;flex-wrap:wrap}
+.dp-offer-orig{font-size:1rem;color:rgba(255,255,255,.3);text-decoration:line-through;padding-bottom:4px}
+.dp-offer-val{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:600;color:var(--or);line-height:1}
+.dp-offer-cur{font-size:.95rem;color:rgba(255,255,255,.45);padding-bottom:6px}
+.dp-offer-checklist{list-style:none;text-align:left;display:inline-flex;flex-direction:column;gap:12px;margin-bottom:26px;width:100%}
+.dp-offer-checklist li{display:flex;align-items:flex-start;gap:10px;font-size:.9rem;color:rgba(255,255,255,.8);line-height:1.4}
+.dp-offer-checklist li svg{width:16px;height:16px;stroke:#7dd8ae;stroke-width:2.5;fill:none;flex-shrink:0;margin-top:2px}
+
+/* Section AVIS */
+.dp-reviews-section{padding:52px 5vw;background:var(--creme-2)}
+.dp-reviews-inner{max-width:1100px;margin:0 auto}
+
+/* Section FAQ */
+.dp-faq-section{padding:52px 5vw;background:var(--blanc)}
+.dp-faq-inner{max-width:700px;margin:0 auto}
+
+/* Section CTA FINAL */
+.dp-cta-final-section{background:var(--brun);padding:56px 5vw;text-align:center}
+.dp-cta-final-heading{font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:var(--or);margin-bottom:28px;font-weight:500}
+
+/* Section PLANS SIMILAIRES */
+.dp-similar-section{padding:52px 5vw;background:var(--creme)}
+.dp-similar-inner{max-width:1100px;margin:0 auto}
+.dp-similar-heading{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brun);margin-bottom:6px}
+.dp-similar-sub{font-size:.84rem;color:var(--gris);margin-bottom:24px}
+.dp-similar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.det-panel{position:relative;z-index:1;width:min(880px,100vw);margin-left:auto;background:var(--creme);overflow-y:auto;animation:slideR .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;
-  /* espace pour sticky bar mobile */
-  padding-bottom:80px;
-}
-@keyframes slideR{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}
 
-.det-header{position:sticky;top:0;z-index:10;background:var(--creme);border-bottom:1px solid var(--creme-3);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
-.det-crumb{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
-.det-close{width:38px;height:38px;border:1.5px solid var(--gris-clair);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px}
-.det-close:hover{background:var(--brun);border-color:var(--brun)}
-.det-close:hover svg{stroke:var(--or)}
-.det-close svg{width:16px;height:16px;stroke:var(--brun);stroke-width:2;fill:none}
-
-/* Galerie */
-.det-gallery{background:var(--brun);position:relative}
-.gal-main{position:relative;aspect-ratio:16/10;overflow:hidden;cursor:pointer}
-.gal-img{width:100%;height:100%;object-fit:cover;transition:opacity .35s ease;-webkit-user-drag:none;user-drag:none;user-select:none;-webkit-touch-callout:none}
-.gal-thumb img{-webkit-user-drag:none;user-drag:none;user-select:none;-webkit-touch-callout:none}
-.gal-counter{position:absolute;bottom:14px;right:14px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.9);font-size:.78rem;padding:5px 11px;letter-spacing:.06em}
-.gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none}
-.gal-btn{width:42px;height:42px;background:rgba(250,247,242,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);cursor:pointer;pointer-events:all;display:flex;align-items:center;justify-content:center;transition:background .2s;border-radius:4px}
-.gal-btn:hover{background:rgba(250,247,242,.3)}
-.gal-btn svg{width:18px;height:18px;stroke:white;stroke-width:2;fill:none}
-.gal-thumbs{display:flex;gap:3px;padding:3px;overflow-x:auto;scrollbar-width:none}
-.gal-thumbs::-webkit-scrollbar{display:none}
-.gal-thumb{flex-shrink:0;width:78px;height:58px;overflow:hidden;cursor:pointer;opacity:.45;transition:opacity .2s;border:2px solid transparent}
-.gal-thumb:hover{opacity:.75}
-.gal-thumb.active{opacity:1;border-color:var(--or)}
-.gal-thumb img{width:100%;height:100%;object-fit:cover}
-
-/* Contenu détail */
-.det-content{padding:28px;display:grid;grid-template-columns:1fr 300px;gap:28px}
-.det-main{}
-.det-type-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+/* ── SECTION HERO ── */
+.det-hero{position:relative;background:var(--brun);overflow:hidden;min-height:380px}
+.det-hero-img{width:100%;height:420px;object-fit:cover;opacity:.6;display:block;pointer-events:none;user-select:none}
+.det-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,18,8,.96) 25%,rgba(26,18,8,.15) 100%)}
+.det-hero-content{position:absolute;bottom:0;left:0;right:0;padding:28px 32px 36px}
+.det-type-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 .det-type-pill{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;font-weight:600}
-.det-stars{display:flex;align-items:center;gap:4px;font-size:.85rem;color:var(--gris)}
-.det-stars svg{width:14px;height:14px;fill:var(--or);stroke:none}
-.det-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--brun);margin-bottom:8px;line-height:1.2}
-.det-subtitle{font-size:.95rem;color:var(--gris-fonce);margin-bottom:24px;line-height:1.6}
-.det-specs-row{display:flex;gap:20px;flex-wrap:wrap;padding:18px 0;border-top:1px solid var(--creme-2);border-bottom:1px solid var(--creme-2);margin-bottom:22px}
+.det-stars{display:flex;align-items:center;gap:4px;font-size:.85rem;color:rgba(255,255,255,.65)}
+.det-stars svg{width:13px;height:13px;fill:var(--or);stroke:none}
+.det-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:500;color:var(--blanc);margin-bottom:5px;line-height:1.15}
+.det-subtitle{font-size:.92rem;color:rgba(255,255,255,.55);margin-bottom:20px;line-height:1.6}
+.det-hero-price-row{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.det-hero-price-val{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:600;color:var(--or);line-height:1}
+.det-hero-price-cur{font-size:.85rem;color:rgba(255,255,255,.45);padding-bottom:3px}
+.det-hero-cta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.det-hero-trust{display:flex;align-items:center;flex-wrap:wrap;gap:3px 6px;font-size:.7rem;color:rgba(255,255,255,.4);margin-top:12px;line-height:1.5}
+.det-hero-trust .trust-sep{color:rgba(255,255,255,.2)}
+
+/* ── SECTION GALERIE GRID ── */
+.det-gallery-section{background:var(--brun-moyen);padding:4px}
+.det-gallery-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:140px;gap:4px}
+.gal-item{position:relative;overflow:hidden;cursor:pointer;background:var(--brun)}
+.gal-item:first-child{grid-row:1/3}
+.gal-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease,opacity .3s}
+.gal-item:hover img{transform:scale(1.05);opacity:.82}
+.gal-item-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(26,18,8,.32)}
+.gal-item:hover .gal-item-overlay{opacity:1}
+.gal-item-overlay svg{width:26px;height:26px;stroke:#fff;stroke-width:1.5;fill:none}
+.gal-more-overlay{position:absolute;inset:0;background:rgba(26,18,8,.7);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:3px;cursor:pointer}
+.gal-more-overlay span{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500}
+.gal-more-overlay small{font-size:.7rem;opacity:.6;letter-spacing:.1em;text-transform:uppercase}
+
+/* ── SECTION PRÉSENTATION ── */
+.det-presentation{padding:36px 32px;background:var(--creme)}
+.det-specs-row{display:flex;gap:24px;flex-wrap:wrap;padding:20px 0;border-top:1px solid var(--creme-2);border-bottom:1px solid var(--creme-2);margin-bottom:26px}
 .det-spec-lbl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:3px}
-.det-spec-val{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:var(--brun)}
-.det-desc{font-size:.93rem;line-height:1.8;color:var(--gris-fonce);margin-bottom:22px}
-.det-features{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.det-spec-val{font-family:'Cormorant Garamond',serif;font-size:1.12rem;font-weight:500;color:var(--brun)}
+.det-desc{font-size:.93rem;line-height:1.85;color:var(--gris-fonce);margin-bottom:24px}
+.det-features{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
 .det-features li{display:flex;align-items:flex-start;gap:8px;font-size:.88rem;color:var(--gris-fonce);line-height:1.5}
 .det-features li svg{width:15px;height:15px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0;margin-top:2px}
 
-/* ── SIDEBAR ACHAT ── */
-.det-sidebar{}
-.purchase-box{position:sticky;top:74px;display:flex;flex-direction:column;gap:12px}
-.pbox-title{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:4px;font-weight:500}
-
-/* CARTES VERTICALES */
-.opt-card{border:2px solid var(--creme-3);background:var(--blanc);padding:20px;cursor:pointer;transition:border-color .25s,box-shadow .25s;position:relative}
-.opt-card:hover{border-color:var(--gris-clair)}
-.opt-card.selected{border-color:var(--brun);box-shadow:0 4px 20px rgba(26,18,8,.1)}
-.opt-card.featured{border-color:var(--or)}
-.opt-card.featured.selected{border-color:var(--brun)}
-
-/* Badge "Recommande" */
-.opt-featured-badge{
-  position:absolute;top:-1px;right:16px;
-  background:var(--or);color:var(--brun);
-  font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  padding:3px 10px;
-}
-
-/* Header de la carte */
-.opt-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:10px}
-.opt-card-left{}
-.opt-card-name{font-size:.95rem;font-weight:600;color:var(--brun);margin-bottom:5px}
-.opt-card-tag{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px}
-.tag-inst{background:var(--vert-bg);color:var(--vert)}
-.tag-ord{background:var(--orange-bg);color:var(--terre)}
-.opt-card-price{text-align:right;flex-shrink:0}
-.opt-price-val{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;color:var(--brun);line-height:1}
-.opt-price-cur{font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:400;color:var(--gris)}
-
-/* Items inclus */
-.opt-card-items{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:12px;padding-top:12px;border-top:1px solid var(--creme-2)}
-.opt-card-items li{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--gris-fonce)}
-.opt-card-items li svg{width:14px;height:14px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0}
-
-/* Dropdown voir plus */
-.opt-dropdown-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:9px 0 0;background:transparent;border:none;border-top:1px solid var(--creme-2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--terre);font-weight:500;margin-top:10px}
-.opt-dropdown-btn svg{width:14px;height:14px;stroke:var(--terre);stroke-width:2;fill:none;transition:transform .3s;flex-shrink:0}
+/* ── SECTION OFFRE ── */
+.det-offer{background:var(--brun);padding:40px 32px;display:flex;flex-direction:column;gap:20px}
+.offer-heading{font-family:'Cormorant Garamond',serif;font-size:1.65rem;color:var(--or);text-align:center;letter-spacing:.02em}
+.offer-subheading{font-size:.84rem;color:rgba(255,255,255,.4);text-align:center;margin-top:4px}
+.offer-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.opt-card{border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);padding:20px;cursor:pointer;transition:border-color .25s,background .25s;position:relative;display:flex;flex-direction:column}
+.opt-card:hover{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.07)}
+.opt-card.selected{border-color:var(--or);background:rgba(212,168,83,.07)}
+.opt-featured-badge{position:absolute;top:-1px;right:14px;background:var(--or);color:var(--brun);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px}
+.opt-card-name{font-size:.92rem;font-weight:600;color:var(--blanc);margin-bottom:3px}
+.opt-card-sub{font-size:.78rem;color:rgba(255,255,255,.4);margin-bottom:12px;line-height:1.4}
+.opt-card-tag{display:inline-flex;align-items:center;gap:5px;font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;margin-bottom:10px}
+.tag-inst{background:rgba(45,106,79,.3);color:#7dd8ae}
+.tag-ord{background:rgba(196,137,79,.2);color:var(--terre-clair)}
+.opt-price-row{display:flex;align-items:flex-end;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.price-original{font-size:.78rem;color:rgba(255,255,255,.35);text-decoration:line-through;padding-bottom:2px}
+.price-discount-badge{background:#c0392b;color:#fff;font-size:.58rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 5px;border-radius:3px;margin-bottom:2px}
+.opt-price-val{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:600;color:var(--or);line-height:1}
+.opt-price-cur{font-size:.75rem;color:rgba(255,255,255,.4);padding-bottom:3px}
+.opt-card-items{list-style:none;display:flex;flex-direction:column;gap:7px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);flex:1}
+.opt-card-items li{display:flex;align-items:flex-start;gap:8px;font-size:.82rem;color:rgba(255,255,255,.72);line-height:1.4}
+.opt-card-items li svg{width:13px;height:13px;stroke:#7dd8ae;stroke-width:2.5;fill:none;flex-shrink:0;margin-top:2px}
+.voir-exemple-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);font-size:.8rem;color:var(--terre-clair);font-weight:500;text-decoration:none;transition:color .2s}
+.voir-exemple-link:hover{color:var(--or)}
+.voir-exemple-link svg{width:13px;height:13px;stroke:currentColor;stroke-width:1.8;fill:none;flex-shrink:0}
+.opt-dropdown-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:9px 0 0;background:transparent;border:none;border-top:1px solid rgba(255,255,255,.08);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;color:var(--terre-clair);font-weight:500;margin-top:10px}
+.opt-dropdown-btn svg{width:13px;height:13px;stroke:var(--terre-clair);stroke-width:2;fill:none;transition:transform .3s;flex-shrink:0}
 .opt-dropdown-btn.open svg{transform:rotate(180deg)}
 .opt-dropdown-body{overflow:hidden;max-height:0;transition:max-height .35s ease}
 .opt-dropdown-body.open{max-height:200px}
 .opt-extras{list-style:none;padding:10px 0 2px;display:flex;flex-direction:column;gap:7px}
-.opt-extras li{display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--gris-fonce)}
-.opt-extras li svg{width:13px;height:13px;stroke:var(--gris);stroke-width:2;fill:none;flex-shrink:0}
-
-/* CTA principal (Plan Basique) */
-.cta-main{width:100%;background:var(--brun);color:var(--or);font-size:.9rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:17px;border:none;cursor:pointer;transition:background .25s,transform .2s;display:flex;align-items:center;justify-content:center;gap:10px}
-.cta-main:hover{background:var(--terre);transform:translateY(-1px)}
+.opt-extras li{display:flex;align-items:flex-start;gap:8px;font-size:.82rem;color:rgba(255,255,255,.55)}
+.opt-extras li svg{width:13px;height:13px;stroke:rgba(255,255,255,.35);stroke-width:2;fill:none;flex-shrink:0;margin-top:2px}
+.offer-cta-area{display:flex;flex-direction:column;gap:10px}
+.cta-main{width:100%;background:var(--or);color:var(--brun);font-size:.88rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:17px;border:none;cursor:pointer;transition:background .25s,transform .2s;display:flex;align-items:center;justify-content:center;gap:10px}
+.cta-main:hover{background:#e8b84b;transform:translateY(-1px)}
 .cta-main svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none}
-
-/* CTA secondaire (Plans Complets) */
-.cta-secondary{width:100%;background:transparent;color:var(--brun);font-size:.88rem;font-weight:500;letter-spacing:.06em;padding:14px;border:1.5px solid var(--brun);cursor:pointer;transition:background .25s,color .25s;display:flex;align-items:center;justify-content:center;gap:10px}
-.cta-secondary:hover{background:var(--brun);color:var(--or)}
+.cta-secondary{width:100%;background:transparent;color:rgba(255,255,255,.75);font-size:.86rem;font-weight:500;letter-spacing:.06em;padding:14px;border:1.5px solid rgba(255,255,255,.2);cursor:pointer;transition:border-color .25s,color .25s;display:flex;align-items:center;justify-content:center;gap:8px}
+.cta-secondary:hover{border-color:var(--or);color:var(--or)}
 .cta-secondary svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
-
-.opt-card-sub{font-size:.8rem;color:var(--gris);margin-top:3px;line-height:1.4}
-.voir-exemple-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--creme-2);font-size:.84rem;color:var(--terre);font-weight:500;text-decoration:none;transition:color .2s}
-.voir-exemple-link:hover{color:var(--brun)}
-.voir-exemple-link svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.8;fill:none;flex-shrink:0}
-.trust-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.74rem;color:var(--gris)}
-.trust-note svg{width:12px;height:12px;stroke:var(--vert);fill:none;stroke-width:2}
-.whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:13px;background:#25D366;color:#fff;font-size:.86rem;font-weight:600;text-decoration:none;border-radius:4px;transition:background .2s,transform .2s;margin-top:0}
+.trust-micro{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:3px 5px;font-size:.7rem;color:rgba(255,255,255,.38);line-height:1.5;text-align:center}
+.trust-sep{color:rgba(255,255,255,.18)}
+.bonus-box{display:flex;align-items:flex-start;gap:10px;background:rgba(212,168,83,.08);border:1.5px solid rgba(212,168,83,.25);padding:14px 16px}
+.bonus-emoji{font-size:1.25rem;flex-shrink:0;line-height:1.2}
+.bonus-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--or);margin-bottom:3px}
+.bonus-title-text{font-size:.82rem;font-weight:600;color:rgba(255,255,255,.82);line-height:1.35;font-style:italic}
+.bonus-delivery{font-size:.7rem;color:rgba(255,255,255,.38);margin-top:4px;display:flex;align-items:center;gap:4px}
+.whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:14px;background:#25D366;color:#fff;font-size:.86rem;font-weight:600;text-decoration:none;transition:background .2s,transform .2s}
 .whatsapp-btn:hover{background:#1da851;transform:translateY(-1px)}
 .whatsapp-btn svg{width:20px;height:20px;flex-shrink:0}
+.offer-sep{display:flex;align-items:center;gap:10px}
+.offer-sep::before,.offer-sep::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+.offer-sep span{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22)}
 
-/* ── STICKY BAR MOBILE ── */
-.sticky-bar{
-  position:fixed;bottom:0;left:0;right:0;z-index:250;
-  background:var(--brun);
-  display:none;align-items:center;justify-content:space-between;
-  padding:14px 20px;
-  border-top:1px solid rgba(255,255,255,.1);
-  box-shadow:0 -4px 20px rgba(0,0,0,.25);
-  animation:slideUp .3s ease;
-}
+/* ── SECTION AVIS ── */
+.det-reviews{padding:44px 32px;background:var(--creme-2)}
+.reviews-heading{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brun);text-align:center}
+.reviews-subheading{font-size:.84rem;color:var(--gris);text-align:center;margin-top:5px;margin-bottom:24px}
+.reviews-filter{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+.rf-btn{font-size:.78rem;padding:7px 16px;border:1.5px solid var(--creme-3);background:var(--blanc);color:var(--gris-fonce);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;border-radius:20px}
+.rf-btn:hover{border-color:var(--brun);color:var(--brun)}
+.rf-btn.active{background:var(--brun);color:var(--or);border-color:var(--brun)}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.review-card{background:var(--blanc);padding:18px;border:1px solid var(--creme-3);transition:box-shadow .2s}
+.review-card:hover{box-shadow:0 4px 16px rgba(26,18,8,.08)}
+.review-stars{display:flex;gap:2px;margin-bottom:10px}
+.review-stars svg{width:12px;height:12px;fill:var(--or);stroke:none}
+.review-text{font-size:.86rem;color:var(--gris-fonce);line-height:1.7;margin-bottom:14px;font-style:italic}
+.review-footer{display:flex;align-items:center;gap:10px}
+.review-avatar{width:36px;height:36px;border-radius:50%;background:var(--creme-3);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.84rem;font-weight:600;color:var(--gris-fonce)}
+.review-avatar img{width:100%;height:100%;object-fit:cover}
+.review-name{font-size:.82rem;font-weight:600;color:var(--brun)}
+.review-meta{font-size:.72rem;color:var(--gris);margin-top:2px}
+
+/* ── SECTION FAQ ── */
+.det-faq{padding:44px 32px;background:var(--creme)}
+.faq-heading{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brun);text-align:center}
+.faq-subheading{font-size:.84rem;color:var(--gris);text-align:center;margin-top:5px;margin-bottom:28px}
+.faq-list{max-width:620px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--creme-3)}
+.faq-item:first-child{border-top:1px solid var(--creme-3)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;padding:16px 0;cursor:pointer;font-size:.92rem;font-weight:500;color:var(--brun);background:transparent;border:none;text-align:left;font-family:'DM Sans',sans-serif;gap:12px;transition:color .2s}
+.faq-q:hover{color:var(--terre)}
+.faq-q svg{width:16px;height:16px;stroke:var(--gris-clair);stroke-width:2;fill:none;flex-shrink:0;transition:transform .3s}
+.faq-item.open .faq-q svg{transform:rotate(180deg)}
+.faq-item.open .faq-q{color:var(--terre)}
+.faq-a{overflow:hidden;max-height:0;transition:max-height .4s ease}
+.faq-item.open .faq-a{max-height:350px}
+.faq-a p{font-size:.88rem;color:var(--gris-fonce);line-height:1.8;padding-bottom:18px}
+
+/* ── SECTION 3 ÉTAPES ── */
+.steps-section{background:var(--brun);padding:40px 32px 44px}
+.steps-heading{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:500;color:var(--or);text-align:center;margin-bottom:28px;letter-spacing:.02em}
+.steps-grid{display:flex;align-items:flex-start;justify-content:center}
+.step-item{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;max-width:200px}
+.step-icon{font-size:1.9rem;margin-bottom:10px;line-height:1}
+.step-label{font-size:.9rem;font-weight:600;color:var(--blanc);margin-bottom:7px}
+.step-desc{font-size:.77rem;color:rgba(255,255,255,.52);line-height:1.6}
+.step-arrow{font-size:1.3rem;color:var(--or);flex-shrink:0;padding-top:26px;opacity:.65}
+.steps-cta-wrap{text-align:center;margin-top:28px}
+@media(max-width:580px){.steps-grid{flex-direction:column;align-items:center;gap:22px}.step-arrow{transform:rotate(90deg);padding:0}}
+
+/* ── STICKY BAR ── */
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:250;background:var(--brun);display:none;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid rgba(255,255,255,.1);box-shadow:0 -4px 20px rgba(0,0,0,.25);animation:slideUp .3s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.sb-info{}
-.sb-name{font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:2px}
+.sb-name{font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:2px}
 .sb-price{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--or);font-weight:600;line-height:1}
 .sb-btn{background:var(--or);color:var(--brun);font-size:.82rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:13px 22px;border:none;cursor:pointer;flex-shrink:0}
+
+/* ── LIGHTBOX ── */
+#lightbox{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center}
+#lightbox.open{display:flex}
+#lb-img{max-width:92vw;max-height:90vh;object-fit:contain;animation:fadeIn .2s ease}
+.lb-close{position:absolute;top:18px;right:18px;width:42px;height:42px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:background .2s;z-index:1}
+.lb-close:hover{background:rgba(255,255,255,.25)}
+.lb-close svg{width:16px;height:16px;stroke:#fff;stroke-width:2;fill:none}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:4px;transition:background .2s}
+.lb-nav:hover{background:rgba(255,255,255,.28)}
+.lb-nav svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none}
+#lb-prev{left:18px}#lb-next{right:18px}
+.lb-counter{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:.78rem;letter-spacing:.12em}
+
+/* ── RESPONSIVE DETAIL ── */
+@media(max-width:640px){
+  .dp-gallery-row{grid-template-columns:1fr 1fr}
+  .dp-feat-grid{grid-template-columns:1fr}
+  .dp-hero-img{height:38vw;min-height:200px}
+  .dp-offer-val{font-size:2.4rem}
+}
 
 /* ── CHECKOUT POPUP ── */
 #checkout-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
@@ -335,10 +471,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   .concept-step{padding:28px 0;border-bottom:1px solid rgba(255,255,255,.07)}
   .concept-step:last-child{border-bottom:none}
   .plans-grid{grid-template-columns:1fr}
-  .det-panel{width:100vw}
-  .det-content{grid-template-columns:1fr;gap:20px}
-  .det-features{grid-template-columns:1fr}
-  .purchase-box{position:static}
   .sticky-bar{display:flex}
   .ft-inner{grid-template-columns:1fr;gap:28px}
   nav{padding:0 18px}
@@ -358,6 +490,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   <button class="nav-cta" onclick="scrollToCatalogue()">Voir les plans</button>
 </nav>
 
+<div id="catalogue-view">
 <!-- ═══ HERO ═══ -->
 <section id="hero">
   <div class="hero-left">
@@ -464,136 +597,170 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
     <span>Concu pour l'Afrique francophone</span>
   </div>
 </footer>
+</div><!-- /#catalogue-view -->
 
-<!-- ═══ DETAIL OVERLAY ═══ -->
-<div id="detail-overlay">
-  <div class="det-backdrop" onclick="closeDetail()"></div>
-  <div class="det-panel">
-    <div class="det-header">
-      <span class="det-crumb">Catalogue &rsaquo; Detail du plan</span>
-      <button class="det-close" onclick="closeDetail()">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
+<!-- ═══ DETAIL PAGE FULL PAGE ═══ -->
+<div id="detail-page">
 
-    <div class="det-gallery">
-      <div class="gal-main" id="gal-main">
-        <img class="gal-img" id="gal-img" src="" alt="">
-        <div class="gal-counter" id="gal-counter">1 / 4</div>
-        <div class="gal-nav">
-          <button class="gal-btn" onclick="galNav(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-          <button class="gal-btn" onclick="galNav(1)"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
-        </div>
-      </div>
-      <div class="gal-thumbs" id="gal-thumbs"></div>
-    </div>
-
-    <div class="det-content">
-      <div class="det-main">
-        <div class="det-type-row">
-          <span class="det-type-pill" id="det-pill">Villa</span>
-          <div class="det-stars">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span id="det-rating">4.8</span>&nbsp;<span style="color:var(--gris-clair)">·</span>&nbsp;<span id="det-reviews">18 avis</span>
-          </div>
-        </div>
-        <h2 class="det-title" id="det-title">—</h2>
-        <p class="det-subtitle" id="det-subtitle">—</p>
-        <div class="det-specs-row">
-          <div><div class="det-spec-lbl">Surface</div><div class="det-spec-val" id="det-area">—</div></div>
-          <div><div class="det-spec-lbl">Chambres</div><div class="det-spec-val" id="det-beds">—</div></div>
-          <div><div class="det-spec-lbl">Salles de bain</div><div class="det-spec-val" id="det-baths">—</div></div>
-          <div><div class="det-spec-lbl">Niveaux</div><div class="det-spec-val" id="det-floors">—</div></div>
-          <div><div class="det-spec-lbl">Cout estime</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
-        </div>
-        <p class="det-desc" id="det-desc">—</p>
-        <ul class="det-features" id="det-features"></ul>
-      </div>
-
-      <!-- SIDEBAR -->
-      <div class="det-sidebar">
-        <div class="purchase-box">
-          <div class="pbox-title">Choisir une formule</div>
-
-          <!-- CARTE 1 : PLAN BASIQUE -->
-          <div class="opt-card featured selected" id="opt-card-1">
-            <div class="opt-featured-badge">Recommande</div>
-            <div class="opt-card-head">
-              <div class="opt-card-left">
-                <div class="opt-card-name">Plan Basique + Devis</div>
-                <div class="opt-card-sub">Pour demarrer et personnaliser votre projet</div>
-              </div>
-              <div class="opt-card-price">
-                <div class="opt-price-val" id="price-basic">—</div>
-                <div class="opt-price-cur">FCFA</div>
-              </div>
-            </div>
-            <span class="opt-card-tag tag-inst" style="margin-bottom:12px;display:inline-flex">&#9889; INSTANTANE</span>
-            <ul class="opt-card-items">
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution et dimensions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendu 3D exterieurs</li>
-            </ul>
-            <a class="voir-exemple-link" href="https://drive.google.com/file/d/EXEMPLE_PDF_ID/view" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              Voir un exemple
-            </a>
-          </div>
-
-          <button class="cta-main" onclick="selectOpt(1);openCheckout()">
-            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Telecharger maintenant
-          </button>
-          <div class="trust-note" style="margin-bottom:18px">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Paiement securise &middot; Mobile Money
-          </div>
-          <a class="whatsapp-btn" href="https://wa.me/237694327885?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20plan%20" id="whatsapp-link" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
-            Des questions ? Ecrivez-nous sur WhatsApp
-          </a>
-
-          <!-- SEPARATEUR -->
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-            <div style="flex:1;height:1px;background:var(--creme-3)"></div>
-            <span style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)">Ou</span>
-            <div style="flex:1;height:1px;background:var(--creme-3)"></div>
-          </div>
-
-          <!-- CARTE 2 : PLANS COMPLETS -->
-          <div class="opt-card" id="opt-card-2">
-            <div class="opt-card-head">
-              <div class="opt-card-left">
-                <div class="opt-card-name">Plans Complets</div>
-                <div class="opt-card-sub">Pour la construction</div>
-              </div>
-              <div class="opt-card-price">
-                <div class="opt-price-val" id="price-complete">—</div>
-                <div class="opt-price-cur">FCFA</div>
-              </div>
-            </div>
-            <span class="opt-card-tag tag-ord" style="margin-bottom:12px;display:inline-flex">Sur commande &middot; 3-5 jours</span>
-            <ul class="opt-card-items">
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tous les plans architecturaux</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis du projet</li>
-            </ul>
-            <button class="opt-dropdown-btn" id="dd2-btn" onclick="toggleDd(2)">
-              <span id="dd2-label">Voir tous les details</span>
-              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="opt-dropdown-body" id="dd2-body">
-              <ul class="opt-extras" id="dd2-extras"></ul>
-            </div>
-          </div>
-
-          <button class="cta-secondary" onclick="selectOpt(2);openCheckout()">
-            Commander les plans complets
-          </button>
-
-        </div>
-      </div>
-    </div>
+  <!-- 1. BREADCRUMB STICKY -->
+  <div class="dp-breadcrumb">
+    <button class="dp-back-btn" onclick="showCatalogue()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Retour au Catalogue
+    </button>
+    <span class="dp-crumb-sep">/</span>
+    <span class="dp-crumb-plan" id="dp-crumb-plan">—</span>
   </div>
+
+  <!-- 2. HERO IMAGE -->
+  <section class="dp-hero-section">
+    <img class="dp-hero-img" id="det-hero-img" src="" alt="">
+    <div class="dp-hero-badge">-50%</div>
+  </section>
+
+  <!-- 3. INTRO / CTA -->
+  <section class="dp-intro-section">
+    <div class="dp-intro-inner">
+      <div class="dp-intro-label" id="dp-type-label">Villa</div>
+      <h1 class="dp-intro-title" id="dp-intro-title">Obtenez le plan et devis de votre villa</h1>
+      <div class="dp-price-row">
+        <span class="dp-price-orig">30 000</span>
+        <span class="dp-price-badge">-50%</span>
+        <span class="dp-price-val" id="dp-price-val">14 900</span>
+        <span class="dp-price-cur">FCFA</span>
+      </div>
+      <button class="cta-main" style="display:inline-flex;width:auto;padding:16px 38px" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        T&eacute;l&eacute;charger le plan et devis
+      </button>
+      <div class="dp-trust-line">
+        <span>&#128274; Paiement s&eacute;curis&eacute;</span>
+        <span class="dp-trust-sep">&middot;</span>
+        <span>&#9889; Livraison instantan&eacute;e</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. GALERIE 3D -->
+  <section class="dp-gallery-section">
+    <div class="dp-gallery-heading" id="dp-gallery-heading">D&eacute;couvrez la villa en 3D</div>
+    <div class="dp-gallery-sub">Visualisez chaque d&eacute;tail de votre future villa</div>
+    <div class="dp-gallery-row" id="dp-gallery-row"></div>
+    <div style="text-align:center">
+      <button class="cta-main" style="display:inline-flex;width:auto;padding:15px 36px" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        T&eacute;l&eacute;charger le plan et devis
+      </button>
+      <div class="dp-trust-line" style="margin-top:12px">
+        <span>&#128274; Paiement s&eacute;curis&eacute;</span><span class="dp-trust-sep">&middot;</span><span>&#9889; Livraison instantan&eacute;e</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. PRÉSENTATION -->
+  <section class="dp-pres-section">
+    <div class="dp-pres-inner">
+      <h2 class="dp-pres-heading" id="dp-pres-heading">Pr&eacute;sentation de la villa</h2>
+      <div class="dp-specs-grid" id="dp-specs-grid"></div>
+      <p class="dp-pres-desc" id="dp-pres-desc">—</p>
+      <ul class="dp-feat-grid" id="dp-feat-grid"></ul>
+      <div class="dp-pres-cta-wrap">
+        <button class="cta-main" style="display:inline-flex;width:auto;padding:15px 36px" onclick="selectOpt(1);openCheckout()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          T&eacute;l&eacute;charger le plan et devis
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. OFFRE FLASH -->
+  <section class="dp-offer-section">
+    <div class="dp-offer-inner">
+      <div class="dp-offer-badge-row">
+        <span class="dp-flash-badge">-50% de r&eacute;duction</span>
+        <span class="dp-flash-text">Offre valid&eacute;e ce mois</span>
+      </div>
+      <div class="dp-offer-title">Inclus &agrave; 14 900 FCFA &mdash; avant 30 000 FCFA</div>
+      <img class="dp-offer-mockup" id="dp-offer-img" src="" alt="">
+      <div class="dp-offer-price-row">
+        <span class="dp-offer-orig">30 000</span>
+        <span class="dp-offer-val" id="dp-offer-price">14 900</span>
+        <span class="dp-offer-cur">FCFA</span>
+      </div>
+      <ul class="dp-offer-checklist">
+        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution &agrave; dimensions</li>
+        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis de la fondation aux finitions</li>
+        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Discuter avec un architecte via WhatsApp</li>
+      </ul>
+      <div class="bonus-box" style="text-align:left;margin-bottom:24px;width:100%">
+        <div class="bonus-emoji">&#127873;</div>
+        <div>
+          <div class="bonus-label">Bonus offert avec votre achat</div>
+          <div class="bonus-title-text">&laquo;&nbsp;Les 5 &eacute;tapes &agrave; suivre pour r&eacute;ussir son chantier&nbsp;&raquo;</div>
+          <div class="bonus-delivery">
+            <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:rgba(255,255,255,.4);fill:none;stroke-width:2;flex-shrink:0"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Re&ccedil;u par email apr&egrave;s votre paiement
+          </div>
+        </div>
+      </div>
+      <div class="trust-micro" style="margin-bottom:22px;width:100%;justify-content:center">&#128274; Paiement s&eacute;curis&eacute; par notre r&eacute;seau Mobile Money</div>
+      <button class="cta-main" onclick="selectOpt(1);openCheckout()" style="margin-bottom:14px;width:100%">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        T&eacute;l&eacute;charger le plan &amp; devis &mdash; 14 900 FCFA
+      </button>
+      <a class="whatsapp-btn" href="https://wa.me/237694327885" id="whatsapp-link" target="_blank" rel="noopener" style="width:100%">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+        Des questions ? &Eacute;crivez-nous sur WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- 7. AVIS CLIENTS -->
+  <section class="dp-reviews-section">
+    <div class="dp-reviews-inner">
+      <div class="reviews-heading">Ce que disent nos clients</div>
+      <div class="reviews-subheading">Du plan &agrave; votre projet de construction</div>
+      <div class="reviews-filter" id="reviews-filter"></div>
+      <div class="reviews-grid" id="reviews-grid"></div>
+    </div>
+  </section>
+
+  <!-- 8. FAQ -->
+  <section class="dp-faq-section">
+    <div class="dp-faq-inner">
+      <div class="faq-heading">Questions fr&eacute;quentes</div>
+      <div class="faq-subheading">Tout ce que vous devez savoir avant d&rsquo;acheter</div>
+      <div class="faq-list" id="faq-list"></div>
+    </div>
+  </section>
+
+  <!-- 9. CTA FINAL -->
+  <section class="dp-cta-final-section">
+    <div class="dp-cta-final-heading">Pr&ecirc;t &agrave; d&eacute;marrer votre projet&nbsp;?</div>
+    <button class="cta-main" style="display:inline-flex;width:auto;padding:18px 48px;font-size:.92rem" onclick="selectOpt(1);openCheckout()">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Je d&eacute;couvre mon projet maintenant
+    </button>
+  </section>
+
+  <!-- 10. PLANS SIMILAIRES -->
+  <section class="dp-similar-section">
+    <div class="dp-similar-inner">
+      <div class="dp-similar-heading">Plans similaires</div>
+      <div class="dp-similar-sub">D&eacute;couvrez d&rsquo;autres plans du catalogue</div>
+      <div class="dp-similar-grid" id="dp-similar-grid"></div>
+    </div>
+  </section>
+
+</div><!-- /#detail-page -->
+
+<!-- LIGHTBOX GALERIE -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox();event.stopPropagation()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  <button class="lb-nav" id="lb-prev" onclick="lbNav(-1);event.stopPropagation()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-nav" id="lb-next" onclick="lbNav(1);event.stopPropagation()"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+  <div class="lb-counter" id="lb-counter">1 / 4</div>
 </div>
 
 <!-- STICKY BAR MOBILE -->
@@ -688,12 +855,11 @@ let ddOpen = false;
 setTimeout(()=>document.getElementById('loader').classList.add('hidden'), 0);
 
 // Bloquer clic droit et drag sur les images de la galerie
-var overlay=document.getElementById('detail-overlay');
-overlay.addEventListener('contextmenu',function(e){
-  if(e.target.tagName==='IMG') e.preventDefault();
+document.addEventListener('contextmenu',function(e){
+  if(e.target.tagName==='IMG'&&e.target.closest('#detail-page')) e.preventDefault();
 });
-overlay.addEventListener('dragstart',function(e){
-  if(e.target.tagName==='IMG') e.preventDefault();
+document.addEventListener('dragstart',function(e){
+  if(e.target.tagName==='IMG'&&e.target.closest('#detail-page')) e.preventDefault();
 });
 
 window.addEventListener('load',()=>{
@@ -756,111 +922,248 @@ function toggleSave(id,btn){
   localStorage.setItem('wp_saved',JSON.stringify(saved));
 }
 
+// ── REVIEWS DATA ─────────────────────────────────────────────
+const REVIEWS_DATA=[
+  {name:'Kouamé Adja',country:"Côte d'Ivoire",city:'Abidjan',flag:'🇨🇮',stars:5,date:'Mars 2025',text:"Plan très bien détaillé, le devis m'a permis de mieux planifier mon budget. Je recommande vivement !",initials:'KA'},
+  {name:'Fatou Diallo',country:'Sénégal',city:'Dakar',flag:'🇸🇳',stars:5,date:'Fév. 2025',text:'Excellent service ! J\'ai reçu mon plan en quelques minutes. Les rendus 3D sont magnifiques.',initials:'FD'},
+  {name:'Moise Nguema',country:'Cameroun',city:'Douala',flag:'🇨🇲',stars:5,date:'Jan. 2025',text:'J\'ai commandé les plans complets pour ma villa. Très professionnel, l\'équipe répond rapidement sur WhatsApp.',initials:'MN'},
+  {name:'Aïssatou Ba',country:'Sénégal',city:'Thiès',flag:'🇸🇳',stars:4,date:'Déc. 2024',text:'Plan clair et bien structuré. Le devis estimatif est vraiment utile pour négocier avec les entrepreneurs.',initials:'AB'},
+  {name:'Patrick Koffi',country:"Côte d'Ivoire",city:'Yamoussoukro',flag:'🇨🇮',stars:5,date:'Nov. 2024',text:'Super rapport qualité-prix ! Pour 14 900 FCFA j\'ai un plan complet avec devis. Très satisfait.',initials:'PK'},
+  {name:'Jean-Marc Essama',country:'Cameroun',city:'Yaoundé',flag:'🇨🇲',stars:5,date:'Oct. 2024',text:'Téléchargement immédiat après paiement Orange Money. Plans bien détaillés, exactement ce que je cherchais.',initials:'JE'},
+  {name:'Mariama Cissé',country:'Guinée',city:'Conakry',flag:'🇬🇳',stars:4,date:'Oct. 2024',text:'J\'ai pu montrer les plans à mon maçon et il a immédiatement compris la structure. Très pratique.',initials:'MC'},
+  {name:'Brice Ondo',country:'Gabon',city:'Libreville',flag:'🇬🇦',stars:5,date:'Sept. 2024',text:'Plans bien conçus pour notre climat. La terrasse couverte est exactement ce que nous voulions. Merci WooPlans !',initials:'BO'},
+  {name:'Adjoua Mensah',country:"Côte d'Ivoire",city:'Abidjan',flag:'🇨🇮',stars:5,date:'Août 2024',text:'Service impeccable. J\'ai posé des questions sur WhatsApp et j\'ai eu des réponses en moins d\'une heure.',initials:'AM'},
+  {name:'Ibrahima Traoré',country:'Mali',city:'Bamako',flag:'🇲🇱',stars:4,date:'Juil. 2024',text:'Très bon plan pour débuter son projet. Le rendu 3D aide vraiment à visualiser la maison finale.',initials:'IT'},
+  {name:'Stéphane Mbarga',country:'Cameroun',city:'Bafoussam',flag:'🇨🇲',stars:5,date:'Juin 2024',text:'Plans complets commandés et reçus en 4 jours. Qualité professionnelle, je recommande à tout le monde.',initials:'SM'},
+  {name:'Nadia Koné',country:"Côte d'Ivoire",city:'Bouaké',flag:'🇨🇮',stars:5,date:'Mai 2024',text:'Exactement ce que je cherchais pour ma maison de 4 chambres. Le devis m\'a évité beaucoup de surprises.',initials:'NK'}
+];
+
+// ── FAQ DATA ──────────────────────────────────────────────────
+const FAQ_DATA=[
+  {q:'Qu\'est-ce que je reçois exactement avec le Plan Basique + Devis ?',a:'Vous recevez un PDF avec : le plan de distribution (disposition des pièces et dimensions), un devis estimatif complet de la fondation aux finitions, et des rendus 3D extérieurs. Le tout est disponible en téléchargement instantané après votre paiement.'},
+  {q:'Comment se passe le paiement ?',a:'Nous acceptons Orange Money, Wave, MTN Mobile Money et Moov Money. Après votre paiement, vous recevez immédiatement un lien de téléchargement par email et SMS. Aucune attente.'},
+  {q:'Puis-je modifier le plan selon mon terrain ?',a:'Oui ! Avec le Plan Basique, vous avez les dimensions de base. Si vous avez besoin d\'adaptations (orientation, dimensions du terrain, modifications de façade), notre équipe peut vous accompagner. Contactez-nous sur WhatsApp pour un devis de personnalisation.'},
+  {q:'Quelle est la différence entre le Plan Basique et les Plans Complets ?',a:'Le Plan Basique (livraison instantanée) contient le plan de distribution, le devis estimatif et les rendus 3D — parfait pour démarrer et planifier votre budget. Les Plans Complets (livraison 3-5 jours) incluent tous les plans techniques nécessaires à la construction : plans béton armé, électricité, plomberie, façades et coupes.'},
+  {q:'Quel format de fichier vais-je recevoir ?',a:'Vous recevrez un fichier PDF haute résolution, facilement lisible sur smartphone, tablette ou ordinateur. Vous pouvez également l\'imprimer en format A3 ou A4 pour le montrer à votre entrepreneur.'},
+  {q:'Le bonus ebook est-il envoyé automatiquement ?',a:'Oui. L\'ebook "Les 5 étapes à suivre pour réussir son chantier" est envoyé automatiquement à votre adresse email dans les minutes suivant votre achat, en même temps que votre plan.'}
+];
+
 // ── DETAIL ───────────────────────────────────────────────────
 function openDetail(id){
   currentPlan=plans.find(p=>p.id===id);
   if(!currentPlan)return;
   imgIdx=0; selectedOpt=1; ddOpen=false;
 
-  document.getElementById('det-title').textContent=currentPlan.title;
-  document.getElementById('det-subtitle').textContent=currentPlan.subtitle;
-  document.getElementById('det-area').textContent=currentPlan.area;
-  document.getElementById('det-beds').textContent=currentPlan.beds;
-  document.getElementById('det-baths').textContent=currentPlan.baths;
-  document.getElementById('det-floors').textContent=currentPlan.floors+(currentPlan.floors>1?' niveaux':' niveau');
-  document.getElementById('det-cost').textContent=currentPlan.cost;
-  document.getElementById('det-rating').textContent=currentPlan.rating;
-  document.getElementById('det-reviews').textContent=currentPlan.reviews+' avis';
-  document.getElementById('det-desc').textContent=currentPlan.desc;
+  const p=currentPlan;
+  const typeCap=p.type.charAt(0).toUpperCase()+p.type.slice(1);
 
-  const pill=document.getElementById('det-pill');
-  pill.textContent=currentPlan.type.charAt(0).toUpperCase()+currentPlan.type.slice(1);
-  pill.className='det-type-pill '+(currentPlan.type==='villa'?'badge-villa':'badge-duplex');
+  // Hero image
+  document.getElementById('det-hero-img').src=p.images[0]||'';
 
-  document.getElementById('det-features').innerHTML=currentPlan.features.map(f=>`
-    <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${f}</li>
-  `).join('');
+  // Breadcrumb
+  document.getElementById('dp-crumb-plan').textContent=p.title;
 
-  document.getElementById('price-basic').textContent=currentPlan.priceBasic;
-  document.getElementById('price-complete').textContent=currentPlan.priceComplete;
+  // Section INTRO
+  document.getElementById('dp-type-label').textContent=typeCap;
+  document.getElementById('dp-intro-title').textContent='Obtenez le plan et devis de la '+typeCap+' '+p.title;
+  document.getElementById('dp-price-val').textContent=p.priceBasic;
 
-  // Reset dropdowns
-  ['dd1','dd2'].forEach(function(id){
-    var b=document.getElementById(id+'-body');
-    var btn=document.getElementById(id+'-btn');
-    if(b)b.classList.remove('open');
-    if(btn)btn.classList.remove('open');
-    var lbl=document.getElementById(id+'-label');
-    if(lbl)lbl.textContent='Voir tous les details';
-  });
+  // Section GALERIE heading
+  document.getElementById('dp-gallery-heading').textContent='Découvrez la '+p.type+' '+p.title+' en 3D';
 
-  // Remplir les extras
-  if(currentPlan.extrasBasic){
-    document.getElementById('dd1-extras').innerHTML=currentPlan.extrasBasic.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
-  }
-  if(currentPlan.extrasComplete){
-    document.getElementById('dd2-extras').innerHTML=currentPlan.extrasComplete.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
-  }
+  // Section PRÉSENTATION
+  document.getElementById('dp-pres-heading').textContent='Présentation de la '+p.type+' '+p.title;
+  document.getElementById('dp-pres-desc').textContent=p.desc;
 
+  // Specs grid with icons
+  var specsData=[
+    {lbl:'Surface',val:p.area,svg:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>'},
+    {lbl:'Chambres',val:p.beds,svg:'<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>'},
+    {lbl:'Salles de bain',val:p.baths,svg:'<path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" y1="5" x2="8" y2="7"/>'},
+    {lbl:'Niveaux',val:p.floors+(p.floors>1?' niveaux':' niveau'),svg:'<line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>'},
+    {lbl:'Coût estimé',val:p.cost,svg:'<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>'}
+  ];
+  document.getElementById('dp-specs-grid').innerHTML=specsData.map(s=>`
+    <div class="dp-spec-item">
+      <div class="dp-spec-icon"><svg viewBox="0 0 24 24">${s.svg}</svg></div>
+      <div><div class="dp-spec-lbl">${s.lbl}</div><div class="dp-spec-val">${s.val}</div></div>
+    </div>`).join('');
+
+  // Features
+  document.getElementById('dp-feat-grid').innerHTML=(p.features||[]).map(f=>
+    `<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${f}</li>`
+  ).join('');
+
+  // Section OFFRE mockup
+  document.getElementById('dp-offer-img').src=p.images[0]||'';
+  document.getElementById('dp-offer-price').textContent=p.priceBasic;
+
+  // WhatsApp
+  document.getElementById('whatsapp-link').href='https://wa.me/237694327885?text='+encodeURIComponent('Bonjour, question sur le plan : '+p.title);
+
+  // Sticky bar
   updateOptUI();
-  renderGallery();
-  document.getElementById('detail-overlay').classList.add('open');
-  document.body.style.overflow='hidden';
-  // Afficher sticky bar mobile
+
+  // Render dynamic sections
+  renderGalleryRow();
+  renderReviews('Tous');
+  renderFAQ();
+  renderSimilarPlans(p);
+
+  // Show detail page, hide catalogue
+  document.getElementById('catalogue-view').style.display='none';
+  document.getElementById('detail-page').style.display='block';
+  window.scrollTo(0,0);
+
+  // Sticky bar: show on mobile always, on desktop after scroll
   var sb=document.getElementById('sticky-bar');
-  if(sb) sb.style.display='flex';
-  // Mettre a jour le lien WhatsApp avec le nom du plan
-  var waLink=document.getElementById('whatsapp-link');
-  if(waLink){
-    var msg=encodeURIComponent('Bonjour, question sur le plan : '+currentPlan.title);
-    waLink.href='https://wa.me/237694327885?text='+msg;
-  }
+  if(sb) sb.style.display=window.innerWidth<=768?'flex':'none';
+  window.removeEventListener('scroll',onWindowScroll);
+  window.addEventListener('scroll',onWindowScroll,{passive:true});
 }
 
-function closeDetail(){
-  document.getElementById('detail-overlay').classList.remove('open');
-  document.body.style.overflow='';
-  // Masquer sticky bar mobile
+function showCatalogue(){
+  document.getElementById('detail-page').style.display='none';
+  document.getElementById('catalogue-view').style.display='block';
+  window.removeEventListener('scroll',onWindowScroll);
   var sb=document.getElementById('sticky-bar');
   if(sb) sb.style.display='none';
+  closeLightbox();
+  window.scrollTo(0,0);
 }
 
-// ── GALERIE ──────────────────────────────────────────────────
-function renderGallery(){
-  setImg(0);
-  document.getElementById('gal-thumbs').innerHTML=currentPlan.images.map((s,i)=>`
-    <div class="gal-thumb ${i===0?'active':''}" onclick="setImg(${i})">
-      <img src="${s}" alt="" loading="lazy">
+// ── GALERIE ROW (3 thumbnails) ────────────────────────────────
+function renderGalleryRow(){
+  const row=document.getElementById('dp-gallery-row');
+  const imgs=currentPlan.images;
+  if(!imgs||!imgs.length){row.innerHTML='';return;}
+  const show=imgs.slice(0,3);
+  const extra=imgs.length-3;
+  row.innerHTML=show.map((src,i)=>{
+    const isLast=i===2&&extra>0;
+    return `<div class="dp-gal-item" onclick="openLightbox(${i})">${
+      isLast
+        ?`<img src="${src}" alt="" loading="lazy"><div class="dp-gal-more"><span>+${extra+1}</span><small>photos</small></div>`
+        :`<img src="${src}" alt="" loading="${i===0?'eager':'lazy'}"><div class="dp-gal-ov"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>`
+    }</div>`;
+  }).join('');
+  // Adapter colonnes si moins de 3 images
+  if(imgs.length===1) row.style.gridTemplateColumns='1fr';
+  else if(imgs.length===2) row.style.gridTemplateColumns='1fr 1fr';
+  else row.style.gridTemplateColumns='1fr 1fr 1fr';
+}
+
+// ── LIGHTBOX ─────────────────────────────────────────────────
+function openLightbox(idx){
+  if(!currentPlan||!currentPlan.images.length)return;
+  if(typeof idx==='number') imgIdx=idx;
+  document.getElementById('lb-img').src=currentPlan.images[imgIdx];
+  document.getElementById('lb-counter').textContent=(imgIdx+1)+' / '+currentPlan.images.length;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+function lbNav(d){
+  if(!currentPlan)return;
+  imgIdx=(imgIdx+d+currentPlan.images.length)%currentPlan.images.length;
+  document.getElementById('lb-img').src=currentPlan.images[imgIdx];
+  document.getElementById('lb-counter').textContent=(imgIdx+1)+' / '+currentPlan.images.length;
+}
+
+// ── STICKY BAR SCROLL (window) ────────────────────────────────
+function onWindowScroll(){
+  var sb=document.getElementById('sticky-bar');
+  if(!sb)return;
+  if(window.innerWidth>768) sb.style.display=window.scrollY>420?'flex':'none';
+}
+
+// ── SIMILAR PLANS ─────────────────────────────────────────────
+function renderSimilarPlans(plan){
+  var grid=document.getElementById('dp-similar-grid');
+  if(!grid)return;
+  var similar=plans.filter(function(p){return p.type===plan.type&&p.id!==plan.id;}).slice(0,3);
+  if(!similar.length){grid.closest('.dp-similar-section').style.display='none';return;}
+  grid.closest('.dp-similar-section').style.display='';
+  grid.innerHTML=similar.map(function(p){return `
+    <div class="plan-card" onclick="openDetail(${p.id})">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${p.images[0]}" alt="${p.title}" loading="lazy">
+        <span class="card-badge ${p.type==='villa'?'badge-villa':'badge-duplex'}">${p.type}</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">${p.title}</h3>
+        <p class="card-sub">${p.subtitle}</p>
+        <div class="card-specs">
+          <span class="spec"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>${p.area}</span>
+          <span class="spec"><svg viewBox="0 0 24 24"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>${p.beds} ch.</span>
+        </div>
+        <div class="card-footer">
+          <div>
+            <div class="price-lbl">A partir de</div>
+            <div class="card-price">${p.priceBasic} <small>FCFA</small></div>
+          </div>
+          <button class="card-btn">Voir<svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>`;}).join('');
+}
+
+// ── REVIEWS ──────────────────────────────────────────────────
+function renderReviews(activeCountry){
+  const countries=['Tous',...new Set(REVIEWS_DATA.map(r=>r.country))];
+  // Filtres pays
+  document.getElementById('reviews-filter').innerHTML=countries.map(c=>
+    `<button class="rf-btn${c===activeCountry?' active':''}" onclick="renderReviews('${c}')">${c==='Tous'?'🌍 Tous les pays':REVIEWS_DATA.find(r=>r.country===c).flag+' '+c}</button>`
+  ).join('');
+  // Grille
+  const filtered=activeCountry==='Tous'?REVIEWS_DATA:REVIEWS_DATA.filter(r=>r.country===activeCountry);
+  document.getElementById('reviews-grid').innerHTML=filtered.map(r=>`
+    <div class="review-card">
+      <div class="review-stars">${'<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'.repeat(r.stars)}</div>
+      <p class="review-text">"${r.text}"</p>
+      <div class="review-footer">
+        <div class="review-avatar">${r.initials}</div>
+        <div>
+          <div class="review-name">${r.name}</div>
+          <div class="review-meta">${r.flag} ${r.city}, ${r.country} &middot; ${r.date}</div>
+        </div>
+      </div>
     </div>
   `).join('');
 }
 
-function setImg(i){
-  const imgs=currentPlan.images;
-  imgIdx=(i+imgs.length)%imgs.length;
-  const el=document.getElementById('gal-img');
-  el.style.opacity='0';
-  setTimeout(()=>{el.src=imgs[imgIdx];el.style.opacity='1';},200);
-  document.getElementById('gal-counter').textContent=(imgIdx+1)+' / '+imgs.length;
-  document.querySelectorAll('.gal-thumb').forEach((t,j)=>t.classList.toggle('active',j===imgIdx));
+// ── FAQ ───────────────────────────────────────────────────────
+function renderFAQ(){
+  document.getElementById('faq-list').innerHTML=FAQ_DATA.map((f,i)=>`
+    <div class="faq-item" id="faq-${i}">
+      <button class="faq-q" onclick="toggleFaq(${i})">${f.q}<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a"><p>${f.a}</p></div>
+    </div>
+  `).join('');
+}
+function toggleFaq(i){
+  var item=document.getElementById('faq-'+i);
+  if(item) item.classList.toggle('open');
 }
 
-function galNav(d){setImg(imgIdx+d)}
-
-// Swipe
+// Swipe sur la galerie
 let tx=0;
-document.addEventListener('touchstart',e=>{if(e.target.closest('.gal-main'))tx=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchstart',e=>{if(e.target.closest('.dp-gallery-row'))tx=e.touches[0].clientX;},{passive:true});
 document.addEventListener('touchend',e=>{
-  if(!e.target.closest('.gal-main'))return;
+  if(!e.target.closest('.dp-gallery-row'))return;
   const d=tx-e.changedTouches[0].clientX;
-  if(Math.abs(d)>40)galNav(d>0?1:-1);
+  if(Math.abs(d)>40&&currentPlan){imgIdx=(imgIdx+(d>0?1:-1)+currentPlan.images.length)%currentPlan.images.length;openLightbox(imgIdx);}
 },{passive:true});
 
 document.addEventListener('keydown',e=>{
-  if(!document.getElementById('detail-overlay').classList.contains('open'))return;
-  if(e.key==='ArrowLeft')galNav(-1);
-  if(e.key==='ArrowRight')galNav(1);
-  if(e.key==='Escape')closeDetail();
+  if(document.getElementById('lightbox').classList.contains('open')){
+    if(e.key==='ArrowLeft')lbNav(-1);
+    if(e.key==='ArrowRight')lbNav(1);
+    if(e.key==='Escape')closeLightbox();
+    return;
+  }
+  if(document.getElementById('detail-page').style.display==='block'){
+    if(e.key==='Escape')showCatalogue();
+  }
 });
 
 // ── OPTIONS ──────────────────────────────────────────────────
@@ -915,10 +1218,22 @@ async function submitCheckout(e){
 
   const p = currentPlan;
   const isBasic = selectedOpt === 1;
-  const fname = document.getElementById('co-fname').value.trim();
-  const lname = document.getElementById('co-lname').value.trim();
-  const email = document.getElementById('co-email').value.trim();
-  const rawPhone = document.getElementById('co-phone').value.trim();
+  const fnameEl = document.getElementById('co-fname');
+  const lnameEl = document.getElementById('co-lname');
+  const emailEl = document.getElementById('co-email');
+  const phoneEl = document.getElementById('co-phone');
+  if (!fnameEl || !lnameEl || !emailEl || !phoneEl) {
+    showToast('Erreur: formulaire introuvable. Recharge la page.');
+    btn.disabled = false;
+    document.getElementById('co-spin').style.display = 'none';
+    document.getElementById('co-btn-ico').style.display = 'block';
+    document.getElementById('co-btn-txt').textContent = 'Proceder au paiement';
+    return;
+  }
+  const fname = fnameEl.value.trim();
+  const lname = lnameEl.value.trim();
+  const email = emailEl.value.trim();
+  const rawPhone = phoneEl.value.trim();
   const countryCode = document.getElementById('co-country') ? document.getElementById('co-country').value : 'CM';
 
   // Chariow product IDs

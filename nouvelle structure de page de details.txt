@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villa V3-037 - Plan et Devis</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 'inter': ['Inter', 'sans-serif'] },
+                    colors: {
+                        'alert': '#FF6B35',
+                        'nav': '#F8F9FA',
+                        'primary': '#1A1A2E',
+                        'accent': '#4A90D9',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        
+        .btn-download {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+        .delay-100 { animation-delay: 0.1s; opacity: 0; }
+        .delay-200 { animation-delay: 0.15s; opacity: 0; }
+
+        /* Lightbox Styles */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .lightbox-overlay.active .lightbox-image {
+            transform: scale(1);
+        }
+        
+        .lightbox-image {
+            max-width: 95vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .lightbox-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+        
+        .lightbox-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 20px;
+        }
+        
+        .lightbox-close:hover {
+            background: rgba(239, 68, 68, 0.5);
+            transform: rotate(90deg);
+        }
+        
+        .lightbox-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Gallery item hover */
+        .gallery-item {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-item img {
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+        
+        .gallery-item::after {
+            content: '\f002';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Sticky Bottom Bar */
+        .sticky-bar {
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .sticky-bar.visible {
+            bottom: 0;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.5); }
+            50% { box-shadow: 0 0 0 8px rgba(102, 126, 234, 0); }
+        }
+        
+        .pulse-animation {
+            animation: pulse-border 2s infinite;
+        }
+
+        /* CTA Mobile optimisé */
+        .cta-mobile-full {
+            min-width: 140px;
+        }
+
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- ============================================ -->
+    <!-- SECTION 1 : HERO -->
+    <!-- ============================================ -->
+    <section id="hero" class="min-h-screen flex flex-col bg-gray-100">
+        
+        <div id="alertBar" class="bg-alert text-white py-1.5 px-4 text-center text-xs font-medium relative flex-shrink-0">
+            <p class="flex items-center justify-center gap-2">
+                <i class="fas fa-bell animate-pulse"></i>
+                <span>Offre spéciale : Plan + Devis détaillé à tarif préférentiel !</span>
+            </p>
+            <button onclick="closeAlert()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <nav class="bg-nav border-b border-gray-200 flex-shrink-0 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
+            <div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center justify-between">
+                <a href="#" class="flex items-center gap-2 text-primary font-semibold text-sm hover:text-accent transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour au catalogue</span>
+                </a>
+                
+                <div class="flex items-center gap-3">
+                    <button class="text-gray-600 hover:text-primary transition-colors p-1.5">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="text-gray-600 hover:text-primary transition-colors p-1.5 relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-1 flex flex-col max-w-5xl mx-auto w-full px-4 py-4 md:py-6">
+            
+            <div class="relative w-full animate-fade-in-up delay-100 mb-5 md:mb-6">
+                <div class="overflow-hidden rounded-xl shadow-xl bg-gray-200">
+                    <img 
+                        src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&h=675&fit=crop&q=80" 
+                        alt="Villa V3-037 - Vue extérieure moderne" 
+                        class="w-full h-auto object-cover aspect-video"
+                    >
+                </div>
+                
+                <div class="absolute top-3 right-3 bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg flex items-center gap-1.5">
+                    <i class="fas fa-check-circle text-[10px]"></i>
+                    <span>Modèle Premium</span>
+                </div>
+
+                <div class="absolute top-3 left-3 bg-blue-100 text-accent px-3 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-wide flex items-center gap-1.5 backdrop-blur-sm bg-opacity-90">
+                    <i class="fas fa-home text-[10px]"></i>
+                    <span>Plan Architectural</span>
+                </div>
+            </div>
+
+            <div class="space-y-4 animate-fade-in-up delay-200">
+                
+                <div class="text-center md:text-left">
+                    <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary leading-tight mb-2">
+                        Villa 
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">V3-037</span>
+                    </h1>
+                    
+                    <p class="text-sm md:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto md:mx-0">
+                        Obtenez immédiatement le plan de distribution et le devis estimatif de ce modèle V3-037. Une base solide pour chiffrer et personnaliser votre projet.
+                    </p>
+                </div>
+
+                <!-- Prix avec "Valable aujourd'hui + date" -->
+                <div class="flex items-end justify-center md:justify-start gap-3 pt-2">
+                    <div class="space-y-0.5">
+                        <p class="text-xs text-orange-500 font-medium flex items-center gap-1">
+                            <i class="fas fa-clock"></i>
+                            Valable aujourd'hui
+                            <span id="currentDate" class="font-bold"></span>
+                        </p>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">14 900</span>
+                            <span class="text-sm md:text-base text-gray-600 font-medium">FCFA</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-orange-400 to-red-500 text-white px-3 py-1.5 rounded-md font-bold text-xs shadow-md mb-1">
+                        <i class="fas fa-tag mr-1"></i>-50%
+                    </div>
+                </div>
+
+                <div class="pt-2 pb-1">
+                    <button onclick="handleDownload()" class="btn-download w-full text-white font-semibold px-8 py-3.5 rounded-xl text-base md:text-lg flex items-center justify-center gap-3 group shadow-lg">
+                        <i class="fas fa-download group-hover:animate-bounce"></i>
+                        Télécharger le plan & devis
+                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-1 text-xs text-gray-500">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-shield-alt text-green-500"></i>
+                        <span>Paiement sécurisé</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-bolt text-yellow-500"></i>
+                        <span>Livraison instantanée</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <div class="flex -space-x-1.5">
+                            <img src="https://i.pravatar.cc/24?img=11" alt="" class="w-5 h-5 rounded-full border-2 border-white">
+                            <img src="https://i.pravatar.cc/24?img=12" alt="" class="w-5 h-5 rounded-full border-2 border-white">
+                            <img src="https://i.pravatar.cc/24?img=13" alt="" class="w-5 h-5 rounded-full border-2 border-white">
+                        </div>
+                        <span><strong class="text-primary">2000+</strong> clients satisfaits</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+
+
+    <!-- ============================================ -->
+    <!-- STICKY BOTTOM BAR (CTA visible sur MOBILE) -->
+    <!-- ============================================ -->
+    <div id="stickyBar" class="sticky-bar bg-white border-t border-gray-200 px-3 sm:px-4 py-2.5 sm:py-3">
+        <div class="max-w-5xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+            
+            <!-- Info gauche -->
+            <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <img 
+                    src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=100&h=70&fit=crop&q=80" 
+                    alt="Villa V3-037" 
+                    class="w-11 h-8 sm:w-14 sm:h-10 rounded-lg object-cover flex-shrink-0"
+                >
+                <div class="min-w-0 hidden sm:block">
+                    <p class="font-semibold text-primary text-sm truncate">Villa V3-037</p>
+                    <p class="text-xs text-gray-500">Plan + Devis complet</p>
+                </div>
+                
+                <!-- Prix visible sur mobile à la place du titre -->
+                <div class="sm:hidden flex items-baseline gap-1 flex-shrink-0">
+                    <span class="text-lg font-bold text-primary">14 900</span>
+                    <span class="text-xs text-gray-600">FCFA</span>
+                </div>
+            </div>
+
+            <!-- Prix centre (desktop uniquement) -->
+            <div class="hidden sm:flex items-baseline gap-1 flex-shrink-0">
+                <span class="text-xl font-bold text-primary">14 900</span>
+                <span class="text-sm text-gray-600">FCFA</span>
+            </div>
+
+            <!-- CTA DROITE - Visible sur MOBILE avec texte complet -->
+            <button onclick="handleDownload()" class="btn-download cta-mobile-full flex-shrink-0 text-white font-semibold px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 pulse-animation whitespace-nowrap">
+                <i class="fas fa-download text-sm sm:text-base"></i>
+                <span>Télécharger</span>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 2 : GALERIE 3D AVEC LIGHTBOX -->
+    <!-- ============================================ -->
+    <section id="section2" class="py-12 md:py-16 bg-white scroll-animate">
+        <div class="max-w-5xl mx-auto px-4">
+            
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-3">
+                    Découvrez la Villa V3-037 en <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">3D</span>
+                </h2>
+                <p class="text-gray-600 max-w-xl mx-auto mb-2">
+                    Visualisez chaque détail de votre future villa grâce à nos rendus 3D haute définition
+                </p>
+                <p class="text-xs text-gray-400">
+                    <i class="fas fa-mouse-pointer mr-1"></i>Cliquez sur une image pour l'agrandir • Utilisez les flèches pour naviguer
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8" id="galleryGrid">
+                
+                <div class="gallery-item col-span-2 row-span-2 rounded-xl shadow-lg overflow-hidden" data-index="0" onclick="openLightbox(0)">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop&q=80" alt="Vue 3D Facade principale" class="w-full h-full object-cover aspect-square md:aspect-auto">
+                </div>
+
+                <div class="gallery-item rounded-xl shadow-lg overflow-hidden" data-index="1" onclick="openLightbox(1)">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=300&fit=crop&q=80" alt="Vue 3D Salon" class="w-full h-full object-cover aspect-video">
+                </div>
+
+                <div class="gallery-item rounded-xl shadow-lg overflow-hidden" data-index="2" onclick="openLightbox(2)">
+                    <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&h=300&fit=crop&q=80" alt="Vue 3D Cuisine" class="w-full h-full object-cover aspect-video">
+                </div>
+
+                <div class="gallery-item rounded-xl shadow-lg overflow-hidden" data-index="3" onclick="openLightbox(3)">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop&q=80" alt="Vue 3D Chambre" class="w-full h-full object-cover aspect-video">
+                </div>
+
+                <div class="gallery-item rounded-xl shadow-lg overflow-hidden" data-index="4" onclick="openLightbox(4)">
+                    <img src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=400&h=300&fit=crop&q=80" alt="Vue 3D Salle de bain" class="w-full h-full object-cover aspect-video">
+                </div>
+
+                <div class="gallery-item rounded-xl shadow-lg overflow-hidden" data-index="5" onclick="openLightbox(5)">
+                    <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=400&h=300&fit=crop&q=80" alt="Vue 3D Extérieur piscine" class="w-full h-full object-cover aspect-video">
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button onclick="handleDownload()" class="btn-download inline-flex items-center gap-2 text-white font-semibold px-8 py-3 rounded-xl text-base group shadow-lg">
+                    <i class="fas fa-download group-hover:animate-bounce"></i>
+                    Télécharger le plan complet
+                    <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================ -->
+    <!-- LIGHTBOX PLEIN ÉCRAN -->
+    <!-- ============================================ -->
+    <div id="lightbox" class="lightbox-overlay" onclick="closeLightboxOutside(event)">
+        <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+        <button class="lightbox-btn lightbox-prev" onclick="prevImage(event)"><i class="fas fa-chevron-left"></i></button>
+        <img id="lightboxImage" class="lightbox-image" src="" alt="Vue agrandie">
+        <button class="lightbox-btn lightbox-next" onclick="nextImage(event)"><i class="fas fa-chevron-right"></i></button>
+        <div class="lightbox-counter"><span id="currentSlide">1</span> / <span id="totalSlides">6</span></div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 3 : CARACTÉRISTIQUES -->
+    <!-- ============================================ -->
+    <section id="section3" class="py-12 md:py-16 bg-gray-50 scroll-animate">
+        <div class="max-w-5xl mx-auto px-4">
+            
+            <div class="max-w-2xl mx-auto space-y-6">
+                
+                <div class="text-center">
+                    <h2 class="text-2xl md:text-3xl font-bold text-primary mb-2">
+                        Caractéristiques techniques
+                    </h2>
+                    <p class="text-sm text-gray-500 uppercase tracking-wide font-medium">
+                        Descriptif détaillé
+                    </p>
+                </div>
+
+                <div class="space-y-3 text-gray-600 leading-relaxed text-center md:text-left">
+                    <p>
+                        La Villa V3-037 est conçue pour offrir un espace de vie optimal avec une architecture moderne et fonctionnelle.
+                    </p>
+                    <p>
+                        Chaque pièce a été pensée pour maximiser l'espace et la luminosité naturelle.
+                    </p>
+                </div>
+
+                <div class="space-y-2.5">
+                    <div class="flex items-center gap-3 text-gray-700">
+                        <div class="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600 text-xs"></i>
+                        </div>
+                        <span>Architecture moderne et contemporaine</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-700">
+                        <div class="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600 text-xs"></i>
+                        </div>
+                        <span>Optimisation de l'espace habitable</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-700">
+                        <div class="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600 text-xs"></i>
+                        </div>
+                        <span>Matériaux de construction durables</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-gray-700">
+                        <div class="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-green-600 text-xs"></i>
+                        </div>
+                        <span>Conforme aux normes en vigueur</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                    <h3 class="font-semibold text-primary mb-4 flex items-center gap-2">
+                        <i class="fas fa-info-circle text-accent"></i>
+                        Fiche technique
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+                                <i class="fas fa-ruler-combined text-accent"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Surface totale</p>
+                                <p class="font-bold text-primary">150 m²</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center">
+                                <i class="fas fa-bed text-purple-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Chambres</p>
+                                <p class="font-bold text-primary">3 Chambres</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-cyan-50 flex items-center justify-center">
+                                <i class="fas fa-bath text-cyan-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Salles d'eau</p>
+                                <p class="font-bold text-primary">2 SDB</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
+                                <i class="fas fa-vector-square text-orange-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Terrain minimum</p>
+                                <p class="font-bold text-primary">17x12 m</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="handleDownload()" class="btn-download w-full text-white font-semibold px-8 py-3.5 rounded-xl text-base flex items-center justify-center gap-3 group shadow-lg">
+                    <i class="fas fa-download group-hover:animate-bounce"></i>
+                    Télécharger le plan & devis
+                    <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION OFFRE -->
+    <!-- ============================================ -->
+    <section id="offre" class="py-12 md:py-16 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 scroll-animate">
+        <div class="max-w-lg mx-auto px-4">
+            
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                
+                <div class="bg-gradient-to-r from-purple-600 to-blue-600 p-6 text-white text-center relative">
+                    <div class="absolute top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        -50% de réduction
+                    </div>
+                    
+                    <p class="text-sm opacity-80 mt-4 flex items-center justify-center gap-1">
+                        <i class="fas fa-clock"></i>
+                        Valable aujourd'hui
+                        <span id="offerDate" class="font-bold"></span>
+                    </p>
+                    
+                    <div class="my-2">
+                        <span class="text-5xl md:text-6xl font-bold">14 900</span>
+                        <span class="text-xl ml-1">FCFA</span>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-gray-50 border-b border-gray-200">
+                    <div class="bg-white rounded-xl p-4 shadow-md border border-gray-200">
+                        <div class="aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-box-open text-5xl text-purple-400 mb-2"></i>
+                                <p class="text-sm text-gray-600 font-medium">Image du type</p>
+                                <p class="text-xs text-gray-400">Software Box</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 space-y-4">
+                    <h3 class="font-bold text-primary text-lg">Ce que vous obtenez :</h3>
+                    
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fas fa-check text-green-600 text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">Plan de distribution + dimensions</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fas fa-check text-green-600 text-xs"></i>
+                            </div>
+                            <span class="text-gray-700">Devis de la fondation aux finitions</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <i class="fab fa-whatsapp text-green-600 text-sm"></i>
+                            </div>
+                            <span class="text-gray-700">Discuter avec un architecte sur WhatsApp</span>
+                        </li>
+                    </ul>
+
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-gift text-white"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-yellow-800 text-sm flex items-center gap-1">
+                                    <i class="fas fa-star text-yellow-500 text-xs"></i>
+                                    Bonus inclus !
+                                </p>
+                                <p class="text-yellow-700 text-sm mt-1">
+                                    <strong>Ebook : Les 5 erreurs à éviter avant de lancer votre chantier !</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="handleDownload()" class="btn-download w-full text-white font-semibold px-8 py-4 rounded-xl text-base flex items-center justify-center gap-3 group shadow-lg mt-4">
+                        <i class="fas fa-shopping-cart group-hover:animate-bounce"></i>
+                        Acheter maintenant
+                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+
+                    <p class="text-center text-xs text-gray-500 flex items-center justify-center gap-2">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Paiement par Mobile Money accepté</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 4 : ÉTAPES -->
+    <!-- ============================================ -->
+    <section id="section4" class="py-12 md:py-16 bg-white scroll-animate">
+        <div class="max-w-4xl mx-auto px-4">
+            
+            <div class="text-center mb-10">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-3">
+                    Démarrer votre projet en <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">3 étapes simples</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-10">
+                
+                <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 text-white flex items-center justify-center text-xl font-bold shadow-lg mx-auto mb-4">
+                        1
+                    </div>
+                    <h3 class="font-bold text-primary mb-2 text-sm">Télécharger le plan</h3>
+                    <p class="text-gray-600 text-xs leading-relaxed">Recevez immédiatement votre plan PDF après paiement</p>
+                </div>
+
+                <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 text-white flex items-center justify-center text-xl font-bold shadow-lg mx-auto mb-4">
+                        2
+                    </div>
+                    <h3 class="font-bold text-primary mb-2 text-sm">Consulter & modifier</h3>
+                    <p class="text-gray-600 text-xs leading-relaxed">Discutez avec notre architecte via WhatsApp pour personnaliser</p>
+                </div>
+
+                <div class="text-center p-6 rounded-xl bg-gray-50 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 text-white flex items-center justify-center text-xl font-bold shadow-lg mx-auto mb-4">
+                        3
+                    </div>
+                    <h3 class="font-bold text-primary mb-2 text-sm">Lancez votre chantier</h3>
+                    <p class="text-gray-600 text-xs leading-relaxed">Obtenez le plan final et commencez les travaux</p>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button onclick="handleDownload()" class="btn-download inline-flex items-center gap-2 text-white font-semibold px-10 py-4 rounded-xl text-base group shadow-lg">
+                    <i class="fas fa-rocket group-hover:animate-bounce"></i>
+                    Commencer mon projet maintenant
+                    <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-8">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <p class="text-sm opacity-70">
+                © 2024 Villa V3-037 - Tous droits réservés | 
+                <a href="#" class="underline hover:no-underline">Mentions légales</a> | 
+                <a href="#" class="underline hover:no-underline">Politique de confidentialité</a>
+            </p>
+        </div>
+    </footer>
+
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-20 sm:bottom-6 right-6 bg-green-500 text-white px-5 py-3 rounded-xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-[1001] flex items-center gap-3">
+        <i class="fas fa-check-circle text-xl"></i>
+        <div>
+            <p class="font-semibold text-sm">Téléchargement lancé !</p>
+            <p class="text-xs text-green-100">Villa V3-037 - Plan & Devis prêts</p>
+        </div>
+    </div>
+
+
+    <script>
+        // ======== DATE DU JOUR ========
+        function setTodayDate() {
+            const options = { day: 'numeric', month: 'short' };
+            const today = new Date().toLocaleDateString('fr-FR', options);
+            document.getElementById('currentDate').textContent = today;
+            document.getElementById('offerDate').textContent = today;
+        }
+        setTodayDate();
+
+        // ======== STICKY BAR LOGIC ========
+        const stickyBar = document.getElementById('stickyBar');
+        const heroSection = document.getElementById('hero');
+        
+        function handleStickyBar() {
+            const heroBottom = heroSection.getBoundingClientRect().bottom;
+            if (heroBottom < 0) {
+                stickyBar.classList.add('visible');
+            } else {
+                stickyBar.classList.remove('visible');
+            }
+        }
+        
+        window.addEventListener('scroll', handleStickyBar);
+
+        // ======== GESTION LIGHTBOX ========
+        const galleryImages = [
+            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=800&fit=crop&q=85',
+            'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=800&fit=crop&q=85',
+            'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&h=800&fit=crop&q=85',
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop&q=85',
+            'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=1200&h=800&fit=crop&q=85',
+            'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1200&h=800&fit=crop&q=85'
+        ];
+
+        let currentIndex = 0;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const currentSlideEl = document.getElementById('currentSlide');
+        const totalSlidesEl = document.getElementById('totalSlides');
+
+        totalSlidesEl.textContent = galleryImages.length;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightboxImage();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeLightboxOutside(event) {
+            if (event.target === lightbox) closeLightbox();
+        }
+
+        function prevImage(event) {
+            event.stopPropagation();
+            currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateLightboxImage();
+        }
+
+        function nextImage(event) {
+            event.stopPropagation();
+            currentIndex = (currentIndex + 1) % galleryImages.length;
+            updateLightboxImage();
+        }
+
+        function updateLightboxImage() {
+            lightboxImage.src = galleryImages[currentIndex];
+            currentSlideEl.textContent = currentIndex + 1;
+            lightboxImage.style.opacity = '0';
+            setTimeout(() => { lightboxImage.style.opacity = '1'; }, 100);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            switch(e.key) {
+                case 'ArrowLeft': prevImage({ stopPropagation: () => {} }); break;
+                case 'ArrowRight': nextImage({ stopPropagation: () => {} }); break;
+                case 'Escape': closeLightbox(); break;
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        lightbox.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; });
+        lightbox.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextImage({ stopPropagation: () => {} });
+                else prevImage({ stopPropagation: () => {} });
+            }
+        });
+
+        // ======== AUTRES FONCTIONS ========
+        function closeAlert() {
+            const alertBar = document.getElementById('alertBar');
+            alertBar.style.transform = 'translateY(-100%)';
+            alertBar.style.opacity = '0';
+            setTimeout(() => alertBar.style.display = 'none', 300);
+        }
+
+        function handleDownload() {
+            const toast = document.getElementById('toast');
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.transform = 'translateY(20px)';
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+
+        setTimeout(() => {
+            const alertBar = document.getElementById('alertBar');
+            if (alertBar && alertBar.style.display !== 'none') closeAlert();
+        }, 5000);
+
+        // Scroll animations
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
