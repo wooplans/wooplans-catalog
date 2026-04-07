@@ -364,34 +364,6 @@ permalink: "/fr/plans/{{ planData.slug }}/"
   </div>
 </div>
 
-<!-- Sticky Bottom Bar (Mobile) -->
-<div class="sticky-bottom-bar" style="position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-secondary); border-top: 1px solid var(--border); padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; z-index: 100;">
-  <div style="display: flex; flex-direction: column;">
-    <span style="font-size: 0.75rem; color: var(--text-muted);">Plan et devis {{ plan.title }}</span>
-    <span style="font-weight: 700; color: var(--gold);">{{ planData.price | formatPrice }}</span>
-  </div>
-  <a href="/{{ lang }}/checkout/?plan={{ planData.slug }}" class="btn btn-gold btn-sm" style="white-space: nowrap;">
-    Télécharger
-  </a>
-</div>
-
-<style>
-  @media (min-width: 1024px) {
-    .sticky-bottom-bar {
-      display: none !important;
-    }
-  }
-  /* Ajouter du padding au body pour compenser la barre sticky */
-  body {
-    padding-bottom: 70px;
-  }
-  @media (min-width: 1024px) {
-    body {
-      padding-bottom: 0;
-    }
-  }
-</style>
-
 <!-- Données pour JavaScript -->
 <script>
   window.planData = {
