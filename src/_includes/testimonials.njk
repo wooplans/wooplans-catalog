@@ -10,7 +10,7 @@
     {% for testimonial in testimonials %}
     <article class="testimonial-card">
       <div class="testimonial-rating" aria-label="{{ testimonial.rating }} out of 5 stars">
-        {{ '★' | repeat(testimonial.rating) }}
+        {% for i in range(0, testimonial.rating) %}★{% endfor %}
       </div>
       <blockquote class="testimonial-text">
         {% if lang == 'en' %}{{ testimonial.text_en }}{% else %}{{ testimonial.text }}{% endif %}
