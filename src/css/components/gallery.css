@@ -36,9 +36,27 @@
 
 .gallery-thumbs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-sm);
   margin-top: var(--space-md);
+}
+
+@media (min-width: 480px) {
+  .gallery-thumbs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 640px) {
+  .gallery-thumbs {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .gallery-thumbs {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 
 .gallery-thumb {

@@ -48,7 +48,13 @@
 }
 
 .card-content {
-  padding: var(--space-lg);
+  padding: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .card-content {
+    padding: var(--space-lg);
+  }
 }
 
 .card-type {
@@ -120,8 +126,14 @@
   background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   border: 2px solid var(--border-gold);
   border-radius: var(--radius-xl);
-  padding: var(--space-xl);
+  padding: var(--space-lg);
   position: relative;
+}
+
+@media (min-width: 640px) {
+  .offer-card {
+    padding: var(--space-xl);
+  }
 }
 
 .offer-card::before {
@@ -156,10 +168,16 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  padding: var(--space-xl);
+  padding: var(--space-lg);
   max-width: 480px;
   margin: 0 auto;
   position: relative;
+}
+
+@media (min-width: 640px) {
+  .checkout-card {
+    padding: var(--space-xl);
+  }
 }
 
 .close-btn {

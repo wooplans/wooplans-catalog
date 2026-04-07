@@ -281,3 +281,62 @@ p {
   background: var(--gold-alpha);
   color: var(--gold-light);
 }
+
+/* ============================================
+   RESPONSIVE IMPROVEMENTS
+   ============================================ */
+
+/* Fix pour éviter le débordement sur mobile */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Images et vidéos responsives */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Tables responsives */
+table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* Amélioration des boutons sur mobile */
+@media (max-width: 639px) {
+  .btn {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--text-sm);
+  }
+  
+  .btn-xl {
+    padding: var(--space-md) var(--space-lg);
+    font-size: var(--text-base);
+  }
+  
+  .btn-lg {
+    padding: var(--space-md) var(--space-lg);
+    font-size: var(--text-base);
+  }
+}
+
+/* Amélioration de la typographie sur mobile */
+@media (max-width: 639px) {
+  h1 { font-size: var(--text-2xl); }
+  h2 { font-size: var(--text-xl); }
+  h3 { font-size: var(--text-lg); }
+  
+  .lead {
+    font-size: var(--text-base);
+  }
+}
+
+/* Padding réduit sur très petits écrans */
+@media (max-width: 374px) {
+  :root {
+    --container-padding: var(--space-sm);
+  }
+}

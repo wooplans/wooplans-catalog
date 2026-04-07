@@ -1,0 +1,73 @@
+📚 STACK TECHNIQUE - WooPlans Shop v3
+🏗️ Architecture & Générateur
+Technologie	Version	Usage
+Eleventy (11ty)	2.0.1	Static Site Generator (SSG)
+Nunjucks	3.2.4	Moteur de templates HTML
+Node.js	20.x	Runtime JavaScript
+🎨 Frontend
+Technologie	Usage
+CSS pur	Styles (sans framework)
+CSS Variables	Design system (thème sombre/or)
+Mobile-first	Approche responsive
+Lazy loading	Images optimisées
+WebP	Format d'images avec fallback
+🌐 Hébergement & CDN
+Service	Usage
+Cloudflare Pages	Hébergement statique + CDN
+BunnyCDN	Images optimisées (wooplans.b-cdn.net)
+GitHub Actions	CI/CD automatisé
+📦 Données & Contenu
+Fichier	Contenu
+plans.json	10 plans architecturaux (FR/EN)
+translations.json	Textes multilingues
+testimonials.json	Témoignages clients
+faq.json	Questions fréquentes
+💳 Paiement
+Service	Usage
+Chariow	Paiement Mobile Money Afrique
+Supabase Edge Functions	API checkout
+📊 Analytics & SEO
+Outil	Usage
+Supabase	Base de données + Analytics
+Schema.org JSON-LD	Rich snippets (Product, Breadcrumb)
+Open Graph	Partage social
+Sitemap.xml	SEO auto-généré
+🚀 Performance
+Technique	Impact
+Static HTML	~15KB par page
+Critical CSS inline	First Paint < 1s
+Service Worker	Cache offline
+Cache-control headers	1 an sur assets
+Preconnect	BunnyCDN, Fonts
+🔧 Outils de Build
+Package	Version	Usage
+@11ty/eleventy	2.0.1	Génération site
+@11ty/eleventy-navigation	0.3.5	Navigation
+@11ty/eleventy-plugin-rss	1.2.0	RSS feed
+📁 Structure
+src/
+├── _data/          # JSON données
+├── _includes/      # Composants Njk
+├── _layouts/      # Templates pages
+├── css/           # Styles modulaires
+├── js/            # Scripts vanilla
+├── pages/         # Pages FR/EN
+└── images/         # Mockups SVG
+🌍 URLs
+Page	FR	EN
+Accueil	/fr/	/en/
+Produit	/fr/plans/villa-3-chambres-v3-037/	/en/plans/villa-3-bedrooms-v3-037/
+Checkout	/fr/checkout/	/en/checkout/
+Merci	/fr/merci/	/en/thanks/
+⚡ Temps de chargement attendu
+Métrique	Objectif	3G Afrique
+FCP	< 1s	< 2.5s
+LCP	< 2s	< 4s
+TTI	< 1.5s	< 3.5s
+Lighthouse	> 90	> 80
+🔒 Sécurité
+Header	Valeur
+X-Frame-Options	DENY
+X-Content-Type-Options	nosniff
+Referrer-Policy	strict-origin-when-cross-origin
+Permissions-Policy	géolocalisation, microphone, caméra désactivés
