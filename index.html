@@ -177,58 +177,50 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .card-btn svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none}
 
 /* ── DETAIL OVERLAY ── */
-#detail-overlay{position:fixed;inset:0;top:36px;z-index:200;display:none;align-items:stretch}
-#detail-overlay.open{display:flex}
-.det-backdrop{position:absolute;inset:0;background:rgba(10,8,5,.6);backdrop-filter:blur(5px);animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.det-panel{position:relative;z-index:1;width:min(880px,100vw);margin-left:auto;background:var(--creme);overflow-y:auto;animation:slideR .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;
-  /* espace pour sticky bar mobile */
-  padding-bottom:80px;
-}
-@keyframes slideR{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}
-
-.det-header{position:sticky;top:0;z-index:10;background:var(--creme);border-bottom:1px solid var(--creme-3);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
-.det-crumb{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);background:none;border:none;cursor:pointer;font-family:inherit;padding:0;transition:color .2s}
-.det-crumb:hover{color:var(--terre)}
-.det-close{width:38px;height:38px;border:1.5px solid var(--gris-clair);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px}
-.det-close:hover{background:var(--brun);border-color:var(--brun)}
-.det-close:hover svg{stroke:var(--or)}
-.det-close svg{width:16px;height:16px;stroke:var(--brun);stroke-width:2;fill:none}
-
-/* Galerie */
-.det-gallery{background:var(--brun);position:relative}
-.gal-main{position:relative;aspect-ratio:16/10;overflow:hidden;cursor:pointer}
-.gal-img{width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
-/* Optimisation LCP : image visible immédiatement si src présent */
-.gal-img[src]{opacity:1!important}
-/* Éviter le CLS sur l'image principale */
-#gal-img{min-height:200px;background:var(--brun-moyen)}
+#detail-overlay{position:fixed;inset:0;z-index:200;display:none;overflow-y:auto;background:var(--creme)}
+#detail-overlay.open{display:block}
 #detail-overlay,#checkout-overlay{contain:layout style paint}
-.gal-counter{position:absolute;bottom:14px;right:14px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.9);font-size:.78rem;padding:5px 11px;letter-spacing:.06em}
-.gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none}
-.gal-btn{width:42px;height:42px;background:rgba(250,247,242,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);cursor:pointer;pointer-events:all;display:flex;align-items:center;justify-content:center;transition:background .2s;border-radius:4px}
-.gal-btn:hover{background:rgba(250,247,242,.3)}
-.gal-btn svg{width:18px;height:18px;stroke:white;stroke-width:2;fill:none}
-@media(max-width:768px){.gal-btn{width:54px;height:54px;}.gal-btn svg{width:22px;height:22px;}}
-.gal-thumbs{display:flex;gap:3px;padding:3px;overflow-x:auto;scrollbar-width:none}
-.gal-thumbs::-webkit-scrollbar{display:none}
-.gal-thumb{flex-shrink:0;width:78px;height:58px;overflow:hidden;cursor:pointer;opacity:.45;transition:opacity .2s;border:2px solid transparent}
-.gal-thumb:hover{opacity:.75}
-.gal-thumb.active{opacity:1;border-color:var(--or)}
-.gal-thumb img{width:100%;height:100%;object-fit:cover}
 
-/* Contenu détail */
-.det-content{padding:28px;display:grid;grid-template-columns:1fr 300px;gap:28px}
-.det-main{}
-.det-type-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.det-type-pill{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;font-weight:600}
-.det-stars{display:flex;align-items:center;gap:4px;font-size:.85rem;color:var(--gris);cursor:default;user-select:none}
-.det-stars svg{width:14px;height:14px;fill:var(--or);stroke:none}
+/* Bouton fermer fixe */
+.det-close-fixed{position:fixed;top:16px;right:16px;z-index:999;width:44px;height:44px;border-radius:50%;background:var(--brun);color:var(--or);border:2px solid var(--or);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:background .2s,transform .15s}
+.det-close-fixed:hover{background:var(--or);color:var(--brun);transform:scale(1.08)}
+.det-close-fixed svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none}
+#detail-overlay.open .det-close-fixed{display:flex}
+
+/* Panel principal */
+.det-panel{max-width:860px;margin:0 auto;padding-bottom:100px}
+
+/* ── COVER HEADER ── */
+.det-cover-header{background:var(--brun);padding:60px 24px 28px}
+.det-cover-badge{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;margin-bottom:10px}
+.det-cover-stars{display:flex;align-items:center;gap:4px;font-size:.82rem;color:rgba(255,255,255,.6);margin-bottom:14px}
+.det-cover-stars svg{width:13px;height:13px;fill:var(--or);stroke:none}
+.det-cover-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,6vw,2.8rem);font-weight:700;line-height:1.1;color:#fff;margin-bottom:8px}
+.det-cover-sub{font-size:.88rem;color:rgba(255,255,255,.6);margin-bottom:18px}
+.det-cover-specs{display:flex;flex-wrap:wrap;gap:8px}
+.det-cover-spec{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:5px 12px;font-size:.78rem;color:var(--or-pale)}
+
+/* ── COVER IMAGE ── */
+.det-cover-img-wrap{width:100%;overflow:hidden;height:clamp(260px,50vw,480px)}
+.det-cover-img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+/* Optimisation LCP */
+#gal-img{min-height:200px;background:var(--brun-moyen);width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.gal-img[src]{opacity:1!important}
+
+/* ── SECTIONS DE PLANS ── */
+.det-section{padding:48px 24px;border-top:1px solid var(--creme-2)}
+.det-section-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--or);font-weight:600;margin-bottom:8px}
+.det-section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:var(--brun);margin-bottom:24px;line-height:1.2}
+.det-plan-block{margin-bottom:16px}
+.det-plan-img-wrap{background:#fff;border:1px solid var(--creme-2);box-shadow:var(--shadow);overflow:hidden;text-align:center}
+.det-plan-img-wrap img{width:100%;height:auto;display:block}
+.det-plan-caption{padding:14px 18px;background:var(--brun);color:var(--or-pale);font-size:.78rem;letter-spacing:.06em;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.det-plan-caption strong{font-size:.9rem;color:#fff}
+
+/* Compatibilité (anciens éléments non utilisés, conservés pour JS) */
+.det-type-pill{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;font-weight:700}
 .det-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--brun);margin-bottom:8px;line-height:1.2}
 .det-subtitle{font-size:.95rem;color:var(--gris-fonce);margin-bottom:24px;line-height:1.6}
-.det-specs-row{display:flex;gap:20px;flex-wrap:wrap;padding:18px 0;border-top:1px solid var(--creme-2);border-bottom:1px solid var(--creme-2);margin-bottom:22px}
-.det-spec-lbl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:3px;display:flex;align-items:center;gap:5px}
-.det-spec-val{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:var(--brun)}
 /* info-bulle */
 .tooltip-wrap{position:relative;display:inline-flex;align-items:center}
 .tooltip-icon{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--gris-clair);color:var(--gris);font-size:.6rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:default;line-height:1;font-family:'DM Sans',sans-serif;flex-shrink:0}
@@ -241,7 +233,7 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 
 /* ── SIDEBAR ACHAT ── */
 .det-sidebar{}
-.purchase-box{position:sticky;top:74px;display:flex;flex-direction:column;gap:12px}
+.purchase-box{display:flex;flex-direction:column;gap:12px}
 .pbox-title{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:4px;font-weight:500}
 .pbox-total{background:linear-gradient(135deg,#fdf6e3,#f5e9c4);border:1.5px solid var(--or);padding:14px 16px;margin-bottom:4px}
 .pbox-total-tag{display:inline-block;background:var(--or);color:var(--brun);font-size:.63rem;font-weight:700;letter-spacing:.08em;padding:2px 8px;text-transform:uppercase;margin-bottom:7px}
@@ -473,10 +465,9 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   .concept-step{padding:28px 0;border-bottom:1px solid rgba(255,255,255,.07)}
   .concept-step:last-child{border-bottom:none}
   .plans-grid{grid-template-columns:1fr}
-  .det-panel{width:100vw}
-  .det-content{grid-template-columns:1fr;gap:20px}
   .det-features{grid-template-columns:1fr}
-  .purchase-box{position:static}
+  .det-section{padding:36px 16px}
+  .det-cover-header{padding:52px 16px 22px}
   /* sticky-bar géré par JS uniquement */
   .ft-inner{grid-template-columns:1fr;gap:28px}
   nav{padding:0 18px}
@@ -652,119 +643,113 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 
 <!-- ═══ DETAIL OVERLAY ═══ -->
 <div id="detail-overlay">
-  <div class="det-backdrop" onclick="closeDetail()"></div>
+
+  <!-- Bouton fermer fixe -->
+  <button class="det-close-fixed" onclick="closeDetail()" title="Retour au catalogue" aria-label="Fermer">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+
   <div class="det-panel">
-    <div class="det-header">
-      <button class="det-crumb" onclick="closeDetail()" title="Retour au catalogue">Catalogue &rsaquo; Detail du plan</button>
-      <button class="det-close" onclick="closeDetail()">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
 
-    <div class="det-gallery">
-      <div class="gal-main" id="gal-main">
-        <img class="gal-img" id="gal-img" src="" alt="" fetchpriority="high">
-        <video class="gal-img" id="gal-video" src="" controls playsinline style="display:none"></video>
-        <div class="gal-counter" id="gal-counter">1 / 4</div>
-        <div class="gal-nav">
-          <button class="gal-btn" onclick="galNav(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-          <button class="gal-btn" onclick="galNav(1)"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <!-- COVER HEADER (fond sombre) -->
+    <div class="det-cover-header">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <span class="det-type-pill det-cover-badge" id="det-pill">Villa</span>
+        <div class="det-cover-stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span id="det-rating">4.8</span>&nbsp;<span style="color:rgba(255,255,255,.3)">·</span>&nbsp;<span id="det-reviews">18 avis</span>
         </div>
       </div>
-      <div class="gal-thumbs" id="gal-thumbs"></div>
+      <h1 class="det-cover-title" id="det-title">—</h1>
+      <p class="det-cover-sub" id="det-subtitle">—</p>
+      <div class="det-cover-specs">
+        <span class="det-cover-spec" id="det-area">—</span>
+        <span class="det-cover-spec" id="det-beds-baths-spec">—</span>
+        <span class="det-cover-spec" id="det-floors-spec">—</span>
+        <span class="det-cover-spec" id="det-cost-spec">—</span>
+        <!-- Éléments masqués conservés pour la compatibilité JS -->
+        <span style="display:none" id="det-beds">—</span>
+        <span style="display:none" id="det-baths">—</span>
+        <span style="display:none" id="det-floors">—</span>
+        <span style="display:none" id="det-cost">—</span>
+        <span style="display:none" id="det-terrain">—</span>
+        <span style="display:none" id="det-terrain-wrap"></span>
+      </div>
     </div>
 
+    <!-- COVER IMAGE (première image = LCP) -->
+    <div class="det-cover-img-wrap">
+      <img class="det-cover-img gal-img" id="gal-img" src="" alt="" fetchpriority="high" loading="eager">
+    </div>
 
-    <div class="det-content">
-      <div class="det-main">
-        <div class="det-type-row">
-          <span class="det-type-pill" id="det-pill">Villa</span>
-          <div class="det-stars">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span id="det-rating">4.8</span>&nbsp;<span style="color:var(--gris-clair)">·</span>&nbsp;<span id="det-reviews">18 avis</span>
-          </div>
+    <!-- SECTIONS IMAGES DYNAMIQUES (remplies par JS) -->
+    <div id="det-plan-sections"></div>
+
+    <!-- DESCRIPTION + FEATURES -->
+    <section class="det-section" id="det-desc-section">
+      <div class="det-section-label">Description</div>
+      <h2 class="det-section-title">À propos de ce plan</h2>
+      <p class="det-desc" id="det-desc">—</p>
+      <ul class="det-features" id="det-features"></ul>
+    </section>
+
+    <!-- SECTION ACHAT -->
+    <section class="det-section">
+      <div class="det-section-label">Formule</div>
+      <h2 class="det-section-title">Choisissez votre formule</h2>
+      <div class="purchase-box">
+        <!-- Données prix masquées pour les calculs JS -->
+        <div style="display:none" aria-hidden="true">
+          <div id="pbox-total-val">—</div>
+          <div id="pbox-acompte">—</div>
+          <div id="pbox-solde">—</div>
         </div>
-        <h2 class="det-title" id="det-title">—</h2>
-        <p class="det-subtitle" id="det-subtitle">—</p>
-        <div class="det-specs-row">
-          <div>
-            <div class="det-spec-lbl">
-              Surface
-              <span class="tooltip-wrap">
-                <span class="tooltip-icon">?</span>
-                <span class="tooltip-box">Surface totale bâtie (RDC + Étage pour les duplex)</span>
-              </span>
+
+        <!-- CARTE 1 : PLAN BASIQUE -->
+        <div class="opt-card featured selected" id="opt-card-1">
+          <div class="opt-promo-badge">−50%</div>
+          <div class="opt-card-head">
+            <div class="opt-card-left">
+              <div class="opt-card-name">Plan Basique + Devis</div>
+              <div class="opt-card-sub">Pour demarrer et personnaliser votre projet</div>
             </div>
-            <div class="det-spec-val" id="det-area">—</div>
-          </div>
-          <div><div class="det-spec-lbl">Chambres</div><div class="det-spec-val" id="det-beds">—</div></div>
-          <div><div class="det-spec-lbl">Salles de bain</div><div class="det-spec-val" id="det-baths">—</div></div>
-          <div><div class="det-spec-lbl">Niveaux</div><div class="det-spec-val" id="det-floors">—</div></div>
-          <div id="det-terrain-wrap" style="display:none"><div class="det-spec-lbl">Terrain</div><div class="det-spec-val" id="det-terrain">—</div></div>
-          <div><div class="det-spec-lbl">Coût estimé</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
-        </div>
-        <p class="det-desc" id="det-desc">—</p>
-        <ul class="det-features" id="det-features"></ul>
-
-      </div>
-
-      <!-- SIDEBAR -->
-      <div class="det-sidebar">
-        <div class="purchase-box">
-          <div class="pbox-total" style="display:none" aria-hidden="true">
-            <div class="pbox-total-tag">💳 Paiement en 2 versements</div>
-            <div class="pbox-total-label">Prix total du dossier complet</div>
-            <div class="pbox-total-val" id="pbox-total-val">— FCFA</div>
-            <div class="pbox-total-sub">Avance&nbsp;<strong id="pbox-acompte">—</strong>&nbsp;FCFA · Solde&nbsp;<strong id="pbox-solde">—</strong>&nbsp;FCFA</div>
-          </div>
-
-          <!-- CARTE 1 : PLAN BASIQUE -->
-          <div class="opt-card featured selected" id="opt-card-1">
-            <div class="opt-promo-badge">−50%</div>
-            <div class="opt-card-head">
-              <div class="opt-card-left">
-                <div class="opt-card-name">Plan Basique + Devis</div>
-                <div class="opt-card-sub">Pour demarrer et personnaliser votre projet</div>
-              </div>
-              <div class="opt-card-price">
-                <div class="opt-price-old">30 000 FCFA</div>
-                <div class="opt-price-val" id="price-basic">—</div>
-                <div class="opt-price-cur">FCFA</div>
-              </div>
+            <div class="opt-card-price">
+              <div class="opt-price-old">30 000 FCFA</div>
+              <div class="opt-price-val" id="price-basic">—</div>
+              <div class="opt-price-cur">FCFA</div>
             </div>
-            <span class="opt-card-tag tag-inst" style="margin-bottom:12px;display:inline-flex">&#9889; INSTANTANE</span>
-            <ul class="opt-card-items">
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution et dimensions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendu 3D exterieurs</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Echange avec un architecte sur WhatsApp</li>
-            </ul>
-            <a class="voir-exemple-link" id="voir-exemple-link" href="/exemples/d4-034/" onclick="track('voir_exemple',{plan_id:currentPlan&&currentPlan.id,plan_type:currentPlan&&currentPlan.type,plan_title:currentPlan&&currentPlan.title});(function(){var ua=navigator.userAgent||'';if(/FBAN|FBAV|Instagram|FB_IAB/.test(ua)){window.location.href='/exemples/d4-034/';}else{var w=window.open('/exemples/d4-034/','_blank');if(!w)window.location.href='/exemples/d4-034/';}})();return false;">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              Voir un exemple
-            </a>
           </div>
+          <span class="opt-card-tag tag-inst" style="margin-bottom:12px;display:inline-flex">&#9889; INSTANTANE</span>
+          <ul class="opt-card-items">
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution et dimensions</li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendu 3D exterieurs</li>
+            <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Echange avec un architecte sur WhatsApp</li>
+          </ul>
+          <a class="voir-exemple-link" id="voir-exemple-link" href="/exemples/d4-034/" onclick="track('voir_exemple',{plan_id:currentPlan&&currentPlan.id,plan_type:currentPlan&&currentPlan.type,plan_title:currentPlan&&currentPlan.title});(function(){var ua=navigator.userAgent||'';if(/FBAN|FBAV|Instagram|FB_IAB/.test(ua)){window.location.href='/exemples/d4-034/';}else{var w=window.open('/exemples/d4-034/','_blank');if(!w)window.location.href='/exemples/d4-034/';}})();return false;">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Voir un exemple
+          </a>
+        </div>
 
-          <button class="cta-main" onclick="selectOpt(1);openCheckout()">
-            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Telecharger maintenant
-          </button>
-          <div class="trust-note" id="trust-cta-note" style="margin-bottom:22px">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Paiement Mobile Money au <strong id="trust-country-name">Cameroun</strong>
-          </div>
+        <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Telecharger maintenant
+        </button>
+        <div class="trust-note" id="trust-cta-note" style="margin-bottom:22px">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Paiement Mobile Money au <strong id="trust-country-name">Cameroun</strong>
+        </div>
 
-          <!-- CARTE 2 masquée + bouton hint -->
-          <div id="opt-card-2" style="display:none" aria-hidden="true">
-            <div class="opt-price-val" id="price-complete" style="display:none">—</div>
-          </div>
-
+        <!-- Carte 2 masquée pour JS -->
+        <div id="opt-card-2" style="display:none" aria-hidden="true">
+          <div class="opt-price-val" id="price-complete" style="display:none">—</div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Témoignages dans le panneau de détail -->
-    <div style="padding:36px 28px 8px;border-top:1px solid var(--creme-3);background:var(--creme)">
+    <!-- TÉMOIGNAGES -->
+    <div style="padding:36px 24px 8px;border-top:1px solid var(--creme-3);background:var(--creme)">
       <div class="temo-eyebrow" style="text-align:center;margin-bottom:16px">Ils ont fait confiance à WooPlans</div>
       <div class="temo-wrap" style="max-width:420px">
         <div class="temo-track" id="temo-track-2">
@@ -781,8 +766,8 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="temo-dots" id="temo-dots-2" style="margin-top:16px"></div>
     </div>
 
-    <!-- FAQ — pleine largeur, après les formules -->
-    <section class="faq-section" style="margin-top:0;border-top:1px solid var(--creme-3);padding:36px 28px 44px">
+    <!-- FAQ -->
+    <section class="faq-section" style="border-top:1px solid var(--creme-3);padding:36px 24px 44px">
       <h3 class="faq-section-title">Questions fréquentes</h3>
 
       <details class="faq-item">
@@ -834,19 +819,15 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         <!-- PARTAGE SOCIAL -->
         <div class="share-row">
           <span class="share-label">Partager</span>
-          <!-- WhatsApp -->
           <a class="share-btn share-wa" id="share-wa" href="#" target="_blank" rel="noopener" title="Partager sur WhatsApp">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
           </a>
-          <!-- Facebook -->
           <a class="share-btn share-fb" id="share-fb" href="#" target="_blank" rel="noopener" title="Partager sur Facebook">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
           </a>
-          <!-- X / Twitter -->
           <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener" title="Partager sur X">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
-          <!-- Copier le lien -->
           <button class="share-btn share-copy" id="share-copy" onclick="copyPlanLink()" title="Copier le lien">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>
@@ -1376,78 +1357,13 @@ function openDetail(id,skipPush){
   });
   imgIdx=0; selectedOpt=1; ddOpen=false;
 
-  document.getElementById('det-title').textContent=currentPlan.title;
-  document.getElementById('det-subtitle').textContent=currentPlan.subtitle;
-  document.getElementById('det-area').textContent=(currentPlan.area||'').replace(/[\d\s,.]+/,function(m){return Math.round(parseFloat(m.replace(',','.').replace(/\s/g,'')));});
-
-  // Terrain
-  const terrainWrap=document.getElementById('det-terrain-wrap');
-  if(currentPlan.terrain){
-    document.getElementById('det-terrain').textContent=currentPlan.terrain;
-    terrainWrap.style.display='';
-  } else { terrainWrap.style.display='none'; }
-
-  document.getElementById('det-beds').textContent=currentPlan.beds;
-  document.getElementById('det-baths').textContent=currentPlan.baths;
-  document.getElementById('det-floors').textContent=currentPlan.floors+(currentPlan.floors>1?' niveaux':' niveau');
-  // Coût estimé calculé automatiquement depuis la surface
-  (function(){
-    var area=currentPlan.area||'';
-    var m=area.match(/(\d[\d\s]*)/);
-    var sqm=m?parseFloat(m[1].replace(/\s/g,'')):0;
-    var costTxt='—';
-    if(sqm>0){
-      var lo=sqm*150000, hi=sqm*200000;
-      function fmtM(n){return Math.round(n/1000000)+' M';}
-      costTxt='de '+fmtM(lo)+' à '+fmtM(hi)+' Fcfa';
-    }
-    document.getElementById('det-cost').textContent=costTxt;
-  })();
-  document.getElementById('det-rating').textContent=currentPlan.rating;
-  document.getElementById('det-reviews').textContent=(currentPlan.reviews??0)+' avis';
-  document.getElementById('det-desc').textContent=currentPlan.desc;
-
-  const pill=document.getElementById('det-pill');
-  pill.textContent=currentPlan.type.charAt(0).toUpperCase()+currentPlan.type.slice(1);
-  pill.className='det-type-pill '+(currentPlan.type==='villa'?'badge-villa':'badge-duplex');
-
-  document.getElementById('det-features').innerHTML=(currentPlan.features||[]).map(f=>`
-    <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${f}</li>
-  `).join('');
-
-  document.getElementById('price-basic').textContent=currentPlan.priceBasic;
-  document.getElementById('price-complete').textContent=currentPlan.priceComplete;
-  var _hint=document.getElementById('price-complete-hint');if(_hint)_hint.textContent=currentPlan.priceComplete||'—';
-  // Total = acompte basique + solde complet
-  (function(){var b=parseFloat((currentPlan.priceBasic||'0').replace(/\s/g,''))||0,c=parseFloat((currentPlan.priceComplete||'0').replace(/\s/g,''))||0,t=b+c;var fp=function(n){return n.toLocaleString('fr-FR');};document.getElementById('pbox-total-val').textContent=fp(t)+' FCFA';document.getElementById('pbox-acompte').textContent=fp(b);document.getElementById('pbox-solde').textContent=fp(c);})();
-
-  // Reset dropdowns
-  ['dd1','dd2'].forEach(function(id){
-    var b=document.getElementById(id+'-body');
-    var btn=document.getElementById(id+'-btn');
-    if(b)b.classList.remove('open');
-    if(btn)btn.classList.remove('open');
-    var lbl=document.getElementById(id+'-label');
-    if(lbl)lbl.textContent='Voir tous les details';
-  });
-
-  // Remplir les extras
-  if(currentPlan.extrasBasic){
-    var el1=document.getElementById('dd1-extras');
-    if(el1) el1.innerHTML=currentPlan.extrasBasic.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
-  }
-  var dd2btn=document.getElementById('dd2-btn');
-  if(currentPlan.extrasComplete && currentPlan.extrasComplete.length){
-    var el2=document.getElementById('dd2-extras');
-    if(el2) el2.innerHTML=currentPlan.extrasComplete.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
-    if(dd2btn) dd2btn.style.display='';
-  } else {
-    if(dd2btn) dd2btn.style.display='none';
-  }
+  fillDetailData(currentPlan);
+  renderCoverImage(currentPlan, false);
+  renderPlanSections(currentPlan);
 
   updateOptUI();
-  renderGallery();
   document.getElementById('detail-overlay').classList.add('open');
+  document.getElementById('detail-overlay').scrollTop=0;
   document.body.style.overflow='hidden';
   if(!skipPush){
     history.pushState({planId:id},'','/plans/'+slugify(currentPlan.title));
@@ -1482,128 +1398,16 @@ function openDetailFast(id) {
   if (!currentPlan) return;
   
   imgIdx = 0; selectedOpt = 1; ddOpen = false;
-  
-  // Remplissage rapide des données (sans animations)
-  document.getElementById('det-title').textContent = currentPlan.title;
-  document.getElementById('det-subtitle').textContent = currentPlan.subtitle;
-  document.getElementById('det-area').textContent = (currentPlan.area||'').replace(/[\d\s,.]+/, function(m){ return Math.round(parseFloat(m.replace(',','.').replace(/\s/g,''))); });
 
-  // Terrain
-  const terrainWrap = document.getElementById('det-terrain-wrap');
-  if (currentPlan.terrain) {
-    document.getElementById('det-terrain').textContent = currentPlan.terrain;
-    terrainWrap.style.display = '';
-  } else { terrainWrap.style.display = 'none'; }
-  
-  document.getElementById('det-beds').textContent = currentPlan.beds;
-  document.getElementById('det-baths').textContent = currentPlan.baths;
-  document.getElementById('det-floors').textContent = currentPlan.floors + (currentPlan.floors > 1 ? ' niveaux' : ' niveau');
-  
-  // Coût estimé
-  (function(){
-    var area = currentPlan.area || '';
-    var m = area.match(/(\d[\d\s]*)/);
-    var sqm = m ? parseFloat(m[1].replace(/\s/g,'')) : 0;
-    var costTxt = '—';
-    if (sqm > 0) {
-      var lo = sqm * 150000, hi = sqm * 200000;
-      function fmtM(n) { return Math.round(n / 1000000) + ' M'; }
-      costTxt = 'de ' + fmtM(lo) + ' à ' + fmtM(hi) + ' Fcfa';
-    }
-    document.getElementById('det-cost').textContent = costTxt;
-  })();
-  
-  document.getElementById('det-rating').textContent = currentPlan.rating;
-  document.getElementById('det-reviews').textContent = (currentPlan.reviews??0) + ' avis';
-  document.getElementById('det-desc').textContent = currentPlan.desc;
-  
-  const pill = document.getElementById('det-pill');
-  pill.textContent = currentPlan.type.charAt(0).toUpperCase() + currentPlan.type.slice(1);
-  pill.className = 'det-type-pill ' + (currentPlan.type === 'villa' ? 'badge-villa' : 'badge-duplex');
-  
-  document.getElementById('det-features').innerHTML = (currentPlan.features || []).map(f => 
-    `<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${f}</li>`
-  ).join('');
-  
-  document.getElementById('price-basic').textContent = currentPlan.priceBasic;
-  document.getElementById('price-complete').textContent = currentPlan.priceComplete;
-  var _hint2=document.getElementById('price-complete-hint');if(_hint2)_hint2.textContent=currentPlan.priceComplete||'—';
-  // Total = acompte basique + solde complet
-  (function(){ var b=parseFloat((currentPlan.priceBasic||'0').replace(/\s/g,''))||0, c=parseFloat((currentPlan.priceComplete||'0').replace(/\s/g,''))||0, t=b+c; var fp=function(n){return n.toLocaleString('fr-FR');}; document.getElementById('pbox-total-val').textContent=fp(t)+' FCFA'; document.getElementById('pbox-acompte').textContent=fp(b); document.getElementById('pbox-solde').textContent=fp(c); })();
+  fillDetailData(currentPlan);
+  renderCoverImage(currentPlan, true); // immediate=true pour LCP
+  renderPlanSections(currentPlan);
 
-  // Reset dropdowns
-  ['dd1', 'dd2'].forEach(function(id) {
-    var b = document.getElementById(id + '-body');
-    var btn = document.getElementById(id + '-btn');
-    if (b) b.classList.remove('open');
-    if (btn) btn.classList.remove('open');
-    var lbl = document.getElementById(id + '-label');
-    if (lbl) lbl.textContent = 'Voir tous les details';
-  });
-  
-  // Remplir les extras
-  if (currentPlan.extrasBasic) {
-    var el1 = document.getElementById('dd1-extras');
-    if (el1) el1.innerHTML = currentPlan.extrasBasic.map(function(x) { return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' + x + '</li>'; }).join('');
-  }
-  var dd2btn = document.getElementById('dd2-btn');
-  if (currentPlan.extrasComplete && currentPlan.extrasComplete.length) {
-    var el2 = document.getElementById('dd2-extras');
-    if (el2) el2.innerHTML = currentPlan.extrasComplete.map(function(x) { return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' + x + '</li>'; }).join('');
-    if (dd2btn) dd2btn.style.display = '';
-  } else {
-    if (dd2btn) dd2btn.style.display = 'none';
-  }
-  
   updateOptUI();
-  
-  // GALERIE OPTIMISÉE - Affichage immédiat sans animation pour LCP
-  galMedia = [];
-  if (currentPlan.video_url) {
-    galMedia.push({ type: 'video', src: currentPlan.video_url });
-  }
-  (currentPlan.images || []).forEach(function(s) {
-    galMedia.push({ type: 'image', src: s });
-  });
-  
-  // Affichage IMMÉDIAT de l'image (pas de fade-in pour LCP)
-  if (galMedia.length) {
-    var m = galMedia[0];
-    var imgEl = document.getElementById('gal-img');
-    var vidEl = document.getElementById('gal-video');
-    if (m.type === 'video') {
-      imgEl.style.display = 'none';
-      vidEl.style.display = 'block';
-      vidEl.src = m.src;
-      vidEl.style.opacity = '1';
-    } else {
-      vidEl.style.display = 'none';
-      imgEl.style.display = 'block';
-      // Image optimisée pour LCP rapide — taille adaptée mobile/desktop
-      var galW = window.innerWidth <= 768 ? 750 : 900;
-      var optimizedSrc = m.src;
-      if (optimizedSrc.includes('b-cdn.net')) {
-        optimizedSrc = optimizedSrc + '?width=' + galW + '&quality=75&format=webp';
-      }
-      imgEl.src = optimizedSrc;
-      imgEl.style.opacity = '1'; // Pas d'animation !
-    }
-    document.getElementById('gal-counter').textContent = '1 / ' + galMedia.length;
-  }
-  
-  // Thumbnails (lazy loaded)
-  document.getElementById('gal-thumbs').innerHTML = galMedia.map(function(m, i) {
-    if (m.type === 'video') {
-      return '<div class="gal-thumb ' + (i === 0 ? 'active' : '') + '" onclick="setImg(' + i + ')">' +
-        '<div style="width:100%;height:100%;background:var(--brun);display:flex;align-items:center;justify-content:center">' +
-        '<svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--or);stroke:none"><polygon points="5 3 19 12 5 21"/></svg></div></div>';
-    }
-    return '<div class="gal-thumb ' + (i === 0 ? 'active' : '') + '" onclick="setImg(' + i + ')">' +
-      '<img src="' + thumbUrl(m.src, 160) + '" alt="" loading="lazy" width="78" height="58"></div>';
-  }).join('');
-  
-  // Ouvrir l'overlay
+
+  // Ouvrir l'overlay immédiatement (pas d'animation pour LCP)
   document.getElementById('detail-overlay').classList.add('open');
+  document.getElementById('detail-overlay').scrollTop = 0;
   document.body.style.overflow = 'hidden';
   
   // Sticky bar mobile
@@ -1668,64 +1472,99 @@ function closeDetail(){
   resetMetaTags();
 }
 
-// ── GALERIE ──────────────────────────────────────────────────
+// ── REMPLISSAGE DES DONNÉES ──────────────────────────────────
 
-function renderGallery(){
-  galMedia=[];
-  // Video en premier si disponible
-  if(currentPlan.video_url){
-    galMedia.push({type:'video',src:currentPlan.video_url});
-  }
-  (currentPlan.images||[]).forEach(function(s){
-    galMedia.push({type:'image',src:s});
-  });
-  setImg(0, true); // immediate=true → LCP visible sans délai
-  document.getElementById('gal-thumbs').innerHTML=galMedia.map(function(m,i){
-    if(m.type==='video'){
-      return '<div class="gal-thumb '+(i===0?'active':'')+'" onclick="setImg('+i+')">' +
-        '<div style="width:100%;height:100%;background:var(--brun);display:flex;align-items:center;justify-content:center">' +
-        '<svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--or);stroke:none"><polygon points="5 3 19 12 5 21"/></svg></div></div>';
+function fillDetailData(plan){
+  document.getElementById('det-title').textContent=plan.title;
+  document.getElementById('det-subtitle').textContent=plan.subtitle;
+  document.getElementById('det-area').textContent=(plan.area||'').replace(/[\d\s,.]+/,function(m){return Math.round(parseFloat(m.replace(',','.').replace(/\s/g,'')));});
+  document.getElementById('det-beds-baths-spec').textContent=(plan.beds||'—')+' ch. \u00b7 '+(plan.baths||'—')+' sdb';
+  document.getElementById('det-floors-spec').textContent=(plan.floors||'—')+((plan.floors>1)?' niveaux':' niveau');
+
+  // Coût estimé
+  (function(){
+    var area=plan.area||'';
+    var m=area.match(/(\d[\d\s]*)/);
+    var sqm=m?parseFloat(m[1].replace(/\s/g,'')):0;
+    var costTxt='—';
+    if(sqm>0){
+      var lo=sqm*150000,hi=sqm*200000;
+      function fmtM(n){return Math.round(n/1000000)+' M';}
+      costTxt='de '+fmtM(lo)+' à '+fmtM(hi)+' Fcfa';
     }
-    return '<div class="gal-thumb '+(i===0?'active':'')+'" onclick="setImg('+i+')">' +
-      '<img src="'+thumbUrl(m.src,160)+'" alt="" loading="lazy" width="78" height="58"></div>';
+    document.getElementById('det-cost-spec').textContent=costTxt;
+    document.getElementById('det-cost').textContent=costTxt;
+  })();
+
+  // Éléments masqués (compat)
+  document.getElementById('det-beds').textContent=plan.beds;
+  document.getElementById('det-baths').textContent=plan.baths;
+  document.getElementById('det-floors').textContent=plan.floors+((plan.floors>1)?' niveaux':' niveau');
+
+  document.getElementById('det-rating').textContent=plan.rating;
+  document.getElementById('det-reviews').textContent=(plan.reviews??0)+' avis';
+  document.getElementById('det-desc').textContent=plan.desc;
+
+  var pill=document.getElementById('det-pill');
+  pill.textContent=plan.type.charAt(0).toUpperCase()+plan.type.slice(1);
+  pill.className='det-type-pill det-cover-badge '+(plan.type==='villa'?'badge-villa':'badge-duplex');
+
+  document.getElementById('det-features').innerHTML=(plan.features||[]).map(function(f){
+    return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+f+'</li>';
+  }).join('');
+
+  document.getElementById('price-basic').textContent=plan.priceBasic;
+  document.getElementById('price-complete').textContent=plan.priceComplete;
+  (function(){var b=parseFloat((plan.priceBasic||'0').replace(/\s/g,''))||0,c=parseFloat((plan.priceComplete||'0').replace(/\s/g,''))||0,t=b+c;var fp=function(n){return n.toLocaleString('fr-FR');};document.getElementById('pbox-total-val').textContent=fp(t)+' FCFA';document.getElementById('pbox-acompte').textContent=fp(b);document.getElementById('pbox-solde').textContent=fp(c);})();
+}
+
+// ── IMAGE DE COUVERTURE (LCP) ─────────────────────────────────
+
+function renderCoverImage(plan, immediate){
+  var imgs=plan.images||[];
+  var src=imgs[0]||'';
+  if(!src)return;
+  var galW=window.innerWidth<=768?750:860;
+  var optimized=src;
+  if(optimized.includes('b-cdn.net')) optimized=optimized+'?width='+galW+'&quality=80&format=webp';
+  var imgEl=document.getElementById('gal-img');
+  imgEl.alt=plan.title;
+  if(immediate){
+    imgEl.src=optimized;
+    imgEl.style.opacity='1';
+  } else {
+    imgEl.style.opacity='0';
+    setTimeout(function(){imgEl.src=optimized;imgEl.style.opacity='1';},50);
+  }
+}
+
+// ── SECTIONS IMAGES ───────────────────────────────────────────
+
+function renderPlanSections(plan){
+  var container=document.getElementById('det-plan-sections');
+  if(!container)return;
+  var imgs=plan.images||[];
+  // images[1+] affichées en sections
+  if(imgs.length<=1){container.innerHTML='';return;}
+  container.innerHTML=imgs.slice(1).map(function(src,i){
+    var pageNum=i+2;
+    var optimized=src;
+    if(optimized.includes('b-cdn.net')) optimized=optimized+'?width=860&quality=80&format=webp';
+    return '<section class="det-section">'
+      +'<div class="det-section-label">Image '+pageNum+'</div>'
+      +'<div class="det-plan-block">'
+        +'<div class="det-plan-img-wrap">'
+          +'<img src="'+optimized+'" alt="'+plan.title+' - image '+pageNum+'" loading="lazy">'
+          +'<div class="det-plan-caption"><strong>'+plan.title+'</strong><span>'+pageNum+' / '+imgs.length+'</span></div>'
+        +'</div>'
+      +'</div>'
+      +'</section>';
   }).join('');
 }
 
-function setImg(i, immediate){
-  if(!galMedia.length)return;
-  imgIdx=(i+galMedia.length)%galMedia.length;
-  var m=galMedia[imgIdx];
-  var imgEl=document.getElementById('gal-img');
-  var vidEl=document.getElementById('gal-video');
-  if(m.type==='video'){
-    imgEl.style.display='none';
-    vidEl.style.display='block';
-    vidEl.src=m.src;
-    vidEl.style.opacity='1';
-  } else {
-    vidEl.style.display='none';
-    vidEl.pause();
-    imgEl.style.display='block';
-    // Taille adaptée à l'écran : mobile 750px (2× retina 375), desktop 900px
-    var galW = window.innerWidth <= 768 ? 750 : 900;
-    var optimizedSrc = m.src;
-    if(optimizedSrc.includes('b-cdn.net')){
-      optimizedSrc = optimizedSrc + '?width=' + galW + '&quality=75&format=webp';
-    }
-    if(immediate){
-      // Pas d'animation pour la première image : LCP visible immédiatement
-      imgEl.src=optimizedSrc;
-      imgEl.style.opacity='1';
-    } else {
-      imgEl.style.opacity='0';
-      setTimeout(function(){imgEl.src=optimizedSrc;imgEl.style.opacity='1';},200);
-    }
-  }
-  document.getElementById('gal-counter').textContent=(imgIdx+1)+' / '+galMedia.length;
-  document.querySelectorAll('.gal-thumb').forEach(function(t,j){t.classList.toggle('active',j===imgIdx)});
-}
-
-function galNav(d){setImg(imgIdx+d)}
+// Stubs conservés (claviers / swipe — non utilisés mais gardés pour éviter des erreurs)
+function setImg(){}
+function galNav(){}
 
 // Swipe
 let tx=0;
