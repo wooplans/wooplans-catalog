@@ -181,136 +181,146 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 #detail-overlay.open{display:flex}
 .det-backdrop{position:absolute;inset:0;background:rgba(10,8,5,.6);backdrop-filter:blur(5px);animation:fadeIn .3s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.det-panel{position:relative;z-index:1;width:min(880px,100vw);margin-left:auto;background:var(--creme);overflow-y:auto;animation:slideR .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;
-  /* espace pour sticky bar mobile */
-  padding-bottom:80px;
-}
+.det-panel{position:relative;z-index:1;width:100vw;background:var(--creme);overflow-y:auto;animation:slideR .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding-bottom:80px}
 @keyframes slideR{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}
+@media(min-width:769px){.det-panel{width:min(880px,100vw);margin-left:auto}}
 
-.det-header{position:sticky;top:0;z-index:10;background:var(--creme);border-bottom:1px solid var(--creme-3);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
-.det-crumb{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);background:none;border:none;cursor:pointer;font-family:inherit;padding:0;transition:color .2s}
+.det-header{position:sticky;top:0;z-index:10;background:var(--creme);border-bottom:1px solid var(--creme-3);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.det-crumb{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);background:none;border:none;cursor:pointer;font-family:inherit;padding:0;transition:color .2s;display:flex;align-items:center;gap:6px}
 .det-crumb:hover{color:var(--terre)}
+.det-crumb svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none}
 .det-close{width:38px;height:38px;border:1.5px solid var(--gris-clair);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px}
 .det-close:hover{background:var(--brun);border-color:var(--brun)}
 .det-close:hover svg{stroke:var(--or)}
 .det-close svg{width:16px;height:16px;stroke:var(--brun);stroke-width:2;fill:none}
 
-/* Galerie */
-.det-gallery{background:var(--brun);position:relative}
-.gal-main{position:relative;aspect-ratio:16/10;overflow:hidden;cursor:pointer}
-.gal-img{width:100%;height:100%;object-fit:cover;transition:opacity .35s ease}
-/* Optimisation LCP : image visible immédiatement si src présent */
-.gal-img[src]{opacity:1!important}
-/* Éviter le CLS sur l'image principale */
-#gal-img{min-height:200px;background:var(--brun-moyen)}
-#detail-overlay,#checkout-overlay{contain:layout style paint}
-.gal-counter{position:absolute;bottom:14px;right:14px;background:rgba(0,0,0,.45);color:rgba(255,255,255,.9);font-size:.78rem;padding:5px 11px;letter-spacing:.06em}
-.gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none}
-.gal-btn{width:42px;height:42px;background:rgba(250,247,242,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);cursor:pointer;pointer-events:all;display:flex;align-items:center;justify-content:center;transition:background .2s;border-radius:4px}
-.gal-btn:hover{background:rgba(250,247,242,.3)}
-.gal-btn svg{width:18px;height:18px;stroke:white;stroke-width:2;fill:none}
-@media(max-width:768px){.gal-btn{width:54px;height:54px;}.gal-btn svg{width:22px;height:22px;}}
-.gal-thumbs{display:flex;gap:3px;padding:3px;overflow-x:auto;scrollbar-width:none}
-.gal-thumbs::-webkit-scrollbar{display:none}
-.gal-thumb{flex-shrink:0;width:78px;height:58px;overflow:hidden;cursor:pointer;opacity:.45;transition:opacity .2s;border:2px solid transparent}
-.gal-thumb:hover{opacity:.75}
-.gal-thumb.active{opacity:1;border-color:var(--or)}
-.gal-thumb img{width:100%;height:100%;object-fit:cover}
+/* Flash offer bar */
+.det-flash-bar{background:var(--brun);color:var(--or);text-align:center;font-size:.78rem;font-weight:600;letter-spacing:.04em;padding:8px 16px}
+.det-flash-bar strong{color:#fff}
 
-/* Contenu détail */
-.det-content{padding:28px;display:grid;grid-template-columns:1fr 300px;gap:28px}
-.det-main{}
-.det-type-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.det-type-pill{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;font-weight:600}
-.det-stars{display:flex;align-items:center;gap:4px;font-size:.85rem;color:var(--gris);cursor:default;user-select:none}
-.det-stars svg{width:14px;height:14px;fill:var(--or);stroke:none}
-.det-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;color:var(--brun);margin-bottom:8px;line-height:1.2}
-.det-subtitle{font-size:.95rem;color:var(--gris-fonce);margin-bottom:24px;line-height:1.6}
-.det-specs-row{display:flex;gap:20px;flex-wrap:wrap;padding:18px 0;border-top:1px solid var(--creme-2);border-bottom:1px solid var(--creme-2);margin-bottom:22px}
-.det-spec-lbl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:3px;display:flex;align-items:center;gap:5px}
-.det-spec-val{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:var(--brun)}
-/* info-bulle */
-.tooltip-wrap{position:relative;display:inline-flex;align-items:center}
-.tooltip-icon{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--gris-clair);color:var(--gris);font-size:.6rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:default;line-height:1;font-family:'DM Sans',sans-serif;flex-shrink:0}
-.tooltip-box{position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);background:var(--brun);color:var(--or-pale);font-size:.72rem;font-weight:400;line-height:1.5;padding:8px 12px;border-radius:4px;white-space:nowrap;max-width:220px;white-space:normal;width:200px;z-index:50;pointer-events:none;opacity:0;transition:opacity .2s}
-.tooltip-wrap:hover .tooltip-box{opacity:1}
-.det-desc{font-size:.93rem;line-height:1.8;color:var(--gris-fonce);margin-bottom:22px}
-.det-features{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.det-features li{display:flex;align-items:flex-start;gap:8px;font-size:.88rem;color:var(--gris-fonce);line-height:1.5}
-.det-features li svg{width:15px;height:15px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0;margin-top:2px}
+/* Hero image */
+.det-hero{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--brun-moyen)}
+.det-hero img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.det-hero:hover img{transform:scale(1.02)}
+.det-hero-badge{position:absolute;top:16px;left:16px;padding:5px 14px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.det-hero-label{position:absolute;bottom:16px;left:16px;background:rgba(26,18,8,.75);backdrop-filter:blur(8px);color:var(--blanc);padding:8px 16px;font-size:.85rem;font-weight:500;border-radius:4px}
 
-/* ── SIDEBAR ACHAT ── */
-.det-sidebar{}
-.purchase-box{position:sticky;top:74px;display:flex;flex-direction:column;gap:12px}
-.pbox-title{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:4px;font-weight:500}
-.pbox-total{background:linear-gradient(135deg,#fdf6e3,#f5e9c4);border:1.5px solid var(--or);padding:14px 16px;margin-bottom:4px}
-.pbox-total-tag{display:inline-block;background:var(--or);color:var(--brun);font-size:.63rem;font-weight:700;letter-spacing:.08em;padding:2px 8px;text-transform:uppercase;margin-bottom:7px}
-.pbox-total-label{font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:5px}
-.pbox-total-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--brun);line-height:1;margin-bottom:5px}
-.pbox-total-sub{font-size:.72rem;color:var(--gris-fonce);line-height:1.6}
+/* Pricing section */
+.det-pricing{max-width:480px;margin:0 auto;padding:24px 20px 0;text-align:center}
+.det-pricing-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--brun);line-height:1.3;margin-bottom:8px}
+.det-pricing-desc{font-size:.9rem;color:var(--gris-fonce);line-height:1.6;margin-bottom:20px}
+.det-price-row{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:18px}
+.det-price-current{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:var(--brun);line-height:1}
+.det-price-current small{font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:400;color:var(--gris)}
+.det-price-old{font-size:1rem;color:var(--gris);text-decoration:line-through}
+.det-cta-btn{display:block;width:100%;max-width:360px;margin:0 auto 10px;background:var(--brun);color:var(--or);font-size:.88rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:16px;border:none;cursor:pointer;transition:background .25s,transform .2s;display:flex;align-items:center;justify-content:center;gap:10px}
+.det-cta-btn:hover{background:var(--terre);transform:translateY(-1px)}
+.det-cta-btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none}
+.det-secure-note{display:flex;align-items:center;justify-content:center;gap:5px;font-size:.74rem;color:var(--gris);margin-bottom:4px}
+.det-secure-note svg{width:12px;height:12px;stroke:var(--vert);fill:none;stroke-width:2}
 
-/* CARTES VERTICALES */
-.opt-card{border:2px solid var(--creme-3);background:var(--blanc);padding:20px;cursor:pointer;transition:border-color .25s,box-shadow .25s;position:relative}
-.opt-card:hover{border-color:var(--gris-clair)}
-.opt-card.selected{border-color:var(--brun);box-shadow:0 4px 20px rgba(26,18,8,.1)}
-.opt-card.featured{border-color:var(--or)}
-.opt-card.featured.selected{border-color:var(--brun)}
+/* Gallery masonry */
+.det-gallery-section{max-width:480px;margin:0 auto;padding:28px 20px 0}
+.det-gallery-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--brun);margin-bottom:14px}
+.det-masonry{columns:2;column-gap:6px}
+.det-masonry-item{break-inside:avoid;margin-bottom:6px;border-radius:6px;overflow:hidden;cursor:pointer;position:relative}
+.det-masonry-item img{width:100%;display:block;border-radius:6px;transition:opacity .2s}
+.det-masonry-item:hover img{opacity:.85}
+.det-masonry-item.video-item{background:var(--brun);display:flex;align-items:center;justify-content:center;min-height:100px}
+.det-masonry-item .play-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:rgba(250,247,242,.2);backdrop-filter:blur(6px);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.det-masonry-item .play-icon svg{width:18px;height:18px;fill:var(--or);stroke:none}
 
-/* Badge promo -50% */
-.opt-promo-badge{
-  position:absolute;top:-1px;right:16px;
-  background:#e63946;color:#fff;
-  font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:3px 10px;
-}
-/* Ancien prix barré */
-.opt-price-old{font-size:.75rem;color:var(--gris);text-decoration:line-through;margin-bottom:2px;line-height:1;text-align:right}
+/* Lightbox */
+.lightbox{position:fixed;inset:0;z-index:500;background:rgba(10,8,5,.92);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lightbox-img{max-width:90vw;max-height:80vh;object-fit:contain;border-radius:4px}
+.lightbox-video{max-width:90vw;max-height:80vh;border-radius:4px}
+.lightbox-close{position:absolute;top:16px;right:16px;width:44px;height:44px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.lightbox-close:hover{background:rgba(255,255,255,.25)}
+.lightbox-close svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none}
+.lightbox-btn{width:48px;height:48px;background:rgba(255,255,255,.1);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.2);border-radius:50%;cursor:pointer;pointer-events:all;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.lightbox-btn:hover{background:rgba(255,255,255,.25)}
+.lightbox-btn svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none}
+.lightbox-counter{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.5);color:rgba(255,255,255,.85);font-size:.8rem;padding:6px 14px;border-radius:20px;letter-spacing:.06em}
 
-/* Header de la carte */
-.opt-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:10px}
-.opt-card-left{}
-.opt-card-name{font-size:.95rem;font-weight:600;color:var(--brun);margin-bottom:5px}
-.opt-card-tag{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px}
-.tag-inst{background:var(--vert-bg);color:var(--vert)}
-.tag-ord{background:var(--orange-bg);color:var(--terre)}
-.opt-card-price{text-align:right;flex-shrink:0}
-.opt-price-val{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;color:var(--brun);line-height:1}
-.opt-price-cur{font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:400;color:var(--gris)}
+/* Specs section */
+.det-specs-section{max-width:480px;margin:0 auto;padding:28px 20px 0}
+.det-specs-desc{font-size:.9rem;line-height:1.75;color:var(--gris-fonce);margin-bottom:20px}
+.det-specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.det-specs-cell{background:var(--blanc);border:1px solid var(--creme-3);padding:14px 16px;border-radius:4px}
+.det-specs-cell-lbl{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);margin-bottom:4px}
+.det-specs-cell-val{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--brun)}
+.det-features-list{list-style:none;display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:20px}
+.det-features-list li{display:flex;align-items:flex-start;gap:8px;font-size:.88rem;color:var(--gris-fonce);line-height:1.5}
+.det-features-list li svg{width:15px;height:15px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0;margin-top:2px}
 
-/* Items inclus */
-.opt-card-items{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:12px;padding-top:12px;border-top:1px solid var(--creme-2)}
-.opt-card-items li{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--gris-fonce)}
-.opt-card-items li svg{width:14px;height:14px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0}
+/* Offer section */
+.det-offer{max-width:480px;margin:0 auto;padding:28px 20px 0}
+.det-offer-card{background:linear-gradient(135deg,#fdf6e3,#f5e9c4);border:2px solid var(--or);padding:24px;position:relative;border-radius:6px}
+.det-offer-badge{position:absolute;top:-1px;right:16px;background:#e63946;color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:0 0 4px 4px}
+.det-offer-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:12px}
+.det-countdown{display:flex;gap:10px;margin-bottom:16px}
+.cd-unit{background:var(--brun);color:var(--or);padding:8px 12px;border-radius:4px;text-align:center;min-width:52px}
+.cd-num{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;line-height:1}
+.cd-lbl{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-top:2px}
+.det-offer-price{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.det-offer-price-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--brun);line-height:1}
+.det-offer-price-val small{font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:400;color:var(--gris)}
+.det-offer-price-old{font-size:.9rem;color:var(--gris);text-decoration:line-through}
+.det-offer-benefits{list-style:none;margin-bottom:16px}
+.det-offer-benefits li{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--gris-fonce);padding:5px 0}
+.det-offer-benefits li svg{width:14px;height:14px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0}
+.det-offer-bonus{background:var(--vert-bg);border:1px solid var(--vert);padding:12px 16px;border-radius:4px;margin-bottom:16px;font-size:.85rem;color:var(--vert)}
+.det-offer-bonus strong{color:var(--brun)}
 
-/* Dropdown voir plus */
-.opt-dropdown-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:9px 0 0;background:transparent;border:none;border-top:1px solid var(--creme-2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--terre);font-weight:500;margin-top:10px}
-.opt-dropdown-btn svg{width:14px;height:14px;stroke:var(--terre);stroke-width:2;fill:none;transition:transform .3s;flex-shrink:0}
-.opt-dropdown-btn.open svg{transform:rotate(180deg)}
-.opt-dropdown-body{overflow:hidden;max-height:0;transition:max-height .35s ease}
-.opt-dropdown-body.open{max-height:200px}
-.opt-extras{list-style:none;padding:10px 0 2px;display:flex;flex-direction:column;gap:7px}
-.opt-extras li{display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--gris-fonce)}
-.opt-extras li svg{width:13px;height:13px;stroke:var(--gris);stroke-width:2;fill:none;flex-shrink:0}
+/* Testimonial cards */
+.det-testimonials{max-width:480px;margin:0 auto;padding:28px 20px 0}
+.det-testimonials-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--brun);margin-bottom:16px;text-align:center}
+.det-testo-card{background:var(--blanc);border:1px solid var(--creme-3);padding:20px;border-radius:6px;margin-bottom:12px}
+.det-testo-stars{display:flex;gap:2px;margin-bottom:8px}
+.det-testo-stars svg{width:14px;height:14px;fill:var(--or);stroke:none}
+.det-testo-text{font-size:.88rem;line-height:1.7;color:var(--gris-fonce);font-style:italic;margin-bottom:10px}
+.det-testo-author{font-size:.78rem;font-weight:600;color:var(--brun)}
+.det-testo-role{font-size:.72rem;color:var(--gris)}
 
-/* CTA principal (Plan Basique) */
+/* FAQ (reuse existing styles) */
+
+/* Related products */
+.det-related{max-width:480px;margin:0 auto;padding:28px 20px 0}
+.det-related-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--brun);margin-bottom:16px}
+.det-related-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.det-related-card{background:var(--blanc);border:1px solid var(--creme-3);overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s;border-radius:6px}
+.det-related-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(26,18,8,.1)}
+.det-related-card img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.det-related-card-body{padding:12px 14px}
+.det-related-card-title{font-size:.82rem;font-weight:600;color:var(--brun);margin-bottom:4px;line-height:1.3}
+.det-related-card-price{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--terre)}
+
+/* Share row (gallery section) */
+.share-row{display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--creme-3)}
+.share-label{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gris);font-weight:500;margin-right:4px;white-space:nowrap}
+.share-btn{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1.5px solid var(--creme-3);background:var(--blanc);cursor:pointer;transition:background .2s,border-color .2s,transform .18s;text-decoration:none;color:var(--brun);flex-shrink:0}
+.share-btn:hover{transform:translateY(-2px);border-color:var(--or);background:var(--orange-bg)}
+.share-btn svg{width:16px;height:16px;flex-shrink:0;fill:currentColor}
+.share-btn.share-wa{color:#25D366}
+.share-btn.share-fb{color:#1877F2}
+.share-btn.share-x{color:#000}
+.share-btn.share-copy{color:var(--terre)}
+.share-copy-ok{border-color:var(--vert)!important;background:var(--vert-bg)!important;color:var(--vert)!important}
+
+/* CTA inline */
 .cta-main{width:100%;background:var(--brun);color:var(--or);font-size:.9rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:17px;border:none;cursor:pointer;transition:background .25s,transform .2s;display:flex;align-items:center;justify-content:center;gap:10px}
 .cta-main:hover{background:var(--terre);transform:translateY(-1px)}
 .cta-main svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none}
 
-/* CTA secondaire (Plans Complets) */
-.cta-secondary{width:100%;background:transparent;color:var(--brun);font-size:.88rem;font-weight:500;letter-spacing:.06em;padding:14px;border:1.5px solid var(--brun);cursor:pointer;transition:background .25s,color .25s;display:flex;align-items:center;justify-content:center;gap:10px}
-.cta-secondary:hover{background:var(--brun);color:var(--or)}
-.cta-secondary svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
-
-.opt-card-sub{font-size:.8rem;color:var(--gris);margin-top:3px;line-height:1.4}
-.voir-exemple-link{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:10px 16px;border:1.5px solid var(--terre);background:transparent;font-size:.8rem;color:var(--terre);font-weight:700;text-decoration:none;letter-spacing:.05em;text-transform:uppercase;transition:background .2s,color .2s;border-radius:3px}
-.voir-exemple-link:hover{background:var(--terre);color:#fff}
-.voir-exemple-link svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
 .trust-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.74rem;color:var(--gris)}
 .trust-note svg{width:12px;height:12px;stroke:var(--vert);fill:none;stroke-width:2}
 .whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:14px 20px;background:#25D366;color:#fff;font-size:.86rem;font-weight:600;text-decoration:none;border-radius:4px;transition:background .2s,transform .2s}
 .whatsapp-btn:hover{background:#1da851;transform:translateY(-1px)}
 .whatsapp-btn svg{width:20px;height:20px;flex-shrink:0}
+
+#detail-overlay,#checkout-overlay{contain:layout style paint}
 
 /* ── PARTAGE SOCIAL ── */
 .share-row{display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--creme-3)}
@@ -474,15 +484,14 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   .concept-step:last-child{border-bottom:none}
   .plans-grid{grid-template-columns:1fr}
   .det-panel{width:100vw}
-  .det-content{grid-template-columns:1fr;gap:20px}
-  .det-features{grid-template-columns:1fr}
-  .purchase-box{position:static}
-  /* sticky-bar géré par JS uniquement */
+  .det-related-grid{grid-template-columns:1fr}
+  .det-features-list{grid-template-columns:1fr}
   .ft-inner{grid-template-columns:1fr;gap:28px}
   nav{padding:0 18px}
   .nav-link{display:none}
   #catalogue{padding:60px 18px}
-  .det-title{font-size:1.6rem}
+  .det-pricing-title{font-size:1.3rem}
+  .det-price-current{font-size:2rem}
 }
 </style>
 <!-- Microsoft Clarity -->
@@ -654,207 +663,168 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 <div id="detail-overlay">
   <div class="det-backdrop" onclick="closeDetail()"></div>
   <div class="det-panel">
+
     <div class="det-header">
-      <button class="det-crumb" onclick="closeDetail()" title="Retour au catalogue">Catalogue &rsaquo; Detail du plan</button>
+      <button class="det-crumb" onclick="closeDetail()" title="Retour au catalogue">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Retour
+      </button>
       <button class="det-close" onclick="closeDetail()">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
 
-    <div class="det-gallery">
-      <div class="gal-main" id="gal-main">
-        <img class="gal-img" id="gal-img" src="" alt="" fetchpriority="high">
-        <video class="gal-img" id="gal-video" src="" controls playsinline style="display:none"></video>
-        <div class="gal-counter" id="gal-counter">1 / 4</div>
-        <div class="gal-nav">
-          <button class="gal-btn" onclick="galNav(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-          <button class="gal-btn" onclick="galNav(1)"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
-        </div>
-      </div>
-      <div class="gal-thumbs" id="gal-thumbs"></div>
+    <div class="det-flash-bar">
+      🔥 <strong>-50%</strong> · Offre flash valable ce <span id="det-flash-date"></span>
     </div>
 
+    <div class="det-hero" onclick="openLightbox(0)">
+      <img id="det-hero-img" src="" alt="" loading="eager">
+      <span class="det-hero-badge" id="det-hero-badge"></span>
+      <div class="det-hero-label" id="det-hero-label"></div>
+    </div>
 
-    <div class="det-content">
-      <div class="det-main">
-        <div class="det-type-row">
-          <span class="det-type-pill" id="det-pill">Villa</span>
-          <div class="det-stars">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span id="det-rating">4.8</span>&nbsp;<span style="color:var(--gris-clair)">·</span>&nbsp;<span id="det-reviews">18 avis</span>
-          </div>
-        </div>
-        <h2 class="det-title" id="det-title">—</h2>
-        <p class="det-subtitle" id="det-subtitle">—</p>
-        <div class="det-specs-row">
-          <div>
-            <div class="det-spec-lbl">
-              Surface
-              <span class="tooltip-wrap">
-                <span class="tooltip-icon">?</span>
-                <span class="tooltip-box">Surface totale bâtie (RDC + Étage pour les duplex)</span>
-              </span>
-            </div>
-            <div class="det-spec-val" id="det-area">—</div>
-          </div>
-          <div><div class="det-spec-lbl">Chambres</div><div class="det-spec-val" id="det-beds">—</div></div>
-          <div><div class="det-spec-lbl">Salles de bain</div><div class="det-spec-val" id="det-baths">—</div></div>
-          <div><div class="det-spec-lbl">Niveaux</div><div class="det-spec-val" id="det-floors">—</div></div>
-          <div id="det-terrain-wrap" style="display:none"><div class="det-spec-lbl">Terrain</div><div class="det-spec-val" id="det-terrain">—</div></div>
-          <div><div class="det-spec-lbl">Coût estimé</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
-        </div>
-        <p class="det-desc" id="det-desc">—</p>
-        <ul class="det-features" id="det-features"></ul>
-
+    <div class="det-pricing">
+      <h2 class="det-pricing-title" id="det-pricing-title"></h2>
+      <p class="det-pricing-desc" id="det-pricing-desc"></p>
+      <div class="det-price-row">
+        <span class="det-price-old" id="det-price-old"></span>
+        <span class="det-price-current" id="det-price-current"></span>
       </div>
-
-      <!-- SIDEBAR -->
-      <div class="det-sidebar">
-        <div class="purchase-box">
-          <div class="pbox-total" style="display:none" aria-hidden="true">
-            <div class="pbox-total-tag">💳 Paiement en 2 versements</div>
-            <div class="pbox-total-label">Prix total du dossier complet</div>
-            <div class="pbox-total-val" id="pbox-total-val">— FCFA</div>
-            <div class="pbox-total-sub">Avance&nbsp;<strong id="pbox-acompte">—</strong>&nbsp;FCFA · Solde&nbsp;<strong id="pbox-solde">—</strong>&nbsp;FCFA</div>
-          </div>
-
-          <!-- CARTE 1 : PLAN BASIQUE -->
-          <div class="opt-card featured selected" id="opt-card-1">
-            <div class="opt-promo-badge">−50%</div>
-            <div class="opt-card-head">
-              <div class="opt-card-left">
-                <div class="opt-card-name">Plan Basique + Devis</div>
-                <div class="opt-card-sub">Pour demarrer et personnaliser votre projet</div>
-              </div>
-              <div class="opt-card-price">
-                <div class="opt-price-old">30 000 FCFA</div>
-                <div class="opt-price-val" id="price-basic">—</div>
-                <div class="opt-price-cur">FCFA</div>
-              </div>
-            </div>
-            <span class="opt-card-tag tag-inst" style="margin-bottom:12px;display:inline-flex">&#9889; INSTANTANE</span>
-            <ul class="opt-card-items">
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution et dimensions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendu 3D exterieurs</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Echange avec un architecte sur WhatsApp</li>
-            </ul>
-            <a class="voir-exemple-link" id="voir-exemple-link" href="/exemples/d4-034/" onclick="track('voir_exemple',{plan_id:currentPlan&&currentPlan.id,plan_type:currentPlan&&currentPlan.type,plan_title:currentPlan&&currentPlan.title});(function(){var ua=navigator.userAgent||'';if(/FBAN|FBAV|Instagram|FB_IAB/.test(ua)){window.location.href='/exemples/d4-034/';}else{var w=window.open('/exemples/d4-034/','_blank');if(!w)window.location.href='/exemples/d4-034/';}})();return false;">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              Voir un exemple
-            </a>
-          </div>
-
-          <button class="cta-main" onclick="selectOpt(1);openCheckout()">
-            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Telecharger maintenant
-          </button>
-          <div class="trust-note" id="trust-cta-note" style="margin-bottom:22px">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Paiement Mobile Money au <strong id="trust-country-name">Cameroun</strong>
-          </div>
-
-          <!-- CARTE 2 masquée + bouton hint -->
-          <div id="opt-card-2" style="display:none" aria-hidden="true">
-            <div class="opt-price-val" id="price-complete" style="display:none">—</div>
-          </div>
-
-        </div>
+      <button class="det-cta-btn" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Telecharger maintenant
+      </button>
+      <div class="det-secure-note">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Paiement Mobile Money au <strong id="det-trust-country">Cameroun</strong>
       </div>
     </div>
 
-    <!-- Témoignages dans le panneau de détail -->
-    <div style="padding:36px 28px 8px;border-top:1px solid var(--creme-3);background:var(--creme)">
-      <div class="temo-eyebrow" style="text-align:center;margin-bottom:16px">Ils ont fait confiance à WooPlans</div>
-      <div class="temo-wrap" style="max-width:420px">
-        <div class="temo-track" id="temo-track-2">
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.36.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(2).jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
-        </div>
-        <button class="temo-arrow temo-prev" onclick="temoNav2(-1)" aria-label="Précédent"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <button class="temo-arrow temo-next" onclick="temoNav2(1)" aria-label="Suivant"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <div class="det-gallery-section">
+      <h3 class="det-gallery-title">Galerie</h3>
+      <div class="det-masonry" id="det-masonry"></div>
+      <div class="share-row" style="margin-top:18px">
+        <span class="share-label">Partager</span>
+        <a class="share-btn share-wa" id="share-wa" href="#" target="_blank" rel="noopener" title="WhatsApp">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+        </a>
+        <a class="share-btn share-fb" id="share-fb" href="#" target="_blank" rel="noopener" title="Facebook">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+        </a>
+        <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener" title="X">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <button class="share-btn share-copy" id="share-copy" onclick="copyPlanLink()" title="Copier le lien">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
       </div>
-      <div class="temo-dots" id="temo-dots-2" style="margin-top:16px"></div>
+      <button class="cta-main" style="margin-top:18px" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Telecharger maintenant
+      </button>
     </div>
 
-    <!-- FAQ — pleine largeur, après les formules -->
-    <section class="faq-section" style="margin-top:0;border-top:1px solid var(--creme-3);padding:36px 28px 44px">
-      <h3 class="faq-section-title">Questions fréquentes</h3>
+    <div class="det-specs-section">
+      <p class="det-specs-desc" id="det-specs-desc"></p>
+      <div class="det-specs-grid" id="det-specs-grid"></div>
+      <ul class="det-features-list" id="det-features"></ul>
+      <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Obtenir ce plan
+      </button>
+    </div>
 
+    <div class="det-offer">
+      <div class="det-offer-card">
+        <div class="det-offer-badge">-50%</div>
+        <h3 class="det-offer-title">Offre flash — Plan Basique + Devis</h3>
+        <div class="det-countdown" id="det-countdown">
+          <div class="cd-unit"><div class="cd-num" id="cd-hours">00</div><div class="cd-lbl">Heures</div></div>
+          <div class="cd-unit"><div class="cd-num" id="cd-mins">00</div><div class="cd-lbl">Minutes</div></div>
+          <div class="cd-unit"><div class="cd-num" id="cd-secs">00</div><div class="cd-lbl">Secondes</div></div>
+        </div>
+        <div class="det-offer-price">
+          <span class="det-offer-price-old" id="det-offer-price-old"></span>
+          <span class="det-offer-price-val" id="det-offer-price-val"></span>
+        </div>
+        <ul class="det-offer-benefits" id="det-offer-benefits"></ul>
+        <div class="det-offer-bonus">
+          🎁 <strong>Bonus :</strong> Echange gratuit avec un architecte sur WhatsApp
+        </div>
+        <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Profiter de l'offre
+        </button>
+      </div>
+    </div>
+
+    <div class="det-testimonials">
+      <h3 class="det-testimonials-title">Ce que disent nos clients</h3>
+      <div class="det-testo-card">
+        <div class="det-testo-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <p class="det-testo-text">"J'ai recu le plan en moins de 5 minutes. Le devis est super detaille, ca m'a permis de budgeter ma construction sereinement."</p>
+        <div class="det-testo-author">Kouadio A.</div>
+        <div class="det-testo-role">Abidjan, Cote d'Ivoire</div>
+      </div>
+      <div class="det-testo-card">
+        <div class="det-testo-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <p class="det-testo-text">"Le plan basique m'a convaincu. L'architecte a adapte les dimensions a mon terrain et j'ai maintenant les plans complets. Service impeccable !"</p>
+        <div class="det-testo-author">Mamadou D.</div>
+        <div class="det-testo-role">Dakar, Senegal</div>
+      </div>
+      <div class="det-testo-card">
+        <div class="det-testo-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <p class="det-testo-text">"Excellent rapport qualite-prix. Le paiement par Mobile Money etait rapide et j'ai pu voir les rendus 3D tout de suite."</p>
+        <div class="det-testo-author">Aminata F.</div>
+        <div class="det-testo-role">Douala, Cameroun</div>
+      </div>
+    </div>
+
+    <section class="faq-section" style="max-width:480px;margin:0 auto;padding:28px 20px 0">
+      <h3 class="faq-section-title">Questions frequentes</h3>
       <details class="faq-item">
-        <summary>
-          Comment je reçois mon plan après l'achat ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
-        <p class="faq-answer">Le <strong>Plan Basique avec devis</strong> est envoyé instantanément par email et WhatsApp après validation du paiement. Pas besoin d'attendre.</p>
+        <summary>Comment je recois mon plan apres l'achat ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <p class="faq-answer">Le <strong>Plan Basique avec devis</strong> est envoye instantanement par email et WhatsApp apres validation du paiement. Pas besoin d'attendre.</p>
       </details>
-
       <details class="faq-item">
-        <summary>
-          Quels sont les moyens de paiement ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
-        <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> — au <strong id="faq-country-name">Cameroun</strong> : <span id="faq-mm-list">MTN MoMo, Orange Money</span>.</p>
+        <summary>Quels sont les moyens de paiement ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <p class="faq-answer">Le paiement est securise via <strong>Mobile Money</strong> — au <strong id="faq-country-name">Cameroun</strong> : <span id="faq-mm-list">MTN MoMo, Orange Money</span>.</p>
       </details>
-
       <details class="faq-item">
-        <summary>
-          C'est quoi exactement le Plan Basique ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
-        <p class="faq-answer">Le Plan Basique c'est le document idéal pour <strong>valider et personnaliser votre projet</strong> avant de passer à la phase de construction. Il vous permet d'échanger avec un architecte sur WhatsApp, de faire des ajustements selon vos besoins et votre terrain.</p>
+        <summary>C'est quoi exactement le Plan Basique ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <p class="faq-answer">Le Plan Basique c'est le document ideal pour <strong>valider et personnaliser votre projet</strong> avant de passer a la phase de construction. Il vous permet d'echanger avec un architecte sur WhatsApp, de faire des ajustements selon vos besoins et votre terrain.</p>
       </details>
-
       <details class="faq-item">
-        <summary>
-          Comment obtenir le Dossier Complet pour construire ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
-        <p class="faq-answer">Après votre achat vous recevez le Plan Basique que vous pouvez consulter et noter les modifications à faire. Ensuite un de nos architectes échange avec vous sur <a href="https://wa.me/237694327885" style="color:var(--terre);font-weight:600">WhatsApp</a> pour prendre en compte vos modifications et les dimensions de votre terrain. Vous obtenez à la fin un <strong>Dossier Complet personnalisé</strong> pour votre construction.</p>
+        <summary>Comment obtenir le Dossier Complet pour construire ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <p class="faq-answer">Apres votre achat vous recevez le Plan Basique que vous pouvez consulter et noter les modifications a faire. Ensuite un de nos architectes echange avec vous sur <a href="https://wa.me/237694327885" style="color:var(--terre);font-weight:600">WhatsApp</a> pour prendre en compte vos modifications et les dimensions de votre terrain. Vous obtenez a la fin un <strong>Dossier Complet personnalise</strong> pour votre construction.</p>
       </details>
-
-      <details class="faq-item">
-        <summary>
-          Est-ce que je vais payer après pour le Dossier Complet ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
-        <p class="faq-answer">Oui, le Dossier Complet est commandé séparément quand vous êtes prêt à construire. Son prix dépend du type de plan et des modifications à faire. <strong>Un devis vous sera proposé à ce moment-là.</strong></p>
-      </details>
-
       <div class="faq-whatsapp-wrap">
         <a class="whatsapp-btn" href="https://wa.me/237694327885?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20plan%20" id="whatsapp-link" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
           Une question ? Ecrivez-nous sur WhatsApp
         </a>
-
-        <!-- PARTAGE SOCIAL -->
-        <div class="share-row">
-          <span class="share-label">Partager</span>
-          <!-- WhatsApp -->
-          <a class="share-btn share-wa" id="share-wa" href="#" target="_blank" rel="noopener" title="Partager sur WhatsApp">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
-          </a>
-          <!-- Facebook -->
-          <a class="share-btn share-fb" id="share-fb" href="#" target="_blank" rel="noopener" title="Partager sur Facebook">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
-          </a>
-          <!-- X / Twitter -->
-          <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener" title="Partager sur X">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <!-- Copier le lien -->
-          <button class="share-btn share-copy" id="share-copy" onclick="copyPlanLink()" title="Copier le lien">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          </button>
-        </div>
       </div>
     </section>
 
+    <div class="det-related" id="det-related">
+      <h3 class="det-related-title">Plans similaires</h3>
+      <div class="det-related-grid" id="det-related-grid"></div>
+    </div>
+
   </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+  <video class="lightbox-video" id="lightbox-video" src="" controls playsinline style="display:none"></video>
+  <div class="lightbox-nav">
+    <button class="lightbox-btn" onclick="lightboxNav(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="lightbox-btn" onclick="lightboxNav(1)"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+  </div>
+  <div class="lightbox-counter" id="lightbox-counter">1 / 1</div>
 </div>
 
 <!-- STICKY BAR MOBILE -->
@@ -1155,14 +1125,9 @@ function updateCountryUI(code){
   const found=CC_DATA.find(x=>x.c===code);
   const name=found?found.n:null;
   const mm=found&&found.mm;
-  // Trust note sous le CTA
-  const trustEl=document.getElementById('trust-country-name');
-  const trustNote=document.getElementById('trust-cta-note');
+  const trustEl=document.getElementById('det-trust-country');
   if(name&&trustEl){
     trustEl.textContent=name;
-  } else if(trustNote){
-    // Pays inconnu → texte générique
-    trustNote.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Paiement securise &middot; Mobile Money';
   }
   // FAQ moyen de paiement
   const faqCountry=document.getElementById('faq-country-name');
@@ -1350,12 +1315,17 @@ function preloadHeroImage(plan){
   if(!plan||!plan.images||!plan.images[0])return;
   var src=plan.images[0];
   if(src.includes('b-cdn.net')) src+=src.includes('?')?'':'?width=750&quality=75&format=webp';
-  if(document.querySelector('link[data-hero-preload]'))return; // déjà injecté
+  if(document.querySelector('link[data-hero-preload]'))return;
   var link=document.createElement('link');
   link.rel='preload';link.as='image';link.href=src;
   link.setAttribute('fetchpriority','high');
   link.setAttribute('data-hero-preload','1');
   document.head.appendChild(link);
+  var heroImg=document.getElementById('det-hero-img');
+  if(heroImg&&!heroImg.src){
+    heroImg.src=src;
+    heroImg.setAttribute('fetchpriority','high');
+  }
 }
 
 // ── DETAIL ───────────────────────────────────────────────────
@@ -1363,9 +1333,7 @@ function openDetail(id,skipPush){
   currentPlan=plans.find(p=>p.id===id);
   if(!currentPlan)return;
   preloadHeroImage(currentPlan);
-  // Analytics — clic sur un plan
   track('plan_click',{plan_id:currentPlan.id,plan_type:currentPlan.type,plan_title:currentPlan.title});
-  // Meta Pixel — ViewContent
   if(typeof fbq!=='undefined') fbq('track','ViewContent',{
     content_ids:[currentPlan.id],
     content_name:currentPlan.title,
@@ -1376,103 +1344,25 @@ function openDetail(id,skipPush){
   });
   imgIdx=0; selectedOpt=1; ddOpen=false;
 
-  document.getElementById('det-title').textContent=currentPlan.title;
-  document.getElementById('det-subtitle').textContent=currentPlan.subtitle;
-  document.getElementById('det-area').textContent=(currentPlan.area||'').replace(/[\d\s,.]+/,function(m){return Math.round(parseFloat(m.replace(',','.').replace(/\s/g,'')));});
+  populateDetailOverlay(currentPlan);
+  renderMasonryGallery();
+  startCountdown();
 
-  // Terrain
-  const terrainWrap=document.getElementById('det-terrain-wrap');
-  if(currentPlan.terrain){
-    document.getElementById('det-terrain').textContent=currentPlan.terrain;
-    terrainWrap.style.display='';
-  } else { terrainWrap.style.display='none'; }
-
-  document.getElementById('det-beds').textContent=currentPlan.beds;
-  document.getElementById('det-baths').textContent=currentPlan.baths;
-  document.getElementById('det-floors').textContent=currentPlan.floors+(currentPlan.floors>1?' niveaux':' niveau');
-  // Coût estimé calculé automatiquement depuis la surface
-  (function(){
-    var area=currentPlan.area||'';
-    var m=area.match(/(\d[\d\s]*)/);
-    var sqm=m?parseFloat(m[1].replace(/\s/g,'')):0;
-    var costTxt='—';
-    if(sqm>0){
-      var lo=sqm*150000, hi=sqm*200000;
-      function fmtM(n){return Math.round(n/1000000)+' M';}
-      costTxt='de '+fmtM(lo)+' à '+fmtM(hi)+' Fcfa';
-    }
-    document.getElementById('det-cost').textContent=costTxt;
-  })();
-  document.getElementById('det-rating').textContent=currentPlan.rating;
-  document.getElementById('det-reviews').textContent=(currentPlan.reviews??0)+' avis';
-  document.getElementById('det-desc').textContent=currentPlan.desc;
-
-  const pill=document.getElementById('det-pill');
-  pill.textContent=currentPlan.type.charAt(0).toUpperCase()+currentPlan.type.slice(1);
-  pill.className='det-type-pill '+(currentPlan.type==='villa'?'badge-villa':'badge-duplex');
-
-  document.getElementById('det-features').innerHTML=(currentPlan.features||[]).map(f=>`
-    <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${f}</li>
-  `).join('');
-
-  document.getElementById('price-basic').textContent=currentPlan.priceBasic;
-  document.getElementById('price-complete').textContent=currentPlan.priceComplete;
-  var _hint=document.getElementById('price-complete-hint');if(_hint)_hint.textContent=currentPlan.priceComplete||'—';
-  // Total = acompte basique + solde complet
-  (function(){var b=parseFloat((currentPlan.priceBasic||'0').replace(/\s/g,''))||0,c=parseFloat((currentPlan.priceComplete||'0').replace(/\s/g,''))||0,t=b+c;var fp=function(n){return n.toLocaleString('fr-FR');};document.getElementById('pbox-total-val').textContent=fp(t)+' FCFA';document.getElementById('pbox-acompte').textContent=fp(b);document.getElementById('pbox-solde').textContent=fp(c);})();
-
-  // Reset dropdowns
-  ['dd1','dd2'].forEach(function(id){
-    var b=document.getElementById(id+'-body');
-    var btn=document.getElementById(id+'-btn');
-    if(b)b.classList.remove('open');
-    if(btn)btn.classList.remove('open');
-    var lbl=document.getElementById(id+'-label');
-    if(lbl)lbl.textContent='Voir tous les details';
-  });
-
-  // Remplir les extras
-  if(currentPlan.extrasBasic){
-    var el1=document.getElementById('dd1-extras');
-    if(el1) el1.innerHTML=currentPlan.extrasBasic.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
-  }
-  var dd2btn=document.getElementById('dd2-btn');
-  if(currentPlan.extrasComplete && currentPlan.extrasComplete.length){
-    var el2=document.getElementById('dd2-extras');
-    if(el2) el2.innerHTML=currentPlan.extrasComplete.map(function(x){return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+x+'</li>';}).join('');
-    if(dd2btn) dd2btn.style.display='';
-  } else {
-    if(dd2btn) dd2btn.style.display='none';
-  }
-
-  updateOptUI();
-  renderGallery();
   document.getElementById('detail-overlay').classList.add('open');
   document.body.style.overflow='hidden';
   if(!skipPush){
     history.pushState({planId:id},'','/plans/'+slugify(currentPlan.title));
   }
   updateMetaTags(currentPlan);
-  // Afficher sticky bar mobile
   var sb=document.getElementById('sticky-bar');
   if(sb) sb.style.display='flex';
-  // Mettre a jour le lien WhatsApp contact
   var waLink=document.getElementById('whatsapp-link');
   if(waLink){
     var msg=encodeURIComponent('Bonjour, question sur le plan : '+currentPlan.title);
     waLink.href='https://wa.me/237694327885?text='+msg;
   }
-  // Partage social — URLs dynamiques
-  var planUrl=SITE_ORIGIN+'/plans/'+slugify(currentPlan.title);
-  var shareText=encodeURIComponent('Découvrez ce plan de maison : '+currentPlan.title+' — '+planUrl);
-  var sWa=document.getElementById('share-wa');
-  var sFb=document.getElementById('share-fb');
-  var sX =document.getElementById('share-x');
-  var sCp=document.getElementById('share-copy');
-  if(sWa) sWa.href='https://wa.me/?text='+shareText;
-  if(sFb) sFb.href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(planUrl);
-  if(sX)  sX.href='https://x.com/intent/tweet?text='+shareText;
-  if(sCp) sCp.classList.remove('share-copy-ok');
+  updateShareLinks();
+  renderRelatedProducts();
 }
 
 // ── DETAIL FAST (pour Facebook Ads / accès direct) ───────────
@@ -1483,151 +1373,25 @@ function openDetailFast(id) {
   
   imgIdx = 0; selectedOpt = 1; ddOpen = false;
   
-  // Remplissage rapide des données (sans animations)
-  document.getElementById('det-title').textContent = currentPlan.title;
-  document.getElementById('det-subtitle').textContent = currentPlan.subtitle;
-  document.getElementById('det-area').textContent = (currentPlan.area||'').replace(/[\d\s,.]+/, function(m){ return Math.round(parseFloat(m.replace(',','.').replace(/\s/g,''))); });
-
-  // Terrain
-  const terrainWrap = document.getElementById('det-terrain-wrap');
-  if (currentPlan.terrain) {
-    document.getElementById('det-terrain').textContent = currentPlan.terrain;
-    terrainWrap.style.display = '';
-  } else { terrainWrap.style.display = 'none'; }
+  populateDetailOverlay(currentPlan);
+  renderMasonryGallery();
+  startCountdown();
   
-  document.getElementById('det-beds').textContent = currentPlan.beds;
-  document.getElementById('det-baths').textContent = currentPlan.baths;
-  document.getElementById('det-floors').textContent = currentPlan.floors + (currentPlan.floors > 1 ? ' niveaux' : ' niveau');
-  
-  // Coût estimé
-  (function(){
-    var area = currentPlan.area || '';
-    var m = area.match(/(\d[\d\s]*)/);
-    var sqm = m ? parseFloat(m[1].replace(/\s/g,'')) : 0;
-    var costTxt = '—';
-    if (sqm > 0) {
-      var lo = sqm * 150000, hi = sqm * 200000;
-      function fmtM(n) { return Math.round(n / 1000000) + ' M'; }
-      costTxt = 'de ' + fmtM(lo) + ' à ' + fmtM(hi) + ' Fcfa';
-    }
-    document.getElementById('det-cost').textContent = costTxt;
-  })();
-  
-  document.getElementById('det-rating').textContent = currentPlan.rating;
-  document.getElementById('det-reviews').textContent = (currentPlan.reviews??0) + ' avis';
-  document.getElementById('det-desc').textContent = currentPlan.desc;
-  
-  const pill = document.getElementById('det-pill');
-  pill.textContent = currentPlan.type.charAt(0).toUpperCase() + currentPlan.type.slice(1);
-  pill.className = 'det-type-pill ' + (currentPlan.type === 'villa' ? 'badge-villa' : 'badge-duplex');
-  
-  document.getElementById('det-features').innerHTML = (currentPlan.features || []).map(f => 
-    `<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${f}</li>`
-  ).join('');
-  
-  document.getElementById('price-basic').textContent = currentPlan.priceBasic;
-  document.getElementById('price-complete').textContent = currentPlan.priceComplete;
-  var _hint2=document.getElementById('price-complete-hint');if(_hint2)_hint2.textContent=currentPlan.priceComplete||'—';
-  // Total = acompte basique + solde complet
-  (function(){ var b=parseFloat((currentPlan.priceBasic||'0').replace(/\s/g,''))||0, c=parseFloat((currentPlan.priceComplete||'0').replace(/\s/g,''))||0, t=b+c; var fp=function(n){return n.toLocaleString('fr-FR');}; document.getElementById('pbox-total-val').textContent=fp(t)+' FCFA'; document.getElementById('pbox-acompte').textContent=fp(b); document.getElementById('pbox-solde').textContent=fp(c); })();
-
-  // Reset dropdowns
-  ['dd1', 'dd2'].forEach(function(id) {
-    var b = document.getElementById(id + '-body');
-    var btn = document.getElementById(id + '-btn');
-    if (b) b.classList.remove('open');
-    if (btn) btn.classList.remove('open');
-    var lbl = document.getElementById(id + '-label');
-    if (lbl) lbl.textContent = 'Voir tous les details';
-  });
-  
-  // Remplir les extras
-  if (currentPlan.extrasBasic) {
-    var el1 = document.getElementById('dd1-extras');
-    if (el1) el1.innerHTML = currentPlan.extrasBasic.map(function(x) { return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' + x + '</li>'; }).join('');
-  }
-  var dd2btn = document.getElementById('dd2-btn');
-  if (currentPlan.extrasComplete && currentPlan.extrasComplete.length) {
-    var el2 = document.getElementById('dd2-extras');
-    if (el2) el2.innerHTML = currentPlan.extrasComplete.map(function(x) { return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' + x + '</li>'; }).join('');
-    if (dd2btn) dd2btn.style.display = '';
-  } else {
-    if (dd2btn) dd2btn.style.display = 'none';
-  }
-  
-  updateOptUI();
-  
-  // GALERIE OPTIMISÉE - Affichage immédiat sans animation pour LCP
-  galMedia = [];
-  if (currentPlan.video_url) {
-    galMedia.push({ type: 'video', src: currentPlan.video_url });
-  }
-  (currentPlan.images || []).forEach(function(s) {
-    galMedia.push({ type: 'image', src: s });
-  });
-  
-  // Affichage IMMÉDIAT de l'image (pas de fade-in pour LCP)
-  if (galMedia.length) {
-    var m = galMedia[0];
-    var imgEl = document.getElementById('gal-img');
-    var vidEl = document.getElementById('gal-video');
-    if (m.type === 'video') {
-      imgEl.style.display = 'none';
-      vidEl.style.display = 'block';
-      vidEl.src = m.src;
-      vidEl.style.opacity = '1';
-    } else {
-      vidEl.style.display = 'none';
-      imgEl.style.display = 'block';
-      // Image optimisée pour LCP rapide — taille adaptée mobile/desktop
-      var galW = window.innerWidth <= 768 ? 750 : 900;
-      var optimizedSrc = m.src;
-      if (optimizedSrc.includes('b-cdn.net')) {
-        optimizedSrc = optimizedSrc + '?width=' + galW + '&quality=75&format=webp';
-      }
-      imgEl.src = optimizedSrc;
-      imgEl.style.opacity = '1'; // Pas d'animation !
-    }
-    document.getElementById('gal-counter').textContent = '1 / ' + galMedia.length;
-  }
-  
-  // Thumbnails (lazy loaded)
-  document.getElementById('gal-thumbs').innerHTML = galMedia.map(function(m, i) {
-    if (m.type === 'video') {
-      return '<div class="gal-thumb ' + (i === 0 ? 'active' : '') + '" onclick="setImg(' + i + ')">' +
-        '<div style="width:100%;height:100%;background:var(--brun);display:flex;align-items:center;justify-content:center">' +
-        '<svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--or);stroke:none"><polygon points="5 3 19 12 5 21"/></svg></div></div>';
-    }
-    return '<div class="gal-thumb ' + (i === 0 ? 'active' : '') + '" onclick="setImg(' + i + ')">' +
-      '<img src="' + thumbUrl(m.src, 160) + '" alt="" loading="lazy" width="78" height="58"></div>';
-  }).join('');
-  
-  // Ouvrir l'overlay
   document.getElementById('detail-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   
-  // Sticky bar mobile
   var sb = document.getElementById('sticky-bar');
   if (sb) sb.style.display = 'flex';
   
-  // WhatsApp link
   var waLink = document.getElementById('whatsapp-link');
   if (waLink) {
     var msg = encodeURIComponent('Bonjour, question sur le plan : ' + currentPlan.title);
     waLink.href = 'https://wa.me/237694327885?text=' + msg;
   }
   
-  // Social share
-  var planUrl = SITE_ORIGIN + '/plans/' + slugify(currentPlan.title);
-  var shareText = encodeURIComponent('Découvrez ce plan de maison : ' + currentPlan.title + ' — ' + planUrl);
-  var sWa = document.getElementById('share-wa');
-  var sFb = document.getElementById('share-fb');
-  var sX = document.getElementById('share-x');
-  if (sWa) sWa.href = 'https://wa.me/?text=' + shareText;
-  if (sFb) sFb.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(planUrl);
-  if (sX) sX.href = 'https://x.com/intent/tweet?text=' + shareText;
+  updateShareLinks();
+  renderRelatedProducts();
   
-  // Meta Pixel - ViewContent (après que l'affichage soit fait)
   if (typeof fbq !== 'undefined') {
     setTimeout(function() {
       fbq('track', 'ViewContent', {
@@ -1648,7 +1412,7 @@ function copyPlanLink(){
   var btn=document.getElementById('share-copy');
   function onCopied(){
     if(btn){btn.classList.add('share-copy-ok');setTimeout(function(){btn.classList.remove('share-copy-ok');},2000);}
-    showToast('Lien copié !');
+    showToast('Lien copie !');
   }
   if(navigator.clipboard){
     navigator.clipboard.writeText(url).then(onCopied);
@@ -1664,93 +1428,224 @@ function closeDetail(){
   document.body.style.overflow='';
   var sb=document.getElementById('sticky-bar');
   if(sb) sb.style.display='none';
+  if(countdownTimer){clearInterval(countdownTimer);countdownTimer=null;}
   history.pushState({},'',IS_PLANS_ROUTE ? '/plans' : '/');
   resetMetaTags();
 }
 
-// ── GALERIE ──────────────────────────────────────────────────
+function updateShareLinks(){
+  if(!currentPlan)return;
+  var planUrl=SITE_ORIGIN+'/plans/'+slugify(currentPlan.title);
+  var shareText=encodeURIComponent('Decouvrez ce plan de maison : '+currentPlan.title+' — '+planUrl);
+  var sWa=document.getElementById('share-wa');
+  var sFb=document.getElementById('share-fb');
+  var sX=document.getElementById('share-x');
+  var sCp=document.getElementById('share-copy');
+  if(sWa) sWa.href='https://wa.me/?text='+shareText;
+  if(sFb) sFb.href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(planUrl);
+  if(sX) sX.href='https://x.com/intent/tweet?text='+shareText;
+  if(sCp) sCp.classList.remove('share-copy-ok');
+}
 
-function renderGallery(){
+function populateDetailOverlay(p){
+  document.getElementById('det-pricing-title').textContent='Obtenez le plan et devis de la '+p.title;
+  document.getElementById('det-pricing-desc').textContent=p.subtitle;
+
+  var heroImg=document.getElementById('det-hero-img');
+  var firstImg=(p.images&&p.images[0])||'';
+  var heroSrc=firstImg;
+  if(heroSrc.includes('b-cdn.net')) heroSrc+='?width=750&quality=75&format=webp';
+  heroImg.src=heroSrc;
+  heroImg.alt=p.title;
+
+  var badge=document.getElementById('det-hero-badge');
+  badge.textContent=p.type.charAt(0).toUpperCase()+p.type.slice(1);
+  badge.className='det-hero-badge '+(p.type==='villa'?'badge-villa':'badge-duplex');
+
+  var areaNum=(p.area||'').replace(/[\d\s,.]+/,function(m){return Math.round(parseFloat(m.replace(',','.').replace(/\s/g,'')));});
+  document.getElementById('det-hero-label').textContent=areaNum+' m² · '+p.beds+' ch. · '+p.baths+' sdb';
+
+  document.getElementById('det-price-current').innerHTML=p.priceBasic+' <small>FCFA</small>';
+  var oldPrice=parseFloat((p.priceBasic||'0').replace(/\s/g,''))*2;
+  document.getElementById('det-price-old').textContent=oldPrice.toLocaleString('fr-FR')+' FCFA';
+
+  var flashDate=document.getElementById('det-flash-date');
+  if(flashDate){
+    var j=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+    var m=['Janvier','Fevrier','Mars','Avril','Mai','Juin','Juillet','Aout','Septembre','Octobre','Novembre','Decembre'];
+    var d=new Date();
+    flashDate.textContent=j[d.getDay()]+' '+d.getDate()+' '+m[d.getMonth()];
+  }
+
+  document.getElementById('det-specs-desc').textContent=p.desc;
+
+  var specsHtml='';
+  specsHtml+='<div class="det-specs-cell"><div class="det-specs-cell-lbl">Surface</div><div class="det-specs-cell-val">'+areaNum+' m²</div></div>';
+  specsHtml+='<div class="det-specs-cell"><div class="det-specs-cell-lbl">Chambres</div><div class="det-specs-cell-val">'+p.beds+'</div></div>';
+  specsHtml+='<div class="det-specs-cell"><div class="det-specs-cell-lbl">Salles de bain</div><div class="det-specs-cell-val">'+p.baths+'</div></div>';
+  specsHtml+='<div class="det-specs-cell"><div class="det-specs-cell-lbl">Niveaux</div><div class="det-specs-cell-val">'+p.floors+'</div></div>';
+  if(p.terrain){
+    specsHtml+='<div class="det-specs-cell"><div class="det-specs-cell-lbl">Terrain</div><div class="det-specs-cell-val">'+p.terrain+'</div></div>';
+  }
+  (function(){
+    var area=p.area||'';
+    var m2=area.match(/(\d[\d\s]*)/);
+    var sqm=m2?parseFloat(m2[1].replace(/\s/g,'')):0;
+    if(sqm>0){
+      var lo=sqm*150000,hi=sqm*200000;
+      specsHtml+='<div class="det-specs-cell"><div class="det-specs-cell-lbl">Cout estime</div><div class="det-specs-cell-val" style="color:var(--terre)">de '+Math.round(lo/1000000)+' M a '+Math.round(hi/1000000)+' M FCFA</div></div>';
+    }
+  })();
+  document.getElementById('det-specs-grid').innerHTML=specsHtml;
+
+  document.getElementById('det-features').innerHTML=(p.features||[]).map(function(f){
+    return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+f+'</li>';
+  }).join('');
+
+  document.getElementById('det-offer-price-val').innerHTML=p.priceBasic+' <small>FCFA</small>';
+  document.getElementById('det-offer-price-old').textContent=oldPrice.toLocaleString('fr-FR')+' FCFA';
+
+  var benefits=(p.extrasBasic||['Plan de distribution avec dimensions','Rendus 3D exterieurs','Devis estimatif complet en FCFA']);
+  document.getElementById('det-offer-benefits').innerHTML=benefits.map(function(b){
+    return '<li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'+b+'</li>';
+  }).join('');
+
+  updateOptUI();
+}
+
+function renderMasonryGallery(){
   galMedia=[];
-  // Video en premier si disponible
   if(currentPlan.video_url){
     galMedia.push({type:'video',src:currentPlan.video_url});
   }
   (currentPlan.images||[]).forEach(function(s){
     galMedia.push({type:'image',src:s});
   });
-  setImg(0, true); // immediate=true → LCP visible sans délai
-  document.getElementById('gal-thumbs').innerHTML=galMedia.map(function(m,i){
+
+  var html=galMedia.map(function(m,i){
     if(m.type==='video'){
-      return '<div class="gal-thumb '+(i===0?'active':'')+'" onclick="setImg('+i+')">' +
-        '<div style="width:100%;height:100%;background:var(--brun);display:flex;align-items:center;justify-content:center">' +
-        '<svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--or);stroke:none"><polygon points="5 3 19 12 5 21"/></svg></div></div>';
+      return '<div class="det-masonry-item video-item" onclick="openLightbox('+i+')" style="aspect-ratio:16/10">'+
+        '<div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21"/></svg></div></div>';
     }
-    return '<div class="gal-thumb '+(i===0?'active':'')+'" onclick="setImg('+i+')">' +
-      '<img src="'+thumbUrl(m.src,160)+'" alt="" loading="lazy" width="78" height="58"></div>';
+    var thumbSrc=thumbUrl(m.src,340);
+    return '<div class="det-masonry-item" onclick="openLightbox('+i+')">'+
+      '<img src="'+thumbSrc+'" alt="" loading="lazy"></div>';
   }).join('');
+  document.getElementById('det-masonry').innerHTML=html;
 }
 
-function setImg(i, immediate){
+var lightboxIdx=0;
+function openLightbox(i){
   if(!galMedia.length)return;
-  imgIdx=(i+galMedia.length)%galMedia.length;
-  var m=galMedia[imgIdx];
-  var imgEl=document.getElementById('gal-img');
-  var vidEl=document.getElementById('gal-video');
+  lightboxIdx=i;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  var vid=document.getElementById('lightbox-video');
+  if(vid){vid.pause();vid.style.display='none';}
+  if(document.getElementById('detail-overlay').classList.contains('open')){
+    document.body.style.overflow='hidden';
+  } else {
+    document.body.style.overflow='';
+  }
+}
+function lightboxNav(d){
+  if(!galMedia.length)return;
+  lightboxIdx=(lightboxIdx+d+galMedia.length)%galMedia.length;
+  renderLightbox();
+}
+function renderLightbox(){
+  var m=galMedia[lightboxIdx];
+  var imgEl=document.getElementById('lightbox-img');
+  var vidEl=document.getElementById('lightbox-video');
   if(m.type==='video'){
     imgEl.style.display='none';
     vidEl.style.display='block';
     vidEl.src=m.src;
-    vidEl.style.opacity='1';
   } else {
     vidEl.style.display='none';
     vidEl.pause();
     imgEl.style.display='block';
-    // Taille adaptée à l'écran : mobile 750px (2× retina 375), desktop 900px
-    var galW = window.innerWidth <= 768 ? 750 : 900;
-    var optimizedSrc = m.src;
-    if(optimizedSrc.includes('b-cdn.net')){
-      optimizedSrc = optimizedSrc + '?width=' + galW + '&quality=75&format=webp';
-    }
-    if(immediate){
-      // Pas d'animation pour la première image : LCP visible immédiatement
-      imgEl.src=optimizedSrc;
-      imgEl.style.opacity='1';
-    } else {
-      imgEl.style.opacity='0';
-      setTimeout(function(){imgEl.src=optimizedSrc;imgEl.style.opacity='1';},200);
-    }
+    var src=m.src;
+    if(src.includes('b-cdn.net')) src+='?width=1200&quality=80&format=webp';
+    imgEl.src=src;
   }
-  document.getElementById('gal-counter').textContent=(imgIdx+1)+' / '+galMedia.length;
-  document.querySelectorAll('.gal-thumb').forEach(function(t,j){t.classList.toggle('active',j===imgIdx)});
+  document.getElementById('lightbox-counter').textContent=(lightboxIdx+1)+' / '+galMedia.length;
 }
 
-function galNav(d){setImg(imgIdx+d)}
+var countdownTimer=null;
+function startCountdown(){
+  if(countdownTimer){clearInterval(countdownTimer);countdownTimer=null;}
+  function tick(){
+    var now=new Date();
+    var end=new Date(now);
+    end.setHours(23,59,59,999);
+    var diff=end-now;
+    if(diff<0) diff=0;
+    var h=Math.floor(diff/3600000);
+    var mi=Math.floor((diff%3600000)/60000);
+    var s=Math.floor((diff%60000)/1000);
+    var hEl=document.getElementById('cd-hours');
+    var mEl=document.getElementById('cd-mins');
+    var sEl=document.getElementById('cd-secs');
+    if(hEl) hEl.textContent=h<10?'0'+h:h;
+    if(mEl) mEl.textContent=mi<10?'0'+mi:mi;
+    if(sEl) sEl.textContent=s<10?'0'+s:s;
+  }
+  tick();
+  countdownTimer=setInterval(tick,1000);
+}
 
-// Swipe
-let tx=0;
-document.addEventListener('touchstart',e=>{if(e.target.closest('.gal-main'))tx=e.touches[0].clientX},{passive:true});
-document.addEventListener('touchend',e=>{
-  if(!e.target.closest('.gal-main'))return;
-  const d=tx-e.changedTouches[0].clientX;
-  if(Math.abs(d)>40)galNav(d>0?1:-1);
-},{passive:true});
+function renderRelatedProducts(){
+  if(!currentPlan||!plans.length)return;
+  var similar=plans.filter(function(p){return p.id!==currentPlan.id&&p.type===currentPlan.type;}).slice(0,2);
+  if(!similar.length) similar=plans.filter(function(p){return p.id!==currentPlan.id;}).slice(0,2);
+  var html=similar.map(function(p){
+    var imgSrc=thumbUrl((p.images&&p.images[0])||'',340);
+    return '<div class="det-related-card" onclick="closeDetail();setTimeout(function(){openDetail(\''+p.id+'\')},100)">'+
+      '<img src="'+imgSrc+'" alt="'+p.title+'" loading="lazy">'+
+      '<div class="det-related-card-body">'+
+        '<div class="det-related-card-title">'+p.title+'</div>'+
+        '<div class="det-related-card-price">'+p.priceBasic+' FCFA</div>'+
+      '</div></div>';
+  }).join('');
+  document.getElementById('det-related-grid').innerHTML=html;
+}
 
-document.addEventListener('keydown',e=>{
+// Swipe for lightbox
+(function(){
+  var ltx=0;
+  document.addEventListener('touchstart',function(e){
+    if(e.target.closest('.lightbox')&&e.target.closest('.lightbox-btn'))return;
+    if(e.target.closest('#lightbox')&&!e.target.closest('.lightbox-close'))ltx=e.touches[0].clientX;
+  },{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(!document.getElementById('lightbox').classList.contains('open'))return;
+    var d=ltx-e.changedTouches[0].clientX;
+    if(Math.abs(d)>40)lightboxNav(d>0?1:-1);
+  },{passive:true});
+})();
+
+// Keyboard nav for lightbox + detail overlay
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('lightbox').classList.contains('open')){
+    if(e.key==='ArrowLeft')lightboxNav(-1);
+    if(e.key==='ArrowRight')lightboxNav(1);
+    if(e.key==='Escape')closeLightbox();
+    return;
+  }
   if(!document.getElementById('detail-overlay').classList.contains('open'))return;
-  if(e.key==='ArrowLeft')galNav(-1);
-  if(e.key==='ArrowRight')galNav(1);
+  if(e.key==='ArrowLeft')lightboxNav(-1);
+  if(e.key==='ArrowRight')lightboxNav(1);
   if(e.key==='Escape')closeDetail();
 });
 
 // ── OPTIONS ──────────────────────────────────────────────────
 function selectOpt(n){
   selectedOpt=n;
-  // Highlight visuel des cartes
-  var c1=document.getElementById('opt-card-1');
-  var c2=document.getElementById('opt-card-2');
-  if(c1)c1.classList.toggle('selected',n===1);
-  if(c2)c2.classList.toggle('selected',n===2);
   updateOptUI();
 }
 
@@ -1760,18 +1655,6 @@ function updateOptUI(){
   var price=isB?currentPlan.priceBasic:currentPlan.priceComplete;
   document.getElementById('sb-name').textContent=isB?'Plan Basique + Devis':'Plans Complets';
   document.getElementById('sb-price').textContent=price+' FCFA';
-  var mctaPrice=document.getElementById('det-mcta-price');
-  if(mctaPrice) mctaPrice.textContent=price;
-}
-
-function toggleDd(n){
-  var body=document.getElementById('dd'+n+'-body');
-  var btn=document.getElementById('dd'+n+'-btn');
-  var lbl=document.getElementById('dd'+n+'-label');
-  var isOpen=body.classList.contains('open');
-  body.classList.toggle('open',!isOpen);
-  btn.classList.toggle('open',!isOpen);
-  lbl.textContent=isOpen?'Voir tous les details':'Masquer les details';
 }
 
 // ── CHECKOUT ─────────────────────────────────────────────────
@@ -2133,7 +2016,6 @@ if ('serviceWorker' in navigator) {
     startAuto();
   }
   initTemoSlider('temo-track','temo-dots','temoNav');
-  initTemoSlider('temo-track-2','temo-dots-2','temoNav2');
 })();
 </script>
 <!-- Supabase JS — chargé uniquement si les données SSR sont absentes -->
