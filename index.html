@@ -338,32 +338,8 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .faq-answer{padding:0 0 18px;font-size:.875rem;color:var(--gris-fonce);line-height:1.75;max-width:560px}
 .faq-whatsapp-wrap{margin-top:28px}
 
-/* ── STICKY BAR MOBILE ── */
-.sticky-bar{
-  position:fixed;bottom:0;left:0;right:0;z-index:250;
-  background:var(--brun);
-  display:none;align-items:center;justify-content:space-between;
-  padding:14px 20px;
-  border-top:1px solid rgba(255,255,255,.1);
-  box-shadow:0 -4px 20px rgba(0,0,0,.25);
-  animation:slideUp .3s ease;
-}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-@keyframes sbBtnAttract{
-  0%,100%{transform:translateX(0) scale(1);box-shadow:none}
-  10%{transform:translateX(-5px) scale(1.02)}
-  20%{transform:translateX(5px) scale(1.02);box-shadow:0 0 18px rgba(212,175,55,.6)}
-  30%{transform:translateX(-4px) scale(1.03);box-shadow:0 0 28px rgba(212,175,55,.8)}
-  40%{transform:translateX(4px) scale(1.03);box-shadow:0 0 36px rgba(212,175,55,.9)}
-  55%{transform:translateX(-2px) scale(1.02);box-shadow:0 0 24px rgba(212,175,55,.6)}
-  70%{transform:translateX(2px) scale(1.01);box-shadow:0 0 16px rgba(212,175,55,.4)}
-  85%{transform:translateX(-1px);box-shadow:0 0 8px rgba(212,175,55,.2)}
-}
-.sb-btn.sb-attract{animation:sbBtnAttract .9s cubic-bezier(.36,.07,.19,.97) both}
-.sb-info{}
-.sb-name{font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:2px}
-.sb-price{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--or);font-weight:600;line-height:1}
-.sb-btn{background:var(--or);color:var(--brun);font-size:.82rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:13px 22px;border:none;cursor:pointer;flex-shrink:0}
+/* ── STICKY BAR MOBILE — désactivée ── */
+#sticky-bar{display:none!important}
 
 /* ── CHECKOUT POPUP ── */
 #checkout-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
@@ -481,7 +457,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   .nav-link{display:none}
   #catalogue{padding:60px 18px}
   .det-title{font-size:1.6rem}
-  .det-3d-grid{grid-template-columns:repeat(2,1fr)}
   .flash-price-new{font-size:2.4rem}
 }
 
@@ -499,12 +474,28 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .det-price-new{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:700;color:var(--brun);line-height:1}
 .det-price-new .det-price-cur{font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:400;color:var(--gris)}
 
-/* SECTION 2 : APERÇU 3D */
+/* SECTION 2 : GALERIE MASONRY */
 .det-3d-section{padding:28px 24px;background:var(--creme-2);border-bottom:1px solid var(--creme-3)}
 .det-3d-section h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:6px}
 .det-3d-sub{font-size:.88rem;color:var(--gris-fonce);margin-bottom:14px;line-height:1.5}
-.det-3d-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:18px}
-.det-3d-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.det-3d-grid{columns:2;column-gap:5px;margin-bottom:18px}
+.det-3d-grid img{width:100%;display:block;margin-bottom:5px;break-inside:avoid;cursor:pointer;transition:opacity .18s}
+.det-3d-grid img:hover{opacity:.88}
+
+/* LIGHTBOX */
+#lb{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.96);display:none;flex-direction:column;align-items:center;justify-content:center;touch-action:pan-y}
+#lb.open{display:flex}
+.lb-img{max-width:100%;max-height:82svh;object-fit:contain;transition:transform .25s;cursor:grab;user-select:none;-webkit-user-drag:none}
+.lb-img.zoomed{cursor:zoom-out}
+.lb-close{position:absolute;top:14px;right:14px;width:42px;height:42px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .18s}
+.lb-close:hover{background:rgba(255,255,255,.22)}
+.lb-close svg{width:18px;height:18px;stroke:#fff;stroke-width:2;fill:none}
+.lb-arrow{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s}
+.lb-arrow:hover{background:rgba(255,255,255,.22)}
+.lb-arrow svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none}
+.lb-prev{left:12px}
+.lb-next{right:12px}
+.lb-counter{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:.78rem;letter-spacing:.06em;pointer-events:none}
 
 /* SECTION 3 : PRÉSENTATION */
 .det-presentation{padding:28px 24px;border-bottom:1px solid var(--creme-3)}
@@ -527,10 +518,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .benefits-list li svg{width:17px;height:17px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0;margin-top:1px}
 .bonus-box{background:var(--vert-bg);border:1.5px solid var(--vert);padding:14px 16px;margin-bottom:20px;border-radius:2px}
 .bonus-badge{display:inline-block;background:var(--vert);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:2px 10px;text-transform:uppercase;margin-bottom:10px;border-radius:2px}
-
-/* SECTION 6 : URGENCE */
-.det-urgency{padding:28px 24px;background:var(--orange-bg);border-bottom:1px solid var(--creme-3);text-align:center}
-.det-urgency h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:16px;line-height:1.3}
+.benefits-cta-block{border-top:1px solid var(--creme-3);padding-top:20px;margin-top:20px;text-align:center}
 
 /* SECTION 7 : TÉMOIGNAGES */
 .det-temoignages{padding:28px 24px;border-bottom:1px solid var(--creme-3)}
@@ -855,9 +843,9 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="flash-price-cur">FCFA · Téléchargement instantané</div>
     </div>
 
-    <!-- SECTION 5 : BÉNÉFICES -->
+    <!-- SECTION 5 : BÉNÉFICES + CTA UNIQUE -->
     <div class="det-benefits">
-      <h2>Je veux voir l'intérieur maintenant</h2>
+      <h2>Ce que vous obtenez avec ce plan</h2>
       <ul class="benefits-list">
         <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution et dimensions</li>
         <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
@@ -871,26 +859,19 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
           <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Conseils personnalisés pour votre projet</li>
         </ul>
       </div>
-      <button class="cta-main" onclick="selectOpt(1);openCheckout()">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Télécharger maintenant
-      </button>
-    </div>
-
-    <!-- SECTION 6 : URGENCE -->
-    <div class="det-urgency">
-      <h2>Profitez de cette offre maintenant</h2>
-      <div class="det-price-block" style="margin-bottom:16px">
-        <div class="det-price-old">30 000 FCFA</div>
-        <div class="det-price-new"><span class="det-price-new-val" id="det-price-new-3">—</span> <span class="det-price-cur">FCFA</span></div>
-      </div>
-      <button class="cta-main" onclick="selectOpt(1);openCheckout()">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Télécharger · <span class="det-price-new-val">—</span> FCFA
-      </button>
-      <div class="trust-note" style="margin-top:12px">
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Paiement 100% sécurisé · Mobile Money
+      <div class="benefits-cta-block">
+        <div class="det-price-block" style="margin-bottom:16px">
+          <div class="det-price-old">30 000 FCFA</div>
+          <div class="det-price-new"><span class="det-price-new-val" id="det-price-new-3">—</span> <span class="det-price-cur">FCFA</span></div>
+        </div>
+        <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger maintenant · <span class="det-price-new-val">—</span> FCFA
+        </button>
+        <div class="trust-note" style="margin-top:12px">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Paiement 100% sécurisé · Mobile Money
+        </div>
       </div>
     </div>
 
@@ -976,13 +957,25 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   </div>
 </div>
 
-<!-- STICKY BAR MOBILE -->
-<div class="sticky-bar" id="sticky-bar">
-  <div class="sb-info">
-    <div class="sb-name" id="sb-name">Plan Basique + Devis</div>
-    <div class="sb-price" id="sb-price">—</div>
-  </div>
-  <button class="sb-btn" onclick="selectOpt(1);openCheckout()">&#8595; Telecharger</button>
+<!-- sticky-bar supprimé (éléments cachés pour compat JS) -->
+<div id="sticky-bar" style="display:none" aria-hidden="true">
+  <div class="sb-name" id="sb-name"></div>
+  <div class="sb-price" id="sb-price"></div>
+</div>
+
+<!-- LIGHTBOX GALERIE -->
+<div id="lb" role="dialog" aria-modal="true">
+  <button class="lb-close" onclick="closeLb()" aria-label="Fermer">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <button class="lb-arrow lb-prev" onclick="lbNav(-1)" aria-label="Précédent">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <img class="lb-img" id="lb-img" src="" alt="">
+  <button class="lb-arrow lb-next" onclick="lbNav(1)" aria-label="Suivant">
+    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <div class="lb-counter" id="lb-counter">1 / 4</div>
 </div>
 
 <!-- CHECKOUT POPUP -->
@@ -1555,18 +1548,8 @@ function openDetail(id,skipPush){
   var rvs=document.getElementById('det-reviews-summary');
   if(rvs)rvs.textContent=(currentPlan.reviews??0)+' avis';
 
-  // Grille 3D : images 2, 3, 4 de la galerie
-  (function(){
-    var grid=document.getElementById('det-3d-grid');
-    if(!grid)return;
-    var imgs=(currentPlan.images||[]).slice(1,4);
-    if(!imgs.length){grid.parentElement.style.display='none';return;}
-    grid.parentElement.style.display='';
-    grid.innerHTML=imgs.map(function(src){
-      var opt=src.indexOf('b-cdn.net')>-1?src+'?width=240&quality=70&format=webp':src;
-      return '<img src="'+opt+'" alt="'+currentPlan.title+'" loading="lazy">';
-    }).join('');
-  })();
+  // Galerie masonry : toutes les images
+  renderMasonryGrid(currentPlan);
 
   // Plans similaires
   renderSimilarPlans(currentPlan);
@@ -1625,14 +1608,110 @@ function openDetail(id,skipPush){
   if(sCp) sCp.classList.remove('share-copy-ok');
 }
 
+// ── GALERIE MASONRY ───────────────────────────────────────────
+function renderMasonryGrid(plan) {
+  var grid = document.getElementById('det-3d-grid');
+  var section = grid && grid.closest('.det-3d-section');
+  if (!grid) return;
+  var imgs = plan.images || [];
+  if (!imgs.length) { if(section) section.style.display='none'; return; }
+  if (section) section.style.display='';
+  grid.innerHTML = imgs.map(function(src, i) {
+    var opt = src.indexOf('b-cdn.net') > -1 ? src + '?width=480&quality=75&format=webp' : src;
+    return '<img src="'+opt+'" alt="'+(plan.title||'')+(i+1)+'" loading="'+(i<2?'eager':'lazy')+'" onclick="openLb('+i+')">';
+  }).join('');
+}
+
+// ── LIGHTBOX ──────────────────────────────────────────────────
+var lbImages = [];
+var lbIdx = 0;
+var lbZoom = false;
+var lbTouchX = null;
+
+function openLb(idx) {
+  lbImages = (currentPlan && currentPlan.images) ? currentPlan.images : [];
+  if (!lbImages.length) return;
+  lbIdx = idx;
+  lbZoom = false;
+  var el = document.getElementById('lb');
+  var img = document.getElementById('lb-img');
+  if (!el || !img) return;
+  img.style.transform = 'scale(1)';
+  img.classList.remove('zoomed');
+  img.src = lbImages[lbIdx];
+  document.getElementById('lb-counter').textContent = (lbIdx + 1) + ' / ' + lbImages.length;
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLb() {
+  var el = document.getElementById('lb');
+  if (el) el.classList.remove('open');
+}
+
+function lbNav(dir) {
+  if (!lbImages.length) return;
+  lbIdx = (lbIdx + dir + lbImages.length) % lbImages.length;
+  var img = document.getElementById('lb-img');
+  if (img) { img.src = lbImages[lbIdx]; img.style.transform = 'scale(1)'; img.classList.remove('zoomed'); lbZoom = false; }
+  document.getElementById('lb-counter').textContent = (lbIdx + 1) + ' / ' + lbImages.length;
+}
+
+// Fermer au clic sur le fond
+document.addEventListener('DOMContentLoaded', function(){
+  var lb = document.getElementById('lb');
+  if (!lb) return;
+  lb.addEventListener('click', function(e){
+    if (e.target === lb) closeLb();
+  });
+  // Keyboard
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'ArrowRight') lbNav(1);
+    else if (e.key === 'ArrowLeft') lbNav(-1);
+    else if (e.key === 'Escape') closeLb();
+  });
+  // Touch swipe on lightbox image
+  var img = document.getElementById('lb-img');
+  if (!img) return;
+  img.addEventListener('touchstart', function(e){ lbTouchX = e.touches[0].clientX; }, {passive:true});
+  img.addEventListener('touchend', function(e){
+    if (lbTouchX === null) return;
+    var diff = lbTouchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) lbNav(diff > 0 ? 1 : -1);
+    lbTouchX = null;
+  }, {passive:true});
+  // Double-tap to zoom
+  var lastTap = 0;
+  img.addEventListener('touchend', function(e){
+    var now = Date.now();
+    if (now - lastTap < 280) {
+      lbZoom = !lbZoom;
+      img.style.transform = lbZoom ? 'scale(2)' : 'scale(1)';
+      img.classList.toggle('zoomed', lbZoom);
+      e.preventDefault();
+    }
+    lastTap = now;
+  });
+});
+
 // ── PLANS SIMILAIRES ─────────────────────────────────────────
+function openSimilarPlan(id) {
+  openDetail(id);
+  // Scroll to top of panel after a tick so the new content is painted
+  setTimeout(function(){
+    var panel = document.querySelector('.det-panel');
+    if (panel) panel.scrollTo({top: 0, behavior: 'smooth'});
+  }, 60);
+}
+
 function renderSimilarPlans(plan) {
   var row = document.getElementById('similar-row');
   if (!row || !plans.length) return;
   var similar = plans.filter(function(p){ return p.id !== plan.id; }).slice(0, 4);
   row.innerHTML = similar.map(function(p) {
     var img = (p.images && p.images[0]) ? p.images[0] + (p.images[0].indexOf('b-cdn.net') > -1 ? '?width=300&quality=70&format=webp' : '') : '';
-    return '<div class="similar-card" onclick="openDetail(\''+p.id+'\')">'
+    return '<div class="similar-card" onclick="openSimilarPlan(\''+p.id+'\')">'
       + (img ? '<img class="similar-card-img" src="'+img+'" alt="'+p.title+'" loading="lazy">' : '')
       + '<div class="similar-card-body">'
       + '<div class="similar-card-title">'+p.title+'</div>'
@@ -1706,17 +1785,7 @@ function openDetailFast(id) {
   document.querySelectorAll('.det-price-new-val').forEach(function(el){el.textContent=currentPlan.priceBasic||'—';});
   var rs=document.getElementById('det-rating-summary');if(rs)rs.textContent=currentPlan.rating||'4.8';
   var rvs=document.getElementById('det-reviews-summary');if(rvs)rvs.textContent=(currentPlan.reviews??0)+' avis';
-  (function(){
-    var grid=document.getElementById('det-3d-grid');
-    if(!grid)return;
-    var imgs=(currentPlan.images||[]).slice(1,4);
-    if(!imgs.length){grid.parentElement.style.display='none';return;}
-    grid.parentElement.style.display='';
-    grid.innerHTML=imgs.map(function(src){
-      var opt=src.indexOf('b-cdn.net')>-1?src+'?width=240&quality=70&format=webp':src;
-      return '<img src="'+opt+'" alt="'+currentPlan.title+'" loading="lazy">';
-    }).join('');
-  })();
+  renderMasonryGrid(currentPlan);
   renderSimilarPlans(currentPlan);
 
   // Reset dropdowns
