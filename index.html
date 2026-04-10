@@ -474,16 +474,87 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   .concept-step:last-child{border-bottom:none}
   .plans-grid{grid-template-columns:1fr}
   .det-panel{width:100vw}
-  .det-content{grid-template-columns:1fr;gap:20px}
   .det-features{grid-template-columns:1fr}
-  .purchase-box{position:static}
   /* sticky-bar géré par JS uniquement */
   .ft-inner{grid-template-columns:1fr;gap:28px}
   nav{padding:0 18px}
   .nav-link{display:none}
   #catalogue{padding:60px 18px}
   .det-title{font-size:1.6rem}
+  .det-3d-grid{grid-template-columns:repeat(2,1fr)}
+  .flash-price-new{font-size:2.4rem}
 }
+
+/* ── NOUVELLE PAGE PRODUIT — sections de conversion ── */
+
+/* Panel single-column, plus étroit pour focus mobile */
+.det-panel{width:min(560px,100vw)}
+
+/* SECTION 1 : CTA HERO */
+.det-cta-hero{padding:28px 24px;background:var(--blanc);border-bottom:1px solid var(--creme-3);text-align:center}
+.det-cta-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600;color:var(--brun);margin-bottom:10px;line-height:1.3}
+.det-cta-sub{font-size:.88rem;color:var(--gris-fonce);margin-bottom:18px;line-height:1.6;max-width:340px;margin-left:auto;margin-right:auto}
+.det-price-block{margin-bottom:18px}
+.det-price-old{font-size:.85rem;color:var(--gris);text-decoration:line-through;margin-bottom:4px}
+.det-price-new{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:700;color:var(--brun);line-height:1}
+.det-price-new .det-price-cur{font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:400;color:var(--gris)}
+
+/* SECTION 2 : APERÇU 3D */
+.det-3d-section{padding:28px 24px;background:var(--creme-2);border-bottom:1px solid var(--creme-3)}
+.det-3d-section h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:6px}
+.det-3d-sub{font-size:.88rem;color:var(--gris-fonce);margin-bottom:14px;line-height:1.5}
+.det-3d-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:18px}
+.det-3d-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+
+/* SECTION 3 : PRÉSENTATION */
+.det-presentation{padding:28px 24px;border-bottom:1px solid var(--creme-3)}
+.det-presentation .det-features{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+
+/* SECTION 4 : OFFRE FLASH */
+.det-flash-offer{background:var(--brun);color:var(--blanc);padding:32px 24px;text-align:center;border-bottom:2px solid var(--or)}
+.flash-eyebrow{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--or);margin-bottom:8px;font-weight:700}
+.flash-promo-badge{display:inline-block;background:#e63946;color:#fff;font-size:.8rem;font-weight:700;letter-spacing:.08em;padding:5px 16px;text-transform:uppercase;margin-bottom:12px;border-radius:2px}
+.flash-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:16px}
+.flash-price-old{font-size:.85rem;color:rgba(255,255,255,.4);text-decoration:line-through;margin-bottom:4px}
+.flash-price-new{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:700;color:var(--or);line-height:1}
+.flash-price-cur{font-size:.78rem;color:var(--or-pale);margin-top:6px;letter-spacing:.06em}
+
+/* SECTION 5 : BÉNÉFICES */
+.det-benefits{padding:28px 24px;background:var(--creme);border-bottom:1px solid var(--creme-3)}
+.det-benefits h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--brun);margin-bottom:18px;line-height:1.3}
+.benefits-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.benefits-list li{display:flex;align-items:flex-start;gap:10px;font-size:.92rem;color:var(--gris-fonce);line-height:1.5}
+.benefits-list li svg{width:17px;height:17px;stroke:var(--vert);stroke-width:2.5;fill:none;flex-shrink:0;margin-top:1px}
+.bonus-box{background:var(--vert-bg);border:1.5px solid var(--vert);padding:14px 16px;margin-bottom:20px;border-radius:2px}
+.bonus-badge{display:inline-block;background:var(--vert);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:2px 10px;text-transform:uppercase;margin-bottom:10px;border-radius:2px}
+
+/* SECTION 6 : URGENCE */
+.det-urgency{padding:28px 24px;background:var(--orange-bg);border-bottom:1px solid var(--creme-3);text-align:center}
+.det-urgency h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:16px;line-height:1.3}
+
+/* SECTION 7 : TÉMOIGNAGES */
+.det-temoignages{padding:28px 24px;border-bottom:1px solid var(--creme-3)}
+.det-temoignages h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:8px}
+.temo-rating-summary{display:flex;align-items:center;gap:5px;font-size:.88rem;color:var(--gris);margin-bottom:16px;flex-wrap:wrap}
+.temo-rating-summary svg{width:15px;height:15px;fill:var(--or);stroke:none;flex-shrink:0}
+.temo-rating-summary strong{color:var(--brun)}
+
+/* SECTION 9 : CTA FINAL */
+.det-final-cta{padding:28px 24px;background:var(--creme-2);border-bottom:1px solid var(--creme-3);text-align:center}
+
+/* SECTION 10 : PLANS SIMILAIRES */
+.det-similar{padding:28px 0 28px 24px}
+.det-similar h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:16px;padding-right:24px}
+.similar-row{display:flex;gap:14px;overflow-x:auto;padding-right:24px;scrollbar-width:none;padding-bottom:8px}
+.similar-row::-webkit-scrollbar{display:none}
+.similar-card{flex-shrink:0;width:200px;background:var(--blanc);border:1px solid var(--creme-3);cursor:pointer;transition:box-shadow .2s;overflow:hidden}
+.similar-card:hover{box-shadow:0 4px 16px rgba(26,18,8,.1)}
+.similar-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.similar-card-body{padding:12px}
+.similar-card-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:500;color:var(--brun);margin-bottom:4px;line-height:1.3}
+.similar-card-price{font-size:.82rem;color:var(--terre);font-weight:600;margin-bottom:8px}
+.similar-card-btn{display:block;text-align:center;background:var(--brun);color:var(--or);font-size:.73rem;font-weight:600;letter-spacing:.06em;padding:9px;border:none;cursor:pointer;width:100%;transition:background .2s}
+.similar-card-btn:hover{background:var(--terre)}
 </style>
 <!-- Microsoft Clarity -->
 <script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","w2dejcjrmt");</script>
@@ -675,98 +746,166 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
     </div>
 
 
-    <div class="det-content">
-      <div class="det-main">
-        <div class="det-type-row">
-          <span class="det-type-pill" id="det-pill">Villa</span>
-          <div class="det-stars">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span id="det-rating">4.8</span>&nbsp;<span style="color:var(--gris-clair)">·</span>&nbsp;<span id="det-reviews">18 avis</span>
+    <!-- HIDDEN: compatibilité JS (prix, opt-cards, dropdowns) -->
+    <div style="display:none" aria-hidden="true">
+      <div class="opt-card featured selected" id="opt-card-1">
+        <div class="opt-card-head">
+          <div class="opt-card-left">
+            <div class="opt-card-name">Plan Basique + Devis</div>
+          </div>
+          <div class="opt-card-price">
+            <div class="opt-price-val" id="price-basic">—</div>
           </div>
         </div>
-        <h2 class="det-title" id="det-title">—</h2>
-        <p class="det-subtitle" id="det-subtitle">—</p>
-        <div class="det-specs-row">
-          <div>
-            <div class="det-spec-lbl">
-              Surface
-              <span class="tooltip-wrap">
-                <span class="tooltip-icon">?</span>
-                <span class="tooltip-box">Surface totale bâtie (RDC + Étage pour les duplex)</span>
-              </span>
-            </div>
-            <div class="det-spec-val" id="det-area">—</div>
-          </div>
-          <div><div class="det-spec-lbl">Chambres</div><div class="det-spec-val" id="det-beds">—</div></div>
-          <div><div class="det-spec-lbl">Salles de bain</div><div class="det-spec-val" id="det-baths">—</div></div>
-          <div><div class="det-spec-lbl">Niveaux</div><div class="det-spec-val" id="det-floors">—</div></div>
-          <div id="det-terrain-wrap" style="display:none"><div class="det-spec-lbl">Terrain</div><div class="det-spec-val" id="det-terrain">—</div></div>
-          <div><div class="det-spec-lbl">Coût estimé</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
-        </div>
-        <p class="det-desc" id="det-desc">—</p>
-        <ul class="det-features" id="det-features"></ul>
-
       </div>
+      <div id="opt-card-2"><div class="opt-price-val" id="price-complete">—</div></div>
+      <span id="price-complete-hint">—</span>
+      <div class="pbox-total">
+        <div class="pbox-total-val" id="pbox-total-val">— FCFA</div>
+        <div class="pbox-total-sub">Avance&nbsp;<strong id="pbox-acompte">—</strong>&nbsp;FCFA · Solde&nbsp;<strong id="pbox-solde">—</strong>&nbsp;FCFA</div>
+      </div>
+      <ul id="dd1-extras"></ul><ul id="dd2-extras"></ul>
+      <button id="dd1-btn"></button><button id="dd2-btn"></button>
+      <div id="dd1-body"></div><div id="dd2-body"></div>
+      <span id="dd1-label"></span><span id="dd2-label"></span>
+    </div>
 
-      <!-- SIDEBAR -->
-      <div class="det-sidebar">
-        <div class="purchase-box">
-          <div class="pbox-total" style="display:none" aria-hidden="true">
-            <div class="pbox-total-tag">💳 Paiement en 2 versements</div>
-            <div class="pbox-total-label">Prix total du dossier complet</div>
-            <div class="pbox-total-val" id="pbox-total-val">— FCFA</div>
-            <div class="pbox-total-sub">Avance&nbsp;<strong id="pbox-acompte">—</strong>&nbsp;FCFA · Solde&nbsp;<strong id="pbox-solde">—</strong>&nbsp;FCFA</div>
+    <!-- SECTION 1 : CTA HERO -->
+    <div class="det-cta-hero">
+      <h1 class="det-cta-title" id="det-cta-title-1">Obtenez le plan et devis de cette villa</h1>
+      <p class="det-cta-sub">Téléchargez maintenant le plan et devis et commencez la construction de votre projet</p>
+      <div class="det-price-block">
+        <div class="det-price-old">30 000 FCFA</div>
+        <div class="det-price-new"><span class="det-price-new-val" id="det-price-new-1">—</span> <span class="det-price-cur">FCFA</span></div>
+      </div>
+      <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Télécharger le plan et devis
+      </button>
+      <div class="trust-note" id="trust-cta-note" style="margin-top:12px">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Paiement Mobile Money au <strong id="trust-country-name">Cameroun</strong>
+      </div>
+    </div>
+
+    <!-- SECTION 2 : APERÇU 3D -->
+    <div class="det-3d-section">
+      <h2 class="det-3d-title" id="det-3d-title">Découvrez cette villa en 3D</h2>
+      <p class="det-3d-sub">Visualisez chaque détail de l'intérieur de votre future maison</p>
+      <div class="det-3d-grid" id="det-3d-grid"></div>
+      <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Télécharger le plan et devis
+      </button>
+    </div>
+
+    <!-- SECTION 3 : PRÉSENTATION -->
+    <div class="det-presentation">
+      <div class="det-type-row">
+        <span class="det-type-pill" id="det-pill">Villa</span>
+        <div class="det-stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span id="det-rating">4.8</span>&nbsp;<span style="color:var(--gris-clair)">·</span>&nbsp;<span id="det-reviews">18 avis</span>
+        </div>
+      </div>
+      <h2 class="det-title" id="det-title">—</h2>
+      <p class="det-subtitle" id="det-subtitle">—</p>
+      <div class="det-specs-row">
+        <div>
+          <div class="det-spec-lbl">
+            Surface
+            <span class="tooltip-wrap">
+              <span class="tooltip-icon">?</span>
+              <span class="tooltip-box">Surface totale bâtie (RDC + Étage pour les duplex)</span>
+            </span>
           </div>
-
-          <!-- CARTE 1 : PLAN BASIQUE -->
-          <div class="opt-card featured selected" id="opt-card-1">
-            <div class="opt-promo-badge">−50%</div>
-            <div class="opt-card-head">
-              <div class="opt-card-left">
-                <div class="opt-card-name">Plan Basique + Devis</div>
-                <div class="opt-card-sub">Pour demarrer et personnaliser votre projet</div>
-              </div>
-              <div class="opt-card-price">
-                <div class="opt-price-old">30 000 FCFA</div>
-                <div class="opt-price-val" id="price-basic">—</div>
-                <div class="opt-price-cur">FCFA</div>
-              </div>
-            </div>
-            <span class="opt-card-tag tag-inst" style="margin-bottom:12px;display:inline-flex">&#9889; INSTANTANE</span>
-            <ul class="opt-card-items">
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution et dimensions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendu 3D exterieurs</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Echange avec un architecte sur WhatsApp</li>
-            </ul>
-            <a class="voir-exemple-link" id="voir-exemple-link" href="/exemples/d4-034/" onclick="track('voir_exemple',{plan_id:currentPlan&&currentPlan.id,plan_type:currentPlan&&currentPlan.type,plan_title:currentPlan&&currentPlan.title});(function(){var ua=navigator.userAgent||'';if(/FBAN|FBAV|Instagram|FB_IAB/.test(ua)){window.location.href='/exemples/d4-034/';}else{var w=window.open('/exemples/d4-034/','_blank');if(!w)window.location.href='/exemples/d4-034/';}})();return false;">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              Voir un exemple
-            </a>
-          </div>
-
-          <button class="cta-main" onclick="selectOpt(1);openCheckout()">
-            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Telecharger maintenant
-          </button>
-          <div class="trust-note" id="trust-cta-note" style="margin-bottom:22px">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Paiement Mobile Money au <strong id="trust-country-name">Cameroun</strong>
-          </div>
-
-          <!-- CARTE 2 masquée + bouton hint -->
-          <div id="opt-card-2" style="display:none" aria-hidden="true">
-            <div class="opt-price-val" id="price-complete" style="display:none">—</div>
-          </div>
-
+          <div class="det-spec-val" id="det-area">—</div>
+        </div>
+        <div><div class="det-spec-lbl">Chambres</div><div class="det-spec-val" id="det-beds">—</div></div>
+        <div><div class="det-spec-lbl">Salles de bain</div><div class="det-spec-val" id="det-baths">—</div></div>
+        <div><div class="det-spec-lbl">Niveaux</div><div class="det-spec-val" id="det-floors">—</div></div>
+        <div id="det-terrain-wrap" style="display:none"><div class="det-spec-lbl">Terrain</div><div class="det-spec-val" id="det-terrain">—</div></div>
+        <div><div class="det-spec-lbl">Coût estimé</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
+      </div>
+      <p class="det-desc" id="det-desc">—</p>
+      <ul class="det-features" id="det-features"></ul>
+      <a class="voir-exemple-link" id="voir-exemple-link" href="/exemples/d4-034/" onclick="track('voir_exemple',{plan_id:currentPlan&&currentPlan.id,plan_type:currentPlan&&currentPlan.type,plan_title:currentPlan&&currentPlan.title});(function(){var ua=navigator.userAgent||'';if(/FBAN|FBAV|Instagram|FB_IAB/.test(ua)){window.location.href='/exemples/d4-034/';}else{var w=window.open('/exemples/d4-034/','_blank');if(!w)window.location.href='/exemples/d4-034/';}})();return false;">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Voir un exemple
+      </a>
+      <div style="margin-top:16px">
+        <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger le plan et devis
+        </button>
+        <div class="trust-note" style="margin-top:10px">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Paiement Mobile Money · <strong id="trust-cta-note-2">Cameroun</strong>
         </div>
       </div>
     </div>
 
-    <!-- Témoignages dans le panneau de détail -->
-    <div style="padding:36px 28px 8px;border-top:1px solid var(--creme-3);background:var(--creme)">
-      <div class="temo-eyebrow" style="text-align:center;margin-bottom:16px">Ils ont fait confiance à WooPlans</div>
-      <div class="temo-wrap" style="max-width:420px">
+    <!-- SECTION 4 : OFFRE FLASH -->
+    <div class="det-flash-offer">
+      <div class="flash-eyebrow">Offre limitée</div>
+      <div class="flash-promo-badge">Offre Flash &minus;50%</div>
+      <p class="flash-title">Réduction de 50% aujourd'hui</p>
+      <div class="flash-price-old">30 000 FCFA</div>
+      <div class="flash-price-new"><span class="det-price-new-val" id="det-price-new-2">—</span></div>
+      <div class="flash-price-cur">FCFA · Téléchargement instantané</div>
+    </div>
+
+    <!-- SECTION 5 : BÉNÉFICES -->
+    <div class="det-benefits">
+      <h2>Je veux voir l'intérieur maintenant</h2>
+      <ul class="benefits-list">
+        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution et dimensions</li>
+        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
+        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendus 3D extérieurs</li>
+        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Échange avec un architecte sur WhatsApp</li>
+      </ul>
+      <div class="bonus-box">
+        <div class="bonus-badge">Bonus</div>
+        <ul class="benefits-list" style="margin-bottom:0">
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Accès au catalogue complet WooPlans</li>
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Conseils personnalisés pour votre projet</li>
+        </ul>
+      </div>
+      <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Télécharger maintenant
+      </button>
+    </div>
+
+    <!-- SECTION 6 : URGENCE -->
+    <div class="det-urgency">
+      <h2>Profitez de cette offre maintenant</h2>
+      <div class="det-price-block" style="margin-bottom:16px">
+        <div class="det-price-old">30 000 FCFA</div>
+        <div class="det-price-new"><span class="det-price-new-val" id="det-price-new-3">—</span> <span class="det-price-cur">FCFA</span></div>
+      </div>
+      <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Télécharger · <span class="det-price-new-val">—</span> FCFA
+      </button>
+      <div class="trust-note" style="margin-top:12px">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Paiement 100% sécurisé · Mobile Money
+      </div>
+    </div>
+
+    <!-- SECTION 7 : TÉMOIGNAGES -->
+    <div class="det-temoignages">
+      <h2>Ce que disent nos clients</h2>
+      <div class="temo-rating-summary">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <strong id="det-rating-summary">4.8</strong>&nbsp;·&nbsp;<span id="det-reviews-summary">18 avis</span>
+      </div>
+      <div class="temo-wrap" style="max-width:100%">
         <div class="temo-track" id="temo-track-2">
           <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.36.jpeg" alt="Témoignage" loading="lazy"></div>
           <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37.jpeg" alt="Témoignage" loading="lazy"></div>
@@ -781,78 +920,58 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="temo-dots" id="temo-dots-2" style="margin-top:16px"></div>
     </div>
 
-    <!-- FAQ — pleine largeur, après les formules -->
-    <section class="faq-section" style="margin-top:0;border-top:1px solid var(--creme-3);padding:36px 28px 44px">
+    <!-- SECTION 8 : FAQ -->
+    <section class="faq-section" style="margin-top:0;border-top:1px solid var(--creme-3);padding:36px 24px 44px">
       <h3 class="faq-section-title">Questions fréquentes</h3>
-
       <details class="faq-item">
-        <summary>
-          Comment je reçois mon plan après l'achat ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
+        <summary>Comment je reçois mon plan après l'achat ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
         <p class="faq-answer">Le <strong>Plan Basique avec devis</strong> est envoyé instantanément par email et WhatsApp après validation du paiement. Pas besoin d'attendre.</p>
       </details>
-
       <details class="faq-item">
-        <summary>
-          Quels sont les moyens de paiement ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
+        <summary>Quels sont les moyens de paiement ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
         <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> — au <strong id="faq-country-name">Cameroun</strong> : <span id="faq-mm-list">MTN MoMo, Orange Money</span>.</p>
       </details>
-
       <details class="faq-item">
-        <summary>
-          C'est quoi exactement le Plan Basique ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
+        <summary>C'est quoi exactement le Plan Basique ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
         <p class="faq-answer">Le Plan Basique c'est le document idéal pour <strong>valider et personnaliser votre projet</strong> avant de passer à la phase de construction. Il vous permet d'échanger avec un architecte sur WhatsApp, de faire des ajustements selon vos besoins et votre terrain.</p>
       </details>
-
       <details class="faq-item">
-        <summary>
-          Comment obtenir le Dossier Complet pour construire ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
+        <summary>Comment obtenir le Dossier Complet pour construire ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
         <p class="faq-answer">Après votre achat vous recevez le Plan Basique que vous pouvez consulter et noter les modifications à faire. Ensuite un de nos architectes échange avec vous sur <a href="https://wa.me/237694327885" style="color:var(--terre);font-weight:600">WhatsApp</a> pour prendre en compte vos modifications et les dimensions de votre terrain. Vous obtenez à la fin un <strong>Dossier Complet personnalisé</strong> pour votre construction.</p>
       </details>
-
       <details class="faq-item">
-        <summary>
-          Est-ce que je vais payer après pour le Dossier Complet ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
+        <summary>Est-ce que je vais payer après pour le Dossier Complet ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
         <p class="faq-answer">Oui, le Dossier Complet est commandé séparément quand vous êtes prêt à construire. Son prix dépend du type de plan et des modifications à faire. <strong>Un devis vous sera proposé à ce moment-là.</strong></p>
       </details>
-
       <div class="faq-whatsapp-wrap">
         <a class="whatsapp-btn" href="https://wa.me/237694327885?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20plan%20" id="whatsapp-link" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
           Une question ? Ecrivez-nous sur WhatsApp
         </a>
-
-        <!-- PARTAGE SOCIAL -->
         <div class="share-row">
           <span class="share-label">Partager</span>
-          <!-- WhatsApp -->
-          <a class="share-btn share-wa" id="share-wa" href="#" target="_blank" rel="noopener" title="Partager sur WhatsApp">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
-          </a>
-          <!-- Facebook -->
-          <a class="share-btn share-fb" id="share-fb" href="#" target="_blank" rel="noopener" title="Partager sur Facebook">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
-          </a>
-          <!-- X / Twitter -->
-          <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener" title="Partager sur X">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <!-- Copier le lien -->
-          <button class="share-btn share-copy" id="share-copy" onclick="copyPlanLink()" title="Copier le lien">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          </button>
+          <a class="share-btn share-wa" id="share-wa" href="#" target="_blank" rel="noopener" title="Partager sur WhatsApp"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg></a>
+          <a class="share-btn share-fb" id="share-fb" href="#" target="_blank" rel="noopener" title="Partager sur Facebook"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg></a>
+          <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener" title="Partager sur X"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <button class="share-btn share-copy" id="share-copy" onclick="copyPlanLink()" title="Copier le lien"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
       </div>
     </section>
+
+    <!-- SECTION 9 : CTA FINAL -->
+    <div class="det-final-cta">
+      <p style="font-size:.88rem;color:var(--gris-fonce);margin-bottom:16px">Rejoignez les centaines de familles qui ont démarré leur projet avec WooPlans</p>
+      <button class="cta-main" style="max-width:380px;margin:0 auto" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Je découvre mon projet maintenant
+      </button>
+    </div>
+
+    <!-- SECTION 10 : PLANS SIMILAIRES -->
+    <div class="det-similar">
+      <h2>Plans similaires</h2>
+      <div class="similar-row" id="similar-row"></div>
+    </div>
 
   </div>
 </div>
@@ -1421,6 +1540,37 @@ function openDetail(id,skipPush){
   // Total = acompte basique + solde complet
   (function(){var b=parseFloat((currentPlan.priceBasic||'0').replace(/\s/g,''))||0,c=parseFloat((currentPlan.priceComplete||'0').replace(/\s/g,''))||0,t=b+c;var fp=function(n){return n.toLocaleString('fr-FR');};document.getElementById('pbox-total-val').textContent=fp(t)+' FCFA';document.getElementById('pbox-acompte').textContent=fp(b);document.getElementById('pbox-solde').textContent=fp(c);})();
 
+  // Titre des sections CTA dynamiques
+  var ctaTitle1=document.getElementById('det-cta-title-1');
+  if(ctaTitle1)ctaTitle1.textContent='Obtenez le plan et devis de '+currentPlan.title;
+  var tit3d=document.getElementById('det-3d-title');
+  if(tit3d)tit3d.textContent='Découvrez la '+currentPlan.title+' en 3D';
+
+  // Remplir les prix dans toutes les sections CTA
+  document.querySelectorAll('.det-price-new-val').forEach(function(el){el.textContent=currentPlan.priceBasic||'—';});
+
+  // Synchroniser les résumés de rating dans la section témoignages
+  var rs=document.getElementById('det-rating-summary');
+  if(rs)rs.textContent=currentPlan.rating||'4.8';
+  var rvs=document.getElementById('det-reviews-summary');
+  if(rvs)rvs.textContent=(currentPlan.reviews??0)+' avis';
+
+  // Grille 3D : images 2, 3, 4 de la galerie
+  (function(){
+    var grid=document.getElementById('det-3d-grid');
+    if(!grid)return;
+    var imgs=(currentPlan.images||[]).slice(1,4);
+    if(!imgs.length){grid.parentElement.style.display='none';return;}
+    grid.parentElement.style.display='';
+    grid.innerHTML=imgs.map(function(src){
+      var opt=src.indexOf('b-cdn.net')>-1?src+'?width=240&quality=70&format=webp':src;
+      return '<img src="'+opt+'" alt="'+currentPlan.title+'" loading="lazy">';
+    }).join('');
+  })();
+
+  // Plans similaires
+  renderSimilarPlans(currentPlan);
+
   // Reset dropdowns
   ['dd1','dd2'].forEach(function(id){
     var b=document.getElementById(id+'-body');
@@ -1473,6 +1623,23 @@ function openDetail(id,skipPush){
   if(sFb) sFb.href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(planUrl);
   if(sX)  sX.href='https://x.com/intent/tweet?text='+shareText;
   if(sCp) sCp.classList.remove('share-copy-ok');
+}
+
+// ── PLANS SIMILAIRES ─────────────────────────────────────────
+function renderSimilarPlans(plan) {
+  var row = document.getElementById('similar-row');
+  if (!row || !plans.length) return;
+  var similar = plans.filter(function(p){ return p.id !== plan.id; }).slice(0, 4);
+  row.innerHTML = similar.map(function(p) {
+    var img = (p.images && p.images[0]) ? p.images[0] + (p.images[0].indexOf('b-cdn.net') > -1 ? '?width=300&quality=70&format=webp' : '') : '';
+    return '<div class="similar-card" onclick="openDetail(\''+p.id+'\')">'
+      + (img ? '<img class="similar-card-img" src="'+img+'" alt="'+p.title+'" loading="lazy">' : '')
+      + '<div class="similar-card-body">'
+      + '<div class="similar-card-title">'+p.title+'</div>'
+      + '<div class="similar-card-price">'+(p.priceBasic||'—')+' FCFA</div>'
+      + '<button class="similar-card-btn">Voir ce plan</button>'
+      + '</div></div>';
+  }).join('');
 }
 
 // ── DETAIL FAST (pour Facebook Ads / accès direct) ───────────
@@ -1530,6 +1697,27 @@ function openDetailFast(id) {
   var _hint2=document.getElementById('price-complete-hint');if(_hint2)_hint2.textContent=currentPlan.priceComplete||'—';
   // Total = acompte basique + solde complet
   (function(){ var b=parseFloat((currentPlan.priceBasic||'0').replace(/\s/g,''))||0, c=parseFloat((currentPlan.priceComplete||'0').replace(/\s/g,''))||0, t=b+c; var fp=function(n){return n.toLocaleString('fr-FR');}; document.getElementById('pbox-total-val').textContent=fp(t)+' FCFA'; document.getElementById('pbox-acompte').textContent=fp(b); document.getElementById('pbox-solde').textContent=fp(c); })();
+
+  // Sections CTA dynamiques
+  var ctaTitle1=document.getElementById('det-cta-title-1');
+  if(ctaTitle1) ctaTitle1.textContent='Obtenez le plan et devis de '+currentPlan.title;
+  var tit3d=document.getElementById('det-3d-title');
+  if(tit3d) tit3d.textContent='Découvrez la '+currentPlan.title+' en 3D';
+  document.querySelectorAll('.det-price-new-val').forEach(function(el){el.textContent=currentPlan.priceBasic||'—';});
+  var rs=document.getElementById('det-rating-summary');if(rs)rs.textContent=currentPlan.rating||'4.8';
+  var rvs=document.getElementById('det-reviews-summary');if(rvs)rvs.textContent=(currentPlan.reviews??0)+' avis';
+  (function(){
+    var grid=document.getElementById('det-3d-grid');
+    if(!grid)return;
+    var imgs=(currentPlan.images||[]).slice(1,4);
+    if(!imgs.length){grid.parentElement.style.display='none';return;}
+    grid.parentElement.style.display='';
+    grid.innerHTML=imgs.map(function(src){
+      var opt=src.indexOf('b-cdn.net')>-1?src+'?width=240&quality=70&format=webp':src;
+      return '<img src="'+opt+'" alt="'+currentPlan.title+'" loading="lazy">';
+    }).join('');
+  })();
+  renderSimilarPlans(currentPlan);
 
   // Reset dropdowns
   ['dd1', 'dd2'].forEach(function(id) {
