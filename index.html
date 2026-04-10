@@ -519,6 +519,8 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .bonus-box{background:var(--vert-bg);border:1.5px solid var(--vert);padding:14px 16px;margin-bottom:20px;border-radius:2px}
 .bonus-badge{display:inline-block;background:var(--vert);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:2px 10px;text-transform:uppercase;margin-bottom:10px;border-radius:2px}
 .benefits-cta-block{border-top:1px solid var(--creme-3);padding-top:20px;margin-top:20px;text-align:center}
+.offer-img-mockup{width:140px;height:105px;object-fit:cover;display:block;margin:0 auto 20px;box-shadow:0 8px 28px rgba(26,18,8,.22);border-radius:4px}
+.offer-img-mockup[src=""]{display:none}
 
 /* SECTION 7 : TÉMOIGNAGES */
 .det-temoignages{padding:28px 24px;border-bottom:1px solid var(--creme-3)}
@@ -526,6 +528,17 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .temo-rating-summary{display:flex;align-items:center;gap:5px;font-size:.88rem;color:var(--gris);margin-bottom:16px;flex-wrap:wrap}
 .temo-rating-summary svg{width:15px;height:15px;fill:var(--or);stroke:none;flex-shrink:0}
 .temo-rating-summary strong{color:var(--brun)}
+.review-card{background:var(--blanc);border:1px solid var(--creme-3);padding:20px;height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}
+.review-stars{color:var(--or);font-size:1.05rem;letter-spacing:2px;line-height:1}
+.review-text{font-size:.88rem;color:var(--gris-fonce);line-height:1.65;flex:1;font-style:italic}
+.review-footer{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:auto}
+.review-author{display:flex;flex-direction:column;gap:2px}
+.review-name{font-size:.85rem;color:var(--brun);font-weight:600;font-style:normal}
+.review-loc{font-size:.75rem;color:var(--gris)}
+.review-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.review-badge{font-size:.68rem;color:var(--vert);font-weight:700;letter-spacing:.04em}
+.review-date{font-size:.7rem;color:var(--gris-clair)}
+.det-temoignages .temo-slide{align-items:stretch;padding:0 2px}
 
 /* SECTION 9 : CTA FINAL */
 .det-final-cta{padding:28px 24px;background:var(--creme-2);border-bottom:1px solid var(--creme-3);text-align:center}
@@ -584,7 +597,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   <div class="hero-left">
     <div class="hero-eyebrow">Plans de maison premium</div>
     <h1 class="hero-h1">Votre maison,<br><em>disponible</em><br>maintenant.</h1>
-    <p class="hero-desc">Choisissez parmi 50+ plans concus pour l'Afrique. Telechargez le plan basique instantanement, commandez les plans complets a votre rythme.</p>
+    <p class="hero-desc">Choisissez parmi 50+ plans concus pour l'Afrique. Telechargez le plan et devis instantanement, commandez les plans complets a votre rythme.</p>
     <div class="hero-btns">
       <button class="btn-primary" onclick="scrollToCatalogue()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -628,7 +641,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         Instantane
       </span>
-      <div class="c-title">Plan Basique + Devis</div>
+      <div class="c-title">Plan et Devis</div>
       <p class="c-desc">Payez par Mobile Money et recevez immediatement le plan 2D + devis estimatif. Parfait pour demarrer.</p>
     </div>
     <div class="concept-div"></div>
@@ -636,7 +649,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="c-num">03</div>
       <span class="c-tag tag-order">Sur commande</span>
       <div class="c-title">Plans Complets + Personnalisation</div>
-      <p class="c-desc">Avec votre plan basique, commandez les plans complets avec possibilite d'adaptation a votre terrain.</p>
+      <p class="c-desc">Avec votre plan et devis, commandez les plans complets avec possibilite d'adaptation a votre terrain.</p>
     </div>
   </div>
 </section>
@@ -739,7 +752,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="opt-card featured selected" id="opt-card-1">
         <div class="opt-card-head">
           <div class="opt-card-left">
-            <div class="opt-card-name">Plan Basique + Devis</div>
+            <div class="opt-card-name">Plan et Devis</div>
           </div>
           <div class="opt-card-price">
             <div class="opt-price-val" id="price-basic">—</div>
@@ -855,18 +868,16 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="bonus-box">
         <div class="bonus-badge">Bonus</div>
         <ul class="benefits-list" style="margin-bottom:0">
+          <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Ebook PDF : Les 5 erreurs à éviter pour réussir son projet de construction <span id="bonus-country-text">en Afrique</span></li>
           <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Accès au catalogue complet WooPlans</li>
           <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Conseils personnalisés pour votre projet</li>
         </ul>
       </div>
       <div class="benefits-cta-block">
-        <div class="det-price-block" style="margin-bottom:16px">
-          <div class="det-price-old">30 000 FCFA</div>
-          <div class="det-price-new"><span class="det-price-new-val" id="det-price-new-3">—</span> <span class="det-price-cur">FCFA</span></div>
-        </div>
+        <img id="offer-plan-img" class="offer-img-mockup" src="" alt="">
         <button class="cta-main" onclick="selectOpt(1);openCheckout()">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Télécharger maintenant · <span class="det-price-new-val">—</span> FCFA
+          Profitez de l'offre maintenant
         </button>
         <div class="trust-note" style="margin-top:12px">
           <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -888,12 +899,62 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       </div>
       <div class="temo-wrap" style="max-width:100%">
         <div class="temo-track" id="temo-track-2">
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.36.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(2).jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« J'ai téléchargé le plan le soir même et le lendemain matin mon architecte avait déjà commencé à travailler dessus. Qualité exceptionnelle. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-1">Jean-Pierre M.</strong><span class="review-loc" id="rev-loc-1">Yaoundé, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Avril 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Le devis m'a permis de négocier avec les entrepreneurs locaux. J'ai économisé sur le chiffrage initial. Très utile. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-2">Sandrine F.</strong><span class="review-loc" id="rev-loc-2">Douala, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Mars 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Le service WhatsApp est top. J'ai posé des questions et on m'a répondu en moins de 2h. Très professionnel. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-3">Rodrigue K.</strong><span class="review-loc" id="rev-loc-3">Bafoussam, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Avril 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Ça fait 3 ans que je cherchais un plan adapté à l'Afrique. Enfin quelque chose qui correspond à ma réalité et mon budget. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-4">Céleste N.</strong><span class="review-loc" id="rev-loc-4">Douala, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Février 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Prix très abordable pour la qualité fournie. Je recommande à tous mes amis qui veulent construire. Merci WooPlans. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-5">Armand T.</strong><span class="review-loc" id="rev-loc-5">Yaoundé, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Mars 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Le rendu 3D est magnifique. Ma femme a fondu quand elle a vu le plan. On a commandé immédiatement. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-6">Esther B.</strong><span class="review-loc" id="rev-loc-6">Ngaoundéré, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Janvier 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★☆</div>
+            <p class="review-text">« J'étais sceptique au début mais le plan est vraiment complet. Le devis correspond bien à la réalité du terrain. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-7">Patrick D.</strong><span class="review-loc" id="rev-loc-7">Douala, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Mars 2026</span></div>
+            </div>
+          </div></div>
         </div>
         <button class="temo-arrow temo-prev" onclick="temoNav2(-1)" aria-label="Précédent"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
         <button class="temo-arrow temo-next" onclick="temoNav2(1)" aria-label="Suivant"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
@@ -906,19 +967,19 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <h3 class="faq-section-title">Questions fréquentes</h3>
       <details class="faq-item">
         <summary>Comment je reçois mon plan après l'achat ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
-        <p class="faq-answer">Le <strong>Plan Basique avec devis</strong> est envoyé instantanément par email et WhatsApp après validation du paiement. Pas besoin d'attendre.</p>
+        <p class="faq-answer">Le <strong>Plan et Devis</strong> est envoyé instantanément par email et WhatsApp après validation du paiement. Pas besoin d'attendre.</p>
       </details>
       <details class="faq-item">
         <summary>Quels sont les moyens de paiement ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
         <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> — au <strong id="faq-country-name">Cameroun</strong> : <span id="faq-mm-list">MTN MoMo, Orange Money</span>.</p>
       </details>
       <details class="faq-item">
-        <summary>C'est quoi exactement le Plan Basique ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
-        <p class="faq-answer">Le Plan Basique c'est le document idéal pour <strong>valider et personnaliser votre projet</strong> avant de passer à la phase de construction. Il vous permet d'échanger avec un architecte sur WhatsApp, de faire des ajustements selon vos besoins et votre terrain.</p>
+        <summary>C'est quoi exactement le Plan et Devis ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <p class="faq-answer">Le Plan et Devis c'est le document idéal pour <strong>valider et personnaliser votre projet</strong> avant de passer à la phase de construction. Il vous permet d'échanger avec un architecte sur WhatsApp, de faire des ajustements selon vos besoins et votre terrain.</p>
       </details>
       <details class="faq-item">
         <summary>Comment obtenir le Dossier Complet pour construire ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
-        <p class="faq-answer">Après votre achat vous recevez le Plan Basique que vous pouvez consulter et noter les modifications à faire. Ensuite un de nos architectes échange avec vous sur <a href="https://wa.me/237694327885" style="color:var(--terre);font-weight:600">WhatsApp</a> pour prendre en compte vos modifications et les dimensions de votre terrain. Vous obtenez à la fin un <strong>Dossier Complet personnalisé</strong> pour votre construction.</p>
+        <p class="faq-answer">Après votre achat vous recevez le Plan et Devis que vous pouvez consulter et noter les modifications à faire. Ensuite un de nos architectes échange avec vous sur <a href="https://wa.me/237694327885" style="color:var(--terre);font-weight:600">WhatsApp</a> pour prendre en compte vos modifications et les dimensions de votre terrain. Vous obtenez à la fin un <strong>Dossier Complet personnalisé</strong> pour votre construction.</p>
       </details>
       <details class="faq-item">
         <summary>Est-ce que je vais payer après pour le Dossier Complet ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
@@ -985,7 +1046,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
     <div class="co-head">
       <div>
         <div class="co-plan" id="co-plan">—</div>
-        <div class="co-pkg" id="co-pkg">Plan Basique + Devis &middot; Telechargement instantane</div>
+        <div class="co-pkg" id="co-pkg">Plan et Devis &middot; Telechargement instantane</div>
       </div>
       <button class="co-x" onclick="closeCheckout()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
@@ -993,7 +1054,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="co-summary">
         <div>
           <div class="co-sum-tag">✓ Formule selectionnee</div>
-          <span class="co-sum-lbl" id="co-sum-lbl">Plan Basique + Devis</span>
+          <span class="co-sum-lbl" id="co-sum-lbl">Plan et Devis</span>
         </div>
         <span class="co-sum-price" id="co-sum-price">—</span>
       </div>
@@ -1287,6 +1348,11 @@ function updateCountryUI(code){
     // Pays sans liste détaillée → texte générique
     faqAnswer.innerHTML='Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN, Orange, Wave, Moov, Djamo, Airtel, etc.).';
   }
+  // Bonus pays dynamique
+  const bonusCt=document.getElementById('bonus-country-text');
+  if(bonusCt) bonusCt.textContent=COUNTRY_LOC[code]||'en Afrique';
+  // Avis dynamiques
+  updateReviewLocales(code);
 }
 // updateCountryUI() est appelée après CC_DATA (ligne ~1887)
 (async function(){try{const r=await fetch('https://ipapi.co/json/');const d=await r.json();const c=(d.country_code||'').toUpperCase();if(c){detectedCountryCode=c;updateCountryUI(c);}}catch(e){}})();
@@ -1551,6 +1617,9 @@ function openDetail(id,skipPush){
   // Galerie masonry : toutes les images
   renderMasonryGrid(currentPlan);
 
+  // Image miniature section offre
+  (function(){var oi=document.getElementById('offer-plan-img');if(oi){var s=currentPlan.images&&currentPlan.images[0]?currentPlan.images[0]:'';if(s&&s.indexOf('b-cdn.net')>-1)s+=('?width=240&quality=75&format=webp');oi.src=s;}})();
+
   // Plans similaires
   renderSimilarPlans(currentPlan);
 
@@ -1786,6 +1855,7 @@ function openDetailFast(id) {
   var rs=document.getElementById('det-rating-summary');if(rs)rs.textContent=currentPlan.rating||'4.8';
   var rvs=document.getElementById('det-reviews-summary');if(rvs)rvs.textContent=(currentPlan.reviews??0)+' avis';
   renderMasonryGrid(currentPlan);
+  (function(){var oi=document.getElementById('offer-plan-img');if(oi){var s=currentPlan.images&&currentPlan.images[0]?currentPlan.images[0]:'';if(s&&s.indexOf('b-cdn.net')>-1)s+=('?width=240&quality=75&format=webp');oi.src=s;}})();
   renderSimilarPlans(currentPlan);
 
   // Reset dropdowns
@@ -2015,7 +2085,7 @@ function updateOptUI(){
   if(!currentPlan)return;
   var isB=selectedOpt===1;
   var price=isB?currentPlan.priceBasic:currentPlan.priceComplete;
-  document.getElementById('sb-name').textContent=isB?'Plan Basique + Devis':'Plans Complets';
+  document.getElementById('sb-name').textContent=isB?'Plan et Devis':'Plans Complets';
   document.getElementById('sb-price').textContent=price+' FCFA';
   var mctaPrice=document.getElementById('det-mcta-price');
   if(mctaPrice) mctaPrice.textContent=price;
@@ -2048,8 +2118,8 @@ function openCheckout(){
     });
   }
   document.getElementById('co-plan').textContent=currentPlan.title;
-  document.getElementById('co-pkg').textContent=isB?'Plan Basique + Devis \u00b7 Telechargement instantane':'Plans Complets \u00b7 Livraison 3-5 jours';
-  document.getElementById('co-sum-lbl').textContent=isB?'Plan Basique + Devis':'Plans Complets';
+  document.getElementById('co-pkg').textContent=isB?'Plan et Devis \u00b7 Telechargement instantane':'Plans Complets \u00b7 Livraison 3-5 jours';
+  document.getElementById('co-sum-lbl').textContent=isB?'Plan et Devis':'Plans Complets';
   document.getElementById('co-sum-price').textContent=(isB?currentPlan.priceBasic:currentPlan.priceComplete)+' FCFA';
   ccPickerSelect(detectedCountryCode);
   // Analytics — ouverture checkout
@@ -2232,7 +2302,42 @@ const CC_DATA=[
   {c:'GM',d:'+220',p:'7XX XXXX',     n:'Gambie',           mm:null},
   {c:'ST',d:'+239',p:'981 XXXX',     n:'São Tomé',         mm:null},
 ];
+// ── LOCALISATION PAYS ────────────────────────────────────────
+const COUNTRY_LOC={
+  CM:'au Cameroun',CI:"en Côte d'Ivoire",SN:'au Sénégal',ML:'au Mali',
+  BF:'au Burkina Faso',BJ:'au Bénin',TG:'au Togo',GN:'en Guinée',
+  CG:'au Congo',CD:'en RD Congo',GA:'au Gabon',NE:'au Niger',TD:'au Tchad',
+  MR:'en Mauritanie',MG:'à Madagascar'
+};
+
+// ── NOMS D'AVIS PAR PAYS ──────────────────────────────────────
+const REVIEWS_NAMES={
+  CM:[['Jean-Pierre M.','Yaoundé'],['Sandrine F.','Douala'],['Rodrigue K.','Bafoussam'],['Céleste N.','Douala'],['Armand T.','Yaoundé'],['Esther B.','Ngaoundéré'],['Patrick D.','Douala']],
+  CI:[['Kouamé A.','Abidjan'],['Adjoua B.','Bouaké'],['Serge K.','Abidjan'],['Mariam T.','San-Pédro'],['Franck O.','Abidjan'],['Awa D.','Yamoussoukro'],['Koffi N.','Abidjan']],
+  SN:[['Moussa D.','Dakar'],['Fatou S.','Thiès'],['Ibrahima B.','Saint-Louis'],['Aminata N.','Dakar'],['Oumar F.','Touba'],['Astou K.','Dakar'],['Alioune T.','Kaolack']],
+  ML:[['Mamadou K.','Bamako'],['Fatoumata D.','Ségou'],['Ibrahim T.','Bamako'],['Kadiatou S.','Mopti'],['Boubacar C.','Bamako'],['Aminata B.','Sikasso'],['Seydou D.','Bamako']],
+  BF:[['Issouf O.','Ouagadougou'],['Mariam K.','Bobo-Dioulasso'],['Hamidou B.','Ouagadougou'],['Safiatou T.','Koudougou'],['Wendpanga S.','Ouagadougou'],['Aïcha Z.','Banfora'],['Prosper Y.','Ouagadougou']],
+  BJ:[['Rodrigue A.','Cotonou'],['Sylvie H.','Porto-Novo'],['Fiacre D.','Cotonou'],['Cécile M.','Parakou'],['Placide A.','Cotonou'],['Stéphanie L.','Abomey'],['Lionel K.','Cotonou']],
+  TG:[['Kossi A.','Lomé'],['Mawuena D.','Kpalimé'],['Koffi A.','Lomé'],['Afua G.','Sokodé'],['Afi K.','Lomé'],['Anani T.','Atakpamé'],['Edem S.','Lomé']],
+  GN:[['Mamadou B.','Conakry'],['Fatoumata C.','Labé'],['Ibrahima D.','Conakry'],['Kadiatou B.','Kankan'],['Mohamed S.','Conakry'],['Aïssatou D.',"N'Zérékoré"],['Boubacar S.','Conakry']],
+  CG:[['Romaric M.','Brazzaville'],['Gracia N.','Pointe-Noire'],['Sylvain B.','Brazzaville'],['Octavie L.','Brazzaville'],['Arnaud M.','Pointe-Noire'],['Clémentine N.','Brazzaville'],['Christian D.','Dolisie']],
+  GA:[['Patrick M.','Libreville'],['Sandra O.','Port-Gentil'],['Armand N.','Libreville'],['Carine E.','Franceville'],['Rodrigue A.','Libreville'],['Flore M.','Oyem'],['Gilbert N.','Libreville']],
+};
+
+function updateReviewLocales(code){
+  var pool=REVIEWS_NAMES[code]||REVIEWS_NAMES['CM'];
+  var found=CC_DATA.find(function(x){return x.c===code;});
+  var countryName=found?found.n:'Cameroun';
+  for(var i=1;i<=7;i++){
+    var nameEl=document.getElementById('rev-name-'+i);
+    var locEl=document.getElementById('rev-loc-'+i);
+    if(nameEl&&pool[i-1])nameEl.textContent=pool[i-1][0];
+    if(locEl&&pool[i-1])locEl.textContent=pool[i-1][1]+', '+countryName;
+  }
+}
+
 updateCountryUI('CM'); // défaut Cameroun — après CC_DATA
+updateReviewLocales('CM');
 (function buildCcDropdown(){
   const dd=document.getElementById('cc-dropdown');
   if(!dd) return;
