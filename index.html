@@ -481,7 +481,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .det-hero-trust strong{color:var(--brun)}
 .hero-social-proof{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
 .hero-avatars{display:flex;flex-shrink:0}
-.hero-avatar{width:24px;height:24px;border-radius:50%;border:2px solid var(--blanc);margin-right:-7px;flex-shrink:0}
+.hero-avatar{width:28px;height:28px;border-radius:50%;border:2.5px solid var(--blanc);margin-right:-9px;flex-shrink:0;object-fit:cover;display:block}
 .hero-avatar:last-child{margin-right:0}
 .hero-avis{font-size:.76rem;color:var(--gris-fonce);font-weight:500}
 .hero-stars{display:flex;align-items:center;gap:1px}
@@ -489,7 +489,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .hero-rating{font-size:.76rem;color:var(--gris-fonce)}
 /* Gallery badges */
 .gal-badge-promo{position:absolute;top:14px;left:0;background:#e63946;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.06em;padding:5px 14px;text-transform:uppercase;z-index:3;pointer-events:none}
-.gal-badge-ref{position:absolute;bottom:14px;right:52px;background:rgba(255,255,255,.9);color:var(--brun);font-size:.68rem;font-weight:600;letter-spacing:.05em;padding:3px 10px;z-index:3;pointer-events:none;text-transform:lowercase}
 
 /* SECTION 2 : GALERIE MASONRY */
 .det-3d-section{padding:28px 24px;background:var(--creme-2);border-bottom:1px solid var(--creme-3)}
@@ -770,7 +769,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         <img class="gal-img" id="gal-img" src="" alt="" fetchpriority="high">
         <video class="gal-img" id="gal-video" src="" controls playsinline style="display:none"></video>
         <div class="gal-badge-promo">-50% aujourd'hui</div>
-        <div class="gal-badge-ref" id="gal-plan-ref">—</div>
         <div class="gal-counter" id="gal-counter">1 / 4</div>
         <div class="gal-nav">
           <button class="gal-btn" onclick="galNav(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -820,10 +818,11 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="det-hero-trust" id="trust-cta-note">Paiement sécurisé par mobile money (<strong id="trust-country-name">Cameroun</strong>)</div>
       <div class="hero-social-proof">
         <div class="hero-avatars">
-          <div class="hero-avatar" style="background:#C4894F"></div>
-          <div class="hero-avatar" style="background:#2D6A4F"></div>
-          <div class="hero-avatar" style="background:#8B5E3C"></div>
-          <div class="hero-avatar" style="background:#D4A853"></div>
+          <img class="hero-avatar" src="/avatars/avatar-1.jpg" alt="">
+          <img class="hero-avatar" src="/avatars/avatar-2.jpg" alt="">
+          <img class="hero-avatar" src="/avatars/avatar-3.jpg" alt="">
+          <img class="hero-avatar" src="/avatars/avatar-4.jpg" alt="">
+          <img class="hero-avatar" src="/avatars/avatar-5.jpg" alt="">
         </div>
         <span class="hero-avis">+325 avis positifs</span>
         <div class="hero-stars">
