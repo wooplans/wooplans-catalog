@@ -48,6 +48,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 .kpi-sub{font-size:.7rem;color:var(--gris-clair);margin-top:2px}
 .kpi.alert .kpi-val{color:var(--orange)}
 .price-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* ── BONUS PDF ── */
+.bonus-pdf-section{background:var(--blanc);border-left:4px solid var(--or);margin:0 32px 0;padding:20px 24px}
+.bonus-pdf-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--brun);margin-bottom:4px}
+.bonus-pdf-sub{font-size:.8rem;color:var(--gris);margin-bottom:14px}
+.bonus-pdf-current{background:var(--creme-2);padding:9px 12px;margin-bottom:14px;font-size:.78rem;color:var(--gris-fonce);border:1px solid var(--creme-3)}
+.bonus-pdf-url{color:var(--terre);font-family:monospace;word-break:break-all}
+.bonus-pdf-upload{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bonus-pdf-upload input[type="file"]{font-size:.82rem;padding:7px;border:1px solid var(--creme-3);background:var(--creme);flex:1;min-width:0}
+.bonus-pdf-btn{background:var(--brun);color:var(--or);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.06em;padding:10px 18px;border:none;cursor:pointer;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.bonus-pdf-btn:disabled{opacity:.5;cursor:not-allowed}
+.bonus-pdf-progress{display:flex;align-items:center;gap:10px;margin-top:12px}
+.bonus-pdf-bar-wrap{flex:1;height:5px;background:var(--creme-3)}
+.bonus-pdf-bar{height:100%;background:var(--vert);width:0;transition:width .15s}
 /* ── ANALYTICS VISITEURS ── */
 .av-section{background:#0f0f0f;margin:0 0 0 0;padding:24px 32px}
 .av-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}
@@ -401,6 +414,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--creme);color:var(--brun);
 <div class="analytics" id="analytics">
   <div class="analytics-title">Catalogue — Résumé</div>
   <div class="kpi-row" id="kpi-row"></div>
+</div>
+
+<!-- BONUS PDF GLOBAL -->
+<div class="bonus-pdf-section">
+  <div class="bonus-pdf-title">Ebook Bonus Global</div>
+  <div class="bonus-pdf-sub">Ce PDF est envoyé par email à chaque acheteur. Uploadez-le ici pour le mettre à jour sans toucher au code.</div>
+  <div class="bonus-pdf-current">URL actuelle&nbsp;: <span class="bonus-pdf-url" id="bonus-pdf-url">—</span></div>
+  <div class="bonus-pdf-upload">
+    <input type="file" id="bonus-pdf-file" accept=".pdf">
+    <button class="bonus-pdf-btn" id="bonus-pdf-btn" onclick="uploadBonusPdf()">
+      <span id="bonus-pdf-btn-txt">Mettre à jour</span>
+    </button>
+  </div>
+  <div class="bonus-pdf-progress" id="bonus-pdf-progress" style="display:none">
+    <div class="bonus-pdf-bar-wrap"><div class="bonus-pdf-bar" id="bonus-pdf-bar"></div></div>
+    <span id="bonus-pdf-pct">0%</span>
+  </div>
 </div>
 
 <!-- TOOLBAR -->
@@ -1657,6 +1687,35 @@ async function uploadVideo(planSlug, stepOffset, totalSteps){
       setProgress('Upload de la vidéo...', file.name+' — '+Math.round(pct*100)+'%', ((stepOffset+pct)/totalSteps)*100);
     });
   }catch(err){console.error(err);showToast('Erreur vidéo : '+err.message);return null;}
+}
+
+// ── BONUS PDF GLOBAL ──
+async function uploadBonusPdf(){
+  const fi=document.getElementById('bonus-pdf-file');
+  if(!fi.files.length){alert('Sélectionnez un fichier PDF.');return;}
+  const file=fi.files[0];
+  const btn=document.getElementById('bonus-pdf-btn');
+  const prog=document.getElementById('bonus-pdf-progress');
+  const bar=document.getElementById('bonus-pdf-bar');
+  const pctEl=document.getElementById('bonus-pdf-pct');
+  btn.disabled=true;
+  prog.style.display='flex';
+  try{
+    const url=await uploadToBunnyXHR(file,'global/bonus-ebook.pdf',p=>{
+      bar.style.width=Math.round(p*100)+'%';
+      pctEl.textContent=Math.round(p*100)+'%';
+    });
+    document.getElementById('bonus-pdf-url').textContent=url;
+    showToast('Bonus PDF mis à jour !');
+    fi.value='';
+  }catch(err){
+    showToast('Erreur : '+err.message);
+  }finally{
+    btn.disabled=false;
+    prog.style.display='none';
+    bar.style.width='0%';
+    pctEl.textContent='0%';
+  }
 }
 
 // ── SAVE ──

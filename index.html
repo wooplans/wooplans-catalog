@@ -187,13 +187,14 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 }
 @keyframes slideR{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}
 
-.det-header{position:sticky;top:0;z-index:10;background:var(--creme);border-bottom:1px solid var(--creme-3);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
-.det-crumb{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);background:none;border:none;cursor:pointer;font-family:inherit;padding:0;transition:color .2s}
-.det-crumb:hover{color:var(--terre)}
-.det-close{width:38px;height:38px;border:1.5px solid var(--gris-clair);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px}
+.det-header{position:sticky;top:0;z-index:10;background:var(--blanc);border-bottom:1px solid var(--creme-3);padding:0 16px;height:50px;display:flex;align-items:center;justify-content:space-between}
+.det-crumb{display:flex;align-items:center;gap:5px;font-size:.82rem;color:var(--gris-fonce);background:none;border:none;cursor:pointer;font-family:inherit;padding:6px 2px;transition:color .2s;letter-spacing:.01em}
+.det-crumb svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+.det-crumb:hover{color:var(--brun)}
+.det-close{width:34px;height:34px;border:1.5px solid var(--creme-3);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px;flex-shrink:0}
 .det-close:hover{background:var(--brun);border-color:var(--brun)}
 .det-close:hover svg{stroke:var(--or)}
-.det-close svg{width:16px;height:16px;stroke:var(--brun);stroke-width:2;fill:none}
+.det-close svg{width:15px;height:15px;stroke:var(--brun);stroke-width:2;fill:none}
 
 /* Galerie */
 .det-gallery{background:var(--brun);position:relative}
@@ -338,32 +339,8 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .faq-answer{padding:0 0 18px;font-size:.875rem;color:var(--gris-fonce);line-height:1.75;max-width:560px}
 .faq-whatsapp-wrap{margin-top:28px}
 
-/* ── STICKY BAR MOBILE ── */
-.sticky-bar{
-  position:fixed;bottom:0;left:0;right:0;z-index:250;
-  background:var(--brun);
-  display:none;align-items:center;justify-content:space-between;
-  padding:14px 20px;
-  border-top:1px solid rgba(255,255,255,.1);
-  box-shadow:0 -4px 20px rgba(0,0,0,.25);
-  animation:slideUp .3s ease;
-}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-@keyframes sbBtnAttract{
-  0%,100%{transform:translateX(0) scale(1);box-shadow:none}
-  10%{transform:translateX(-5px) scale(1.02)}
-  20%{transform:translateX(5px) scale(1.02);box-shadow:0 0 18px rgba(212,175,55,.6)}
-  30%{transform:translateX(-4px) scale(1.03);box-shadow:0 0 28px rgba(212,175,55,.8)}
-  40%{transform:translateX(4px) scale(1.03);box-shadow:0 0 36px rgba(212,175,55,.9)}
-  55%{transform:translateX(-2px) scale(1.02);box-shadow:0 0 24px rgba(212,175,55,.6)}
-  70%{transform:translateX(2px) scale(1.01);box-shadow:0 0 16px rgba(212,175,55,.4)}
-  85%{transform:translateX(-1px);box-shadow:0 0 8px rgba(212,175,55,.2)}
-}
-.sb-btn.sb-attract{animation:sbBtnAttract .9s cubic-bezier(.36,.07,.19,.97) both}
-.sb-info{}
-.sb-name{font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:2px}
-.sb-price{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--or);font-weight:600;line-height:1}
-.sb-btn{background:var(--or);color:var(--brun);font-size:.82rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:13px 22px;border:none;cursor:pointer;flex-shrink:0}
+/* ── STICKY BAR MOBILE — désactivée ── */
+#sticky-bar{display:none!important}
 
 /* ── CHECKOUT POPUP ── */
 #checkout-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:16px}
@@ -474,16 +451,139 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   .concept-step:last-child{border-bottom:none}
   .plans-grid{grid-template-columns:1fr}
   .det-panel{width:100vw}
-  .det-content{grid-template-columns:1fr;gap:20px}
   .det-features{grid-template-columns:1fr}
-  .purchase-box{position:static}
   /* sticky-bar géré par JS uniquement */
   .ft-inner{grid-template-columns:1fr;gap:28px}
   nav{padding:0 18px}
   .nav-link{display:none}
   #catalogue{padding:60px 18px}
   .det-title{font-size:1.6rem}
+  .flash-price-new{font-size:2.4rem}
 }
+
+/* ── NOUVELLE PAGE PRODUIT — sections de conversion ── */
+
+/* Panel single-column, plus étroit pour focus mobile */
+.det-panel{width:min(560px,100vw)}
+
+/* SECTION 1 : CTA HERO */
+.det-cta-hero{padding:26px 24px 28px;background:var(--blanc);border-bottom:1px solid var(--creme-3);text-align:center}
+.det-cta-title{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:600;color:var(--brun);margin-bottom:12px;line-height:1.2}
+.det-cta-sub{font-size:.86rem;color:var(--gris-fonce);margin-bottom:22px;line-height:1.7;max-width:360px;margin-left:auto;margin-right:auto}
+.det-hero-price{margin-bottom:22px}
+.det-hero-price-main{font-family:'Cormorant Garamond',serif;font-size:3.4rem;font-weight:700;color:var(--brun);line-height:1;display:inline-flex;align-items:baseline;gap:5px}
+.det-hero-fcfa{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:400;color:var(--gris-fonce)}
+.det-hero-price-old{font-size:.82rem;color:var(--gris);margin-top:8px}
+.det-hero-price-old s{text-decoration:line-through}
+.det-hero-cta{display:block;width:100%;padding:16px;background:var(--brun);color:var(--or);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--brun);cursor:pointer;margin-bottom:12px;text-align:center;transition:background .2s}
+.det-hero-cta:hover{background:#2e1e0a;border-color:#2e1e0a}
+.det-hero-trust{font-size:.78rem;color:var(--gris-fonce);margin-bottom:16px}
+.det-hero-trust strong{color:var(--brun)}
+.hero-social-proof{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.hero-avatars{display:flex;flex-shrink:0}
+.hero-avatar{width:28px;height:28px;border-radius:50%;border:2.5px solid var(--blanc);margin-right:-9px;flex-shrink:0;object-fit:cover;display:block}
+.hero-avatar:last-child{margin-right:0}
+.hero-avis{font-size:.76rem;color:var(--gris-fonce);font-weight:500}
+.hero-stars{display:flex;align-items:center;gap:1px}
+.hero-stars svg{width:12px;height:12px;fill:var(--or);stroke:none}
+.hero-rating{font-size:.76rem;color:var(--gris-fonce)}
+/* Gallery badges */
+.gal-badge-promo{position:absolute;top:14px;left:0;background:#e63946;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.06em;padding:5px 14px;text-transform:uppercase;z-index:3;pointer-events:none}
+
+/* SECTION 2 : GALERIE MASONRY */
+.det-3d-section{padding:28px 24px;background:var(--creme-2);border-bottom:1px solid var(--creme-3)}
+.det-3d-section h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:6px}
+.det-3d-sub{font-size:.88rem;color:var(--gris-fonce);margin-bottom:14px;line-height:1.5}
+.det-3d-grid{columns:2;column-gap:5px;margin-bottom:18px}
+.det-3d-grid img{width:100%;display:block;margin-bottom:5px;break-inside:avoid;cursor:pointer;transition:opacity .18s}
+.det-3d-grid img:hover{opacity:.88}
+
+/* LIGHTBOX */
+#lb{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.96);display:none;flex-direction:column;align-items:center;justify-content:center;touch-action:pan-y}
+#lb.open{display:flex}
+.lb-img{max-width:100%;max-height:82svh;object-fit:contain;transition:transform .25s;cursor:grab;user-select:none;-webkit-user-drag:none}
+.lb-img.zoomed{cursor:zoom-out}
+.lb-close{position:absolute;top:14px;right:14px;width:42px;height:42px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .18s}
+.lb-close:hover{background:rgba(255,255,255,.22)}
+.lb-close svg{width:18px;height:18px;stroke:#fff;stroke-width:2;fill:none}
+.lb-arrow{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s}
+.lb-arrow:hover{background:rgba(255,255,255,.22)}
+.lb-arrow svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none}
+.lb-prev{left:12px}
+.lb-next{right:12px}
+.lb-counter{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:.78rem;letter-spacing:.06em;pointer-events:none}
+
+/* SECTION 3 : PRÉSENTATION */
+.det-presentation{padding:28px 24px;border-bottom:1px solid var(--creme-3)}
+.det-presentation .det-features{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+
+/* SECTIONS 4+5 : OFFRE UNIFIÉE */
+.det-offer{background:var(--blanc);border-bottom:1px solid var(--creme-3)}
+.det-offer-header{background:var(--brun);padding:20px 24px;text-align:center}
+.det-offer-tag{display:inline-block;background:#e63946;color:#fff;font-size:.78rem;font-weight:700;letter-spacing:.07em;padding:5px 18px;text-transform:uppercase;margin-bottom:10px}
+.det-offer-validity{font-size:.8rem;color:rgba(255,255,255,.65)}
+.det-offer-pricing{background:var(--brun);padding:0 24px 24px;text-align:center;border-bottom:3px solid var(--or)}
+.det-offer-price-main{font-family:'Cormorant Garamond',serif;font-size:3.6rem;font-weight:700;color:var(--or);line-height:1;display:flex;align-items:baseline;justify-content:center;gap:6px}
+.det-offer-fcfa{font-size:1.1rem;color:var(--or-pale);font-family:'DM Sans',sans-serif;font-weight:400}
+.det-offer-price-old{font-size:.85rem;color:rgba(255,255,255,.45);margin-top:10px}
+.det-offer-price-old s{text-decoration:line-through}
+.det-offer-img-wrap{padding:20px 24px}
+.det-offer-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border:1px solid var(--creme-3)}
+.det-offer-img[src=""]{display:none}
+.det-offer-img-ph{width:100%;aspect-ratio:16/9;background:var(--creme-2);border:1.5px dashed var(--creme-3);display:flex;align-items:center;justify-content:center;font-size:.82rem;color:var(--gris-clair);letter-spacing:.04em}
+.det-inclus-box{margin:0 24px 14px;border:1.5px solid var(--creme-3);padding:18px 20px}
+.det-inclus-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--brun);margin-bottom:16px;text-align:center}
+.det-inclus-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.det-inclus-list li{display:flex;align-items:flex-start;gap:10px;font-size:.88rem;color:var(--gris-fonce);line-height:1.4}
+.det-inclus-num{color:var(--brun);font-weight:700;font-size:1rem;flex-shrink:0;width:22px;text-align:center}
+.det-bonus-box{margin:0 24px 20px;border:1.5px dashed var(--vert);padding:14px 18px;background:var(--vert-bg)}
+.det-bonus-title{font-size:.72rem;font-weight:700;color:var(--vert);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.det-bonus-text{font-size:.85rem;color:var(--gris-fonce);line-height:1.5}
+.det-offer-countdown{text-align:center;font-size:.82rem;color:var(--gris-fonce);margin:0 0 16px;padding:0 24px}
+.det-offer-countdown strong{color:var(--brun);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.det-offer-cta{display:block;width:calc(100% - 48px);margin:0 24px 14px;padding:17px;background:var(--brun);color:var(--or);font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s;text-align:center}
+.det-offer-cta:hover{background:#2e1e0a}
+.det-offer-trust{padding:0 24px 30px;text-align:center;display:flex;flex-direction:column;gap:5px}
+.det-offer-trust-main{font-size:.8rem;color:var(--gris-fonce)}
+.det-offer-trust-row{font-size:.76rem;color:var(--gris);display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.det-offer-trust-sep{color:var(--gris-clair)}
+
+/* SECTION 7 : TÉMOIGNAGES */
+.det-temoignages{padding:28px 24px;border-bottom:1px solid var(--creme-3)}
+.det-temoignages h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:8px}
+.temo-rating-summary{display:flex;align-items:center;gap:5px;font-size:.88rem;color:var(--gris);margin-bottom:16px;flex-wrap:wrap}
+.temo-rating-summary svg{width:15px;height:15px;fill:var(--or);stroke:none;flex-shrink:0}
+.temo-rating-summary strong{color:var(--brun)}
+.review-card{background:var(--blanc);border:1px solid var(--creme-3);padding:20px;height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}
+.review-stars{color:var(--or);font-size:1.05rem;letter-spacing:2px;line-height:1}
+.review-text{font-size:.88rem;color:var(--gris-fonce);line-height:1.65;flex:1;font-style:italic}
+.review-footer{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:auto}
+.review-author{display:flex;flex-direction:column;gap:2px}
+.review-name{font-size:.85rem;color:var(--brun);font-weight:600;font-style:normal}
+.review-loc{font-size:.75rem;color:var(--gris)}
+.review-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.review-badge{font-size:.68rem;color:var(--vert);font-weight:700;letter-spacing:.04em}
+.review-date{font-size:.7rem;color:var(--gris-clair)}
+.det-temoignages .temo-slide{align-items:stretch;padding:0 2px;min-height:260px}
+.review-card--photo{justify-content:center;align-items:center}
+.review-card--photo img{max-width:160px;max-height:220px;object-fit:contain;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+
+/* SECTION 9 : CTA FINAL */
+.det-final-cta{padding:28px 24px;background:var(--creme-2);border-bottom:1px solid var(--creme-3);text-align:center}
+
+/* SECTION 10 : PLANS SIMILAIRES */
+.det-similar{padding:28px 0 28px 24px}
+.det-similar h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--brun);margin-bottom:16px;padding-right:24px}
+.similar-row{display:flex;gap:14px;overflow-x:auto;padding-right:24px;scrollbar-width:none;padding-bottom:8px}
+.similar-row::-webkit-scrollbar{display:none}
+.similar-card{flex-shrink:0;width:200px;background:var(--blanc);border:1px solid var(--creme-3);cursor:pointer;transition:box-shadow .2s;overflow:hidden}
+.similar-card:hover{box-shadow:0 4px 16px rgba(26,18,8,.1)}
+.similar-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.similar-card-body{padding:12px}
+.similar-card-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:500;color:var(--brun);margin-bottom:4px;line-height:1.3}
+.similar-card-price{font-size:.82rem;color:var(--terre);font-weight:600;margin-bottom:8px}
+.similar-card-btn{display:block;text-align:center;background:var(--brun);color:var(--or);font-size:.73rem;font-weight:600;letter-spacing:.06em;padding:9px;border:none;cursor:pointer;width:100%;transition:background .2s}
+.similar-card-btn:hover{background:var(--terre)}
 </style>
 <!-- Microsoft Clarity -->
 <script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","w2dejcjrmt");</script>
@@ -525,7 +625,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   <div class="hero-left">
     <div class="hero-eyebrow">Plans de maison premium</div>
     <h1 class="hero-h1">Votre maison,<br><em>disponible</em><br>maintenant.</h1>
-    <p class="hero-desc">Choisissez parmi 50+ plans concus pour l'Afrique. Telechargez le plan basique instantanement, commandez les plans complets a votre rythme.</p>
+    <p class="hero-desc">Choisissez parmi 50+ plans concus pour l'Afrique. Telechargez le plan et devis instantanement, commandez les plans complets a votre rythme.</p>
     <div class="hero-btns">
       <button class="btn-primary" onclick="scrollToCatalogue()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -569,7 +669,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         Instantane
       </span>
-      <div class="c-title">Plan Basique + Devis</div>
+      <div class="c-title">Plan et Devis</div>
       <p class="c-desc">Payez par Mobile Money et recevez immediatement le plan 2D + devis estimatif. Parfait pour demarrer.</p>
     </div>
     <div class="concept-div"></div>
@@ -577,7 +677,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="c-num">03</div>
       <span class="c-tag tag-order">Sur commande</span>
       <div class="c-title">Plans Complets + Personnalisation</div>
-      <p class="c-desc">Avec votre plan basique, commandez les plans complets avec possibilite d'adaptation a votre terrain.</p>
+      <p class="c-desc">Avec votre plan et devis, commandez les plans complets avec possibilite d'adaptation a votre terrain.</p>
     </div>
   </div>
 </section>
@@ -655,7 +755,10 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   <div class="det-backdrop" onclick="closeDetail()"></div>
   <div class="det-panel">
     <div class="det-header">
-      <button class="det-crumb" onclick="closeDetail()" title="Retour au catalogue">Catalogue &rsaquo; Detail du plan</button>
+      <button class="det-crumb" onclick="closeDetail()">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Retour au Catalogue
+      </button>
       <button class="det-close" onclick="closeDetail()">
         <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
@@ -665,6 +768,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="gal-main" id="gal-main">
         <img class="gal-img" id="gal-img" src="" alt="" fetchpriority="high">
         <video class="gal-img" id="gal-video" src="" controls playsinline style="display:none"></video>
+        <div class="gal-badge-promo">-50% aujourd'hui</div>
         <div class="gal-counter" id="gal-counter">1 / 4</div>
         <div class="gal-nav">
           <button class="gal-btn" onclick="galNav(-1)"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -675,105 +779,252 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
     </div>
 
 
-    <div class="det-content">
-      <div class="det-main">
-        <div class="det-type-row">
-          <span class="det-type-pill" id="det-pill">Villa</span>
-          <div class="det-stars">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span id="det-rating">4.8</span>&nbsp;<span style="color:var(--gris-clair)">·</span>&nbsp;<span id="det-reviews">18 avis</span>
+    <!-- HIDDEN: compatibilité JS (prix, opt-cards, dropdowns) -->
+    <div style="display:none" aria-hidden="true">
+      <div class="opt-card featured selected" id="opt-card-1">
+        <div class="opt-card-head">
+          <div class="opt-card-left">
+            <div class="opt-card-name">Plan et Devis</div>
+          </div>
+          <div class="opt-card-price">
+            <div class="opt-price-val" id="price-basic">—</div>
           </div>
         </div>
-        <h2 class="det-title" id="det-title">—</h2>
-        <p class="det-subtitle" id="det-subtitle">—</p>
-        <div class="det-specs-row">
-          <div>
-            <div class="det-spec-lbl">
-              Surface
-              <span class="tooltip-wrap">
-                <span class="tooltip-icon">?</span>
-                <span class="tooltip-box">Surface totale bâtie (RDC + Étage pour les duplex)</span>
-              </span>
-            </div>
-            <div class="det-spec-val" id="det-area">—</div>
-          </div>
-          <div><div class="det-spec-lbl">Chambres</div><div class="det-spec-val" id="det-beds">—</div></div>
-          <div><div class="det-spec-lbl">Salles de bain</div><div class="det-spec-val" id="det-baths">—</div></div>
-          <div><div class="det-spec-lbl">Niveaux</div><div class="det-spec-val" id="det-floors">—</div></div>
-          <div id="det-terrain-wrap" style="display:none"><div class="det-spec-lbl">Terrain</div><div class="det-spec-val" id="det-terrain">—</div></div>
-          <div><div class="det-spec-lbl">Coût estimé</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
-        </div>
-        <p class="det-desc" id="det-desc">—</p>
-        <ul class="det-features" id="det-features"></ul>
-
       </div>
+      <div id="opt-card-2"><div class="opt-price-val" id="price-complete">—</div></div>
+      <span id="price-complete-hint">—</span>
+      <div class="pbox-total">
+        <div class="pbox-total-val" id="pbox-total-val">— FCFA</div>
+        <div class="pbox-total-sub">Avance&nbsp;<strong id="pbox-acompte">—</strong>&nbsp;FCFA · Solde&nbsp;<strong id="pbox-solde">—</strong>&nbsp;FCFA</div>
+      </div>
+      <ul id="dd1-extras"></ul><ul id="dd2-extras"></ul>
+      <button id="dd1-btn"></button><button id="dd2-btn"></button>
+      <div id="dd1-body"></div><div id="dd2-body"></div>
+      <span id="dd1-label"></span><span id="dd2-label"></span>
+    </div>
 
-      <!-- SIDEBAR -->
-      <div class="det-sidebar">
-        <div class="purchase-box">
-          <div class="pbox-total" style="display:none" aria-hidden="true">
-            <div class="pbox-total-tag">💳 Paiement en 2 versements</div>
-            <div class="pbox-total-label">Prix total du dossier complet</div>
-            <div class="pbox-total-val" id="pbox-total-val">— FCFA</div>
-            <div class="pbox-total-sub">Avance&nbsp;<strong id="pbox-acompte">—</strong>&nbsp;FCFA · Solde&nbsp;<strong id="pbox-solde">—</strong>&nbsp;FCFA</div>
+    <!-- SECTION 1 : CTA HERO -->
+    <div class="det-cta-hero">
+      <h1 class="det-cta-title" id="det-cta-title-1">Obtenez le plan et devis de cette villa</h1>
+      <p class="det-cta-sub">Téléchargez maintenant le plan et devis de cette villa et commencez à planifier la construction de votre projet</p>
+      <div class="det-hero-price">
+        <div class="det-hero-price-main">
+          <span class="det-price-new-val" id="det-price-new-1">—</span>
+          <span class="det-hero-fcfa">Fcfa</span>
+        </div>
+        <div class="det-hero-price-old">Au lieu de <s>30 000 Fcfa</s></div>
+      </div>
+      <button class="det-hero-cta" onclick="selectOpt(1);openCheckout()">Télécharger le plan et devis</button>
+      <div class="det-hero-trust" id="trust-cta-note">Paiement sécurisé par mobile money (<strong id="trust-country-name">Cameroun</strong>)</div>
+      <div class="hero-social-proof">
+        <div class="hero-avatars">
+          <img class="hero-avatar" src="/avatars/avatar-1.jpg" alt="">
+          <img class="hero-avatar" src="/avatars/avatar-2.jpg" alt="">
+          <img class="hero-avatar" src="/avatars/avatar-3.jpg" alt="">
+          <img class="hero-avatar" src="/avatars/avatar-4.jpg" alt="">
+          <img class="hero-avatar" src="/avatars/avatar-5.jpg" alt="">
+        </div>
+        <span class="hero-avis">+325 avis positifs</span>
+        <div class="hero-stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="hero-rating"><strong id="det-hero-rating">4.9</strong>/5</span>
+      </div>
+    </div>
+
+    <!-- SECTION 2 : APERÇU 3D -->
+    <div class="det-3d-section">
+      <h2 class="det-3d-title" id="det-3d-title">Découvrez cette villa en 3D</h2>
+      <p class="det-3d-sub">Visualisez chaque détail de l'intérieur de votre future maison</p>
+      <div class="det-3d-grid" id="det-3d-grid"></div>
+      <div class="share-row" style="justify-content:center;margin-bottom:16px">
+        <span class="share-label">Partager</span>
+        <a class="share-btn share-wa" id="share-wa" href="#" target="_blank" rel="noopener" title="Partager sur WhatsApp"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg></a>
+        <a class="share-btn share-fb" id="share-fb" href="#" target="_blank" rel="noopener" title="Partager sur Facebook"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg></a>
+        <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener" title="Partager sur X"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <button class="share-btn share-copy" id="share-copy" onclick="copyPlanLink()" title="Copier le lien"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+      <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Télécharger le plan et devis
+      </button>
+    </div>
+
+    <!-- SECTION 3 : PRÉSENTATION -->
+    <div class="det-presentation">
+      <div class="det-type-row">
+        <span class="det-type-pill" id="det-pill">Villa</span>
+        <div class="det-stars">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span id="det-rating">4.8</span>&nbsp;<span style="color:var(--gris-clair)">·</span>&nbsp;<span id="det-reviews">18 avis</span>
+        </div>
+      </div>
+      <h2 class="det-title" id="det-title">—</h2>
+      <p class="det-subtitle" id="det-subtitle">—</p>
+      <div class="det-specs-row">
+        <div>
+          <div class="det-spec-lbl">
+            Surface
+            <span class="tooltip-wrap">
+              <span class="tooltip-icon">?</span>
+              <span class="tooltip-box">Surface totale bâtie (RDC + Étage pour les duplex)</span>
+            </span>
           </div>
-
-          <!-- CARTE 1 : PLAN BASIQUE -->
-          <div class="opt-card featured selected" id="opt-card-1">
-            <div class="opt-promo-badge">−50%</div>
-            <div class="opt-card-head">
-              <div class="opt-card-left">
-                <div class="opt-card-name">Plan Basique + Devis</div>
-                <div class="opt-card-sub">Pour demarrer et personnaliser votre projet</div>
-              </div>
-              <div class="opt-card-price">
-                <div class="opt-price-old">30 000 FCFA</div>
-                <div class="opt-price-val" id="price-basic">—</div>
-                <div class="opt-price-cur">FCFA</div>
-              </div>
-            </div>
-            <span class="opt-card-tag tag-inst" style="margin-bottom:12px;display:inline-flex">&#9889; INSTANTANE</span>
-            <ul class="opt-card-items">
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Plan de distribution et dimensions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Devis estimatif de la fondation aux finitions</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rendu 3D exterieurs</li>
-              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Echange avec un architecte sur WhatsApp</li>
-            </ul>
-            <a class="voir-exemple-link" id="voir-exemple-link" href="/exemples/d4-034/" onclick="track('voir_exemple',{plan_id:currentPlan&&currentPlan.id,plan_type:currentPlan&&currentPlan.type,plan_title:currentPlan&&currentPlan.title});(function(){var ua=navigator.userAgent||'';if(/FBAN|FBAV|Instagram|FB_IAB/.test(ua)){window.location.href='/exemples/d4-034/';}else{var w=window.open('/exemples/d4-034/','_blank');if(!w)window.location.href='/exemples/d4-034/';}})();return false;">
-              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              Voir un exemple
-            </a>
-          </div>
-
-          <button class="cta-main" onclick="selectOpt(1);openCheckout()">
-            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Telecharger maintenant
-          </button>
-          <div class="trust-note" id="trust-cta-note" style="margin-bottom:22px">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Paiement Mobile Money au <strong id="trust-country-name">Cameroun</strong>
-          </div>
-
-          <!-- CARTE 2 masquée + bouton hint -->
-          <div id="opt-card-2" style="display:none" aria-hidden="true">
-            <div class="opt-price-val" id="price-complete" style="display:none">—</div>
-          </div>
-
+          <div class="det-spec-val" id="det-area">—</div>
+        </div>
+        <div><div class="det-spec-lbl">Chambres</div><div class="det-spec-val" id="det-beds">—</div></div>
+        <div><div class="det-spec-lbl">Salles de bain</div><div class="det-spec-val" id="det-baths">—</div></div>
+        <div><div class="det-spec-lbl">Niveaux</div><div class="det-spec-val" id="det-floors">—</div></div>
+        <div id="det-terrain-wrap" style="display:none"><div class="det-spec-lbl">Terrain</div><div class="det-spec-val" id="det-terrain">—</div></div>
+        <div><div class="det-spec-lbl">Coût estimé</div><div class="det-spec-val" id="det-cost" style="color:var(--terre)">—</div></div>
+      </div>
+      <p class="det-desc" id="det-desc">—</p>
+      <ul class="det-features" id="det-features"></ul>
+      <a class="voir-exemple-link" id="voir-exemple-link" href="/exemples/d4-034/" onclick="track('voir_exemple',{plan_id:currentPlan&&currentPlan.id,plan_type:currentPlan&&currentPlan.type,plan_title:currentPlan&&currentPlan.title});(function(){var ua=navigator.userAgent||'';if(/FBAN|FBAV|Instagram|FB_IAB/.test(ua)){window.location.href='/exemples/d4-034/';}else{var w=window.open('/exemples/d4-034/','_blank');if(!w)window.location.href='/exemples/d4-034/';}})();return false;">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Voir un exemple
+      </a>
+      <div style="margin-top:16px">
+        <button class="cta-main" onclick="selectOpt(1);openCheckout()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger le plan et devis
+        </button>
+        <div class="trust-note" style="margin-top:10px">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Paiement Mobile Money · <strong id="trust-cta-note-2">Cameroun</strong>
         </div>
       </div>
     </div>
 
-    <!-- Témoignages dans le panneau de détail -->
-    <div style="padding:36px 28px 8px;border-top:1px solid var(--creme-3);background:var(--creme)">
-      <div class="temo-eyebrow" style="text-align:center;margin-bottom:16px">Ils ont fait confiance à WooPlans</div>
-      <div class="temo-wrap" style="max-width:420px">
+    <!-- SECTIONS 4+5 : OFFRE FLASH + BÉNÉFICES -->
+    <div class="det-offer">
+
+      <div class="det-offer-header">
+        <div class="det-offer-tag">Offre flash &minus;50% de réduction</div>
+        <div class="det-offer-validity">Valable ce <span id="det-offer-date">—</span> avant 23h59</div>
+      </div>
+
+      <div class="det-offer-pricing">
+        <div class="det-offer-price-main">
+          <span class="det-price-new-val" id="det-price-new-2">—</span>
+          <span class="det-offer-fcfa">Fcfa</span>
+        </div>
+        <div class="det-offer-price-old">Au lieu de <s>30 000 Fcfa</s></div>
+      </div>
+
+      <div class="det-offer-img-wrap">
+        <img id="offer-plan-img" class="det-offer-img" src="" alt="">
+        <div class="det-offer-img-ph" id="det-offer-img-ph">Image mockup ici</div>
+      </div>
+
+      <div class="det-inclus-box">
+        <div class="det-inclus-title">Ce que vous obtenez immédiatement</div>
+        <ul class="det-inclus-list">
+          <li><span class="det-inclus-num">①</span>Plan de distribution + dimensions</li>
+          <li><span class="det-inclus-num">②</span>Devis de la fondation aux finitions</li>
+          <li><span class="det-inclus-num">③</span>Discuter avec un architecte sur WhatsApp</li>
+        </ul>
+      </div>
+
+      <div class="det-bonus-box">
+        <div class="det-bonus-title">Bonus inclus !</div>
+        <p class="det-bonus-text">Ebook PDF : Les 5 erreurs à éviter avant de lancer votre chantier de construction <span id="bonus-country-text">en Afrique</span></p>
+      </div>
+
+      <div class="det-offer-countdown">Fin de l'offre dans : <strong id="det-countdown">—</strong></div>
+
+      <button class="det-offer-cta" onclick="selectOpt(1);openCheckout()">Profitez de cette offre maintenant</button>
+
+      <div class="det-offer-trust">
+        <div class="det-offer-trust-main">Paiement sécurisé par mobile money (<span id="offer-trust-country">Cameroun</span>)</div>
+        <div class="det-offer-trust-row">
+          <span>Satisfait ou remboursé</span>
+          <span class="det-offer-trust-sep">·</span>
+          <span>Livraison instantanée</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION 7 : TÉMOIGNAGES -->
+    <div class="det-temoignages">
+      <h2>Ce que disent nos clients</h2>
+      <div class="temo-rating-summary">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <strong id="det-rating-summary">4.8</strong>&nbsp;·&nbsp;<span id="det-reviews-summary">18 avis</span>
+      </div>
+      <div class="temo-wrap" style="max-width:100%">
         <div class="temo-track" id="temo-track-2">
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.36.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(2).jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« J'ai téléchargé le plan le soir même et le lendemain matin mon architecte avait déjà commencé à travailler dessus. Qualité exceptionnelle. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-1">Jean-Pierre M.</strong><span class="review-loc" id="rev-loc-1">Yaoundé, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Avril 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Le devis m'a permis de négocier avec les entrepreneurs locaux. J'ai économisé sur le chiffrage initial. Très utile. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-2">Sandrine F.</strong><span class="review-loc" id="rev-loc-2">Douala, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Mars 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Le service WhatsApp est top. J'ai posé des questions et on m'a répondu en moins de 2h. Très professionnel. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-3">Rodrigue K.</strong><span class="review-loc" id="rev-loc-3">Bafoussam, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Avril 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Ça fait 3 ans que je cherchais un plan adapté à l'Afrique. Enfin quelque chose qui correspond à ma réalité et mon budget. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-4">Céleste N.</strong><span class="review-loc" id="rev-loc-4">Douala, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Février 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Prix très abordable pour la qualité fournie. Je recommande à tous mes amis qui veulent construire. Merci WooPlans. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-5">Armand T.</strong><span class="review-loc" id="rev-loc-5">Yaoundé, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Mars 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">« Le rendu 3D est magnifique. Ma femme a fondu quand elle a vu le plan. On a commandé immédiatement. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-6">Esther B.</strong><span class="review-loc" id="rev-loc-6">Ngaoundéré, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Janvier 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card">
+            <div class="review-stars">★★★★☆</div>
+            <p class="review-text">« J'étais sceptique au début mais le plan est vraiment complet. Le devis correspond bien à la réalité du terrain. »</p>
+            <div class="review-footer">
+              <div class="review-author"><strong class="review-name" id="rev-name-7">Patrick D.</strong><span class="review-loc" id="rev-loc-7">Douala, Cameroun</span></div>
+              <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Mars 2026</span></div>
+            </div>
+          </div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.36.jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37.jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(1).jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(2).jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58.jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58%20(1).jpeg" alt="Témoignage" loading="lazy"></div></div>
         </div>
         <button class="temo-arrow temo-prev" onclick="temoNav2(-1)" aria-label="Précédent"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
         <button class="temo-arrow temo-next" onclick="temoNav2(1)" aria-label="Suivant"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
@@ -781,89 +1032,66 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="temo-dots" id="temo-dots-2" style="margin-top:16px"></div>
     </div>
 
-    <!-- FAQ — pleine largeur, après les formules -->
-    <section class="faq-section" style="margin-top:0;border-top:1px solid var(--creme-3);padding:36px 28px 44px">
+    <!-- SECTION 8 : FAQ -->
+    <section class="faq-section" style="margin-top:0;border-top:1px solid var(--creme-3);padding:36px 24px 44px">
       <h3 class="faq-section-title">Questions fréquentes</h3>
-
       <details class="faq-item">
-        <summary>
-          Comment je reçois mon plan après l'achat ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
-        <p class="faq-answer">Le <strong>Plan Basique avec devis</strong> est envoyé instantanément par email et WhatsApp après validation du paiement. Pas besoin d'attendre.</p>
+        <summary>Comment je reçois mon plan après l'achat ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <p class="faq-answer">Le <strong>Plan et Devis</strong> est envoyé instantanément par email et WhatsApp après validation du paiement. Pas besoin d'attendre.</p>
       </details>
-
       <details class="faq-item">
-        <summary>
-          Quels sont les moyens de paiement ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
+        <summary>Quels sont les moyens de paiement ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
         <p class="faq-answer">Le paiement est sécurisé via <strong>Mobile Money</strong> — au <strong id="faq-country-name">Cameroun</strong> : <span id="faq-mm-list">MTN MoMo, Orange Money</span>.</p>
       </details>
-
       <details class="faq-item">
-        <summary>
-          C'est quoi exactement le Plan Basique ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
-        <p class="faq-answer">Le Plan Basique c'est le document idéal pour <strong>valider et personnaliser votre projet</strong> avant de passer à la phase de construction. Il vous permet d'échanger avec un architecte sur WhatsApp, de faire des ajustements selon vos besoins et votre terrain.</p>
+        <summary>C'est quoi exactement le Plan et Devis ?<span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <p class="faq-answer">Le Plan et Devis c'est le document idéal pour <strong>valider et personnaliser votre projet</strong> avant de passer à la phase de construction. Il vous permet d'échanger avec un architecte sur WhatsApp, de faire des ajustements selon vos besoins et votre terrain.</p>
       </details>
-
-      <details class="faq-item">
-        <summary>
-          Comment obtenir le Dossier Complet pour construire ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
-        <p class="faq-answer">Après votre achat vous recevez le Plan Basique que vous pouvez consulter et noter les modifications à faire. Ensuite un de nos architectes échange avec vous sur <a href="https://wa.me/237694327885" style="color:var(--terre);font-weight:600">WhatsApp</a> pour prendre en compte vos modifications et les dimensions de votre terrain. Vous obtenez à la fin un <strong>Dossier Complet personnalisé</strong> pour votre construction.</p>
-      </details>
-
-      <details class="faq-item">
-        <summary>
-          Est-ce que je vais payer après pour le Dossier Complet ?
-          <span class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </summary>
-        <p class="faq-answer">Oui, le Dossier Complet est commandé séparément quand vous êtes prêt à construire. Son prix dépend du type de plan et des modifications à faire. <strong>Un devis vous sera proposé à ce moment-là.</strong></p>
-      </details>
-
       <div class="faq-whatsapp-wrap">
         <a class="whatsapp-btn" href="https://wa.me/237694327885?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20plan%20" id="whatsapp-link" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
           Une question ? Ecrivez-nous sur WhatsApp
         </a>
-
-        <!-- PARTAGE SOCIAL -->
-        <div class="share-row">
-          <span class="share-label">Partager</span>
-          <!-- WhatsApp -->
-          <a class="share-btn share-wa" id="share-wa" href="#" target="_blank" rel="noopener" title="Partager sur WhatsApp">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.544 5.872L0 24l6.29-1.51A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.795 9.795 0 0 1-5.031-1.388l-.36-.214-3.733.896.944-3.617-.235-.373A9.77 9.77 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
-          </a>
-          <!-- Facebook -->
-          <a class="share-btn share-fb" id="share-fb" href="#" target="_blank" rel="noopener" title="Partager sur Facebook">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
-          </a>
-          <!-- X / Twitter -->
-          <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener" title="Partager sur X">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <!-- Copier le lien -->
-          <button class="share-btn share-copy" id="share-copy" onclick="copyPlanLink()" title="Copier le lien">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          </button>
-        </div>
       </div>
     </section>
+
+    <!-- SECTION 9 : CTA FINAL -->
+    <div class="det-final-cta">
+      <p style="font-size:.88rem;color:var(--gris-fonce);margin-bottom:16px">Rejoignez les centaines de familles qui ont démarré leur projet avec WooPlans</p>
+      <button class="cta-main" style="max-width:380px;margin:0 auto" onclick="selectOpt(1);openCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Je découvre mon projet maintenant
+      </button>
+    </div>
+
+    <!-- SECTION 10 : PLANS SIMILAIRES -->
+    <div class="det-similar">
+      <h2>Plans similaires</h2>
+      <div class="similar-row" id="similar-row"></div>
+    </div>
 
   </div>
 </div>
 
-<!-- STICKY BAR MOBILE -->
-<div class="sticky-bar" id="sticky-bar">
-  <div class="sb-info">
-    <div class="sb-name" id="sb-name">Plan Basique + Devis</div>
-    <div class="sb-price" id="sb-price">—</div>
-  </div>
-  <button class="sb-btn" onclick="selectOpt(1);openCheckout()">&#8595; Telecharger</button>
+<!-- sticky-bar supprimé (éléments cachés pour compat JS) -->
+<div id="sticky-bar" style="display:none" aria-hidden="true">
+  <div class="sb-name" id="sb-name"></div>
+  <div class="sb-price" id="sb-price"></div>
+</div>
+
+<!-- LIGHTBOX GALERIE -->
+<div id="lb" role="dialog" aria-modal="true">
+  <button class="lb-close" onclick="closeLb()" aria-label="Fermer">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <button class="lb-arrow lb-prev" onclick="lbNav(-1)" aria-label="Précédent">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <img class="lb-img" id="lb-img" src="" alt="">
+  <button class="lb-arrow lb-next" onclick="lbNav(1)" aria-label="Suivant">
+    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <div class="lb-counter" id="lb-counter">1 / 4</div>
 </div>
 
 <!-- CHECKOUT POPUP -->
@@ -873,7 +1101,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
     <div class="co-head">
       <div>
         <div class="co-plan" id="co-plan">—</div>
-        <div class="co-pkg" id="co-pkg">Plan Basique + Devis &middot; Telechargement instantane</div>
+        <div class="co-pkg" id="co-pkg">Plan et Devis &middot; Telechargement instantane</div>
       </div>
       <button class="co-x" onclick="closeCheckout()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
@@ -881,7 +1109,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="co-summary">
         <div>
           <div class="co-sum-tag">✓ Formule selectionnee</div>
-          <span class="co-sum-lbl" id="co-sum-lbl">Plan Basique + Devis</span>
+          <span class="co-sum-lbl" id="co-sum-lbl">Plan et Devis</span>
         </div>
         <span class="co-sum-price" id="co-sum-price">—</span>
       </div>
@@ -1175,6 +1403,14 @@ function updateCountryUI(code){
     // Pays sans liste détaillée → texte générique
     faqAnswer.innerHTML='Le paiement est sécurisé via <strong>Mobile Money</strong> (MTN, Orange, Wave, Moov, Djamo, Airtel, etc.).';
   }
+  // Bonus pays dynamique
+  const bonusCt=document.getElementById('bonus-country-text');
+  if(bonusCt) bonusCt.textContent=COUNTRY_LOC[code]||'en Afrique';
+  // Trust note offre
+  const offerTrust=document.getElementById('offer-trust-country');
+  if(offerTrust&&name) offerTrust.textContent=name;
+  // Avis dynamiques
+  updateReviewLocales(code);
 }
 // updateCountryUI() est appelée après CC_DATA (ligne ~1887)
 (async function(){try{const r=await fetch('https://ipapi.co/json/');const d=await r.json();const c=(d.country_code||'').toUpperCase();if(c){detectedCountryCode=c;updateCountryUI(c);}}catch(e){}})();
@@ -1421,6 +1657,35 @@ function openDetail(id,skipPush){
   // Total = acompte basique + solde complet
   (function(){var b=parseFloat((currentPlan.priceBasic||'0').replace(/\s/g,''))||0,c=parseFloat((currentPlan.priceComplete||'0').replace(/\s/g,''))||0,t=b+c;var fp=function(n){return n.toLocaleString('fr-FR');};document.getElementById('pbox-total-val').textContent=fp(t)+' FCFA';document.getElementById('pbox-acompte').textContent=fp(b);document.getElementById('pbox-solde').textContent=fp(c);})();
 
+  // Titre des sections CTA dynamiques
+  var ctaTitle1=document.getElementById('det-cta-title-1');
+  if(ctaTitle1)ctaTitle1.textContent='Obtenez le plan et devis de '+currentPlan.title;
+  var tit3d=document.getElementById('det-3d-title');
+  if(tit3d)tit3d.textContent='Découvrez la '+currentPlan.title+' en 3D';
+  // Ref plan sur la galerie + rating hero
+  var planRef=document.getElementById('gal-plan-ref');
+  if(planRef)planRef.textContent=currentPlan.title;
+  var heroRating=document.getElementById('det-hero-rating');
+  if(heroRating)heroRating.textContent=currentPlan.rating||'4.9';
+
+  // Remplir les prix dans toutes les sections CTA
+  document.querySelectorAll('.det-price-new-val').forEach(function(el){el.textContent=currentPlan.priceBasic||'—';});
+
+  // Synchroniser les résumés de rating dans la section témoignages
+  var rs=document.getElementById('det-rating-summary');
+  if(rs)rs.textContent=currentPlan.rating||'4.8';
+  var rvs=document.getElementById('det-reviews-summary');
+  if(rvs)rvs.textContent=(currentPlan.reviews??0)+' avis';
+
+  // Galerie masonry : toutes les images
+  renderMasonryGrid(currentPlan);
+
+  // Section offre : image + date + countdown
+  initOfferSection();
+
+  // Plans similaires
+  renderSimilarPlans(currentPlan);
+
   // Reset dropdowns
   ['dd1','dd2'].forEach(function(id){
     var b=document.getElementById(id+'-body');
@@ -1473,6 +1738,153 @@ function openDetail(id,skipPush){
   if(sFb) sFb.href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(planUrl);
   if(sX)  sX.href='https://x.com/intent/tweet?text='+shareText;
   if(sCp) sCp.classList.remove('share-copy-ok');
+}
+
+// ── GALERIE MASONRY ───────────────────────────────────────────
+function renderMasonryGrid(plan) {
+  var grid = document.getElementById('det-3d-grid');
+  var section = grid && grid.closest('.det-3d-section');
+  if (!grid) return;
+  var imgs = plan.images || [];
+  if (!imgs.length) { if(section) section.style.display='none'; return; }
+  if (section) section.style.display='';
+  grid.innerHTML = imgs.map(function(src, i) {
+    var opt = src.indexOf('b-cdn.net') > -1 ? src + '?width=480&quality=75&format=webp' : src;
+    return '<img src="'+opt+'" alt="'+(plan.title||'')+(i+1)+'" loading="'+(i<2?'eager':'lazy')+'" onclick="openLb('+i+')">';
+  }).join('');
+}
+
+// ── LIGHTBOX ──────────────────────────────────────────────────
+var lbImages = [];
+var lbIdx = 0;
+var lbZoom = false;
+var lbTouchX = null;
+
+function openLb(idx) {
+  lbImages = (currentPlan && currentPlan.images) ? currentPlan.images : [];
+  if (!lbImages.length) return;
+  lbIdx = idx;
+  lbZoom = false;
+  var el = document.getElementById('lb');
+  var img = document.getElementById('lb-img');
+  if (!el || !img) return;
+  img.style.transform = 'scale(1)';
+  img.classList.remove('zoomed');
+  img.src = lbImages[lbIdx];
+  document.getElementById('lb-counter').textContent = (lbIdx + 1) + ' / ' + lbImages.length;
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLb() {
+  var el = document.getElementById('lb');
+  if (el) el.classList.remove('open');
+}
+
+function lbNav(dir) {
+  if (!lbImages.length) return;
+  lbIdx = (lbIdx + dir + lbImages.length) % lbImages.length;
+  var img = document.getElementById('lb-img');
+  if (img) { img.src = lbImages[lbIdx]; img.style.transform = 'scale(1)'; img.classList.remove('zoomed'); lbZoom = false; }
+  document.getElementById('lb-counter').textContent = (lbIdx + 1) + ' / ' + lbImages.length;
+}
+
+// Fermer au clic sur le fond
+document.addEventListener('DOMContentLoaded', function(){
+  var lb = document.getElementById('lb');
+  if (!lb) return;
+  lb.addEventListener('click', function(e){
+    if (e.target === lb) closeLb();
+  });
+  // Keyboard
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'ArrowRight') lbNav(1);
+    else if (e.key === 'ArrowLeft') lbNav(-1);
+    else if (e.key === 'Escape') closeLb();
+  });
+  // Touch swipe on lightbox image
+  var img = document.getElementById('lb-img');
+  if (!img) return;
+  img.addEventListener('touchstart', function(e){ lbTouchX = e.touches[0].clientX; }, {passive:true});
+  img.addEventListener('touchend', function(e){
+    if (lbTouchX === null) return;
+    var diff = lbTouchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) lbNav(diff > 0 ? 1 : -1);
+    lbTouchX = null;
+  }, {passive:true});
+  // Double-tap to zoom
+  var lastTap = 0;
+  img.addEventListener('touchend', function(e){
+    var now = Date.now();
+    if (now - lastTap < 280) {
+      lbZoom = !lbZoom;
+      img.style.transform = lbZoom ? 'scale(2)' : 'scale(1)';
+      img.classList.toggle('zoomed', lbZoom);
+      e.preventDefault();
+    }
+    lastTap = now;
+  });
+});
+
+// ── OFFRE : DATE + COUNTDOWN ─────────────────────────────────
+var _countdownTimer = null;
+function initOfferSection() {
+  // Date du jour en français
+  var jours=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  var mois=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  var now=new Date();
+  var dateEl=document.getElementById('det-offer-date');
+  if(dateEl) dateEl.textContent=jours[now.getDay()]+' '+now.getDate()+' '+mois[now.getMonth()];
+  // Countdown vers 23h59
+  clearInterval(_countdownTimer);
+  function tick(){
+    var n=new Date(), end=new Date();
+    end.setHours(23,59,59,0);
+    var diff=Math.max(0,end-n);
+    var h=Math.floor(diff/3600000);
+    var m=Math.floor((diff%3600000)/60000);
+    var s=Math.floor((diff%60000)/1000);
+    var el=document.getElementById('det-countdown');
+    if(el) el.textContent=h+'h : '+String(m).padStart(2,'0')+' min : '+String(s).padStart(2,'0')+'s';
+  }
+  tick();
+  _countdownTimer=setInterval(tick,1000);
+  // Image plan dans la section offre
+  var oi=document.getElementById('offer-plan-img');
+  var ph=document.getElementById('det-offer-img-ph');
+  if(oi){
+    var s=currentPlan&&currentPlan.images&&currentPlan.images[0]?currentPlan.images[0]:'';
+    if(s&&s.indexOf('b-cdn.net')>-1) s+='?width=560&quality=80&format=webp';
+    oi.src=s;
+    if(ph) ph.style.display=s?'none':'';
+  }
+}
+
+// ── PLANS SIMILAIRES ─────────────────────────────────────────
+function openSimilarPlan(id) {
+  openDetail(id);
+  // Scroll to top of panel after a tick so the new content is painted
+  setTimeout(function(){
+    var panel = document.querySelector('.det-panel');
+    if (panel) panel.scrollTo({top: 0, behavior: 'smooth'});
+  }, 60);
+}
+
+function renderSimilarPlans(plan) {
+  var row = document.getElementById('similar-row');
+  if (!row || !plans.length) return;
+  var similar = plans.filter(function(p){ return p.id !== plan.id; }).slice(0, 4);
+  row.innerHTML = similar.map(function(p) {
+    var img = (p.images && p.images[0]) ? p.images[0] + (p.images[0].indexOf('b-cdn.net') > -1 ? '?width=300&quality=70&format=webp' : '') : '';
+    return '<div class="similar-card" onclick="openSimilarPlan(\''+p.id+'\')">'
+      + (img ? '<img class="similar-card-img" src="'+img+'" alt="'+p.title+'" loading="lazy">' : '')
+      + '<div class="similar-card-body">'
+      + '<div class="similar-card-title">'+p.title+'</div>'
+      + '<div class="similar-card-price">'+(p.priceBasic||'—')+' FCFA</div>'
+      + '<button class="similar-card-btn">Voir ce plan</button>'
+      + '</div></div>';
+  }).join('');
 }
 
 // ── DETAIL FAST (pour Facebook Ads / accès direct) ───────────
@@ -1530,6 +1942,22 @@ function openDetailFast(id) {
   var _hint2=document.getElementById('price-complete-hint');if(_hint2)_hint2.textContent=currentPlan.priceComplete||'—';
   // Total = acompte basique + solde complet
   (function(){ var b=parseFloat((currentPlan.priceBasic||'0').replace(/\s/g,''))||0, c=parseFloat((currentPlan.priceComplete||'0').replace(/\s/g,''))||0, t=b+c; var fp=function(n){return n.toLocaleString('fr-FR');}; document.getElementById('pbox-total-val').textContent=fp(t)+' FCFA'; document.getElementById('pbox-acompte').textContent=fp(b); document.getElementById('pbox-solde').textContent=fp(c); })();
+
+  // Sections CTA dynamiques
+  var ctaTitle1=document.getElementById('det-cta-title-1');
+  if(ctaTitle1) ctaTitle1.textContent='Obtenez le plan et devis de '+currentPlan.title;
+  var tit3d=document.getElementById('det-3d-title');
+  if(tit3d) tit3d.textContent='Découvrez la '+currentPlan.title+' en 3D';
+  var planRef=document.getElementById('gal-plan-ref');
+  if(planRef) planRef.textContent=currentPlan.title;
+  var heroRating=document.getElementById('det-hero-rating');
+  if(heroRating) heroRating.textContent=currentPlan.rating||'4.9';
+  document.querySelectorAll('.det-price-new-val').forEach(function(el){el.textContent=currentPlan.priceBasic||'—';});
+  var rs=document.getElementById('det-rating-summary');if(rs)rs.textContent=currentPlan.rating||'4.8';
+  var rvs=document.getElementById('det-reviews-summary');if(rvs)rvs.textContent=(currentPlan.reviews??0)+' avis';
+  renderMasonryGrid(currentPlan);
+  initOfferSection();
+  renderSimilarPlans(currentPlan);
 
   // Reset dropdowns
   ['dd1', 'dd2'].forEach(function(id) {
@@ -1758,7 +2186,7 @@ function updateOptUI(){
   if(!currentPlan)return;
   var isB=selectedOpt===1;
   var price=isB?currentPlan.priceBasic:currentPlan.priceComplete;
-  document.getElementById('sb-name').textContent=isB?'Plan Basique + Devis':'Plans Complets';
+  document.getElementById('sb-name').textContent=isB?'Plan et Devis':'Plans Complets';
   document.getElementById('sb-price').textContent=price+' FCFA';
   var mctaPrice=document.getElementById('det-mcta-price');
   if(mctaPrice) mctaPrice.textContent=price;
@@ -1791,8 +2219,8 @@ function openCheckout(){
     });
   }
   document.getElementById('co-plan').textContent=currentPlan.title;
-  document.getElementById('co-pkg').textContent=isB?'Plan Basique + Devis \u00b7 Telechargement instantane':'Plans Complets \u00b7 Livraison 3-5 jours';
-  document.getElementById('co-sum-lbl').textContent=isB?'Plan Basique + Devis':'Plans Complets';
+  document.getElementById('co-pkg').textContent=isB?'Plan et Devis \u00b7 Telechargement instantane':'Plans Complets \u00b7 Livraison 3-5 jours';
+  document.getElementById('co-sum-lbl').textContent=isB?'Plan et Devis':'Plans Complets';
   document.getElementById('co-sum-price').textContent=(isB?currentPlan.priceBasic:currentPlan.priceComplete)+' FCFA';
   ccPickerSelect(detectedCountryCode);
   // Analytics — ouverture checkout
@@ -1975,7 +2403,42 @@ const CC_DATA=[
   {c:'GM',d:'+220',p:'7XX XXXX',     n:'Gambie',           mm:null},
   {c:'ST',d:'+239',p:'981 XXXX',     n:'São Tomé',         mm:null},
 ];
+// ── LOCALISATION PAYS ────────────────────────────────────────
+const COUNTRY_LOC={
+  CM:'au Cameroun',CI:"en Côte d'Ivoire",SN:'au Sénégal',ML:'au Mali',
+  BF:'au Burkina Faso',BJ:'au Bénin',TG:'au Togo',GN:'en Guinée',
+  CG:'au Congo',CD:'en RD Congo',GA:'au Gabon',NE:'au Niger',TD:'au Tchad',
+  MR:'en Mauritanie',MG:'à Madagascar'
+};
+
+// ── NOMS D'AVIS PAR PAYS ──────────────────────────────────────
+const REVIEWS_NAMES={
+  CM:[['Jean-Pierre M.','Yaoundé'],['Sandrine F.','Douala'],['Rodrigue K.','Bafoussam'],['Céleste N.','Douala'],['Armand T.','Yaoundé'],['Esther B.','Ngaoundéré'],['Patrick D.','Douala']],
+  CI:[['Kouamé A.','Abidjan'],['Adjoua B.','Bouaké'],['Serge K.','Abidjan'],['Mariam T.','San-Pédro'],['Franck O.','Abidjan'],['Awa D.','Yamoussoukro'],['Koffi N.','Abidjan']],
+  SN:[['Moussa D.','Dakar'],['Fatou S.','Thiès'],['Ibrahima B.','Saint-Louis'],['Aminata N.','Dakar'],['Oumar F.','Touba'],['Astou K.','Dakar'],['Alioune T.','Kaolack']],
+  ML:[['Mamadou K.','Bamako'],['Fatoumata D.','Ségou'],['Ibrahim T.','Bamako'],['Kadiatou S.','Mopti'],['Boubacar C.','Bamako'],['Aminata B.','Sikasso'],['Seydou D.','Bamako']],
+  BF:[['Issouf O.','Ouagadougou'],['Mariam K.','Bobo-Dioulasso'],['Hamidou B.','Ouagadougou'],['Safiatou T.','Koudougou'],['Wendpanga S.','Ouagadougou'],['Aïcha Z.','Banfora'],['Prosper Y.','Ouagadougou']],
+  BJ:[['Rodrigue A.','Cotonou'],['Sylvie H.','Porto-Novo'],['Fiacre D.','Cotonou'],['Cécile M.','Parakou'],['Placide A.','Cotonou'],['Stéphanie L.','Abomey'],['Lionel K.','Cotonou']],
+  TG:[['Kossi A.','Lomé'],['Mawuena D.','Kpalimé'],['Koffi A.','Lomé'],['Afua G.','Sokodé'],['Afi K.','Lomé'],['Anani T.','Atakpamé'],['Edem S.','Lomé']],
+  GN:[['Mamadou B.','Conakry'],['Fatoumata C.','Labé'],['Ibrahima D.','Conakry'],['Kadiatou B.','Kankan'],['Mohamed S.','Conakry'],['Aïssatou D.',"N'Zérékoré"],['Boubacar S.','Conakry']],
+  CG:[['Romaric M.','Brazzaville'],['Gracia N.','Pointe-Noire'],['Sylvain B.','Brazzaville'],['Octavie L.','Brazzaville'],['Arnaud M.','Pointe-Noire'],['Clémentine N.','Brazzaville'],['Christian D.','Dolisie']],
+  GA:[['Patrick M.','Libreville'],['Sandra O.','Port-Gentil'],['Armand N.','Libreville'],['Carine E.','Franceville'],['Rodrigue A.','Libreville'],['Flore M.','Oyem'],['Gilbert N.','Libreville']],
+};
+
+function updateReviewLocales(code){
+  var pool=REVIEWS_NAMES[code]||REVIEWS_NAMES['CM'];
+  var found=CC_DATA.find(function(x){return x.c===code;});
+  var countryName=found?found.n:'Cameroun';
+  for(var i=1;i<=7;i++){
+    var nameEl=document.getElementById('rev-name-'+i);
+    var locEl=document.getElementById('rev-loc-'+i);
+    if(nameEl&&pool[i-1])nameEl.textContent=pool[i-1][0];
+    if(locEl&&pool[i-1])locEl.textContent=pool[i-1][1]+', '+countryName;
+  }
+}
+
 updateCountryUI('CM'); // défaut Cameroun — après CC_DATA
+updateReviewLocales('CM');
 (function buildCcDropdown(){
   const dd=document.getElementById('cc-dropdown');
   if(!dd) return;
