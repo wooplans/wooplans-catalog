@@ -538,7 +538,9 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .review-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
 .review-badge{font-size:.68rem;color:var(--vert);font-weight:700;letter-spacing:.04em}
 .review-date{font-size:.7rem;color:var(--gris-clair)}
-.det-temoignages .temo-slide{align-items:stretch;padding:0 2px}
+.det-temoignages .temo-slide{align-items:stretch;padding:0 2px;min-height:260px}
+.review-card--photo{justify-content:center;align-items:center}
+.review-card--photo img{max-width:160px;max-height:220px;object-fit:contain;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
 
 /* SECTION 9 : CTA FINAL */
 .det-final-cta{padding:28px 24px;background:var(--creme-2);border-bottom:1px solid var(--creme-3);text-align:center}
@@ -955,12 +957,12 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
               <div class="review-meta"><span class="review-badge">✓ Vérifié</span><span class="review-date">Mars 2026</span></div>
             </div>
           </div></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.36.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(2).jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58.jpeg" alt="Témoignage" loading="lazy"></div>
-          <div class="temo-slide"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58%20(1).jpeg" alt="Témoignage" loading="lazy"></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.36.jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37.jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(1).jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2022.43.37%20(2).jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58.jpeg" alt="Témoignage" loading="lazy"></div></div>
+          <div class="temo-slide"><div class="review-card review-card--photo"><img src="/temoignages/WhatsApp%20Image%202026-03-30%20at%2023.29.58%20(1).jpeg" alt="Témoignage" loading="lazy"></div></div>
         </div>
         <button class="temo-arrow temo-prev" onclick="temoNav2(-1)" aria-label="Précédent"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
         <button class="temo-arrow temo-next" onclick="temoNav2(1)" aria-label="Suivant"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
