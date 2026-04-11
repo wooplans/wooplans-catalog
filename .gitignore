@@ -1,15 +1,53 @@
-# OS
-.DS_Store
-Thumbs.db
-desktop.ini
+```
+# Dependencies
+node_modules/
 
-# Éditeurs
-.vscode/
-*.sublime-workspace
+# Build outputs
+dist/
+build/
+*.js.map
+*.css.map
 
-# Variables d'environnement
+# Environment variables
 .env
-*.env.local
+.env.local
+*.env.*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
 
 # Logs
 *.log
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Distribution / packaging
+.Python
+*.egg-info/
+.eggs/
+.installed.cfg
+*.egg
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Vite specific
+!.vite/
+vite.config.js
+```
