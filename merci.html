@@ -389,7 +389,9 @@ window.addEventListener('load', function() {
     var hasPdf = !!plan.pdf_basic_url;
 
     // Meta Pixel — Purchase (client-side, confirmation de paiement)
-    if (typeof fbq !== 'undefined') {
+    // Déduplication : on ne tire l'événement qu'une seule fois par achat (évite les doublons sur rechargement de page)
+    var pixelKey = 'wp_px_purchase_' + planId + (saleId ? '_' + saleId : '');
+    if (typeof fbq !== 'undefined' && !localStorage.getItem(pixelKey)) {
       var priceRaw = parseFloat(((hasPdf ? plan.priceBasic : plan.priceComplete) || '0').replace(/\s/g, '')) || 0;
       fbq('track', 'Purchase', {
         content_ids: [plan.id],
@@ -399,6 +401,7 @@ window.addEventListener('load', function() {
         value: priceRaw,
         num_items: 1
       });
+      localStorage.setItem(pixelKey, '1');
     }
 
     if (hasPdf) {
