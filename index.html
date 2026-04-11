@@ -368,10 +368,7 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .co-head-old{font-size:.75rem;color:var(--gris);margin-top:3px}
 .co-head-old s{text-decoration:line-through}
 .co-head-discount{background:#e63946;color:#fff;font-size:.7rem;font-weight:700;padding:2px 7px;margin-left:5px}
-.co-head-img-wrap{position:relative;overflow:hidden;max-height:200px}
-.co-head-img{width:100%;height:auto;display:block}
-.co-head-img[src=""]{display:none;min-height:0}
-.co-head-ref{position:absolute;bottom:0;right:0;background:var(--brun);color:var(--or);font-size:.7rem;font-weight:600;padding:4px 12px;letter-spacing:.06em;text-transform:uppercase}
+.co-head-ref{background:var(--brun);color:var(--or);font-size:.7rem;font-weight:600;padding:4px 12px;letter-spacing:.06em;text-transform:uppercase;display:none}
 .co-head-divider{text-align:center;font-family:'DM Serif Display',serif;font-size:.95rem;color:var(--brun);padding:9px 18px;border-top:1px solid var(--creme-3);background:var(--blanc);flex-shrink:0}
 .co-pkg{display:none}
 .co-x{background:transparent;border:1px solid var(--creme-3);width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px;flex-shrink:0}
@@ -1125,10 +1122,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       <div class="co-head-price-block">
         <div class="co-head-price"><span id="co-head-price-val">—</span><span class="co-head-fcfa">Fcfa</span></div>
         <div class="co-head-old">Au lieu de <s>30 000 Fcfa</s><span class="co-head-discount">-50%</span></div>
-      </div>
-      <div class="co-head-img-wrap">
-        <img class="co-head-img" id="co-head-img" src="" alt="">
-        <div class="co-head-ref" id="co-head-ref">—</div>
       </div>
       <div class="co-head-divider">Téléchargement instantané</div>
       <!-- compat JS -->
@@ -2243,10 +2236,6 @@ function openCheckout(){
   // Nouveau header checkout
   var coHdrPrice=document.getElementById('co-head-price-val');
   if(coHdrPrice) coHdrPrice.textContent=(isB?currentPlan.priceBasic:currentPlan.priceComplete)||'—';
-  var coHdrImg=document.getElementById('co-head-img');
-  if(coHdrImg){var coImgSrc=currentPlan.images&&currentPlan.images[0]?currentPlan.images[0]:'';
-    if(coImgSrc&&coImgSrc.indexOf('b-cdn.net')>-1) coImgSrc+='?width=480&quality=80&format=webp';
-    coHdrImg.src=coImgSrc;}
   var coHdrRef=document.getElementById('co-head-ref');
   if(coHdrRef) coHdrRef.textContent=currentPlan.title;
   ccPickerSelect(detectedCountryCode);
