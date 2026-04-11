@@ -196,6 +196,18 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .det-close:hover svg{stroke:var(--or)}
 .det-close svg{width:15px;height:15px;stroke:var(--brun);stroke-width:2;fill:none}
 
+/* Above fold : galerie + hero tiennent dans le viewport */
+.det-above-fold{display:flex;flex-direction:column;height:calc(100dvh - 50px)}
+.det-above-fold .det-gallery{display:flex;flex-direction:column;flex:0 0 auto;max-height:46dvh}
+.det-above-fold .gal-main{flex:1;min-height:0;aspect-ratio:unset}
+.det-above-fold .det-cta-hero{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;justify-content:center;padding:16px 24px}
+.det-above-fold .det-cta-sub{display:none}
+.det-above-fold .det-cta-title{margin-bottom:10px}
+.det-above-fold .det-hero-price{margin-bottom:14px}
+.det-above-fold .det-hero-price-main{font-size:2.8rem}
+.det-above-fold .det-hero-cta{padding:14px;margin-bottom:8px}
+.det-above-fold .det-hero-trust{margin-bottom:10px}
+
 /* Galerie */
 .det-gallery{background:var(--brun);position:relative}
 .gal-main{position:relative;aspect-ratio:16/10;overflow:hidden;cursor:pointer}
@@ -764,6 +776,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
       </button>
     </div>
 
+    <div class="det-above-fold">
     <div class="det-gallery">
       <div class="gal-main" id="gal-main">
         <img class="gal-img" id="gal-img" src="" alt="" fetchpriority="high">
@@ -835,6 +848,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         <span class="hero-rating"><strong id="det-hero-rating">4.9</strong>/5</span>
       </div>
     </div>
+    </div><!-- /.det-above-fold -->
 
     <!-- SECTION 2 : APERÇU 3D -->
     <div class="det-3d-section">
