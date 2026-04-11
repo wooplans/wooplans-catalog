@@ -1084,7 +1084,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 
     <!-- SECTION 10 : PLANS SIMILAIRES -->
     <div class="det-similar">
-      <h2>Plans similaires</h2>
+      <h2 id="similar-title">Plans similaires</h2>
       <div class="similar-row" id="similar-row"></div>
     </div>
 
@@ -1903,7 +1903,9 @@ function openSimilarPlan(id) {
 function renderSimilarPlans(plan) {
   var row = document.getElementById('similar-row');
   if (!row || !plans.length) return;
-  var similar = plans.filter(function(p){ return p.id !== plan.id; }).slice(0, 4);
+  var titleEl = document.getElementById('similar-title');
+  if (titleEl) titleEl.textContent = plan.type === 'villa' ? 'Autres villas' : 'Autres duplex';
+  var similar = plans.filter(function(p){ return p.id !== plan.id && p.type === plan.type; }).slice(0, 4);
   row.innerHTML = similar.map(function(p) {
     var img = (p.images && p.images[0]) ? p.images[0] + (p.images[0].indexOf('b-cdn.net') > -1 ? '?width=300&quality=70&format=webp' : '') : '';
     return '<div class="similar-card" onclick="openSimilarPlan(\''+p.id+'\')">'
@@ -2084,19 +2086,6 @@ function openDetailFast(id) {
   if (sFb) sFb.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(planUrl);
   if (sX) sX.href = 'https://x.com/intent/tweet?text=' + shareText;
   
-  // Meta Pixel - ViewContent (après que l'affichage soit fait)
-  if (typeof fbq !== 'undefined') {
-    setTimeout(function() {
-      fbq('track', 'ViewContent', {
-        content_ids: [currentPlan.id],
-        content_name: currentPlan.title,
-        content_type: 'product',
-        content_category: currentPlan.type,
-        currency: 'XAF',
-        value: parseFloat((currentPlan.priceBasic || '0').replace(/\s/g, '')) || 0
-      });
-    }, 0);
-  }
 }
 
 function copyPlanLink(){
