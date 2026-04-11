@@ -509,6 +509,8 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .flash-price-old{font-size:.85rem;color:rgba(255,255,255,.4);text-decoration:line-through;margin-bottom:4px}
 .flash-price-new{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:700;color:var(--or);line-height:1}
 .flash-price-cur{font-size:.78rem;color:var(--or-pale);margin-top:6px;letter-spacing:.06em}
+.det-flash-offer .offer-img-mockup{width:140px;height:105px;object-fit:cover;display:block;margin:0 auto 20px;box-shadow:0 8px 28px rgba(26,18,8,.22);border-radius:4px}
+.det-flash-offer .offer-img-mockup[src=""]{display:none}
 
 /* SECTION 5 : BÉNÉFICES */
 .det-benefits{padding:28px 24px;background:var(--creme);border-bottom:1px solid var(--creme-3)}
@@ -519,8 +521,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 .bonus-box{background:var(--vert-bg);border:1.5px solid var(--vert);padding:14px 16px;margin-bottom:20px;border-radius:2px}
 .bonus-badge{display:inline-block;background:var(--vert);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:2px 10px;text-transform:uppercase;margin-bottom:10px;border-radius:2px}
 .benefits-cta-block{border-top:1px solid var(--creme-3);padding-top:20px;margin-top:20px;text-align:center}
-.offer-img-mockup{width:140px;height:105px;object-fit:cover;display:block;margin:0 auto 20px;box-shadow:0 8px 28px rgba(26,18,8,.22);border-radius:4px}
-.offer-img-mockup[src=""]{display:none}
 
 /* SECTION 7 : TÉMOIGNAGES */
 .det-temoignages{padding:28px 24px;border-bottom:1px solid var(--creme-3)}
@@ -850,6 +850,7 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
 
     <!-- SECTION 4 : OFFRE FLASH -->
     <div class="det-flash-offer">
+      <img id="offer-plan-img" class="offer-img-mockup" src="" alt="">
       <div class="flash-eyebrow">Offre limitée</div>
       <div class="flash-promo-badge">Offre Flash &minus;50%</div>
       <p class="flash-title">Réduction de 50% aujourd'hui</p>
@@ -872,7 +873,6 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
         <p style="font-size:.88rem;color:var(--gris-fonce)">Ebook PDF : <strong>Les 5 erreurs à éviter pour réussir son projet de construction <span id="bonus-country-text">en Afrique</span></strong></p>
       </div>
       <div class="benefits-cta-block">
-        <img id="offer-plan-img" class="offer-img-mockup" src="" alt="">
         <button class="cta-main" onclick="selectOpt(1);openCheckout()">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Profitez de l'offre maintenant
