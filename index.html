@@ -181,10 +181,7 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 #detail-overlay.open{display:flex}
 .det-backdrop{position:absolute;inset:0;background:rgba(10,8,5,.6);backdrop-filter:blur(5px);animation:fadeIn .3s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.det-panel{position:relative;z-index:1;width:min(880px,100vw);margin-left:auto;background:var(--creme);overflow-y:auto;animation:slideR .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;
-  /* espace pour sticky bar mobile */
-  padding-bottom:80px;
-}
+.det-panel{position:relative;z-index:1;width:min(880px,100vw);margin-left:auto;background:var(--creme);overflow-y:auto;animation:slideR .38s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
 @keyframes slideR{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}
 
 .det-header{position:sticky;top:0;z-index:10;background:var(--blanc);border-bottom:1px solid var(--creme-3);padding:0 16px;height:50px;display:flex;align-items:center;justify-content:space-between}
@@ -197,16 +194,17 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .det-close svg{width:15px;height:15px;stroke:var(--brun);stroke-width:2;fill:none}
 
 /* Above fold : galerie + hero tiennent dans le viewport */
-.det-above-fold{display:flex;flex-direction:column;height:calc(100dvh - 50px)}
-.det-above-fold .det-gallery{display:flex;flex-direction:column;flex:0 0 auto;max-height:46dvh}
+.det-above-fold{display:flex;flex-direction:column;height:calc(100svh - 50px)}
+.det-above-fold .det-gallery{height:40svh;display:flex;flex-direction:column;flex-shrink:0}
 .det-above-fold .gal-main{flex:1;min-height:0;aspect-ratio:unset}
-.det-above-fold .det-cta-hero{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;justify-content:center;padding:16px 24px}
+.det-above-fold .det-cta-hero{flex:1;min-height:0;overflow-y:hidden;display:flex;flex-direction:column;justify-content:center;padding:16px 24px}
 .det-above-fold .det-cta-sub{display:none}
 .det-above-fold .det-cta-title{margin-bottom:10px}
 .det-above-fold .det-hero-price{margin-bottom:14px}
 .det-above-fold .det-hero-price-main{font-size:2.8rem}
 .det-above-fold .det-hero-cta{padding:14px;margin-bottom:8px}
 .det-above-fold .det-hero-trust{margin-bottom:10px}
+@media(min-height:700px){.det-above-fold .det-cta-sub{display:block;margin-bottom:14px}}
 
 /* Galerie */
 .det-gallery{background:var(--brun);position:relative}
@@ -360,12 +358,26 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .co-backdrop{position:absolute;inset:0;background:rgba(10,8,5,.72);backdrop-filter:blur(6px)}
 .co-modal{position:relative;z-index:1;background:var(--creme);width:min(480px,100%);animation:popIn .3s cubic-bezier(.34,1.4,.64,1);max-height:96svh;overflow-y:auto}
 @keyframes popIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
-.co-head{background:var(--brun);padding:22px 26px;display:flex;align-items:flex-start;justify-content:space-between}
-.co-plan{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--blanc);margin-bottom:3px}
-.co-pkg{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--or)}
-.co-x{background:transparent;border:1px solid rgba(255,255,255,.2);width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0;margin-left:16px;border-radius:4px}
-.co-x:hover{background:rgba(255,255,255,.1)}
-.co-x svg{width:14px;height:14px;stroke:white;stroke-width:2;fill:none}
+.co-head{background:var(--creme);padding:0;border-bottom:1px solid var(--creme-3)}
+.co-head-top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 0}
+.co-head-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);font-weight:600}
+.co-plan{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--brun);text-align:center;padding:2px 18px 0}
+.co-head-price-block{text-align:center;padding:6px 18px 12px}
+.co-head-price{font-family:'DM Serif Display',serif;font-size:2.6rem;font-weight:700;color:var(--brun);line-height:1;display:inline-flex;align-items:baseline;gap:6px}
+.co-head-fcfa{font-family:'Inter',sans-serif;font-size:.9rem;color:var(--gris-fonce);font-weight:400}
+.co-head-old{font-size:.78rem;color:var(--gris);margin-top:5px}
+.co-head-old s{text-decoration:line-through}
+.co-head-discount{background:#e63946;color:#fff;font-size:.7rem;font-weight:700;padding:2px 7px;margin-left:5px}
+.co-head-img-wrap{position:relative}
+.co-head-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.co-head-img[src=""]{display:none}
+.co-head-ref{position:absolute;bottom:0;right:0;background:var(--brun);color:var(--or);font-size:.7rem;font-weight:600;padding:4px 12px;letter-spacing:.06em;text-transform:uppercase}
+.co-head-divider{text-align:center;font-family:'DM Serif Display',serif;font-size:1rem;color:var(--brun);padding:12px 18px;border-top:1px solid var(--creme-3);background:var(--blanc)}
+.co-pkg{display:none}
+.co-x{background:transparent;border:1px solid var(--creme-3);width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px;flex-shrink:0}
+.co-x:hover{background:var(--brun);border-color:var(--brun)}
+.co-x svg{width:14px;height:14px;stroke:var(--brun);stroke-width:2;fill:none}
+.co-x:hover svg{stroke:var(--or)}
 .co-body{padding:24px 26px}
 .co-summary{background:var(--creme-2);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;border:1px solid var(--creme-3);cursor:default;user-select:none}
 .co-sum-tag{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--vert);margin-bottom:3px}
@@ -373,11 +385,6 @@ nav.scrolled{border-color:var(--gris-clair);box-shadow:0 2px 16px rgba(0,0,0,.07
 .co-sum-price{font-family:'DM Serif Display',serif;font-size:1.6rem;font-weight:600;color:var(--brun)}
 
 /* ── CTA MOBILE RAPIDE (sous galerie) ── */
-.det-mobile-cta{display:none;padding:14px 20px;background:var(--brun);border-top:2px solid var(--or)}
-.det-mobile-cta-btn{width:100%;background:var(--or);color:var(--brun);font-size:.9rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:15px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .2s}
-.det-mobile-cta-btn:hover{background:var(--or-pale)}
-.det-mobile-cta-price{text-align:center;font-size:.75rem;color:rgba(255,255,255,.55);margin-top:7px}
-@media(max-width:640px){.det-mobile-cta{display:block}}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form-group{margin-bottom:13px}
 .form-lbl{display:block;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris-fonce);margin-bottom:7px;font-weight:500}
@@ -1113,11 +1120,22 @@ footer{background:var(--brun);padding:60px 6vw 36px;margin-top:0}
   <div class="co-backdrop" onclick="closeCheckout()"></div>
   <div class="co-modal">
     <div class="co-head">
-      <div>
-        <div class="co-plan" id="co-plan">—</div>
-        <div class="co-pkg" id="co-pkg">Plan et Devis &middot; Telechargement instantane</div>
+      <div class="co-head-top">
+        <span class="co-head-label">Plan et devis</span>
+        <button class="co-x" onclick="closeCheckout()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
-      <button class="co-x" onclick="closeCheckout()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <div class="co-plan" id="co-plan">—</div>
+      <div class="co-head-price-block">
+        <div class="co-head-price"><span id="co-head-price-val">—</span><span class="co-head-fcfa">Fcfa</span></div>
+        <div class="co-head-old">Au lieu de <s>30 000 Fcfa</s><span class="co-head-discount">-50%</span></div>
+      </div>
+      <div class="co-head-img-wrap">
+        <img class="co-head-img" id="co-head-img" src="" alt="">
+        <div class="co-head-ref" id="co-head-ref">—</div>
+      </div>
+      <div class="co-head-divider">Téléchargement instantané</div>
+      <!-- compat JS -->
+      <div id="co-pkg" style="display:none"></div>
     </div>
     <div class="co-body">
       <div class="co-summary">
@@ -2236,6 +2254,15 @@ function openCheckout(){
   document.getElementById('co-pkg').textContent=isB?'Plan et Devis \u00b7 Telechargement instantane':'Plans Complets \u00b7 Livraison 3-5 jours';
   document.getElementById('co-sum-lbl').textContent=isB?'Plan et Devis':'Plans Complets';
   document.getElementById('co-sum-price').textContent=(isB?currentPlan.priceBasic:currentPlan.priceComplete)+' FCFA';
+  // Nouveau header checkout
+  var coHdrPrice=document.getElementById('co-head-price-val');
+  if(coHdrPrice) coHdrPrice.textContent=(isB?currentPlan.priceBasic:currentPlan.priceComplete)||'—';
+  var coHdrImg=document.getElementById('co-head-img');
+  if(coHdrImg){var coImgSrc=currentPlan.images&&currentPlan.images[0]?currentPlan.images[0]:'';
+    if(coImgSrc&&coImgSrc.indexOf('b-cdn.net')>-1) coImgSrc+='?width=480&quality=80&format=webp';
+    coHdrImg.src=coImgSrc;}
+  var coHdrRef=document.getElementById('co-head-ref');
+  if(coHdrRef) coHdrRef.textContent=currentPlan.title;
   ccPickerSelect(detectedCountryCode);
   // Analytics — ouverture checkout
   track('checkout_open',{plan_id:currentPlan.id,plan_type:currentPlan.type,plan_title:currentPlan.title,option_type:isB?'basic':'complete'});
