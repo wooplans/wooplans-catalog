@@ -1,0 +1,1 @@
+ALTER TABLE plans ADD COLUMN gallery_3d TEXT DEFAULT '[]';

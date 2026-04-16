@@ -1,0 +1,215 @@
+---
+import PublicLayout from "../layouts/PublicLayout.astro";
+---
+
+<PublicLayout title="Plan">
+  <section class="py-16 bg-gray-50 min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="plan-detail">
+        <div class="text-center py-20 text-gray-500">Chargement...</div>
+      </div>
+    </div>
+  </section>
+</PublicLayout>
+
+<script>
+  const API = import.meta.env.PUBLIC_API_URL || "http://localhost:8787";
+  const CDN = import.meta.env.PUBLIC_CDN_URL || "https://wooplans.b-cdn.net";
+  const WHATSAPP = "237694327885";
+
+  async function loadPlan() {
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get("slug");
+    const container = document.getElementById("plan-detail");
+    if (!container || !slug) {
+      if (container) container.innerHTML = '<div class="text-center py-20"><h2 class="text-2xl font-bold text-gray-600">Plan introuvable</h2><a href="/plans" class="btn-primary mt-4 inline-block">Retour au catalogue</a></div>';
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/plans/${slug}`);
+      const data = await res.json();
+
+      if (!data.plan) {
+        container.innerHTML = '<div class="text-center py-20"><h2 class="text-2xl font-bold text-gray-600">Plan introuvable</h2><a href="/plans" class="btn-primary mt-4 inline-block">Retour au catalogue</a></div>';
+        return;
+      }
+
+      const plan = data.plan;
+      const whatsappMsg = encodeURIComponent(`Je veux commander le plan ${plan.title} (ID: ${plan.id})`);
+      const whatsappUrl = `https://wa.me/${WHATSAPP}?text=${whatsappMsg}`;
+
+      container.innerHTML = `
+        <a href="/plans" class="inline-flex items-center gap-2 text-primary-500 hover:text-accent-500 mb-8 font-medium">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Retour au catalogue
+        </a>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div>
+            <div class="relative rounded-xl overflow-hidden shadow-lg mb-6">
+              <img src="${CDN}/${plan.thumbnail_key}" alt="${plan.title}" class="w-full h-auto image-protected" onContextMenu="return false" draggable="false" />
+              <div class="overlay-protection"></div>
+              ${plan.is_premium ? '<span class="absolute top-4 right-4 bg-accent-500 text-primary-900 text-sm font-bold px-3 py-1 rounded">PREMIUM</span>' : ''}
+            </div>
+          </div>
+
+          <div>
+            <h1 class="text-3xl font-heading font-bold text-primary-500 mb-4">${plan.title}</h1>
+            <p class="text-gray-600 mb-6">${plan.description || ''}</p>
+
+            <div class="grid grid-cols-2 gap-4 mb-8">
+              ${plan.surface ? `<div class="bg-white p-4 rounded-lg border"><p class="text-sm text-gray-500">Surface</p><p class="text-xl font-bold text-primary-500">${plan.surface} m²</p></div>` : ''}
+              ${plan.bedrooms ? `<div class="bg-white p-4 rounded-lg border"><p class="text-sm text-gray-500">Chambres</p><p class="text-xl font-bold text-primary-500">${plan.bedrooms}</p></div>` : ''}
+              ${plan.bathrooms ? `<div class="bg-white p-4 rounded-lg border"><p class="text-sm text-gray-500">Salles de bain</p><p class="text-xl font-bold text-primary-500">${plan.bathrooms}</p></div>` : ''}
+              ${plan.floors ? `<div class="bg-white p-4 rounded-lg border"><p class="text-sm text-gray-500">Etages</p><p class="text-xl font-bold text-primary-500">${plan.floors}</p></div>` : ''}
+            </div>
+
+            <div class="space-y-4 mb-8">
+              <div class="bg-white p-4 rounded-lg border">
+                <p class="text-sm text-gray-500 mb-2">Plan de distribution</p>
+                <div class="relative rounded-lg overflow-hidden">
+                  <img src="${CDN}/${plan.distribution_key}" alt="Plan de distribution" class="w-full h-auto image-blur image-protected" onContextMenu="return false" draggable="false" id="distribution-img" />
+                  <div class="overlay-protection"></div>
+                  <div id="distribution-overlay" class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary-900/95 via-primary-800/90 to-primary-900/95 backdrop-blur-sm rounded-lg">
+                    <div class="text-center text-white px-6 py-8 max-w-sm">
+                      <div class="w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-accent-500/30">
+                        <svg class="w-8 h-8 text-primary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                      </div>
+                      <h3 class="text-xl font-heading font-bold mb-2">Plan de Distribution</h3>
+                      <p class="text-gray-300 mb-1 text-sm">Ce contenu est réservé aux membres Premium</p>
+                      <div class="my-4 py-3 border-y border-white/20">
+                        <p class="text-accent-400 font-bold text-2xl">29 900 FCFA<span class="text-sm text-gray-400 font-normal">/an</span></p>
+                      </div>
+                      <a href="/pricing" class="btn-accent w-full py-3 text-base font-bold shadow-lg shadow-accent-500/30 hover:shadow-accent-500/50 transform hover:-translate-y-0.5 transition-all inline-block">🔓 Déverrouiller Maintenant</a>
+                      <p class="text-xs text-gray-400 mt-3">Accès immédiat • Sans engagement • Annulation facile</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-lg border">
+                <p class="text-sm text-gray-500 mb-2">Devis</p>
+                <div class="relative rounded-lg overflow-hidden">
+                  <img src="${CDN}/${plan.quote_key}" alt="Devis" class="w-full h-auto image-blur image-protected" onContextMenu="return false" draggable="false" id="quote-img" />
+                  <div class="overlay-protection"></div>
+                  <div id="quote-overlay" class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary-900/95 via-primary-800/90 to-primary-900/95 backdrop-blur-sm rounded-lg">
+                    <div class="text-center text-white px-6 py-8 max-w-sm">
+                      <div class="w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-accent-500/30">
+                        <svg class="w-8 h-8 text-primary-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                      </div>
+                      <h3 class="text-xl font-heading font-bold mb-2">Devis Détaillé</h3>
+                      <p class="text-gray-300 mb-1 text-sm">Estimation complète des coûts de construction</p>
+                      <div class="my-4 py-3 border-y border-white/20">
+                        <p class="text-accent-400 font-bold text-2xl">29 900 FCFA<span class="text-sm text-gray-400 font-normal">/an</span></p>
+                      </div>
+                      <a href="/pricing" class="btn-accent w-full py-3 text-base font-bold shadow-lg shadow-accent-500/30 hover:shadow-accent-500/50 transform hover:-translate-y-0.5 transition-all inline-block">📊 Voir le Devis Complet</a>
+                      <p class="text-xs text-gray-400 mt-3">Budget matériaux • Main-d'œuvre • Délai de construction</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            ${plan.price ? `
+            <div class="border-t pt-6">
+              ${plan.gallery_3d && plan.gallery_3d.length > 0 ? `
+              <div class="mb-6">
+                <h3 class="text-lg font-heading font-bold text-primary-500 mb-4">Vues 3D du modele</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  ${plan.gallery_3d.map((key: string, idx: number) => `
+                    <a href="${CDN}/${key}" target="_blank" rel="noopener noreferrer" class="block rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow">
+                      <img src="${CDN}/${key}" alt="Vue 3D ${idx + 1}" class="w-full h-32 object-cover" />
+                    </a>
+                  `).join('')}
+                </div>
+              </div>
+              ` : ''}
+              <p class="text-lg font-semibold text-primary-500 mb-4">Plan complet: <span class="text-accent-600">${new Intl.NumberFormat('fr-FR').format(plan.price)} FCFA</span></p>
+              <a href="${whatsappUrl}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp w-full text-center">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+                Commander ce plan
+              </a>
+            </div>
+            ` : ''}
+          </div>
+        </div>
+
+        <div id="similar-plans" class="mt-16"></div>
+      `;
+
+      const stored = localStorage.getItem("wooplans_user");
+      if (stored) {
+        try {
+          const user = JSON.parse(stored);
+          if (user.email && user.pin_code) {
+            const verifyRes = await fetch(`${API}/auth/verify`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: user.email, pin_code: user.pin_code }),
+            });
+            const verifyData = await verifyRes.json();
+            if (verifyData.valid && verifyData.is_premium) {
+              document.getElementById("distribution-img")?.classList.remove("image-blur");
+              document.getElementById("quote-img")?.classList.remove("image-blur");
+              document.getElementById("distribution-overlay")?.remove();
+              document.getElementById("quote-overlay")?.remove();
+            }
+          }
+        } catch {}
+      }
+
+      loadSimilarPlans(plan.category, plan.id);
+    } catch {
+      container.innerHTML = '<div class="text-center py-20"><p class="text-xl text-gray-600">Erreur de chargement</p></div>';
+    }
+  }
+
+  async function loadSimilarPlans(category: string, currentId: string) {
+    const container = document.getElementById("similar-plans");
+    if (!container) return;
+
+    try {
+      const res = await fetch(`${API}/plans`);
+      const data = await res.json();
+      const similarPlans = (data.plans || []).filter((p: any) => p.category === category && p.id !== currentId).slice(0, 4);
+
+      if (similarPlans.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="border-t pt-12">
+          <h2 class="text-2xl font-heading font-bold text-primary-500 mb-8">Plans similaires</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            ${similarPlans.map((p: any) => `
+              <a href="/plan?slug=${p.slug || p.id}" class="group">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <div class="relative h-48 overflow-hidden">
+                    <img src="${CDN}/${p.thumbnail_key}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                    ${p.is_premium ? '<span class="absolute top-2 right-2 bg-accent-500 text-primary-900 text-xs font-bold px-2 py-0.5 rounded">PREMIUM</span>' : ''}
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-heading font-bold text-primary-500 truncate">${p.title}</h3>
+                    <div class="flex items-center gap-3 mt-2 text-sm text-gray-500">
+                      ${p.surface ? `<span>${p.surface} m²</span>` : ''}
+                      ${p.bedrooms ? `<span>${p.bedrooms} ch</span>` : ''}
+                      ${p.bathrooms ? `<span>${p.bathrooms} sdb</span>` : ''}
+                    </div>
+                    ${p.price ? `<p class="mt-2 font-semibold text-accent-600">${new Intl.NumberFormat('fr-FR').format(p.price)} FCFA</p>` : ''}
+                  </div>
+                </div>
+              </a>
+            `).join('')}
+          </div>
+          <div class="text-center mt-8">
+            <a href="/plans?category=${category}" class="btn-outline">Voir tous les ${category === 'villa' ? 'villas' : 'duplex'}</a>
+          </div>
+        </div>
+      `;
+    } catch {}
+  }
+
+  loadPlan();
+</script>

@@ -1,0 +1,60 @@
+---
+const navLinks = [
+  { href: "/", label: "Accueil" },
+  { href: "/plans", label: "Catalogue" },
+  { href: "/pricing", label: "Tarifs" },
+];
+---
+
+<header class="bg-primary-500 text-white sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="/" class="flex items-center gap-2">
+        <span class="text-2xl font-heading font-bold text-accent-400">WOO</span>
+        <span class="text-2xl font-heading font-bold">PLANS</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="text-gray-300 hover:text-accent-400 transition-colors font-medium"
+          >
+            {link.label}
+          </a>
+        ))}
+        <a href="/login" class="btn-accent text-sm py-2 px-4">
+          Se connecter
+        </a>
+      </nav>
+
+      <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden bg-primary-600 pb-4">
+    <div class="px-4 space-y-2">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="block text-gray-300 hover:text-accent-400 py-2 font-medium"
+        >
+          {link.label}
+        </a>
+      ))}
+      <a href="/login" class="block btn-accent text-center text-sm py-2 mt-2">
+        Se connecter
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById("mobile-menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  btn?.addEventListener("click", () => menu?.classList.toggle("hidden"));
+</script>

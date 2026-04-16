@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans text-gray-800 bg-white;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-200 inline-flex items-center justify-center;
+  }
+  .btn-accent {
+    @apply bg-accent-500 text-primary-900 px-6 py-3 rounded-lg font-semibold hover:bg-accent-600 transition-colors duration-200 inline-flex items-center justify-center;
+  }
+  .btn-outline {
+    @apply border-2 border-primary-500 text-primary-500 px-6 py-3 rounded-lg font-semibold hover:bg-primary-500 hover:text-white transition-colors duration-200 inline-flex items-center justify-center;
+  }
+  .btn-whatsapp {
+    @apply bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors duration-200 inline-flex items-center gap-2;
+  }
+  .section-title {
+    @apply text-3xl md:text-4xl font-heading font-bold text-primary-500;
+  }
+  .card {
+    @apply bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300;
+  }
+}
+
+.image-protected {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  -webkit-touch-callout: none;
+}
+
+.image-blur {
+  filter: blur(20px);
+  -webkit-filter: blur(20px);
+}
+
+.pin-input {
+  @apply w-16 h-16 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-accent-500 focus:outline-none transition-colors;
+}
+
+.overlay-protection {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: transparent;
+}
+
+.gallery-blur img {
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+}
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+}

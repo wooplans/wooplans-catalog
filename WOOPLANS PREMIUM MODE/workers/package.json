@@ -1,0 +1,20 @@
+{
+  "name": "wooplans-api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create wooplans-db",
+    "db:init": "wrangler d1 execute wooplans-db --file=./schema.sql",
+    "db:migrate": "wrangler d1 migrations apply wooplans-db"
+  },
+  "dependencies": {
+    "hono": "^4.12.14"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260415.1",
+    "typescript": "^6.0.2",
+    "wrangler": "^4.83.0"
+  }
+}

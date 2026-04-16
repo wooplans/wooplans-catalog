@@ -1,0 +1,85 @@
+---
+import PublicLayout from "../layouts/PublicLayout.astro";
+---
+
+<PublicLayout title="Accueil">
+  <section class="relative bg-primary-500 text-white overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-500 to-primary-800 opacity-90"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+      <div class="max-w-3xl">
+        <h1 class="text-4xl md:text-6xl font-heading font-bold leading-tight mb-6">
+          Construisez votre maison <span class="text-accent-400">ideale</span>
+        </h1>
+        <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+          Decouvrez nos plans architecturaux professionnels pour maisons individuelles.
+          Abonnez-vous pour acceder aux plans de distribution et devis detailles.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="/plans" class="btn-accent text-lg px-8 py-4">
+            Voir le catalogue
+          </a>
+          <a href="/pricing" class="btn-outline border-white text-white hover:bg-white hover:text-primary-500 text-lg px-8 py-4">
+            S'abonner - 29 900 FCFA/an
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="section-title mb-4">Pourquoi WOOPLANS ?</h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Des plans professionnels conçus par des architectes experimentes
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="card p-8 text-center">
+          <div class="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-primary-500 mb-3">Plans detailles</h3>
+          <p class="text-gray-600">Plans de distribution complets avec cotes et details de construction</p>
+        </div>
+
+        <div class="card p-8 text-center">
+          <div class="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-primary-500 mb-3">Devis precis</h3>
+          <p class="text-gray-600">Estimation detaillee des couts de construction pour chaque plan</p>
+        </div>
+
+        <div class="card p-8 text-center">
+          <div class="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-bold text-primary-500 mb-3">Acces securise</h3>
+          <p class="text-gray-600">Code PIN personnel pour acceder a votre catalogue premium</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-primary-500 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6">
+        Pret a construire ?
+      </h2>
+      <p class="text-xl text-gray-300 mb-8">
+        Accedez a tous nos plans de distribution et devis pour seulement 29 900 FCFA par an.
+      </p>
+      <a href="/pricing" class="btn-accent text-lg px-10 py-4">
+        S'abonner maintenant
+      </a>
+    </div>
+  </section>
+</PublicLayout>

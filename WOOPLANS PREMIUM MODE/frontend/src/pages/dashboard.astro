@@ -1,0 +1,118 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Tableau de bord Premium">
+  <div class="min-h-screen bg-gray-50">
+    <nav class="bg-primary-500 text-white py-4 px-6 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <span class="text-xl font-heading font-bold text-accent-400">WOO</span>
+        <span class="text-xl font-heading font-bold">PLANS</span>
+        <span class="text-xs bg-accent-500 text-primary-900 px-2 py-0.5 rounded ml-2">PREMIUM</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <span id="user-name" class="text-sm text-gray-300"></span>
+        <button id="logout-btn" class="text-sm text-gray-300 hover:text-white transition-colors">Deconnexion</button>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="mb-8">
+        <h1 class="text-3xl font-heading font-bold text-primary-500">Catalogue Premium</h1>
+        <p class="text-gray-600 mt-1">Bienvenue ! Tous les plans de distribution et devis sont deverrouilles.</p>
+      </div>
+
+      <div id="premium-status" class="bg-white rounded-xl border p-4 mb-8 flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500">Abonnement expire le</p>
+          <p id="expiry-date" class="font-bold text-primary-500">--</p>
+        </div>
+        <span id="status-badge" class="bg-green-100 text-green-700 text-sm font-medium px-3 py-1 rounded-full">Actif</span>
+      </div>
+
+      <div id="premium-plans" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="text-center py-20 col-span-full text-gray-500">Chargement des plans...</div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const API = import.meta.env.PUBLIC_API_URL || "http://localhost:8787";
+  const CDN = import.meta.env.PUBLIC_CDN_URL || "https://wooplans.b-cdn.net";
+  const WHATSAPP = "237694327885";
+
+  function getUser() {
+    const stored = localStorage.getItem("wooplans_user");
+    return stored ? JSON.parse(stored) : null;
+  }
+
+  async function init() {
+    const user = getUser();
+    if (!user || !user.is_premium) {
+      window.location.href = "/login";
+      return;
+    }
+
+    document.getElementById("user-name")!.textContent = user.name || user.email;
+    document.getElementById("expiry-date")!.textContent = user.premium_expires_at
+      ? new Date(user.premium_expires_at).toLocaleDateString("fr-FR")
+      : "--";
+
+    const isExpired = user.premium_expires_at && new Date(user.premium_expires_at) < new Date();
+    if (isExpired) {
+      const badge = document.getElementById("status-badge")!;
+      badge.textContent = "Expire";
+      badge.className = "bg-red-100 text-red-700 text-sm font-medium px-3 py-1 rounded-full";
+    }
+
+    try {
+      const res = await fetch(`${API}/plans`);
+      const data = await res.json();
+      const grid = document.getElementById("premium-plans")!;
+
+      if (!data.plans || data.plans.length === 0) {
+        grid.innerHTML = '<div class="text-center py-20 col-span-full text-gray-500">Aucun plan disponible</div>';
+        return;
+      }
+
+      grid.innerHTML = data.plans.map((plan: any) => {
+        const whatsappMsg = encodeURIComponent(`Je veux commander le plan ${plan.title} (ID: ${plan.id})`);
+        const whatsappUrl = `https://wa.me/${WHATSAPP}?text=${whatsappMsg}`;
+
+        return `
+        <div class="card">
+          <div class="relative overflow-hidden">
+            <img src="${CDN}/${plan.thumbnail_key}" alt="${plan.title}" class="w-full h-48 object-cover image-protected" onContextMenu="return false" draggable="false" loading="lazy" />
+            <div class="overlay-protection"></div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-heading font-bold text-primary-500 mb-1">${plan.title}</h3>
+            <div class="flex gap-3 text-xs text-gray-500 mb-3">
+              ${plan.surface ? `<span>${plan.surface}m²</span>` : ''}
+              ${plan.bedrooms ? `<span>${plan.bedrooms}ch</span>` : ''}
+            </div>
+            <div class="space-y-2 mb-4">
+              <a href="/plan?slug=${plan.slug}" class="block text-sm text-accent-600 hover:underline">
+                Voir les details →
+              </a>
+            </div>
+            ${plan.price ? `
+            <a href="${whatsappUrl}" target="_blank" class="btn-whatsapp w-full text-center text-sm py-2">
+              Commander - ${new Intl.NumberFormat('fr-FR').format(plan.price)} FCFA
+            </a>` : ''}
+          </div>
+        </div>`;
+      }).join("");
+    } catch {
+      document.getElementById("premium-plans")!.innerHTML = '<div class="text-center py-20 col-span-full text-red-500">Erreur de chargement</div>';
+    }
+  }
+
+  document.getElementById("logout-btn")?.addEventListener("click", () => {
+    localStorage.removeItem("wooplans_user");
+    window.location.href = "/login";
+  });
+
+  init();
+</script>

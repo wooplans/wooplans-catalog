@@ -1,0 +1,614 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Administration">
+  <div class="min-h-screen bg-gray-100">
+    <div id="admin-panel" class="hidden">
+      <nav class="bg-primary-500 text-white py-4 px-6 flex items-center justify-between">
+        <span class="font-heading font-bold">WOOPLANS ADMIN</span>
+        <a href="/" class="text-sm text-gray-300 hover:text-white">Retour au site</a>
+      </nav>
+
+      <div class="flex">
+        <aside class="w-64 bg-white shadow min-h-[calc(100vh-64px)] p-4">
+          <nav class="space-y-1">
+            <button data-tab="dashboard" class="admin-tab w-full text-left px-4 py-2 rounded-lg text-sm font-medium bg-primary-50 text-primary-500">Dashboard</button>
+            <button data-tab="plans" class="admin-tab w-full text-left px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Plans</button>
+            <button data-tab="users" class="admin-tab w-full text-left px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Utilisateurs</button>
+            <button data-tab="orders" class="admin-tab w-full text-left px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Commandes</button>
+          </nav>
+        </aside>
+
+        <main class="flex-1 p-8">
+          <!-- Dashboard Tab -->
+          <div id="tab-dashboard" class="admin-content">
+            <h2 class="text-2xl font-heading font-bold text-primary-500 mb-6">Dashboard</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <div class="bg-white rounded-xl shadow p-6">
+                <p class="text-sm text-gray-500">Utilisateurs</p>
+                <p id="stat-users" class="text-3xl font-bold text-primary-500">--</p>
+              </div>
+              <div class="bg-white rounded-xl shadow p-6">
+                <p class="text-sm text-gray-500">Premium actifs</p>
+                <p id="stat-premium" class="text-3xl font-bold text-accent-600">--</p>
+              </div>
+              <div class="bg-white rounded-xl shadow p-6">
+                <p class="text-sm text-gray-500">Plans</p>
+                <p id="stat-plans" class="text-3xl font-bold text-primary-500">--</p>
+              </div>
+              <div class="bg-white rounded-xl shadow p-6">
+                <p class="text-sm text-gray-500">Commandes en attente</p>
+                <p id="stat-orders" class="text-3xl font-bold text-red-500">--</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl shadow p-6">
+              <h3 class="font-heading font-bold text-primary-500 mb-4">Derniers utilisateurs</h3>
+              <div id="recent-users" class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead><tr class="border-b"><th class="text-left py-2 px-3">Email</th><th class="text-left py-2 px-3">Nom</th><th class="text-left py-2 px-3">Premium</th><th class="text-left py-2 px-3">Date</th></tr></thead>
+                  <tbody id="recent-users-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plans Tab -->
+          <div id="tab-plans" class="admin-content hidden">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-heading font-bold text-primary-500">Plans</h2>
+              <button id="add-plan-btn" class="btn-accent">+ Nouveau plan</button>
+            </div>
+            <div id="plans-list" class="bg-white rounded-xl shadow overflow-hidden">
+              <table class="w-full text-sm">
+                <thead><tr class="bg-gray-50 border-b"><th class="text-left py-3 px-4">Titre</th><th class="text-left py-3 px-4">Categorie</th><th class="text-left py-3 px-4">Prix</th><th class="text-left py-3 px-4">Vues</th><th class="text-left py-3 px-4">Actions</th></tr></thead>
+                <tbody id="plans-body"></tbody>
+              </table>
+            </div>
+
+            <div id="plan-form-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8">
+                <div class="flex items-center justify-between mb-6">
+                  <h3 class="text-xl font-heading font-bold text-primary-500" id="plan-form-title">Nouveau plan</h3>
+                  <button id="close-plan-form" class="text-gray-400 hover:text-gray-600">&times;</button>
+                </div>
+                <form id="plan-form" class="space-y-4" enctype="multipart/form-data">
+                  <input type="hidden" id="plan-id" />
+                  <div class="grid grid-cols-2 gap-4">
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Titre</label><input type="text" id="plan-title" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none" /></div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Categorie</label><select id="plan-category" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none"><option value="">-- Choisir --</option><option value="villa">Villa</option><option value="duplex">Duplex</option></select></div>
+                  </div>
+                  <div><label class="block text-sm font-medium text-gray-700 mb-1">Description</label><textarea id="plan-description" rows="3" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none"></textarea></div>
+                  <div class="grid grid-cols-4 gap-4">
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Surface (m²)</label><input type="number" id="plan-surface" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none" /></div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Chambres</label><input type="number" id="plan-bedrooms" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none" /></div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">SdB</label><input type="number" id="plan-bathrooms" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none" /></div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Etages</label><input type="number" id="plan-floors" value="1" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none" /></div>
+                  </div>
+                  <div><label class="block text-sm font-medium text-gray-700 mb-1">Prix plan complet (FCFA)</label><input type="number" id="plan-price" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-accent-500 focus:outline-none" /></div>
+                  <div class="space-y-2">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Image principale (thumbnail)</label>
+                      <input type="file" id="plan-thumbnail" accept="image/*" class="w-full text-sm" />
+                      <p class="text-xs text-gray-500 mt-1" id="thumb-hint">Laissez vide pour conserver l'image actuelle</p>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Plan de distribution</label>
+                      <input type="file" id="plan-distribution" accept="image/*" class="w-full text-sm" />
+                      <p class="text-xs text-gray-500 mt-1" id="dist-hint">Laissez vide pour conserver le plan actuel</p>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Devis</label>
+                      <input type="file" id="plan-quote" accept="image/*" class="w-full text-sm" />
+                      <p class="text-xs text-gray-500 mt-1" id="quote-hint">Laissez vide pour conserver le devis actuel</p>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">PDF plan complet</label>
+                      <input type="file" id="plan-pdf" accept="application/pdf" class="w-full text-sm" />
+                      <p class="text-xs text-gray-500 mt-1" id="pdf-hint">Laissez vide pour conserver le PDF actuel</p>
+                    </div>
+                  </div>
+
+                  <!-- 3D Gallery Section -->
+                  <div class="border-t pt-4 mt-4">
+                    <div class="flex items-center justify-between mb-2">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Images 3D du modele</label>
+                        <p class="text-xs text-gray-500">Max 10 images (JPG, PNG, WebP - 20MB chacune)</p>
+                      </div>
+                      <span class="text-xs text-gray-500" id="gallery-count">0/10</span>
+                    </div>
+                    
+                    <!-- Existing 3D images -->
+                    <div id="gallery-3d-preview" class="grid grid-cols-5 gap-2 mb-3"></div>
+                    
+                    <!-- Upload zone -->
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-accent-500 transition-colors cursor-pointer" id="gallery-3d-dropzone">
+                      <input type="file" id="plan-gallery-3d" accept="image/*" multiple class="hidden" />
+                      <svg class="w-8 h-8 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                      <p class="text-sm text-gray-500">Cliquez ou glissez les images ici</p>
+                      <p class="text-xs text-gray-400 mt-1">Selection multiple possible</p>
+                    </div>
+                    <div id="gallery-3d-upload-progress" class="hidden mt-2"></div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <input type="checkbox" id="plan-is-premium" checked class="rounded" />
+                    <label class="text-sm font-medium text-gray-700">Plan premium</label>
+                  </div>
+                  <button type="submit" class="btn-primary w-full">Enregistrer</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Users Tab -->
+          <div id="tab-users" class="admin-content hidden">
+            <h2 class="text-2xl font-heading font-bold text-primary-500 mb-6">Utilisateurs</h2>
+            <div class="bg-white rounded-xl shadow overflow-hidden">
+              <table class="w-full text-sm">
+                <thead><tr class="bg-gray-50 border-b"><th class="text-left py-3 px-4">Email</th><th class="text-left py-3 px-4">Nom</th><th class="text-left py-3 px-4">PIN</th><th class="text-left py-3 px-4">Premium</th><th class="text-left py-3 px-4">Expiration</th><th class="text-left py-3 px-4">Actions</th></tr></thead>
+                <tbody id="users-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Orders Tab -->
+          <div id="tab-orders" class="admin-content hidden">
+            <h2 class="text-2xl font-heading font-bold text-primary-500 mb-6">Commandes WhatsApp</h2>
+            <div class="flex gap-2 mb-4">
+              <button data-filter="all" class="order-filter px-3 py-1 rounded text-sm bg-primary-500 text-white">Toutes</button>
+              <button data-filter="pending" class="order-filter px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">En attente</button>
+              <button data-filter="paid" class="order-filter px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">Payees</button>
+              <button data-filter="delivered" class="order-filter px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">Livrees</button>
+            </div>
+            <div class="bg-white rounded-xl shadow overflow-hidden">
+              <table class="w-full text-sm">
+                <thead><tr class="bg-gray-50 border-b"><th class="text-left py-3 px-4">Client</th><th class="text-left py-3 px-4">Plan</th><th class="text-left py-3 px-4">Montant</th><th class="text-left py-3 px-4">Statut</th><th class="text-left py-3 px-4">Date</th><th class="text-left py-3 px-4">Actions</th></tr></thead>
+                <tbody id="orders-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const API = import.meta.env.PUBLIC_API_URL || "http://localhost:8787";
+  const CDN = import.meta.env.PUBLIC_CDN_URL || "https://wooplans.b-cdn.net";
+  let adminToken = localStorage.getItem("wooplans_admin_token") || "";
+
+  function headers() {
+    return { "Content-Type": "application/json", Authorization: `Bearer ${adminToken}` };
+  }
+
+  async function initAdmin() {
+    try {
+      const res = await fetch(`${API}/admin/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: "WooPlans2026Admin" }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        adminToken = data.token;
+        localStorage.setItem("wooplans_admin_token", adminToken);
+        showAdmin();
+      }
+    } catch {}
+  }
+
+  initAdmin();
+
+  // Tabs
+  document.querySelectorAll(".admin-tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".admin-tab").forEach((t) => { t.className = "admin-tab w-full text-left px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100"; });
+      tab.className = "admin-tab w-full text-left px-4 py-2 rounded-lg text-sm font-medium bg-primary-50 text-primary-500";
+      document.querySelectorAll(".admin-content").forEach((c) => c.classList.add("hidden"));
+      document.getElementById(`tab-${(tab as HTMLElement).dataset.tab}`)?.classList.remove("hidden");
+    });
+  });
+
+  async function showAdmin() {
+    document.getElementById("admin-panel")!.classList.remove("hidden");
+    await loadStats();
+    await loadPlans();
+    await loadUsers();
+    await loadOrders();
+  }
+
+  async function loadStats() {
+    try {
+      const res = await fetch(`${API}/admin/stats`, { headers: headers() });
+      const data = await res.json();
+      document.getElementById("stat-users")!.textContent = data.stats.total_users;
+      document.getElementById("stat-premium")!.textContent = data.stats.premium_users;
+      document.getElementById("stat-plans")!.textContent = data.stats.total_plans;
+      document.getElementById("stat-orders")!.textContent = data.stats.pending_orders;
+
+      const tbody = document.getElementById("recent-users-body")!;
+      tbody.innerHTML = (data.recent_users || []).map((u: any) => `
+        <tr class="border-b"><td class="py-2 px-3">${u.email}</td><td class="py-2 px-3">${u.name}</td><td class="py-2 px-3">${u.is_premium ? '<span class="text-green-600">Oui</span>' : 'Non'}</td><td class="py-2 px-3">${new Date(u.created_at).toLocaleDateString('fr-FR')}</td></tr>
+      `).join("");
+    } catch {}
+  }
+
+  async function loadPlans() {
+    try {
+      const res = await fetch(`${API}/plans`);
+      const data = await res.json();
+      const tbody = document.getElementById("plans-body")!;
+      tbody.innerHTML = (data.plans || []).map((p: any) => `
+        <tr class="border-b" data-plan-row="${p.id}"><td class="py-2 px-4 font-medium">${p.title}</td><td class="py-2 px-4">${p.category || '-'}</td><td class="py-2 px-4">${p.price ? new Intl.NumberFormat('fr-FR').format(p.price) + ' FCFA' : '-'}</td><td class="py-2 px-4">${p.views}</td><td class="py-2 px-4 space-x-2"><button data-plan-id="${p.id}" class="text-blue-500 hover:underline text-xs edit-plan">Modifier</button><button data-plan-id="${p.id}" class="text-red-500 hover:underline text-xs delete-plan">Supprimer</button></td></tr>
+      `).join("");
+
+      document.querySelectorAll(".delete-plan").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          if (!confirm("Supprimer ce plan ?")) return;
+          await fetch(`${API}/admin/plans/${(btn as HTMLElement).dataset.planId}`, { method: "DELETE", headers: headers() });
+          await loadPlans();
+        });
+      });
+
+      document.querySelectorAll(".edit-plan").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const planId = (btn as HTMLElement).dataset.planId;
+          await editPlan(planId!);
+        });
+      });
+    } catch {}
+  }
+
+  async function editPlan(planId: string) {
+    try {
+      const res = await fetch(`${API}/plans`);
+      const data = await res.json();
+      const plan = data.plans?.find((p: any) => p.id === planId);
+      if (!plan) return;
+
+      document.getElementById("plan-form-modal")!.classList.remove("hidden");
+      document.getElementById("plan-form-title")!.textContent = "Modifier le plan";
+      (document.getElementById("plan-id") as HTMLInputElement).value = plan.id;
+      (document.getElementById("plan-title") as HTMLInputElement).value = plan.title;
+      (document.getElementById("plan-category") as HTMLSelectElement).value = plan.category || "";
+      (document.getElementById("plan-description") as HTMLTextAreaElement).value = plan.description || "";
+      (document.getElementById("plan-surface") as HTMLInputElement).value = plan.surface || "";
+      (document.getElementById("plan-bedrooms") as HTMLInputElement).value = plan.bedrooms || "";
+      (document.getElementById("plan-bathrooms") as HTMLInputElement).value = plan.bathrooms || "";
+      (document.getElementById("plan-floors") as HTMLInputElement).value = plan.floors || "1";
+      (document.getElementById("plan-price") as HTMLInputElement).value = plan.price || "";
+      (document.getElementById("plan-is-premium") as HTMLInputElement).checked = plan.is_premium;
+
+      // Stocker les clés existantes pour ne pas les écraser si pas de nouveaux fichiers
+      const form = document.getElementById("plan-form") as HTMLFormElement;
+      form.dataset.existingThumbnail = plan.thumbnail_key;
+      form.dataset.existingDistribution = plan.distribution_key;
+      form.dataset.existingQuote = plan.quote_key;
+      form.dataset.existingPdf = plan.full_pdf_key || "";
+
+      // Mettre à jour les hints avec les noms des fichiers existants
+      const thumbName = plan.thumbnail_key ? plan.thumbnail_key.split('/').pop() : 'aucune';
+      const distName = plan.distribution_key ? plan.distribution_key.split('/').pop() : 'aucun';
+      const quoteName = plan.quote_key ? plan.quote_key.split('/').pop() : 'aucun';
+      const pdfName = plan.full_pdf_key ? plan.full_pdf_key.split('/').pop() : 'aucun';
+
+      document.getElementById("thumb-hint")!.textContent = `Image actuelle: ${thumbName} (laissez vide pour conserver)`;
+      document.getElementById("dist-hint")!.textContent = `Plan actuel: ${distName} (laissez vide pour conserver)`;
+      document.getElementById("quote-hint")!.textContent = `Devis actuel: ${quoteName} (laissez vide pour conserver)`;
+      document.getElementById("pdf-hint")!.textContent = `PDF actuel: ${pdfName} (laissez vide pour conserver)`;
+
+      // Charger la gallery 3D
+      form.dataset.gallery3d = JSON.stringify(plan.gallery_3d || []);
+      renderGallery3DPreview(plan.gallery_3d || []);
+    } catch {}
+  }
+
+  async function loadUsers() {
+    try {
+      const res = await fetch(`${API}/admin/users`, { headers: headers() });
+      const data = await res.json();
+      const tbody = document.getElementById("users-body")!;
+      tbody.innerHTML = (data.users || []).map((u: any) => `
+        <tr class="border-b"><td class="py-2 px-4">${u.email}</td><td class="py-2 px-4">${u.name}</td><td class="py-2 px-4 font-mono">${u.pin_code}</td><td class="py-2 px-4">${u.is_premium ? '<span class="text-green-600">Oui</span>' : 'Non'}</td><td class="py-2 px-4">${u.premium_expires_at ? new Date(u.premium_expires_at).toLocaleDateString('fr-FR') : '-'}</td><td class="py-2 px-4"><button data-user-id="${u.id}" data-premium="${u.is_premium}" class="toggle-premium text-xs text-blue-500 hover:underline">${u.is_premium ? 'Retirer premium' : 'Activer premium'}</button></td></tr>
+      `).join("");
+
+      document.querySelectorAll(".toggle-premium").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const userId = (btn as HTMLElement).dataset.userId;
+          const isPremium = (btn as HTMLElement).dataset.premium === "1";
+          const expiry = isPremium ? null : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+          await fetch(`${API}/admin/users/${userId}/premium`, {
+            method: "PUT",
+            headers: headers(),
+            body: JSON.stringify({ is_premium: isPremium ? 0 : 1, premium_expires_at: expiry }),
+          });
+          await loadUsers();
+        });
+      });
+    } catch {}
+  }
+
+  async function loadOrders(status?: string) {
+    try {
+      const url = status ? `${API}/admin/orders?status=${status}` : `${API}/admin/orders`;
+      const res = await fetch(url, { headers: headers() });
+      const data = await res.json();
+      const tbody = document.getElementById("orders-body")!;
+      const statusLabels: Record<string, string> = { pending: "En attente", paid: "Payee", delivered: "Livree" };
+      const statusColors: Record<string, string> = { pending: "bg-yellow-100 text-yellow-700", paid: "bg-blue-100 text-blue-700", delivered: "bg-green-100 text-green-700" };
+
+      tbody.innerHTML = (data.orders || []).map((o: any) => `
+        <tr class="border-b"><td class="py-2 px-4">${o.customer_name || '-'}<br/><span class="text-xs text-gray-400">${o.customer_phone || ''}</span></td><td class="py-2 px-4">${o.plan_id}</td><td class="py-2 px-4">${o.amount ? new Intl.NumberFormat('fr-FR').format(o.amount) + ' FCFA' : '-'}</td><td class="py-2 px-4"><span class="text-xs px-2 py-0.5 rounded ${statusColors[o.status] || ''}">${statusLabels[o.status] || o.status}</span></td><td class="py-2 px-4">${new Date(o.created_at).toLocaleDateString('fr-FR')}</td><td class="py-2 px-4 space-x-1">${o.status === 'pending' ? '<button data-order-id="' + o.id + '" data-status="paid" class="update-order text-xs text-green-600 hover:underline">Marquer payee</button>' : ''}${o.status === 'paid' ? '<button data-order-id="' + o.id + '" data-status="delivered" class="update-order text-xs text-blue-600 hover:underline">Marquer livree</button>' : ''}</td></tr>
+      `).join("");
+
+      document.querySelectorAll(".update-order").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const orderId = (btn as HTMLElement).dataset.orderId;
+          const newStatus = (btn as HTMLElement).dataset.status;
+          await fetch(`${API}/admin/orders/${orderId}/status`, {
+            method: "PUT",
+            headers: headers(),
+            body: JSON.stringify({ status: newStatus }),
+          });
+          await loadOrders(status);
+        });
+      });
+    } catch {}
+  }
+
+  // Order filters
+  document.querySelectorAll(".order-filter").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".order-filter").forEach((b) => { b.className = "order-filter px-3 py-1 rounded text-sm bg-gray-200 text-gray-700"; });
+      btn.className = "order-filter px-3 py-1 rounded text-sm bg-primary-500 text-white";
+      loadOrders((btn as HTMLElement).dataset.filter === "all" ? undefined : (btn as HTMLElement).dataset.filter);
+    });
+  });
+
+  // Plan form
+  document.getElementById("add-plan-btn")?.addEventListener("click", () => {
+    document.getElementById("plan-form-modal")!.classList.remove("hidden");
+    document.getElementById("plan-form-title")!.textContent = "Nouveau plan";
+    (document.getElementById("plan-form") as HTMLFormElement).reset();
+    (document.getElementById("plan-id") as HTMLInputElement).value = "";
+    
+    // Réinitialiser les hints
+    document.getElementById("thumb-hint")!.textContent = "Laissez vide pour conserver l'image actuelle";
+    document.getElementById("dist-hint")!.textContent = "Laissez vide pour conserver le plan actuel";
+    document.getElementById("quote-hint")!.textContent = "Laissez vide pour conserver le devis actuel";
+    document.getElementById("pdf-hint")!.textContent = "Laissez vide pour conserver le PDF actuel";
+    
+    // Nettoyer les dataset
+    const form = document.getElementById("plan-form") as HTMLFormElement;
+    delete form.dataset.existingThumbnail;
+    delete form.dataset.existingDistribution;
+    delete form.dataset.existingQuote;
+    delete form.dataset.existingPdf;
+    delete form.dataset.gallery3d;
+    
+    // Vider la gallery 3D
+    renderGallery3DPreview([]);
+  });
+
+  // Gallery 3D handling
+  function renderGallery3DPreview(images: string[]) {
+    const container = document.getElementById("gallery-3d-preview")!;
+    const count = document.getElementById("gallery-count")!;
+    count.textContent = `${images.length}/10`;
+
+    if (images.length === 0) {
+      container.innerHTML = '<p class="text-xs text-gray-400 col-span-5 text-center py-4">Aucune image 3D</p>';
+      return;
+    }
+
+    container.innerHTML = images.map((key: string, idx: number) => `
+      <div class="relative group" data-key="${key}">
+        <img src="${CDN}/${key}" alt="3D ${idx + 1}" class="w-full h-20 object-cover rounded-lg border" />
+        <button type="button" data-key="${key}" class="delete-gallery-img absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity">×</button>
+      </div>
+    `).join('');
+
+    container.querySelectorAll('.delete-gallery-img').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const key = (btn as HTMLElement).dataset.key;
+        const form = document.getElementById("plan-form") as HTMLFormElement;
+        const current = JSON.parse(form.dataset.gallery3d || '[]');
+        const updated = current.filter((k: string) => k !== key);
+        form.dataset.gallery3d = JSON.stringify(updated);
+        renderGallery3DPreview(updated);
+      });
+    });
+  }
+
+  // Gallery upload dropzone
+  const galleryDropzone = document.getElementById("gallery-3d-dropzone")!;
+  const galleryInput = document.getElementById("plan-gallery-3d") as HTMLInputElement;
+
+  galleryDropzone.addEventListener("click", () => galleryInput.click());
+
+  galleryDropzone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    galleryDropzone.classList.add("border-accent-500", "bg-accent-50");
+  });
+
+  galleryDropzone.addEventListener("dragleave", () => {
+    galleryDropzone.classList.remove("border-accent-500", "bg-accent-50");
+  });
+
+  galleryDropzone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    galleryDropzone.classList.remove("border-accent-500", "bg-accent-50");
+    const files = e.dataTransfer?.files;
+    if (files) handleGalleryFiles(Array.from(files));
+  });
+
+  galleryInput.addEventListener("change", () => {
+    if (galleryInput.files) {
+      handleGalleryFiles(Array.from(galleryInput.files));
+      galleryInput.value = '';
+    }
+  });
+
+  async function handleGalleryFiles(files: File[]) {
+    const form = document.getElementById("plan-form") as HTMLFormElement;
+    const currentImages = JSON.parse(form.dataset.gallery3d || '[]');
+
+    if (currentImages.length >= 10) {
+      alert("Maximum 10 images autorisees");
+      return;
+    }
+
+    const remaining = 10 - currentImages.length;
+    const toUpload = files.slice(0, remaining);
+
+    if (files.length > remaining) {
+      alert(`Seules ${remaining} images peuvent etre ajoutees (max 10 total)`);
+    }
+
+    const progress = document.getElementById("gallery-3d-upload-progress")!;
+    progress.classList.remove("hidden");
+    progress.innerHTML = '<p class="text-xs text-gray-500">Upload en cours...</p>';
+
+    try {
+      const uploadData = new FormData();
+      toUpload.forEach(file => uploadData.append("images", file));
+      uploadData.append("plan_id", (document.getElementById("plan-id") as HTMLInputElement).value || "temp");
+
+      const res = await fetch(`${API}/upload/gallery-3d`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${adminToken}` },
+        body: uploadData,
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Upload failed");
+      }
+
+      const data = await res.json();
+      const updated = [...currentImages, ...data.keys];
+      form.dataset.gallery3d = JSON.stringify(updated);
+      renderGallery3DPreview(updated);
+      progress.innerHTML = '<p class="text-xs text-green-600">Upload termine !</p>';
+      setTimeout(() => progress.classList.add("hidden"), 2000);
+    } catch (error: any) {
+      progress.innerHTML = `<p class="text-xs text-red-500">Erreur: ${error.message}</p>`;
+    }
+  }
+
+  document.getElementById("close-plan-form")?.addEventListener("click", () => {
+    document.getElementById("plan-form-modal")!.classList.add("hidden");
+  });
+
+  document.getElementById("plan-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const planId = (document.getElementById("plan-id") as HTMLInputElement).value;
+    const isEditing = !!planId;
+    const finalPlanId = planId || crypto.randomUUID();
+
+    const form = document.getElementById("plan-form") as HTMLFormElement;
+    const thumb = (document.getElementById("plan-thumbnail") as HTMLInputElement).files?.[0];
+    const dist = (document.getElementById("plan-distribution") as HTMLInputElement).files?.[0];
+    const quote = (document.getElementById("plan-quote") as HTMLInputElement).files?.[0];
+    const pdf = (document.getElementById("plan-pdf") as HTMLInputElement).files?.[0];
+
+    let fileKeys: any = {};
+
+    // Validation pour les nouveaux plans
+    if (!isEditing) {
+      if (!thumb || !dist || !quote) {
+        alert("Veuillez sélectionner les 3 fichiers obligatoires : Image principale, Plan de distribution et Devis");
+        return;
+      }
+    }
+
+    // Upload files only if new ones are selected
+    if (thumb || dist || quote || pdf) {
+      const uploadData = new FormData();
+      if (thumb) uploadData.append("thumbnail", thumb);
+      if (dist) uploadData.append("distribution", dist);
+      if (quote) uploadData.append("quote", quote);
+      if (pdf) uploadData.append("full_pdf", pdf);
+      uploadData.append("plan_id", finalPlanId);
+
+      try {
+        const uploadRes = await fetch(`${API}/upload/plan-assets`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${adminToken}` },
+          body: uploadData,
+        });
+        const uploadResult = await uploadRes.json();
+        if (!uploadRes.ok) throw new Error(uploadResult.error || "Upload echoue");
+        fileKeys = uploadResult.keys;
+      } catch (error: any) {
+        alert("Erreur upload: " + error.message);
+        return;
+      }
+    }
+
+    // Prepare plan data
+    const planData: any = {
+      title: (document.getElementById("plan-title") as HTMLInputElement).value,
+      category: (document.getElementById("plan-category") as HTMLSelectElement).value,
+      description: (document.getElementById("plan-description") as HTMLTextAreaElement).value,
+      surface: parseFloat((document.getElementById("plan-surface") as HTMLInputElement).value) || null,
+      bedrooms: parseInt((document.getElementById("plan-bedrooms") as HTMLInputElement).value) || null,
+      bathrooms: parseInt((document.getElementById("plan-bathrooms") as HTMLInputElement).value) || null,
+      floors: parseInt((document.getElementById("plan-floors") as HTMLInputElement).value) || 1,
+      price: parseFloat((document.getElementById("plan-price") as HTMLInputElement).value) || null,
+      is_premium: (document.getElementById("plan-is-premium") as HTMLInputElement).checked,
+    };
+
+    // Use new file keys or keep existing ones
+    if (fileKeys.thumbnail_key) planData.thumbnail_key = fileKeys.thumbnail_key;
+    else if (isEditing && form.dataset.existingThumbnail) planData.thumbnail_key = form.dataset.existingThumbnail;
+
+    if (fileKeys.distribution_key) planData.distribution_key = fileKeys.distribution_key;
+    else if (isEditing && form.dataset.existingDistribution) planData.distribution_key = form.dataset.existingDistribution;
+
+    if (fileKeys.quote_key) planData.quote_key = fileKeys.quote_key;
+    else if (isEditing && form.dataset.existingQuote) planData.quote_key = form.dataset.existingQuote;
+
+    if (fileKeys.full_pdf_key) planData.full_pdf_key = fileKeys.full_pdf_key;
+    else if (isEditing && form.dataset.existingPdf) planData.full_pdf_key = form.dataset.existingPdf;
+
+    if (isEditing && form.dataset.gallery3d) {
+      planData.gallery_3d = JSON.parse(form.dataset.gallery3d);
+    }
+
+    try {
+      const url = isEditing ? `${API}/admin/plans/${planId}` : `${API}/admin/plans`;
+      const method = isEditing ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: headers(),
+        body: JSON.stringify(planData),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error);
+      }
+
+      document.getElementById("plan-form-modal")!.classList.add("hidden");
+      (document.getElementById("plan-form") as HTMLFormElement).reset();
+      delete form.dataset.existingThumbnail;
+      delete form.dataset.existingDistribution;
+      delete form.dataset.existingQuote;
+      delete form.dataset.existingPdf;
+      delete form.dataset.gallery3d;
+      await loadPlans();
+    } catch (error: any) {
+      alert(error.message);
+    }
+  });
+
+  // Auto-login
+  if (adminToken) {
+    showAdmin();
+  }
+</script>

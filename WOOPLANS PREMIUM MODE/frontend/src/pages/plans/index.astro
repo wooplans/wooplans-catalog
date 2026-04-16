@@ -1,0 +1,107 @@
+---
+import PublicLayout from "../../layouts/PublicLayout.astro";
+---
+
+<PublicLayout title="Catalogue de plans">
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h1 class="section-title mb-4">Nos Plans Architecturaux</h1>
+        <p class="text-gray-600 text-lg">Trouvez le plan parfait pour votre future maison</p>
+      </div>
+
+      <div id="filters" class="flex flex-wrap gap-3 justify-center mb-10">
+        <button data-category="all" class="filter-btn active px-4 py-2 rounded-full text-sm font-medium bg-primary-500 text-white transition-colors">
+          Tous
+        </button>
+        <button data-category="villa" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-primary-500 hover:text-white transition-colors">
+          Villa
+        </button>
+        <button data-category="duplex" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-primary-500 hover:text-white transition-colors">
+          Duplex
+        </button>
+      </div>
+
+      <div id="plans-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="text-center py-20 col-span-full text-gray-500">
+          Chargement des plans...
+        </div>
+      </div>
+    </div>
+  </section>
+</PublicLayout>
+
+<script>
+  const API = import.meta.env.PUBLIC_API_URL || "http://localhost:8787";
+  const CDN = import.meta.env.PUBLIC_CDN_URL || "https://wooplans.b-cdn.net";
+
+  async function loadPlans(category?: string) {
+    const grid = document.getElementById("plans-grid");
+    if (!grid) return;
+
+    try {
+      const url = category && category !== "all"
+        ? `${API}/plans?category=${category}`
+        : `${API}/plans`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!data.plans || data.plans.length === 0) {
+        grid.innerHTML = `
+          <div class="text-center py-20 col-span-full text-gray-500">
+            <p class="text-xl mb-2">Aucun plan trouve</p>
+            <p class="text-sm">Revenez bientot pour de nouveaux plans</p>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = data.plans.map((plan: any) => `
+        <a href="/plan?slug=${plan.slug}" class="card group">
+          <div class="relative overflow-hidden">
+            <img
+              src="${CDN}/${plan.thumbnail_key}"
+              alt="${plan.title}"
+              class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300 image-protected"
+              loading="lazy"
+              onContextMenu="return false"
+              draggable="false"
+            />
+            <div class="overlay-protection"></div>
+            ${plan.is_premium ? '<span class="absolute top-3 right-3 bg-accent-500 text-primary-900 text-xs font-bold px-2 py-1 rounded">PREMIUM</span>' : ''}
+          </div>
+          <div class="p-5">
+            <h3 class="text-lg font-heading font-bold text-primary-500 mb-2">${plan.title}</h3>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">${plan.description || ''}</p>
+            <div class="flex items-center gap-4 text-sm text-gray-500 mb-3">
+              ${plan.surface ? `<span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>${plan.surface} m²</span>` : ''}
+              ${plan.bedrooms ? `<span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3"/></svg>${plan.bedrooms} ch.</span>` : ''}
+              ${plan.bathrooms ? `<span>${plan.bathrooms} SdB</span>` : ''}
+            </div>
+            ${plan.price ? `<p class="text-accent-600 font-semibold">Plan complet: ${new Intl.NumberFormat('fr-FR').format(plan.price)} FCFA</p>` : ''}
+          </div>
+        </a>
+      `).join("");
+    } catch (error) {
+      grid.innerHTML = `
+        <div class="text-center py-20 col-span-full text-gray-500">
+          <p class="text-xl mb-2">Erreur de chargement</p>
+          <p class="text-sm">Veuillez reessayer plus tard</p>
+        </div>`;
+    }
+  }
+
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filter-btn").forEach((b) => {
+        b.classList.remove("bg-primary-500", "text-white");
+        b.classList.add("bg-gray-200", "text-gray-700");
+      });
+      btn.classList.remove("bg-gray-200", "text-gray-700");
+      btn.classList.add("bg-primary-500", "text-white");
+      const category = (btn as HTMLElement).dataset.category || "all";
+      loadPlans(category);
+    });
+  });
+
+  loadPlans();
+</script>

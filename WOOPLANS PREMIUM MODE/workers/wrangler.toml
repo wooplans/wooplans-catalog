@@ -1,0 +1,22 @@
+name = "wooplans-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+
+[vars]
+CHARIOW_API_URL = "https://api.chariow.com/v1"
+CHARIOW_API_KEY = "sk_kj5newrm_cd97cd22d7dfbcb73d86c763a630d08c"
+CHARIOW_PRODUCT_ID = "prd_dt190e"
+BUNNYCDN_API_KEY = "08a1665f-420e-41b1-8beff8f9c722-fa9c-42e5"
+BUNNYCDN_STORAGE_ZONE = "mes-videos-storage"
+BUNNYCDN_BASE_URL = "https://wooplans.b-cdn.net"
+BUNNYCDN_PRIVATE_URL = "https://wooplans-private.b-cdn.net"
+RESEND_API_KEY = "re_48kzmQNn_CZPVC4anutKfir2AATTvfavE"
+PUBLIC_URL = "https://wooplans.pages.dev"
+WHATSAPP_NUMBER = "237694327885"
+ADMIN_PASSWORD = "WooPlans2026Admin"
+JWT_SECRET = "wooplans-jwt-secret-key-2026"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "wooplans-db"
+database_id = "ae6a8194-7c68-4788-8d0f-ac83d8745220"
