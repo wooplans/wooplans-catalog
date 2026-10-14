@@ -50,6 +50,7 @@ QUALITÉ : propre, net, haute lisibilité. Pas de personnages, pas de 3D, pas de
 
 ## Pièges connus
 - Sol bleu oublié dans les salles de bain (relevé sur D5-016 étage) → mention « sol entier bleu ciel » par salle d'eau dans le prompt + contrôle à l'étape 4
+- Pointillés d'ouverture (traits tiretés sur le plan source, p. ex. entre couloir et salon, salle à manger/salon) = délimiteurs d'espace, ouvertures SANS porte : les reproduire à l'identique (même position, même tireté), sans flou, tache ni fausse porte/arc de battant. Le moteur d'image les dégrade surtout à l'étage (relevé sur D5-016 étage, ex. à l'entrée du tracé) → les nommer dans le prompt (« tirets d'ouverture sans porte, à conserver tels quels, aucun battant »), comparer chaque niveau au plan source, et retoucher localement (recoller le tireté d'origine) si besoin
 - Texte généré par l'IA qui chevauche les murs → toujours générer sans texte puis superposer
 - Couloirs rendus gris, portes en zig-zag, libellés en anglais → règles ci-dessus
 - Pièces intervertis (buanderie/sanitaire) → bloc « contenu exact de chaque pièce »
