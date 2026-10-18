@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Allow: /plans/
-Disallow: /admin.html
-Disallow: /merci.html
